@@ -637,8 +637,8 @@ dla \(a_{ij} \in \mathbb{C}\).
 
 \begin{itemize}
     
-    \item \textit{Ślad operatora} \(\oper{A}\) w teorii układów dwupoziomowych jest dany po prostu
-    przez sumę elementów diagonalnych macierzy \(\oper{A}\)
+    \item \textit{Ślad operatora} \(\oper{A}\) w przestrzeni \((\mathbb{C}^2,\mathbb{C},+,\cdot)\)
+    jest dany przez sumę elementów diagonalnych macierzy \(\oper{A}\)
     \begin{equation*}
         \Trace{\oper{A}} = \bra{1}\oper{A}\ket{1} + \bra{2}\oper{A}\ket{2} = a_{11} + a_{22}\,.
     \end{equation*}
@@ -651,6 +651,14 @@ dla \(a_{ij} \in \mathbb{C}\).
     \begin{equation*}
         \oper{A}^\dagger = \mqty(a^*_{11} & a^*_{21} \\ a^*_{12} & a^*_{22})\,.
     \end{equation*}
+
+    \item Operatory samosprzężone to operatory \(\oper{A}\), które spełniają równość
+    \begin{equation*}
+        \oper{A} = \mqty(a_{11} & a_{12} \\ a_{21} & a_{22}) = \mqty(a^*_{11} & a^*_{21} \\ a^*_{12} & a^*_{22}) = \oper{A}^\dagger\,,
+    \end{equation*}
+    czyli \(a_{11},a_{22}\in\mathbb{R}\) i \(a_{12} = a_{21}^*\). Są to zatem operatory
+    reprezentowane przez macierze hermitowskie.
+
 \end{itemize}
 
 
@@ -670,8 +678,6 @@ dla \(a_{ij} \in \mathbb{C}\).
 % my idea on propagators 
 %
 % ------ 2-STATE SYS
-%
-% def. self-adjoint == hermitian operator (matrix)
 %
 % Pauli representation of hermitian operator (WLOG assume r0 = 0, why?)
 %
