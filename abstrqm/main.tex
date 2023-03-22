@@ -566,9 +566,15 @@ reprezentujących wektory.
 
 Macierze Pauliego definiujemy jako zespolone macierze \(2\times 2\)
 \begin{equation*}
-    \sigma_x := \mqty(0 & 1 \\ 1 & 0)\,,\quad \sigma_y := \mqty(0 & -\im \\ \im & 0)\,,\quad \sigma_z := \mqty(1 & 0 \\ 0 & -1)
+    \sigma_x := \mqty(0 & 1 \\ 1 & 0)\,,\quad \sigma_y := \mqty(0 & -\im \\ \im & 0)\,,\quad \sigma_z := \mqty(1 & 0 \\ 0 & -1)\,.
 \end{equation*}
-Wybrane własności macierzy Pauliego:
+Przydatne jest zdefiniowanie \textit{wektora macierzy Pauliego} \(\boldsymbol{\sigma}\)
+\begin{equation*}
+    \boldsymbol{\sigma} = (\sigma_x, \sigma_y, \sigma_z)\,,
+\end{equation*}
+dzięki któremu możemy łatwo zapisać sumę przeskalowanych macierzy Pauliego jako
+\(\mathbf{c}\cdot\boldsymbol{\sigma}\), gdzie \(\mathbf{c}\in\mathbb{C}^3\) jest pewnym wektorem o
+elementach zespolonych. Wybrane własności macierzy Pauliego:
 
 \begin{itemize}
     
@@ -608,11 +614,7 @@ Wybrane własności macierzy Pauliego:
 
     \item Wielkość \(\exp(\im\mathbf{a}\cdot\boldsymbol{\sigma})\) wynosi
     \begin{equation*}
-        \begin{split}
-            &\exp(\im\mathbf{a}\cdot\boldsymbol{\sigma}) =\\
-            &= \oper{I}+\im\mathbf{a}\cdot\boldsymbol{\sigma} - \frac{1}{2!}|\mathbf{a}|^2\oper{I} - \frac{\im}{3!}|\mathbf{a}|^2(\mathbf{a}\cdot\boldsymbol{\sigma}) + \ldots \\
-            &= \oper{I} \cos{|\mathbf{a}|} + \im\left(\frac{\mathbf{a}}{|\mathbf{a}|}\cdot\boldsymbol{\sigma}\right)\sin{|\mathbf{a}|}
-        \end{split}
+            \exp(\im\mathbf{a}\cdot\boldsymbol{\sigma}) = \oper{I} \cos{|\mathbf{a}|} + \im\left(\frac{\mathbf{a}}{|\mathbf{a}|}\cdot\boldsymbol{\sigma}\right)\sin{|\mathbf{a}|}\,.
     \end{equation*}
 
 \end{itemize}
@@ -637,13 +639,13 @@ dla \(a_{ij} \in \mathbb{C}\).
 
 \begin{itemize}
     
-    \item \textit{Ślad operatora} \(\oper{A}\) w przestrzeni \((\mathbb{C}^2,\mathbb{C},+,\cdot)\)
-    jest dany przez sumę elementów diagonalnych macierzy \(\oper{A}\)
+    \item Ślad operatora \(\oper{A}\) w przestrzeni \((\mathbb{C}^2,\mathbb{C},+,\cdot)\) jest dany
+    przez sumę elementów diagonalnych macierzy \(\oper{A}\)
     \begin{equation*}
         \Trace{\oper{A}} = \bra{1}\oper{A}\ket{1} + \bra{2}\oper{A}\ket{2} = a_{11} + a_{22}\,.
     \end{equation*}
 
-    \item \textit{Sprzężeniem operatora} reprezentowanego przez macierz
+    \item Sprzężeniem operatora reprezentowanego przez macierz
     \begin{equation*}
         \oper{A} = \mqty(a_{11} & a_{12} \\ a_{21} & a_{22})
     \end{equation*}
@@ -658,6 +660,12 @@ dla \(a_{ij} \in \mathbb{C}\).
     \end{equation*}
     czyli \(a_{11},a_{22}\in\mathbb{R}\) i \(a_{12} = a_{21}^*\). Są to zatem operatory
     reprezentowane przez macierze hermitowskie.
+
+    \item Zauważmy, iż dowolną macierz hermitowską \(\oper{A}\) możemy przedstawić jako
+    \begin{equation*}
+        \oper{A} = a_0\oper{I} + \mathbf{a}\cdot\boldsymbol{\sigma} =\mqty(a_0-a_z & a_x-\im a_y \\ a_x + \im a_y & a_0 + a_z)
+    \end{equation*}
+    dla \(a_0\in\mathbb{R}\) i rzeczywistego wektora \(\mathbf{a}\in\mathbb{R}^3\).
 
 \end{itemize}
 
@@ -683,7 +691,7 @@ dla \(a_{ij} \in \mathbb{C}\).
 %
 % Bloch sphere and some projective/inversion theorems
 %
-% general solution for time-independent H for two-state system: cos |r| - i sin|r|
+% general solution for time-independent H for two-state system: cos|r| - i sin|r|
 %
 % exactly solvable example: NMR
 %
