@@ -1,0 +1,684 @@
+\documentclass{myclass}
+\usepackage[polish]{babel}
+
+\author{Bartosz Hanc}
+
+\begin{document}
+
+\subsection{TEORIA KWANTÓW}
+
+\subsubsection{Elementy przestrzeni Hilberta}
+
+\begin{itemize}
+
+    \item Przez \(\mathbb{V} := (V,\mathbb{C},+,\cdot)\) będziemy oznaczać przestrzeń wektorową nad
+    ciałem liczb zespolonych.
+
+    \item \textbf{Def.} Odwzorowanie \(d: V \times V \mapsto \mathbb{R}\) będziemy nazywać
+    \textit{metryką} w zbiorze \(V \neq \emptyset\) iff
+    \begin{itemize}
+    
+        \item \(\forall u,v \in V : d(u,v) \geq 0\), przy czym równość zachodzi iff \(u = v\)
+        (\textit{nieujemność})
+
+        \item \(\forall u,v \in V : d(u,v) = d(v,u)\) (\textit{symetria})
+
+        \item \(\forall u,v,w \in V : d(u,v) + d(v,w) \geq d(u,w)\) (\textit{nierówność trójkąta})
+
+    \end{itemize}
+    Parę \((V,d(\cdot,\cdot))\) będziemy nazywać \textit{przestrzenią metryczną}.
+
+    \item \textbf{Def.} Niech \((V,d)\) będzie przestrzenią metryczną. Mówimy, iż dany ciąg
+    \((u_n)\) elementów zbioru \(V\) jest zbieżny do \(g\in V\) tj. \(\lim_{n\to\infty}a_n = g\) iff
+    \(\lim_{n\to\infty} d(a_n,g) = 0\).
+
+    \item \textbf{Def.} Ciąg \((u_n)\) elementów \(u_n \in V\) będziemy nazywać \textit{ciągiem
+    Cauchy'ego} w przestrzeni metrycznej \((V,d(\cdot,\cdot))\) iff spełnia on kryterium Cauchy'ego
+    tj.
+    \begin{equation*}
+        \forall \epsilon > 0 : \exists N : \forall n,m > N : d(a_n,a_m) < \epsilon\,.
+    \end{equation*}
+
+    \item \textbf{Tw.} Każdy ciąg zbieżny w przestrzeni metrycznej \((V,d)\) jest ciągiem Cauchy'ego
+    w tej przestrzeni.
+
+    \item \textbf{Def.} Przestrzeń metryczną \((V,d(\cdot,\cdot))\) nazwiemy \textit{zupełną} iff
+    każdy ciąg Cauchy'ego \((u_n)\) elementów \(u_n \in V\) jest zbieżny do granicy \(g \in V\).
+
+    \item \textbf{Def.} Niech \(\mathbb{V}\) będzie przestrzenią wektorową. Odwzorowanie
+    \(\braket{\cdot} : V \times V \mapsto \mathbb{C}\) nazwiemy \textit{iloczynem wewnętrznym}
+    wektorów iff
+    \begin{itemize}
+        
+        \item \(\forall u,v \in V : \braket{u}{v}^* = \braket{v}{u}\)
+        
+        \item \(\forall u,v_1,v_2 \in V : \forall \alpha, \beta \in \mathbb{C} : \braket{u}{\alpha
+        v_1 + \beta v_2} = \alpha \braket{u}{v_1} + \beta \braket{u}{v_2}\)
+
+        \item \(\forall u \in V : \braket{u} \geq 0\), przy czym równość zachodzi iff \(u =
+        \mathsf{0}\). Zauważmy tutaj, iż z pierwszego aksjomatu \(\braket{u} \in \mathbb{R}\), gdyż
+        \(\braket{u} = \braket{u}^* \implies \Im{\braket{u}} = 0\).
+
+    \end{itemize}
+    
+    Parę \((\mathbb{V},\braket{\cdot})\) będziemy nazywać \textit{przestrzenią unitarną}.
+
+    \item \textbf{Tw.} Każda przestrzeń unitarna jest metryczna z metryką indukowaną przez iloczyn
+    wewnętrzny \(d(u,v) := \sqrt{\braket{u-v}}\).
+
+    \item \textbf{Tw.} (\textit{Nierówność Cauchy'ego--Schwarza}) Niech
+    \((\mathbb{V},\braket{\cdot})\) -- przestrzeń metryczna. Wówczas
+    \begin{equation*}
+        \forall u,v \in V : |\braket{u}{v}|^2 \leq \braket{u}\braket{v}\,.
+    \end{equation*}  
+
+    \item \textbf{Def.} Przeliczalny zbiór wektorów \(\{v_1,...,v_n\}\) nazwiemy
+    \textit{ortogonalnym} iff 
+    \begin{equation*}
+        \forall i\neq j; i,j\in\{1,...,n\} : \braket{v_i}{v_j} = 0\,.
+    \end{equation*}
+    Ten sam zbiór wektorów nazwiemy \textit{ortonormalnym} iff 
+    \begin{equation*}
+        \forall i,j\in\{1,...,n\} : \braket{v_i}{v_j} = \delta_{ij}\,,
+    \end{equation*}
+    gdzie \(\delta_{ij}\) jest deltą Kroneckera.
+
+    \item \textbf{Tw.} Każda przestrzeń unitarna \((\mathbb{V}, \braket{\cdot})\) posiada bazę
+    ortonormalną, tj. bazę, której wektory bazowe tworzą zbiór ortonormalny.
+
+    \item \textbf{Def.} \textit{Przestrzenią Hilberta} \(\mathscr{H}=(\mathbb{V},\braket{\cdot})\)
+    nazwiemy zupełną przestrzeń unitarną.
+
+    \item \textbf{Def.} Niech \(\mathscr{H} = (\mathbb{V},\braket{\cdot})\) będzie przestrzenią
+    Hilberta. Odwzorowanie \(F:V\mapsto\mathbb{C}\) nazwiemy \textit{funkcjonałem liniowym} w
+    przestrzeni \(\mathscr{H}\) iff
+    \begin{equation*}
+        \begin{split}
+            &\forall u,v \in V : \forall \alpha, \beta \in \mathbb{C} : \\
+            &F(\alpha u+\beta v) = \alpha F(u) + \beta F(v)\,.
+        \end{split}  
+    \end{equation*}
+
+    \item \textbf{Tw.} Niech \(V^*\) oznacza zbiór wszystkich funkcjonałów liniowych
+    \(F:V\mapsto\mathbb{C}\). Wówczas \(\mathbb{V}^*:=(V^*,\mathbb{C},+,\cdot)\), gdzie
+    \begin{itemize}
+        \item \(\forall F_1,F_2 \in V^* : \forall v \in V : (F_1+F_2)(v) = F_1(v) + F_2(v)\)
+
+        \item \(\forall F \in V^* : \forall \alpha \in \mathbb{C} : \forall v \in V : (\alpha \cdot
+        F)(v) = \alpha F(v)\)
+    \end{itemize}
+    jest przestrzenią wektorową, którą nazywamy \textit{przestrzenią dualną}.
+
+    \item \textbf{Tw.} (\textit{Riesza}) Niech \(\mathscr{H}=(\mathbb{V},\braket{\cdot})\) będzie
+    przestrzenią Hilberta, a \(\mathbb{V}^*\) jej przestrzenią dualną. Wówczas istnieje wzajemnie
+    jednoznaczne odwzorowanie wektorów \(v \in V\) na funkcjonały liniowe \(F \in V^*\). Dodatkowo
+    dla każdego funkcjonału \(F\) istnieje dokładnie jeden wektor \(u \in V\) taki, że
+    \begin{equation*}
+        \forall v \in V : F(v) = \braket{u}{v}\,.
+    \end{equation*}
+
+    \item \textbf{Def.} \textit{Iloczynem tensorowym} przestrzeni Hilberta \(\mathscr{H}_1\) i
+    \(\mathscr{H}_2\) o bazach ortonoromalnych odpowiednio \(\{\phi_i^{(1)}\}\) i
+    \(\{\phi_i^{(2)}\}\) nazywamy przestrzeń Hilberta \(\mathscr{H} = \mathscr{H}_1 \otimes
+    \mathscr{H}_2\) taką, że
+    \begin{itemize}
+        
+        \item Jej bazą ortonormalną jest zbiór \(\{\phi_i^{(1)} \otimes \phi_j^{(2)}\}\), gdzie
+        \(\psi \otimes \phi\) to iloczyn Kroneckera wektorów, który dla reprezentacji wektorów jako
+        macierzy kolumnowych o elementach będących współrzędnymi wektora w danej bazie jest
+        zdefiniowany jako
+        \begin{equation*}
+            \mqty(a_1 \\ a_2 \\ \vdots) \otimes \mqty(b_1 \\ b_2 \\ \vdots) := \mqty(a_1 \cdot \mqty(b_1 \\ b_2 \\ \vdots) \\ a_2 \cdot \mqty(b_1 \\ b_2 \\ \vdots) \\ \vdots )
+        \end{equation*}
+
+        \item Iloczyn wewnętrzny w przestrzeni \(\mathscr{H}_1 \otimes \mathscr{H}_2\) jest
+        zdefiniowany jako
+        \begin{equation*}
+            \braket{\phi_1 \otimes \phi_2}{\psi_1 \otimes \psi_2} := \braket{\phi_1}{\psi_1}_1 \cdot \braket{\phi_2}{\psi_2}_2\,,
+        \end{equation*}
+        gdzie \(\phi_i,\psi_i \in \mathscr{H}_i\) to pewne wektory, a \(\braket{\cdot}_i\) to
+        iloczyn wewnętrzny w \(\mathscr{H}_i\).
+    \end{itemize}
+
+\end{itemize}
+
+\subsubsection{Notacja Diraca}
+
+Niech \(\mathscr{H}\) będzie przestrzenią Hilberta. Wprowadzimy teraz kompaktową notacją wektorów i
+funkcjonałów liniowych wymyśloną przez Diraca. Aby uprościć zapis, będziemy mówili o wektorach
+należących do przestrzeni \(\mathscr{H}\) (używając nawet symbolu należenia \(\in \mathscr{H}\)),
+mając oczywiście formalnie na myśli wektory należące do zbioru \(V\).
+
+Wektory należące do \(\mathscr{H}\) będziemy oznaczać jako
+\begin{equation*}
+    \ket{\psi},\, \ket{\phi},\, ...\,,
+\end{equation*}
+przy czym \(\ket{\cdot}\) to tzw. \textit{ket} i formalnie jest to odwzorowanie \(\ket{\cdot} :
+\mathsf{S} \mapsto V\), gdzie \(\mathsf{S}\) jest zbiorem znaków, których używamy do oznaczenia
+konkretnych wektorów ze zbioru \(V\). Nie będziemy jednak przestrzegali tego formalnego znaczenia,
+utożsamiając dla wygody również  sam symbol z wektorem.
+
+Funkcjonały liniowe należące do przestrzeni dualnej będziemy oznaczać jako
+\begin{equation*}
+    \bra{\psi},\, \bra{\phi},\, ...\,,
+\end{equation*}
+przy czym \(\bra{\cdot}\) to tzw. \textit{bra} i formalnie jest to odwzorowanie \(\bra{\cdot} :
+\mathsf{S}^* \mapsto V^*\), gdzie \(\mathsf{S}^*\) jest zbiorem znaków, których używamy do
+oznaczenia konkretnych funkcjonałów ze zbioru \(V^*\). Ponieważ z tw. Riesza istnieje wzajemnie
+jednoznaczne odwzorowanie funkcjonałów liniowych na wektory, więc możemy utożsamić \(\mathsf{S}^* =
+\mathsf{S}\). 
+
+Iloczyn wewnętrzny wektorów \(\psi\), \(\phi\) tj. \(\braket{\psi}{\phi}\) będziemy teraz
+interpretować jako wartość funkcjonału liniowego \(\bra{\psi}\) (tj. funkcjonału liniowego
+odpowiadającego wektorowi \(\psi\)) dla argumentu \(\ket{\phi}\).
+
+\subsubsection{Elementy operatorów liniowych}
+
+\begin{itemize}
+    
+    \item \textbf{Def.} \textit{Operatorem liniowym} \(\oper{A}\) w przestrzeni \(\mathscr{H}\)
+    nazywamy odwzorowanie liniowe 
+    \begin{equation*}
+        \oper{A} : D(\oper{A}) \mapsto D(\oper{A})\,,
+    \end{equation*}
+     gdzie \(D(\oper{A})\) jest podprzestrzenią wektorową przestrzeni \(\mathbb{V}\).
+
+    \item \textbf{Def.} \textit{Sprzężeniem} operatora \(\oper{A}\) nazywamy operator
+    \(\oper{A}^\dagger : D(\oper{A}^\dagger) \mapsto D(\oper{A}^\dagger)\) taki, że 
+    \begin{equation*}
+        \forall \phi \in D(\oper{A}^\dagger) : \forall \psi \in D(\oper{A}) : \braket{\phi}{\oper{A}\psi} = \braket{\oper{A}^\dagger\phi}{\psi}
+    \end{equation*}
+    co możemy również zapisać jako
+    \begin{equation*}
+        (\bra{\psi}\oper{A}^\dagger\ket{\phi})^* = \bra{\phi}\oper{A}\ket{\psi}\,.
+    \end{equation*}
+
+    \item \textbf{Def.} \textit{Komutatorem} operatorów \(\oper{A}\), \(\oper{B}\) o równych
+    dziedzinach nazywamy operator \([\oper{A},\oper{B}]\) zdefiniowany jako
+    \begin{equation*}
+        \forall \psi \in D : [\oper{A},\oper{B}]\psi = \oper{A}(\oper{B}\psi) - \oper{B}(\oper{A}\psi)\,. 
+    \end{equation*}
+    Jeśli \([\oper{A},\oper{B}] = \oper{\mathsf{0}}\) (gdzie \(\oper{\mathsf{0}}\) oznacza
+    \textit{operator zerowy} \(\oper{\mathsf{0}}\psi=\mathsf{0}\)), to mówimy, że operatory
+    \(\oper{A}\), \(\oper{B}\) \textit{komutują}.
+    
+    \item \textbf{Def.} \textit{Antykomutatorem} operatorów \(\oper{A}\), \(\oper{B}\) nazywamy
+    operator \(\{\oper{A},\oper{B}\}\) zdefiniowany jako
+    \begin{equation*}
+        \{\oper{A},\oper{B}\}\psi := \oper{A}\oper{B}\psi + \oper{B}\oper{A}\psi\,.
+    \end{equation*}
+
+    \item \textbf{Tw.} Dla dowolnych operatorów \(\oper{A}\), \(\oper{B}\), \(\oper{C}\) zakładając
+    odpowiednie dziedziny, zachodzi:
+    \begin{itemize}
+        \item \([\oper{A} + \oper{B},\oper{C}] = [\oper{A},\oper{C}] + [\oper{B},\oper{C}]\) ;
+        \item \([\oper{A}\oper{B},\oper{C}] = \oper{A}[\oper{B},\oper{C}] +
+        [\oper{A},\oper{C}]\oper{B}\) .
+    \end{itemize}
+
+    \item \textbf{Def.} \textit{Ślad operatora \(\oper{A}\)} definiujemy jako liczbę \(\Trace
+    \oper{A} \in \mathbb{C}\) równą
+    \begin{equation*}
+        \Trace{\oper{A}} := \sum_{i} \bra{\phi_i}\oper{A}\ket{\phi_i}\,,
+    \end{equation*}
+    gdzie \(\{\phi_i\}\) jest dowolną ortonormalną bazą przestrzeni \(\mathscr{H}\).
+
+    \item \textbf{Tw.} Ślad operatora nie zależy od wyboru ortonormalnej bazy przestrzeni Hilberta.
+
+    \item \textbf{Def.} Niech \(f(x):\mathbb{R}\mapsto\mathbb{R}\) będzie funkcją zmiennej
+    rzeczywistej taką, że istnieje szereg potęgowy
+    \begin{equation*}
+        \sum_{n=0}^\infty\frac{a_n}{n!}x^n\,,
+    \end{equation*}
+    który jest zbieżny jednostajnie na \(\mathbb{R}\) do \(f\). Wówczas funkcję operatora
+    \(f(\oper{A})\) definiujemy jako
+    \begin{equation*}
+        f(\oper{A}) := \sum_{n=0}^\infty \frac{a_n}{n!}\oper{A}^n\,,
+    \end{equation*}
+    gdzie przyjmujemy \(\oper{A}^0 := \oper{I}\). W szczególności mamy
+    \begin{itemize}
+        \item \(\exp(\oper{A}) := \sum_{n=0}^\infty \frac{1}{n!}\oper{A}^n\)
+    
+        \item \(\sin(\oper{A}) := \sum_{n=0}^\infty \frac{(-1)^n}{(2n+1)!}\oper{A}^{2n+1}\)
+    
+        \item \(\cos(\oper{A}) := \sum_{n=0}^\infty \frac{(-1)^n}{(2n)!}\oper{A}^{2n}\)
+    
+    \end{itemize}
+
+\end{itemize}
+
+W teorii kwantowej główną rolę odgrywają trzy rodziny operatorów: operatory samosprzężone, rzutowe i
+unitarne.
+
+\begin{itemize}
+
+    \item \textbf{Def.} \textit{Operatorem symetrycznym} nazywamy operator \(\oper{A}\) taki, że
+    \begin{equation*}
+        \forall \psi,\phi \in D(\oper{A}) : \braket{\psi}{\oper{A}\phi} = \braket{\oper{A}\psi}{\phi}\,.
+    \end{equation*}
+
+    \item \textbf{Def.} \textit{Operatorem samosprzężonym} nazywamy operator \(\oper{A}\) taki, że
+    \(\oper{A} = \oper{A}^\dagger\). Samosprzężoność nie pokrywa się z symetrycznością, gdyż równość
+    operatorów oznacza z definicji równość ich dziedzin, co nie jest w ogólności prawdziwe dla
+    dowolnego operatora symetrycznego. Oczywiście, jeśli operator jest samosprzężony, to jest
+    symetryczny.
+
+\end{itemize}
+
+Operatory samosprzężone odgrywają wyróżnioną rolę w teorii kwantowej ze względu na trzy twierdzenia,
+które są dla nich spełnione.
+\begin{itemize}
+    
+    \item \textbf{Tw.} Wartości własne operatora samosprzężonego są liczbami rzeczywistymi.
+
+    \item \textbf{Tw.} Wektory własne operatora samosprzężonego tworzą zbiór ortogonalny.
+
+    \item \textbf{Tw.} Jeśli zbiór wartości własnych operatora samosprzężonego jest zbiorem
+    przeliczalnym, to zbiór wektorów własnych rozpina przestrzeń \(\mathscr{H}\).
+
+\end{itemize}
+
+\begin{itemize}
+
+    \item \textbf{Def.} \textit{Operatorem rzutowym} nazywamy operator \(\oper{P}\) taki, że
+    \(\oper{P} = \oper{P}^\dagger\) (samosprzężoność) i \(\oper{P}^2 = \oper{P}\) (idempotentność).
+
+\end{itemize}
+
+Ważnym przykładem operatora rzutowego jest operator rzutowania na jednowymiarową podprzestrzeń
+rozpiętą na unormowanym wektorze \(\ket{\phi}\) (rzutowanie na kierunek wektora \(\phi\)), który w
+notacji Diraca możemy zapisać jako \(\oper{P} = \ket{\phi}\bra{\phi}\) tj. \(\forall \psi :
+\oper{P}(\psi) = \braket{\phi}{\psi}\phi\). Jest to oczywiście operator liniowy, gdyż dla dowolnych
+wektorów \(\ket{\psi_1}\), \(\ket{\psi_2}\) i skalarów \(\alpha\), \(\beta\) mamy
+\begin{equation*}
+    \begin{split}
+        &\ket{\phi}\bra{\phi}(\alpha\ket{\psi_1} + \beta\ket{\psi_2}) = \ket{\phi}\braket{\phi}{\alpha\psi_1 + \beta\psi_2} \\
+        &= \alpha\ket{\phi} \braket{\phi}{\psi_1} + \beta\ket{\phi}\braket{\phi}{\psi_2}\,.
+    \end{split}
+\end{equation*}
+Jest również idempotentny, gdyż 
+\begin{equation*}
+    \ket{\phi}\bra{\phi}(\ket{\phi}\braket{\phi}{\psi}) = \ket{\phi}\braket{\phi}\braket{\phi}{\psi} = \ket{\phi}\braket{\phi}{\psi}
+\end{equation*}
+z założenia \(\braket{\phi} = 1\) oraz samosprzężony
+\begin{equation*}
+    (\braket{\psi_1}{\phi}\braket{\phi}{\psi_2})^* = \braket{\psi_2}{\phi}\braket{\phi}{\psi_1}\,.
+\end{equation*}
+Łatwo pokazać również, iż jeśli \(\{\phi_i\}\) jest ortonormalnym zbiorem wektorów, to
+\begin{equation*}
+    \oper{P} = \sum_i \ket{\phi_i}\bra{\phi_i}
+\end{equation*}
+jest operatorem rzutowym. W szczególności, jeśli \(\{\phi_i\}\) jest ortonormalną bazą przestrzeni
+\(\mathscr{H}\), to
+\begin{equation*}
+    \sum_i \ket{\phi_i}\bra{\phi_i} = \oper{I}\,.
+\end{equation*}
+
+\begin{itemize}
+    
+    \item \textbf{Def.} \textit{Operatorem unitarnym} nazywamy operator \(\oper{U}\) taki, że
+    \(\oper{U}\oper{U}^\dagger = \oper{U}^\dagger\oper{U} = \oper{I}\).
+
+\end{itemize}
+
+Przekształcenia unitarne reprezentowane przez operatory unitarne mają ważną własność polegającą na
+zachowywaniu wartości iloczynu wewnętrznego dwóch wektorów, a zatem w szczególności normy wektora
+\begin{equation*}
+    \braket{\oper{U}\psi}{\oper{U}\phi} = \braket{\oper{U}^\dagger\oper{U}\psi}{\phi} = \braket{\psi}{\phi}\,.
+\end{equation*}
+    
+\begin{itemize}
+    
+    \item \textbf{Tw.} (\textit{spektralne}) Niech \(\mathscr{H}\) będzie przestrzenią Hilberta. Dla
+    każdego samosprzężonego operatora liniowego \(\oper{A}\) w \(\mathscr{H}\) istnieje unikalna
+    rodzina operatorów rzutowych \(\oper{P}(\lambda)\) indeksowanych ciągłym parametrem \(\lambda
+    \in \mathbb{R}\) taka, że
+    \begin{itemize}
+        
+        \item Jeśli \(\lambda_1 < \lambda_2\) to
+        \begin{equation*}
+            \oper{P}(\lambda_1)\oper{P}(\lambda_2) =
+        \oper{P}(\lambda_2)\oper{P}(\lambda_1) = \oper{P}(\lambda_1)\,.
+        \end{equation*}
+
+        \item Dla każdego \(\lambda\) \(\lim_{\epsilon\to0^+}\oper{P}(\lambda+\epsilon) =
+        \oper{P}(\lambda)\).
+        
+        \item \(\lim_{\lambda\to-\infty}\oper{P}(\lambda) = \oper{\mathsf{0}}\)
+
+        \item \(\lim_{\lambda\to+\infty}\oper{P}(\lambda) = \oper{I}\)
+
+        \item \(\oper{A} = \int\limits_{-\infty}^{+\infty}\lambda \dd{\oper{P}(\lambda)}\)
+
+    \end{itemize}
+    gdzie ostatnia całka to tzw. \textit{całka Riemanna--Stieltjesa} względem miary operatorowej
+    zdefiniowana jako
+    \begin{equation*}
+            \int\limits_a^b f(x) \dd{\sigma(x)} := \lim_{n\to\infty}\sum_{k=1}^nf(x_k)\left[\sigma(x_k) - \sigma(x_{k-1})\right]\,,
+    \end{equation*}
+    dla 
+    \begin{equation*}
+        f: \mathbb{R} \mapsto \mathbb{R}\,,\quad \sigma: \mathbb{R} \mapsto X\,,
+    \end{equation*}
+    gdzie \([a;b] = \bigcup_{k=1}^{n}[x_{k-1}; x_k]\) jest podziałem normalnym odcinka \([a;b]\).
+
+\end{itemize}
+
+W szczególnym przypadku, gdy operator samosprzężony \(\oper{A}\) ma widmo \(\{\lambda_i\}\) będące
+zbiorem przeliczalnym, wiemy, że zbiór unormowanych wektorów własnych \(\{\phi_i\}\) jest bazą
+ortonormalną przestrzeni \(\mathscr{H}\), czyli dla dowolnego wektora \(\psi \in \mathscr{H}\)
+możemy zapisać
+\begin{equation*}
+    \ket{\psi} = \sum_{i} c_i\ket{\phi_i} = \sum_{i} \braket{\phi_i}{\psi}\ket{\phi_i}\,,
+\end{equation*}
+gdzie \(c_i = \braket{\phi_i}{\psi} \in \mathbb{C}\) to współrzędne wektora w zadanej bazie.
+Działając operatorem \(\oper{A}\) na wektor \(\psi\) mamy
+\begin{equation*}
+    \begin{split}
+        &\oper{A}\ket{\psi} = \sum_{i} \braket{\phi_i}{\psi}\oper{A}\ket{\phi_i} =\\
+        &\sum_{i} \braket{\phi_i}{\psi}\lambda_i\ket{\phi_i} = \left(\sum_i\lambda_i\ket{\phi_i}\bra{\phi_i}\right)\ket{\psi} \,.
+    \end{split}
+\end{equation*}
+Całka Stieltjesa z twierdzenia spektralnego przechodzi więc w tym przypadku w sumę (być może
+nieskończoną) operatorów rzutowych rzutujących na jednowymiarowe podprzestrzenie rozpięte na
+kolejnych wektorach własnych operatora
+\begin{equation*}
+    \oper{A} = \sum_{i} \lambda_i \ket{\phi_i}\bra{\phi_i}\,.
+\end{equation*}
+
+\subsubsection{POSTULATY TEORII KWANTÓW}
+
+Poniżej przedstawiono postulaty ogólnej, abstrakcyjnej teorii kwantów. Postulaty te obowiązują we
+wszystkich realizacjach teorii kwantów np. mechanice falowej, czy kwantowej teorii pola, jednak ze
+względu na swój ogólny charakter same w sobie nie dostarczają narzędzi do rozwiązywania żadnych
+konkretnych problemów fizycznych. Nie należy ich również traktować jako podstaw do aksjomatyzacji
+teorii kwantowej. Stanowią one raczej sposób uporządkowania w spójną strukturę wiedzy dotyczącej
+konkretnych realizacji teorii kwantów. Podane poniżej postulaty to nieco zmodyfikowane postulaty
+pochodzące z książki ,,Teoria kwantów. Mechanika falowa'' I. Białynicki--Birula, M. Cieplak, J.
+Kamiński.
+\medskip
+
+\begin{enumerate}[label=\Roman*.]
+    
+    \item \textbf{O modelu matematycznym.} Modelem matematycznym teorii kwantów jest teoria
+    przestrzeni Hilberta nad ciałem liczb zespolonych i teoria operatorów liniowych działających w
+    tej przestrzeni.
+
+    \item \textbf{O pytaniach elementarnych.} Pytaniem elementarnym nazwiemy pytanie, na które
+    odpowiedź może brzmieć jedynie ,,TAK'' lub ,,NIE''. Pytanie elementarne nazwiemy rozstrzygalnym
+    w obrębie danej teorii kwantowej, iff istnieje wzajemnie jednoznaczne odwzorowanie tego pytania
+    na pewien operator rzutowy \(\oper{P}\). Będziemy wówczas mówili, iż dane pytanie elementarne
+    jest reprezentowane przez \(\oper{P}\). Dwa pytania elementarne reprezentowane przez
+    \(\oper{P}_1\) i \(\oper{P}_2\) można połączyć spójnikiem ,,LUB'', jeśli \(\oper{P}_1\oper{P}_2
+    = \oper{\mathsf{0}}\) otrzymując pytanie reprezentowane przez \(\oper{P}_1 + \oper{P}_2\) lub
+    ,,I'', jeśli \([\oper{P}_1, \oper{P}_2] = \oper{\mathsf{0}}\) otrzymując pytanie reprezentowane
+    przez \(\oper{P}_1\oper{P}_2\).
+
+    \item \textbf{O stanach układu.} Stan prostego układu fizycznego jest reprezentowany przez
+    unormowany wektor \(\ket{\Psi}\) w abstrakcyjnej przestrzeni Hilberta \(\mathscr{H} =
+    (\mathbb{V}, \braket{\cdot})\), przy czym utożsamiamy ze sobą wektory różniące się jedynie
+    globalnym czynnikiem fazowym tj. \(\ket{\Psi} \equiv \e^{\im\alpha}\ket{\Psi}\) dla \(\alpha \in
+    \mathbb{R}\).
+
+    \item \textbf{O prawdopodobieństwach.} Teoria kwantowa dostarcza jedynie probabilistycznych
+    odpowiedzi na rozstrzygalne pytania elementarne. Prawdopodobieństwo \(p\), iż odpowiedź na
+    pytanie elementarne reprezentowane przez \(\oper{P}\) jest twierdząca, dla układu
+    reprezentowanego przez \(\Psi\) wynosi
+    \begin{equation*}
+        p = \bra{\Psi}\oper{P}\ket{\Psi}\,.
+    \end{equation*}
+    Dla operatora rzutowego \(\ket{\Psi}\bra{\Psi}\) reprezentującego pytanie: \textit{czy układ
+    znajduje się w stanie \(\Psi\)?}, prawdopodobieństwo odpowiedzi twierdzącej wynosi 1.
+
+    \item \textbf{O wielkościach fizycznych.} Każda wielkość fizyczna \(A\) występująca w danej
+    teorii kwantowej jest reprezentowana przez samosprzężony operator liniowy \(\oper{A}\) i
+    stowarzyszoną z nim na mocy twierdzenia spektralnego rodzinę operatorów rzutowych
+    \(\oper{P}_A(\lambda)\). Operator rzutowy \(\oper{P}_A(\lambda)\) reprezentuje pytanie:
+    \textit{czy wielkość fizyczna \(A\) ma wartość nie większą od \(\lambda\)?}, natomiast operator
+    rzutowy \(\oper{I}-\oper{P}_A(\lambda)\): \textit{czy wielkość fizyczna \(A\) ma wartość większą
+    od \(\lambda\)?} Na mocy postulatu drugiego możemy skonstruować pytanie: \textit{czy wielkość
+    fizyczna \(A\) ma wartość z przedziału \((\lambda_1;\lambda_2]\)?}, reprezentowane przez
+    operator 
+    \begin{equation*}
+        (\oper{I} - \oper{P}_A(\lambda_1))\oper{P}_A(\lambda_2) =
+        \oper{P}_A(\lambda_2)-\oper{P}_A(\lambda_1)\,.
+    \end{equation*}
+    Wartość oczekiwaną wielkości \(A\) dla układu reprezentowanego przez \(\Psi\) obliczamy jako
+    \begin{equation*}
+        \langle A \rangle = \bra{\Psi}\oper{A}\ket{\Psi}\,.
+    \end{equation*}
+
+    \item \textbf{O ewolucji układu w czasie.} Prawdopodobieństwo \(p\) odpowiedzi twierdzącej na
+    pytanie \(\oper{P}\) dla układu reprezentowanego przez \(\Psi\) ewoluuje w czasie zgodnie z
+    \begin{equation*}
+        p(t) = \bra{\Psi(t)}\oper{P}\ket{\Psi(t)}\,,
+    \end{equation*}
+    gdzie wektory stanu \(\ket{\Psi}\) ewoluują zgodnie z \textit{równaniem Schr\"{o}dingera}
+    \begin{equation*}
+        \oper{H}\ket{\Psi} = \im\hbar\partial_t\ket{\Psi}\,,
+    \end{equation*}
+    gdzie w ogólności \(\oper{H} = \oper{H}(t)\) jest operatorem Hamiltona danego układu tworzonym
+    wedle określonych reguł w danej realizacji teorii kwantów, natomiast \(\hbar\) to stała fizyczna
+    o wymiarze działania
+    \begin{equation*}
+        \hbar = 1.054571817\ldots \cdot 10^{-34}\,\text{J}\cdot\text{s}
+    \end{equation*}
+    zwana \textit{zredukowaną stałą Plancka}.
+    
+    \item \textbf{O układach złożonych.} Przestrzeń Hilberta \(\mathscr{H}\) układu złożonego ma
+    strukturę iloczynu tensorowego przestrzeni Hilberta układów prostych wchodzących w jego skład
+    \(\mathscr{H}=\mathscr{H}_1\otimes\mathscr{H}_2\otimes\ldots\) .
+
+\end{enumerate}
+
+
+\subsubsection{Zasada nieoznaczoności}
+
+Niech \(A\) będzie pewną wielkością fizyczną reprezentowaną przez operator \(\oper{A}\). Zdefiniujmy
+odchylenie standardowe \(\sigma_A \geq 0\) wielkości \(A\) dla układu w stanie \(\Psi\) jako
+\begin{equation*}
+    \sigma_A^2 := \langle (A - \langle A \rangle)^2 \rangle = \braket{(\oper{A}-a)\Psi}{(\oper{A}-a)\Psi}\,,
+\end{equation*}
+gdzie \(a = \langle A \rangle\) jest wartością oczekiwaną wielkości \(A\). Dla dowolnych dwóch
+wielkość fizycznych \(A\) i \(B\) w układzie reprezentowanym przez \(\Psi\) mamy z nierówności
+Cauchy'ego--Schwarza
+\begin{equation*}
+    \sigma_A^2\sigma_B^2 \geq \left|\braket{(\oper{A}-a)\Psi}{(\oper{B}-b)\Psi}\right|^2\,.
+\end{equation*}
+Jednocześnie dla dowolnego \(z = x + \im y \in\mathbb{C}\) mamy
+\begin{equation*}
+    |z|^2 = x^2 + y^2 \geq y^2 = \left(\frac{z-z^*}{2\im}\right)^2\,.
+\end{equation*}
+Z powyższego mamy więc
+\begin{equation*}
+    \sigma_A^2\sigma_B^2 \geq \left[\frac{1}{2\im}\left(\braket{\oper{\mathcal{A}}\Psi}{\oper{\mathcal{B}}\Psi} - \braket{\oper{\mathcal{B}}\Psi}{\oper{\mathcal{A}}\Psi}\right)\right]^2\,,
+\end{equation*}
+gdzie \(\oper{\mathcal{A}} := \oper{A} - a\), \(\oper{\mathcal{B}} := \oper{B} - b\). Jednocześnie
+\begin{equation*}
+    \begin{split}
+        &\braket{\oper{\mathcal{A}}\Psi}{\oper{\mathcal{B}}\Psi} - \braket{\oper{\mathcal{B}}\Psi}{\oper{\mathcal{A}}\Psi} =\\
+        &\bra{\Psi}(\oper{\mathcal{A}}\oper{\mathcal{B}}\ket{\Psi}-\oper{\mathcal{B}}\oper{\mathcal{A}}\ket{\Psi})=\\
+        &\bra{\Psi}[\oper{\mathcal{A}},\oper{\mathcal{B}}]\ket{\Psi} = \bra{\Psi}[\oper{A},\oper{B}]\ket{\Psi}\,.
+    \end{split}
+\end{equation*}
+Ostatecznie otrzymujemy więc
+\begin{equation*}
+    \boxed{
+    \sigma_A^2\sigma_B^2 \geq \left(\frac{1}{2\im}\bra{\Psi}[\oper{A},\oper{B}]\ket{\Psi}\right)^2
+    }\quad.
+\end{equation*}
+Powyższą nierówność nazywamy \textit{uogólnioną zasadą nieoznaczoności}.
+
+
+\subsubsection{Twierdzenie Ehrenfesta}
+
+Niech \(A\) będzie pewną wielkością fizyczną reprezentowaną przez operator \(\oper{A}\), wówczas
+zakładając obraz Schr\"{o}dingera mamy
+\begin{equation*}
+    \begin{split}
+        &\dv{\expectationvalue{A}}{t} = \dv{}{t} \braket{\Psi}{\oper{A}\Psi} \\
+        &= \braket{\pdv{\Psi}{t}}{\oper{A}\Psi} + \braket{\Psi}{\oper{A}\pdv{\Psi}{t}} + \braket{\Psi}{\pdv{\oper{A}}{t}\Psi}\,.
+    \end{split}
+\end{equation*}
+Jednocześnie z równania Schr\"{o}dingera mamy \(\oper{H}\Psi=\im\hbar{\partial_t\Psi}\), skąd
+\begin{equation*}
+    \dv{\expectationvalue{A}}{t} = \frac{\im}{\hbar}\braket{\oper{H}\Psi}{\oper{A}\Psi} - \frac{\im}{\hbar}\braket{\Psi}{\oper{A}\oper{H}\Psi} + \bra{\Psi}\pdv{\oper{A}}{t}\ket{\Psi}\,,
+\end{equation*}
+ale ze względu na fakt, iż \(\oper{H}\) jest operatorem samosprzężonym mamy
+\begin{equation*}
+    \boxed{
+    \dv{\expectationvalue{A}}{t} = \bra{\Psi}\pdv{\oper{A}}{t}\ket{\Psi} + \frac{\im}{\hbar}\bra{\Psi}[\oper{H},\oper{A}]\ket{\Psi}
+    }\quad.
+\end{equation*}
+Powyższe równanie nazywamy \textit{uogólnionym twierdzeniem Ehrenfesta}.
+
+\subsection{Kwantowe układy dwupoziomowe}
+
+Przedstawimy teraz ważną realizację abstrakcyjnej teorii kwantów -- teorię układów dwupoziomowych,
+które stanowią podstawę teorii obliczeń kwantowych i kwantowej teorii informacji.
+
+\subsubsection{Model matematyczny}
+
+Modelem matematycznym teorii układów dwupoziomowych jest przestrzeń Hilberta
+\begin{equation*}
+    \mathscr{H} = ((\mathbb{C}^2,\mathbb{C},+,\cdot), \braket{\cdot})\,,
+\end{equation*}
+gdzie wektory \(\Psi\in\mathbb{C}^2\) będziemy reprezentować w danej bazie ortonormalnej
+\(B=\{\ket{1},\ket{2}\}\) jako macierze kolumnowe o elementach zespolonych
+\begin{equation*}
+    \ket{\Psi} = \psi_1\ket{1} + \psi_2\ket{2} = \mqty(\psi_1 \\ \psi_2)\,.
+\end{equation*}
+Jest oczywiste, że struktura \((\mathbb{C}^2,\mathbb{C},+,\cdot)\) jest przestrzenią wektorową.
+Iloczyn wewnętrzny wektorów \(\Psi\), \(\Phi\) w \(\mathscr{H}\) definiujemy jako
+\begin{equation*}
+    \braket{\Phi}{\Psi} := \psi_1\phi_1^* + \psi_2\phi_2^*\,.
+\end{equation*}
+Z powyższej definicji widoczne jest, czym jest funkcjonał liniowy \(\bra{\Phi}\) odpowiadający
+(zgodnie z tw. Riesza) wektorowi \(\ket{\Phi}\)
+\begin{equation*}
+    \bra{\Phi} = \mqty(\phi_1 \\ \phi_2)^\dagger = \mqty(\phi_1^* & \phi_2^*)\,.
+\end{equation*}
+
+Są to zatem macierze wierszowe będące \textit{sprzężeniami hermitowskimi} macierzy kolumnowych
+reprezentujących wektory.
+
+\subsubsection{Macierze Pauliego}
+
+Macierze Pauliego definiujemy jako zespolone macierze \(2\times 2\)
+\begin{equation*}
+    \sigma_x := \mqty(0 & 1 \\ 1 & 0)\,,\quad \sigma_y := \mqty(0 & -\im \\ \im & 0)\,,\quad \sigma_z := \mqty(1 & 0 \\ 0 & -1)
+\end{equation*}
+Wybrane własności macierzy Pauliego:
+
+\begin{itemize}
+    
+    \item \(\det{\sigma_x} = \det{\sigma_y} = \det{\sigma_z} = -1\)
+
+    \item \(\Tr{\sigma_x} = \Tr{\sigma_y} = \Tr{\sigma_z} = 0\)
+
+    \item \(\sigma_x^2 = \sigma_y^2 = \sigma_z^2 = \oper{I}\)
+
+    \item Iloczyny macierzy Pauliego spełniają związki
+    \begin{equation*}
+        \begin{split}
+            &\sigma_x\sigma_y = \im\sigma_z = -\sigma_y\sigma_x \\
+            &\sigma_y\sigma_z = \im\sigma_x = -\sigma_z\sigma_y \\
+            &\sigma_z\sigma_x = \im\sigma_y = -\sigma_x\sigma_z
+        \end{split}
+    \end{equation*}
+
+    \item Komutatory i antykomutatory macierzy Pauliego wynoszą
+    \begin{equation*}
+        \begin{split}
+            [\sigma_x,\sigma_y] = 2\im\sigma_z\,,\quad \{\sigma_x, \sigma_y\} = \oper{\mathsf{0}}\\
+            [\sigma_y,\sigma_z] = 2\im\sigma_x\,,\quad \{\sigma_y, \sigma_z\} = \oper{\mathsf{0}}\\
+            [\sigma_z,\sigma_x] = 2\im\sigma_y\,,\quad \{\sigma_z, \sigma_x\} = \oper{\mathsf{0}}\\
+        \end{split}
+    \end{equation*}
+
+    \item Iloczyn \((\mathbf{a}\cdot\boldsymbol{\sigma})\cdot(\mathbf{b}\cdot\boldsymbol{\sigma})\)
+    dla \(\mathbf{a} = (a_x,a_y,a_z)\), \(\mathbf{b}=(b_x,b_y,b_z)\) wynosi
+    \begin{equation*}
+        \begin{split}
+            &(\mathbf{a}\cdot\boldsymbol{\sigma})\cdot(\mathbf{b}\cdot\boldsymbol{\sigma}) = \\
+            &= (a_x\sigma_x + a_y\sigma_y + a_z\sigma_z)(b_x\sigma_x + b_y\sigma_y + b_z\sigma_z) =\\
+            &= (\mathbf{a}\cdot\mathbf{b})\oper{I} + \im(\mathbf{a}\times\mathbf{b})\cdot\boldsymbol{\sigma}
+        \end{split}
+    \end{equation*}
+
+    \item Wielkość \(\exp(\im\mathbf{a}\cdot\boldsymbol{\sigma})\) wynosi
+    \begin{equation*}
+        \begin{split}
+            &\exp(\im\mathbf{a}\cdot\boldsymbol{\sigma}) =\\
+            &= \oper{I}+\im\mathbf{a}\cdot\boldsymbol{\sigma} - \frac{1}{2!}|\mathbf{a}|^2\oper{I} - \frac{\im}{3!}|\mathbf{a}|^2(\mathbf{a}\cdot\boldsymbol{\sigma}) + \ldots \\
+            &= \oper{I} \cos{|\mathbf{a}|} + \im\left(\frac{\mathbf{a}}{|\mathbf{a}|}\cdot\boldsymbol{\sigma}\right)\sin{|\mathbf{a}|}
+        \end{split}
+    \end{equation*}
+
+\end{itemize}
+
+\subsubsection{Operatory}
+
+Operatory w \(\mathscr{H}\) to w ogólności odwzorowania liniowe
+\(\oper{A}:\mathbb{C}^2\mapsto\mathbb{C}^2\), które, jak wiadomo, zawsze można reprezentować (dla
+przestrzeni skończenie wymiarowych) przez macierze, której elementy są wyznaczone przez wartości
+odwzorowania \(\oper{A}\) na wektorach bazowych, tj. zakładając
+\begin{equation*}
+    \begin{split}
+        \oper{A}\ket{1} = a_{11}\ket{1} + a_{21}\ket{2}\\
+        \oper{A}\ket{2} = a_{12}\ket{1} + a_{22}\ket{2}
+    \end{split}\quad,
+\end{equation*}
+macierz endomorfizmu \(\oper{A}\) możemy zapisać jako
+\begin{equation*}
+    \oper{A} = \mqty(a_{11} & a_{12} \\ a_{21} & a_{22})
+\end{equation*}
+dla \(a_{ij} \in \mathbb{C}\).
+
+\begin{itemize}
+    
+    \item \textit{Ślad operatora} \(\oper{A}\) w teorii układów dwupoziomowych jest dany po prostu
+    przez sumę elementów diagonalnych macierzy \(\oper{A}\)
+    \begin{equation*}
+        \Trace{\oper{A}} = \bra{1}\oper{A}\ket{1} + \bra{2}\oper{A}\ket{2} = a_{11} + a_{22}\,.
+    \end{equation*}
+
+    \item \textit{Sprzężeniem operatora} reprezentowanego przez macierz
+    \begin{equation*}
+        \oper{A} = \mqty(a_{11} & a_{12} \\ a_{21} & a_{22})
+    \end{equation*}
+    jest po prostu sprzężenie hermitowskie tej macierzy, tj.
+    \begin{equation*}
+        \oper{A}^\dagger = \mqty(a^*_{11} & a^*_{21} \\ a^*_{12} & a^*_{22})\,.
+    \end{equation*}
+\end{itemize}
+
+
+\subsection{OBLICZENIA KWANTOWE}
+
+
+
+% TODO
+% general solution of SE for time-independent hamiltonian
+% separation of variables approach
+% simple perturbation theory for finite-dimensional Hilbert space
+% my idea on propagators 
+% ------
+% Pauli representation of hermitian operator (WLOG assume a0 = 0, why?)
+% Bloch sphere and some projective/inversion theorems
+% ------
+% general solution for time-independent H for two-state system
+% application of perturbation theory and propagators
+% exactly solvable example: NMR
+% ------
+% adiabatic theorem
+%
+%
+%
+
+
+
+
+
+
+\end{document}
