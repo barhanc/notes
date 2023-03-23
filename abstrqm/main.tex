@@ -578,9 +578,9 @@ elementach zespolonych. Wybrane własności macierzy Pauliego:
 
 \begin{itemize}
     
-    \item \(\det{\sigma_x} = \det{\sigma_y} = \det{\sigma_z} = -1\)
+    \item \(\det\sigma_x = \det\sigma_y = \det\sigma_z = -1\)
 
-    \item \(\Tr{\sigma_x} = \Tr{\sigma_y} = \Tr{\sigma_z} = 0\)
+    \item \(\Tr\sigma_x = \Tr\sigma_y = \Tr\sigma_z = 0\)
 
     \item \(\sigma_x^2 = \sigma_y^2 = \sigma_z^2 = \oper{I}\)
 
@@ -590,7 +590,7 @@ elementach zespolonych. Wybrane własności macierzy Pauliego:
             &\sigma_x\sigma_y = \im\sigma_z = -\sigma_y\sigma_x \\
             &\sigma_y\sigma_z = \im\sigma_x = -\sigma_z\sigma_y \\
             &\sigma_z\sigma_x = \im\sigma_y = -\sigma_x\sigma_z
-        \end{split}
+        \end{split}\quad.
     \end{equation*}
 
     \item Komutatory i antykomutatory macierzy Pauliego wynoszą
@@ -599,7 +599,7 @@ elementach zespolonych. Wybrane własności macierzy Pauliego:
             [\sigma_x,\sigma_y] = 2\im\sigma_z\,,\quad \{\sigma_x, \sigma_y\} = \oper{\mathsf{0}}\\
             [\sigma_y,\sigma_z] = 2\im\sigma_x\,,\quad \{\sigma_y, \sigma_z\} = \oper{\mathsf{0}}\\
             [\sigma_z,\sigma_x] = 2\im\sigma_y\,,\quad \{\sigma_z, \sigma_x\} = \oper{\mathsf{0}}\\
-        \end{split}
+        \end{split}\quad.
     \end{equation*}
 
     \item Iloczyn \((\mathbf{a}\cdot\boldsymbol{\sigma})\cdot(\mathbf{b}\cdot\boldsymbol{\sigma})\)
@@ -608,7 +608,7 @@ elementach zespolonych. Wybrane własności macierzy Pauliego:
         \begin{split}
             &(\mathbf{a}\cdot\boldsymbol{\sigma})\cdot(\mathbf{b}\cdot\boldsymbol{\sigma}) = \\
             &= (a_x\sigma_x + a_y\sigma_y + a_z\sigma_z)(b_x\sigma_x + b_y\sigma_y + b_z\sigma_z) =\\
-            &= (\mathbf{a}\cdot\mathbf{b})\oper{I} + \im(\mathbf{a}\times\mathbf{b})\cdot\boldsymbol{\sigma}
+            &= (\mathbf{a}\cdot\mathbf{b})\oper{I} + \im(\mathbf{a}\times\mathbf{b})\cdot\boldsymbol{\sigma}\,.
         \end{split}
     \end{equation*}
 
@@ -667,6 +667,19 @@ dla \(a_{ij} \in \mathbb{C}\).
     \end{equation*}
     dla \(a_0\in\mathbb{R}\) i rzeczywistego wektora \(\mathbf{a}\in\mathbb{R}^3\).
 
+    Zauważmy również, że bez straty ogólności zawsze możemy zakładać \(a_0=0\). Istotnie, jeśli
+    \(\ket{\Psi}\) jest wektorem własnym operatora \(\oper{A} =
+    a_0\oper{I}+\mathbf{a}\boldsymbol{\sigma}\) z wartością własną \(\lambda\), tj. zachodzi
+    \begin{equation*}
+        a_0\oper{I}\ket{\Psi}+\mathbf{a}\boldsymbol{\sigma}\ket{\Psi} = \lambda\ket{\Psi}\,,
+    \end{equation*}
+    to \(\ket{\Psi}\) jest wektorem własnym operatora \(\oper{A}' =
+    \mathbf{a}\boldsymbol{\sigma}\) z wartością własną \(\lambda-a_0\). Istotnie z założenia
+    \begin{equation*}
+        \mathbf{a}\boldsymbol{\sigma}\ket{\Psi} = \lambda\ket{\Psi} - a_0\oper{I}\ket{\Psi} = (\lambda-a_0)\ket{\Psi}\,,
+    \end{equation*}
+    Czyli przyjmując \(a_0 = 0\), przesuwamy jedynie widmo operatora o pewną stałą.
+
 \end{itemize}
 
 
@@ -687,9 +700,7 @@ dla \(a_{ij} \in \mathbb{C}\).
 %
 % ------ 2-STATE SYS
 %
-% Pauli representation of hermitian operator (WLOG assume r0 = 0, why?)
-%
-% Bloch sphere and some projective/inversion theorems
+% Bloch sphere
 %
 % general solution for time-independent H for two-state system: cos|r| - i sin|r|
 %
