@@ -768,7 +768,7 @@ dla \(a_{ij} \in \mathbb{C}\).
 
     \item Zauważmy, iż dowolną macierz hermitowską \(\oper{A}\) możemy przedstawić jako
     \begin{equation*}
-        \oper{A} = a_0\oper{I} + \mathbf{a}\cdot\boldsymbol{\sigma} =\mqty(a_0-a_z & a_x-\im a_y \\ a_x + \im a_y & a_0 + a_z)
+        \oper{A} = a_0\oper{I} + \mathbf{a}\cdot\boldsymbol{\sigma} =\mqty(a_0+a_z & a_x-\im a_y \\ a_x + \im a_y & a_0 - a_z)
     \end{equation*}
     dla \(a_0\in\mathbb{R}\) i rzeczywistego wektora \(\mathbf{a}\in\mathbb{R}^3\).
 
@@ -783,9 +783,116 @@ dla \(a_{ij} \in \mathbb{C}\).
     \begin{equation*}
         \mathbf{a}\boldsymbol{\sigma}\ket{\Psi} = \lambda\ket{\Psi} - a_0\oper{I}\ket{\Psi} = (\lambda-a_0)\ket{\Psi}\,,
     \end{equation*}
-    Czyli przyjmując \(a_0 = 0\), przesuwamy jedynie widmo operatora o pewną stałą.
+    czyli przyjmując \(a_0 = 0\), przesuwamy jedynie widmo operatora o pewną stałą.
 
 \end{itemize}
+
+\subsubsection{Sfera Blocha}
+
+Dowolny operator samosprzężony \(\oper{A}\) możemy przedstawić w trójwymiarowej przestrzeni,
+korzystając z reprezentacji Pauliego
+\begin{equation*}
+    \oper{A} = \mathbf{a} \cdot \boldsymbol{\sigma}
+\end{equation*}
+dla \(\mathbf{a} \in \mathbb{R}^3\). Zauważmy również, iż w tej samej przestrzeni możemy przedstawić
+wektor stanu \(\ket{\Psi}\). Istotnie operator rzutowy \(\ket{\Psi}\bra{\Psi}\) jest operatorem
+samosprzężonym, więc istnieje para \((r_0,\mathbf{r})\) taka, że
+\begin{equation*}
+    \ket{\Psi}\bra{\Psi} = \mqty(\psi_1\psi_1^* & \psi_1\psi_2^* \\ \psi_1^*\psi_2 & \psi_2\psi_2^*) = r_0\oper{I} + \mathbf{r}\cdot\boldsymbol{\sigma}\,.
+\end{equation*}
+Ze względu na unormowanie \(\braket{\Psi} = 1\) mamy warunek \(r_0 = \frac{1}{2}\), natomiast
+wartość wyznacznika nakłada dodatkowy warunek \(\det\ket{\Psi}\bra{\Psi} = 0 = r_0^2 -
+|\mathbf{r}|^2\). Dowolny wektor stanu \(\ket{\Psi}\) możemy więc przedstawić w przestrzeni
+trójwymiarowej \((x,y,z)\) jako
+\begin{equation*}
+    \ket{\Psi}\bra{\Psi} = \frac{1}{2}\left(\oper{I} + \mathbf{r}\cdot\boldsymbol{\sigma}\right)\,,
+\end{equation*}
+przy warunku \(|\mathbf{r}|^2 = 1\), co określa punkt na sferze jednostkowej o środku w punkcie
+\((0,0,0)\), którą nazywamy \textit{sferą Blocha}.
+\medskip
+
+Możemy również wyprowadzić równanie ewolucji punktu \(\mathbf{r}(t)\) na sferze Blocha dla układu
+opisywanego hamiltonianem \(\oper{H} = \mathbf{h}(t)\cdot\boldsymbol{\sigma}\). Istotnie
+różniczkując operator rzutowy \(\oper{\rho} = \ket{\Psi}\bra{\Psi}\) mamy
+\begin{equation*}
+    \begin{split}
+        \im\hbar\partial_t\oper{\rho} &= \im\hbar(\partial_t\ket{\Psi})\bra{\Psi} + \im\hbar\ket{\Psi}\partial_t\bra{\Psi} \\
+        &= \oper{H}\ket{\Psi}\bra{\Psi} + \im\hbar\ket{\Psi}(\partial_t\ket{\Psi})^\dagger\\
+        &= \oper{H}\ket{\Psi}\bra{\Psi} + \im\hbar\ket{\Psi}\left(\frac{1}{\im\hbar}\oper{H}\ket{\Psi}\right)^\dagger\\
+        &= \oper{H}\ket{\Psi}\bra{\Psi} - \ket{\Psi}\bra{\Psi}\oper{H} = [\oper{H},\oper{\rho}]\,,
+    \end{split}
+\end{equation*}
+skąd, korzystając z tożsamości na iloczyn
+\(\mathbf{a}\boldsymbol{\sigma}\cdot\mathbf{b}\boldsymbol{\sigma}\), otrzymujemy równanie
+\begin{equation*}
+    \dot{\mathbf{r}} = \frac{1}{\hbar}(\mathbf{h}(t) \times \mathbf{r})\,,
+\end{equation*}
+które nazywamy \textit{równaniem Blocha}. Ponieważ \(|\mathbf{r}|^2 = 1\), więc wygodnie jest
+zapisać powyższe równanie w układzie współrzędnych sferycznych \((r,\theta,\phi)\)
+\begin{equation*}
+    \begin{cases}
+        r = 1\\
+        \dot{\theta} = \frac{1}{\hbar}h_\phi(t)\\
+        \dot{\phi} = -\frac{1}{\hbar}h_\theta(t)\csc\theta
+    \end{cases}\quad,
+\end{equation*}
+gdzie \((h_r,h_\theta,h_\phi)\) są dane równaniem
+\begin{equation*}
+    \mqty(h_r\\h_\theta\\h_\phi) = \frac{\partial(r,\theta,\phi)}{\partial(x,y,z)}\mqty(h_x \\ h_y\\h_z)\,.
+\end{equation*}
+Pozostaje jeszcze pokazać jak zapisać stan \(\ket{\Psi}\) reprezentowany na sferze przez współrzędne
+\((r,\theta,\phi)\). Zauważmy wpierw, iż bez straty ogólności możemy przyjąć
+\begin{equation*}
+    \ket{\Psi(t)} = \mqty(\alpha_1\e^{\im\beta} \\ \alpha_2)\,,
+\end{equation*}
+dla \(\alpha_1,\alpha_2,\beta\in\mathbb{R}\) (istotnie pamiętajmy, iż utożsamiamy wektory różniące
+się jedynie globalnym czynnikiem fazowym). W takim razie mamy
+\begin{equation*}
+    \begin{split}
+        &\alpha_1 = \frac{1}{\sqrt{2}}\sqrt{1+\cos\theta} = \cos\frac{\theta}{2}\\
+        &\alpha_2 = \frac{1}{\sqrt{2}}\sqrt{1-\cos\theta} = \sin\frac{\theta}{2}\\
+        &\beta = \phi
+    \end{split}\quad,
+\end{equation*}
+skąd
+\begin{equation*}
+        \ket{\Psi(t)} =\cos\frac{\theta}{2}\e^{\im\phi}\ket{1} + \sin\frac{\theta}{2}\ket{2}\,.
+\end{equation*}
+
+\subsubsection{Ewolucja układu dwupoziomowego}
+
+W przypadku hamiltonianu \(\oper{H}=\mathbf{h}\boldsymbol{\sigma}\) niezależnego od czasu możemy
+podać ogólne rozwiązanie równania Schr\"{o}dingera postaci
+\begin{equation*}
+    \begin{split}
+        \ket{\Psi(t)} &= \e^{-\im\mathbf{h}\boldsymbol{\sigma}t/\hbar}\ket{\Psi(0)} \\
+        &= \left[\oper{I}\cos\left(\frac{|\mathbf{h}|}{\hbar}t\right) - \im \mathbf{\hat{h}}\boldsymbol{\sigma}\sin\left(\frac{|\mathbf{h}|}{\hbar}t\right)\right]\ket{\Psi(0)}\,.
+    \end{split}
+\end{equation*}
+\medskip
+
+W przypadku hamiltonianów zależnych od czasu możemy znaleźć rozwiązanie przybliżone korzystając z
+rachunku zaburzeń (najczęściej 1-go lub 2-go rzędu). Istnieje jednak ważny układ dwupoziomowy z
+hamiltonianem zależnym od czasu, dla którego istnieje ścisłe rozwiązanie analityczne.
+\begin{itemize}
+    \item \textbf{Rezonans magnetyczny.} Rozważmy układ opisany hamiltonianem
+    \begin{equation*}
+        \oper{H} = -\gamma\hbar\mathbf{B}(t)\boldsymbol{\sigma}\,,
+    \end{equation*}    
+    gdzie
+    \begin{equation*}
+        \mathbf{B}(t) = B_0(\sin\beta\cos\Omega t,\sin\beta\sin\Omega t, \cos\beta)\,,
+    \end{equation*}
+    dla pewnych stałych \(\gamma\), \(B_0\), \(\beta\), \(\Omega\). Chcemy rozwiązać równanie
+    Schr\"{o}dingera
+    \begin{equation*}
+        \begin{split}
+            &\dot{\psi}_1 = \im\gamma B_0\left\{\psi_1\cos\beta + \psi_2\e^{-\im\Omega t}\sin\beta\right\}\\
+            &\dot{\psi}_2 = \im\gamma B_0 \left\{\psi_1\e^{+\im\Omega t}\sin\beta - \psi_2\cos\beta\right\}
+        \end{split}\quad.
+    \end{equation*}
+\end{itemize}
+
 
 \newpage
 \subsection{OBLICZENIA KWANTOWE}
@@ -796,13 +903,9 @@ dla \(a_{ij} \in \mathbb{C}\).
 
 % Griffiths p.319: P9.14, P9.19, 
 
-% my idea on propagators 
+% my idea on time evolutors (Volterra integral) 
 %
 % ------ 2-STATE SYS
-%
-% Bloch sphere
-%
-% general solution for time-independent H for two-state system: cos|r| - i sin|r|
 %
 % exactly solvable example: NMR
 %
