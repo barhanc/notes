@@ -871,63 +871,61 @@ podać ogólne rozwiązanie równania Schr\"{o}dingera postaci
 \end{equation*}
 \medskip
 
-W przypadku hamiltonianów zależnych od czasu możemy znaleźć rozwiązanie przybliżone korzystając z
+W przypadku hamiltonianów zależnych od czasu możemy znaleźć rozwiązanie przybliżone, korzystając z
 rachunku zaburzeń (najczęściej 1-go lub 2-go rzędu). Istnieje jednak ważny układ dwupoziomowy z
 hamiltonianem zależnym od czasu, dla którego istnieje ścisłe rozwiązanie analityczne.
-\begin{itemize}
-    \item \textbf{Rezonans magnetyczny.} Rozważmy układ opisany hamiltonianem
-    \begin{equation*}
-        \oper{H} = -\frac{1}{2}\gamma\hbar\mathbf{B}(t)\boldsymbol{\sigma}\,,
-    \end{equation*}    
-    gdzie
-    \begin{equation*}
-        \mathbf{B}(t) = B_0(\sin\beta\cos\Omega t,\sin\beta\sin\Omega t, \cos\beta)\,,
-    \end{equation*}
-    dla pewnych stałych \(\gamma\), \(B_0\), \(\beta\), \(\Omega\). Chcemy rozwiązać równanie
-    Schr\"{o}dingera
-    \begin{equation*}
-        \mqty(\dot{\psi}_1 \\ \dot{\psi}_2) = \frac{\im\gamma B_0}{2}\mqty(\cos\beta & \e^{-\im\Omega t}\sin\beta \\ \e^{+\im\Omega t}\sin\beta & \cos\beta) \mqty(\psi_1 \\ \psi_2)\,.
-    \end{equation*}
-    Poszukajmy rozwiązań postaci
-    \begin{equation*}
-        \mqty(\psi_1 \\ \psi_2) = \mqty(\phi_1\e^{-\frac{\im}{2}\Omega t} \\ \phi_2 \e^{+\frac{\im}{2}\Omega t})\,,
-    \end{equation*}
-    skąd otrzymujemy
-    \begin{equation*}
-        \mqty(\dot{\phi}_1 \\ \dot{\phi}_2) = \frac{\im}{2} \mqty(\Omega +\omega_0\cos\beta & \omega_0\sin\beta \\ \omega_0\sin\beta & -(\Omega +\omega_0\cos\beta)) \mqty(\phi_1 \\ \phi_2)\,,
-    \end{equation*}
-    gdzie \(\omega_0 := \gamma B_0\). Wartości własne powyższej macierzy to
-    \begin{equation*}
-        \lambda = \pm\frac{\im}{2}\sqrt{\omega_0^2 + \Omega^2 + 2\omega_0\Omega\cos\beta} = \pm\frac{\im}{2}\Lambda\,,
-    \end{equation*}
-    natomiast wektory własne mają postać
-    \begin{equation*}
-        \alpha_\pm \mqty( -\omega_0\sin\beta \\ \Omega + \omega_0\cos\beta \mp \Lambda)\,,
-    \end{equation*}
-    dla pewnych stałych \(\alpha_+\), \(\alpha_-\). Rozwiązanie na wektor \(\ket{\phi(t)}\) ma więc
-    postać
-    \begin{equation*}
-        \begin{split}
-            \ket{\phi(t)} &= \alpha_+\mqty(-\omega_0\sin\beta \\ \Omega+\omega_0\cos\beta - \Lambda)\e^{\im\Lambda t/2} \\
-            &+ \alpha_- \mqty(-\omega_0\sin\beta \\ \Omega + \omega_0\cos\beta+\Lambda)\e^{-\Lambda t/2}\,.
-        \end{split}
-    \end{equation*}
-    Zakładając, iż w stanie początkowym \(\ket{\Psi(0)} = \ket{2}\) możemy obliczyć
-    prawdopodobieństwo przejścia do stanu \(\ket{1}\)
-    \begin{equation*}
-        p_{2\to1}(t) = |\braket{1}{\Psi}|^2 = \frac{\omega_0^2\sin^2\beta}{\Lambda^2}\sin^2\left(\frac{\Lambda t}{2}\right)\,.
-    \end{equation*}
-    Zauważmy, że prawdopodobieństwo przejścia oscyluje z amplitudą zależną od częstości wymuszenia
-    \begin{equation*}
-        p_\text{max}(\Omega) = \frac{\sin^2\beta}{1 + \left(\frac{\Omega}{\gamma B_0}\right)^2 + 2\left(\frac{\Omega}{\gamma B_0}\right) \cos\beta} \,.
-    \end{equation*}
-    Amplituda ta przyjmuje wartość maksymalną dla częstości wymuszenia równej \(|\Omega_\text{rez}|
-    = |\omega_0 \cos\beta|\). Zauważmy również, iż niezerowa szerokość połówkowa nie wynika z
-    żadnych procesów dyssypatywnych, jak ma to miejsce w np. w przypadku klasycznego oscylatora
-    harmonicznego z tłumieniem i wymuszeniem, tylko z samej teorii kwantowej.
+\medskip
 
-\end{itemize}
-
+\textbf{Rezonans magnetyczny.} Rozważmy układ opisany hamiltonianem
+\begin{equation*}
+    \oper{H} = -\frac{1}{2}\gamma\hbar\mathbf{B}(t)\boldsymbol{\sigma}\,,
+\end{equation*}    
+gdzie
+\begin{equation*}
+    \mathbf{B}(t) = B_0(\sin\beta\cos\Omega t,\sin\beta\sin\Omega t, \cos\beta)\,,
+\end{equation*}
+dla pewnych stałych \(\gamma\), \(B_0\), \(\beta\), \(\Omega\). Chcemy rozwiązać równanie
+Schr\"{o}dingera
+\begin{equation*}
+    \mqty(\dot{\psi}_1 \\ \dot{\psi}_2) = \frac{\im\gamma B_0}{2}\mqty(\cos\beta & \e^{-\im\Omega t}\sin\beta \\ \e^{+\im\Omega t}\sin\beta & \cos\beta) \mqty(\psi_1 \\ \psi_2)\,.
+\end{equation*}
+Poszukajmy rozwiązań postaci
+\begin{equation*}
+    \mqty(\psi_1 \\ \psi_2) = \mqty(\phi_1\e^{-\frac{\im}{2}\Omega t} \\ \phi_2 \e^{+\frac{\im}{2}\Omega t})\,,
+\end{equation*}
+skąd otrzymujemy
+\begin{equation*}
+    \mqty(\dot{\phi}_1 \\ \dot{\phi}_2) = \frac{\im}{2} \mqty(\Omega +\omega_0\cos\beta & \omega_0\sin\beta \\ \omega_0\sin\beta & -(\Omega +\omega_0\cos\beta)) \mqty(\phi_1 \\ \phi_2)\,,
+\end{equation*}
+gdzie \(\omega_0 := \gamma B_0\). Wartości własne powyższej macierzy to
+\begin{equation*}
+    \lambda = \pm\frac{\im}{2}\sqrt{\omega_0^2 + \Omega^2 + 2\omega_0\Omega\cos\beta} = \pm\frac{\im}{2}\Lambda\,,
+\end{equation*}
+natomiast wektory własne mają postać
+\begin{equation*}
+    \alpha_\pm \mqty( -\omega_0\sin\beta \\ \Omega + \omega_0\cos\beta \mp \Lambda)\,,
+\end{equation*}
+dla pewnych niezerowych stałych \(\alpha_+\), \(\alpha_-\). Rozwiązanie na wektor \(\ket{\phi(t)}\)
+ma więc postać
+\begin{equation*}
+    \begin{split}
+        \ket{\phi(t)} &= \alpha_+\mqty(-\omega_0\sin\beta \\ \Omega+\omega_0\cos\beta - \Lambda)\e^{\im\Lambda t/2} \\
+        &+ \alpha_- \mqty(-\omega_0\sin\beta \\ \Omega + \omega_0\cos\beta+\Lambda)\e^{-\Lambda t/2}\,.
+    \end{split}
+\end{equation*}
+Zakładając, iż w stanie początkowym \(\ket{\Psi(0)} = \ket{2}\) możemy obliczyć prawdopodobieństwo
+przejścia do stanu \(\ket{1}\)
+\begin{equation*}
+    p_{2\to1}(t) = |\braket{1}{\Psi}|^2 = \frac{\omega_0^2\sin^2\beta}{\Lambda^2}\sin^2\left(\frac{\Lambda t}{2}\right)\,.
+\end{equation*}
+Zauważmy, że prawdopodobieństwo przejścia oscyluje z amplitudą zależną od częstości wymuszenia
+\begin{equation*}
+    p_\text{max}(\Omega) = \frac{\sin^2\beta}{1 + \left(\frac{\Omega}{\gamma B_0}\right)^2 + 2\left(\frac{\Omega}{\gamma B_0}\right) \cos\beta} \,.
+\end{equation*}
+Amplituda ta przyjmuje wartość maksymalną dla częstości wymuszenia równej \(|\Omega_\text{rez}| =
+|\omega_0 \cos\beta|\). Zauważmy również, iż niezerowa szerokość połówkowa nie wynika z żadnych
+procesów dyssypatywnych, jak ma to miejsce w np. w przypadku klasycznego oscylatora harmonicznego z
+tłumieniem i wymuszeniem, tylko z samej teorii kwantowej.
 
 \newpage
 \subsection{OBLICZENIA KWANTOWE}
@@ -939,9 +937,6 @@ hamiltonianem zależnym od czasu, dla którego istnieje ścisłe rozwiązanie an
 % my idea on time evolutors (Volterra integral) 
 %
 % ------
-%
-%
-%
 
 
 
