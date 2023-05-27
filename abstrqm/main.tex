@@ -1,7 +1,38 @@
 \documentclass{myclass}
 \usepackage[polish]{babel}
 
+% TODO
+
+% * Rewrite the abstract theory to deal explicitly only with finite dimensional case (?). 
+% * Focus on spectral theorem and question-projection operator duality as a model of quantum
+%   measurement (this seems elegant). 
+% * Add some continuous example of operator-measured Stieltjes integral (maybe construction of
+%   position operator x and momentum operator -ih d/dx using Plancherel theorem)
+%
+% * Rewrite 2-state theory (trim the obvious things like matrix representation and so on).
+% * Add solved examples NMR, Rabi, rotating em wave, emission-absorption. 
+% * Change notation to square brackets and X,Y,Z for Pauli matrices.
+%
+% * Composite systems made of 2-state systems (2 x 2 & later n x 2 or maybe n x 2 immediately(?))
+% * Composite systems: entanglement, density operator, partial trace, no-cloning theorem,
+%   decoherence, Bell's theory
+%
+% * later (after extensively studying composite systems, entanglement, Bell's theory) begin
+%   description of quantum registers, gates, idea of computation using those devices (Deutsch,
+%   Grover, QFTrans, Shor), applications to number theory, connection with Church-Turing hypothesis.
+%   Examples
+%
+% * possible physical realizations of quantum computing (gates + adiabatic/topological(?)), I'll
+%   probably focus on Josephson junctions and charge qubits as they seem most elegant (maybe
+%   NMR/qdots as well)
+%
+% * A short overview of classical and quantum information theory (I don't want to go very deep there
+%   at the moment): Shannon/Von Neumann entropy, quantum information transfer/cryptography
+%   ------
+
+
 \author{Bartosz Hanc}
+% My notes regarding abstract foundations of quantum theory and introduction to quantum computing
 
 \begin{document}
 
@@ -117,6 +148,15 @@
         \forall v \in V : F(v) = \braket{u}{v}\,.
     \end{equation*}
 
+    \item \textbf{Def.} \textit{Iloczynem Kroneckera} macierzy \(\oper{A} = [a_{ij}]_{n\times n}\) i
+    \(\oper{B} = [b_{ij}]_{m\times m}\) nazywamy macierz
+    \begin{equation*}
+        \begin{split}
+            \oper{A} \otimes \oper{B} &= \mqty(a_{11} & \cdots & a_{1n} \\ \vdots & \ddots & \vdots \\ a_{n1} & \cdots & a_{nn}) \otimes \mqty(b_{11} & \cdots & b_{1m} \\ \vdots & \ddots & \vdots \\ b_{m1} & \cdots & b_{mm})\\
+            &= \mqty(a_{11}\oper{B} & \cdots & a_{1n}\oper{B} \\ \vdots & \ddots & \vdots \\ a_{n1}\oper{B} & \cdots & a_{nn}\oper{B})
+        \end{split}
+    \end{equation*}
+
     \item \textbf{Def.} \textit{Iloczynem tensorowym} przestrzeni Hilberta \(\mathscr{H}_1\) i
     \(\mathscr{H}_2\) o bazach ortonoromalnych odpowiednio \(\{\phi_i^{(1)}\}\) i
     \(\{\phi_i^{(2)}\}\) nazywamy przestrzeń Hilberta \(\mathscr{H} = \mathscr{H}_1 \otimes
@@ -124,12 +164,8 @@
     \begin{itemize}
         
         \item Jej bazą ortonormalną jest zbiór \(\{\phi_i^{(1)} \otimes \phi_j^{(2)}\}\), gdzie
-        \(\psi \otimes \phi\) to iloczyn Kroneckera wektorów, który dla reprezentacji wektorów jako
-        macierzy kolumnowych o elementach będących współrzędnymi wektora w danej bazie jest
-        zdefiniowany jako
-        \begin{equation*}
-            \mqty(a_1 \\ a_2 \\ \vdots) \otimes \mqty(b_1 \\ b_2 \\ \vdots) := \mqty(a_1 \cdot \mqty(b_1 \\ b_2 \\ \vdots) \\ a_2 \cdot \mqty(b_1 \\ b_2 \\ \vdots) \\ \vdots )
-        \end{equation*}
+        \(\psi \otimes \phi\) to iloczyn Kroneckera wektorów dla reprezentacji tych wektorów jako
+        macierzy kolumnowych o elementach będących współrzędnymi wektora w danej bazie.
 
         \item Iloczyn wewnętrzny w przestrzeni \(\mathscr{H}_1 \otimes \mathscr{H}_2\) jest
         zdefiniowany jako
@@ -408,11 +444,19 @@ Kamiński.
     odpowiedź może brzmieć jedynie ,,TAK'' lub ,,NIE''. Pytanie elementarne nazwiemy rozstrzygalnym
     w obrębie danej teorii kwantowej, iff istnieje wzajemnie jednoznaczne odwzorowanie tego pytania
     na pewien operator rzutowy \(\oper{P}\). Będziemy wówczas mówili, iż dane pytanie elementarne
-    jest reprezentowane przez \(\oper{P}\). Dwa pytania elementarne reprezentowane przez
-    \(\oper{P}_1\) i \(\oper{P}_2\) można połączyć spójnikiem ,,LUB'', jeśli \(\oper{P}_1\oper{P}_2
-    = \oper{\mathsf{0}}\) otrzymując pytanie reprezentowane przez \(\oper{P}_1 + \oper{P}_2\) lub
-    ,,I'', jeśli \([\oper{P}_1, \oper{P}_2] = \oper{\mathsf{0}}\) otrzymując pytanie reprezentowane
-    przez \(\oper{P}_1\oper{P}_2\).
+    jest reprezentowane przez \(\oper{P}\). Każde pytanie elementarne reprezentowane przez
+    \(\oper{P}\) można zanegować otrzymując pytanie reprezentowane przez\(\oper{I} - \oper{P}\)
+    (zauważmy, że \((\oper{I} - \oper{P})^2 = \oper{I} - \oper{P}\)), natomiast dwa pytania
+    elementarne reprezentowane przez \(\oper{P}_1\) i \(\oper{P}_2\) można połączyć spójnikiem
+    \begin{itemize}
+        \item ,,I''; otrzymując pytanie reprezentowane przez \(\oper{P}_1\oper{P}_2\), przy czym z
+        oczywistych względów musi zachodzić \([\oper{P}_1, \oper{P}_2] = \oper{\mathsf{0}}\)
+
+        \item ,,LUB''; otrzymując pytanie reprezentowane przez \(\oper{P}_1 + \oper{P}_2\), przy
+        czym musi zachodzić \(\oper{P}_1\oper{P}_2 = \oper{\mathsf{0}}\) (istotnie \((\oper{P}_1 +
+        \oper{P}_2)^2 = \oper{P}_1 + \oper{P}_2 \)).
+
+    \end{itemize}
 
     \item \textbf{O stanach układu.} Stan prostego układu fizycznego jest reprezentowany przez
     unormowany wektor \(\ket{\Psi}\) w abstrakcyjnej przestrzeni Hilberta \(\mathscr{H} =
@@ -461,7 +505,7 @@ Kamiński.
     wedle określonych reguł w danej realizacji teorii kwantów, natomiast \(\hbar\) to stała fizyczna
     o wymiarze działania
     \begin{equation*}
-        \hbar = 1.054571817\ldots \cdot 10^{-34}\,\text{J}\cdot\text{s}
+        \hbar = \frac{h}{2\pi} = 1.054571817\ldots \cdot 10^{-34}\,\text{J}\cdot\text{s}
     \end{equation*}
     zwana \textit{zredukowaną stałą Plancka}.
     
@@ -529,112 +573,7 @@ ale ze względu na fakt, iż \(\oper{H}\) jest operatorem samosprzężonym mamy
     \dv{\expectationvalue{A}}{t} = \bra{\Psi}\pdv{\oper{A}}{t}\ket{\Psi} + \frac{\im}{\hbar}\bra{\Psi}[\oper{H},\oper{A}]\ket{\Psi}
     }\quad.
 \end{equation*}
-Powyższe równanie nazywamy \textit{uogólnionym twierdzeniem Ehrenfesta}.
-
-\newpage
-\subsection{Metody rozwiązywania równania Schr\"{o}dingera}
-
-\subsubsection{Hamiltonian niezależny od czasu}
-
-Jeśli \(\oper{H}\) jest niezależny od czasu, to można podać ogólne rozwiązanie równania
-Schr\"{o}dingera
-\begin{equation*}
-    \oper{H}\ket{\Psi} = \im\hbar\partial_t\ket{\Psi}
-\end{equation*}
-w postaci nieskończonego szeregu
-\begin{equation*}
-    \begin{split}
-    \ket{\Psi(t)} &= \e^{-\im\oper{H}t/\hbar}\ket{\Psi(0)} \\
-    &= \left[\oper{I} - \frac{\im t}{\hbar\cdot1!}\oper{H} + \frac{t^2}{\hbar^2\cdot2!}\oper{H}^2+\ldots\right]\ket{\Psi(0)}\,.
-    \end{split}
-\end{equation*}
-Operator \(\e^{-\im\oper{H}t/\hbar}\) nazywamy \textit{operatorem ewolucji}.
-
-\subsubsection{Rachunek zaburzeń z czasem}
-W poniższym akapicie założymy, iż operator \(\oper{H}\) ma niezdegenerowane widmo przeliczalne. Inną
-metodą rozwiązania równania Schr\"{o}dingera w takim przypadku dla hamiltonianu niezależnego od
-czasu jest poszukanie rozwiązań w postaci
-\begin{equation*}
-    \ket{\Psi(t)} = \ket{\psi_n}\e^{-\im\lambda_nt/\hbar}\,,
-\end{equation*}
-dla ustalonego, niezależnego od czasu wektora \(\ket{\psi_n}\), co po podstawieniu daje równanie
-własne
-\begin{equation*}
-    \oper{H}\ket{\psi_n} = \lambda_n\ket{\psi_n}\,.
-\end{equation*}
-Jeśli widmo \(\oper{H}\) jest przeliczalne i niezdegenerowane, to rozwiązanie ogólne ma postać
-\begin{equation*}
-    \ket{\Psi(t)} = \sum_n c_n\ket{\psi_n}\e^{-\im\lambda_nt/\hbar}
-\end{equation*}
-dla pewnych współczynników \(c_n\in\mathbb{C}\), wyznaczonych przez warunek początkowy
-\begin{equation*}
-    \ket{\Psi(0)} = \sum_n c_n\ket{\psi_n}\,.
-\end{equation*}
-Oczywiście, ponieważ \(\oper{H}\) jest samosprzężony i ma przeliczalne widmo, więc
-\(\{\ket{\psi_n}\}\) jest bazą ortonormalną danej przestrzeni, a zatem współczynniki \(c_n\) są
-jednoznacznie wyznaczone przez powyższe równanie.
-\medskip
-
-Załóżmy teraz, iż hamiltonian ma postać
-\begin{equation*}
-    \oper{H} = \oper{H}_0 + \epsilon\oper{H}'(t)\,,
-\end{equation*}
-gdzie \(\oper{H}_0\) jest niezależnym od czasu hamiltonianem, natomiast \(\epsilon\) jest wielkością
-małą. Poszukamy rozwiązań zależnego od czasu równania Schr\"{o}dingera
-\begin{equation*}
-    \oper{H}\ket{\Psi} = \im\hbar\partial_t\ket{\Psi}
-\end{equation*}
-w postaci
-\begin{equation*}
-    \ket{\Psi(t)} = \sum_n c_n(t)\ket{\psi^0_n}\e^{-\im\lambda^0_nt/\hbar}\,,
-\end{equation*}
-gdzie \(\{\lambda^0_n\}\), \(\{\ket{\psi^0_n}\}\) to wartości i wektory własne operatora
-\(\oper{H}_0\) (\(\{\ket{\psi^0_n}\}\) jest zatem bazą ortonormalną rozpatrywanej przestrzeni
-Hilberta), a \(c_n:\mathbb{R}\mapsto\mathbb{C}\) to funkcje o wartościach zespolonych. Podstawiając
-powyższy ansatz do równania Schr\"{o}dingera otrzymujemy
-\begin{equation*}
-    \begin{split}
-        &\sum_nc_n(t)\e^{-\im\lambda^0_nt/\hbar}\oper{H}\ket{\psi^0_n} \\
-        &= \im\hbar\sum_n\dot{c}_n(t)\ket{\psi^0_n}\e^{-\im\lambda^0_nt/\hbar}\\
-        &+ \sum_nc_n(t)\lambda_n^0\ket{\psi^0_n}\e^{-\im\lambda^0_nt/\hbar}\,,
-    \end{split}
-\end{equation*}
-ale \(\oper{H}_0\ket{\psi_n^0} = \lambda_n\ket{\psi_n^0}\), zatem otrzymujemy
-\begin{equation*}
-    \sum_n \epsilon c_n(t)\e^{-\im\lambda_n^0t/\hbar}\oper{H}'\ket{\psi_n^0} = \im\hbar\sum_n\dot{c}_n(t)\e^{-\im\lambda_n^0t/\hbar}\ket{\psi_n^0}\,.
-\end{equation*}
-Zauważmy, iż działając na powyższe równanie kolejnymi funkcjonałami liniowymi \(\bra{\psi_m^0}\) dla
-\(m=1,2,\ldots\), otrzymujemy układ równań postaci
-\begin{equation*}
-    \dot{c}_m(t) = - \frac{\im\epsilon}{\hbar} \sum_n c_n(t)\e^{\frac{\im}{\hbar}(\lambda_m^0-\lambda_n^0)t} H'_{mn}\,,
-\end{equation*}
-gdzie wprowadziliśmy uproszczony zapis \(H'_{mn} := \bra{\psi_m^0}\oper{H}'\ket{\psi_n^0}\), tj.
-\(H'_{mn}\) jest elementem \((m,n)\) macierzy reprezentującej operator \(\oper{H}'\) w bazie
-\(\{\ket{\psi_n^0}\}\).
-
-Ponieważ założyliśmy, iż \(\epsilon\) jest wielkością małą, więc do przybliżonego rozwiązania
-wyprowadzonego układu równań możemy wykorzystać metodę kolejnych przybliżeń. Istotnie załóżmy, iż
-\(c_m(0) = \delta_{mN}\) dla ustalonego \(N\). Wówczas w przybliżeniu 0-go rzędu całkowicie
-ignorujemy wyrażenie z \(\epsilon\), a zatem rozwiązanie 0-go rzędu ma postać
-\begin{equation*}
-    c_m^{(0)}(t) = c_m(0)\,.
-\end{equation*}
-Aby uzyskać rozwiązanie 1-go, podstawiamy rozwiązanie 0-go rzędu do wyrażenia z \(\epsilon\)
-uzyskując
-\begin{equation*}
-    \begin{split}
-        \dot{c}_m^{(1)}(t) &= -\frac{\im\epsilon}{\hbar}\sum_n c_n^{(0)}(t)\e^{\frac{\im}{\hbar}(\lambda_m^0-\lambda_n^0)t} H'_{mn} \\
-        &= -\frac{\im\epsilon}{\hbar}\e^{\frac{\im}{\hbar}(\lambda_m^0-\lambda_N^0)t} H'_{mN}\,,
-    \end{split}
-\end{equation*}
-skąd uzyskujemy rozwiązanie 1-go rzędu całkując
-\begin{equation*}
-    c_m^{(1)}(t) = \begin{cases}
-        -\frac{\im\epsilon}{\hbar}\int\limits_0^t\e^{\frac{\im}{\hbar}(\lambda_m^0-\lambda_N^0)t'} H'_{mN} \dd{t'}\,,&m\neq N\\
-        1 - \frac{\im\epsilon}{\hbar}\int\limits_0^tH'_{NN} \dd{t'}\,,&m=N
-    \end{cases}
-\end{equation*}
-Proces ten możemy kontynuować uzyskując rozwiązania 2-go i wyższych rzędów w rachunku zaburzeń.
+Powyższe równanie nazywamy \textit{twierdzeniem Ehrenfesta}.
 
 \newpage
 \subsection{Kwantowe układy dwupoziomowe}
@@ -874,9 +813,9 @@ podać ogólne rozwiązanie równania Schr\"{o}dingera postaci
 W przypadku hamiltonianów zależnych od czasu możemy znaleźć rozwiązanie przybliżone, korzystając z
 rachunku zaburzeń (najczęściej 1-go lub 2-go rzędu). Istnieje jednak ważny układ dwupoziomowy z
 hamiltonianem zależnym od czasu, dla którego istnieje ścisłe rozwiązanie analityczne.
-\medskip
 
-\textbf{Rezonans magnetyczny.} Rozważmy układ opisany hamiltonianem
+\noindent\rule{\columnwidth}{0.5pt}\\
+\textcolor{blue}{\textbf{Oscylacje Rabiego.} Rozważmy układ opisany hamiltonianem
 \begin{equation*}
     \oper{H} = -\frac{1}{2}\gamma\hbar\mathbf{B}(t)\boldsymbol{\sigma}\,,
 \end{equation*}    
@@ -884,8 +823,8 @@ gdzie
 \begin{equation*}
     \mathbf{B}(t) = B_0(\sin\beta\cos\Omega t,\sin\beta\sin\Omega t, \cos\beta)\,,
 \end{equation*}
-dla pewnych stałych \(\gamma\), \(B_0\), \(\beta\), \(\Omega\). Chcemy rozwiązać równanie
-Schr\"{o}dingera
+dla pewnych stałych \(\gamma\), \(B_0\), \(\beta\), \(\Omega\), który opisuje interakcję spinu z
+zewnętrznym polem magnetycznym. Chcemy rozwiązać równanie Schr\"{o}dingera
 \begin{equation*}
     \mqty(\dot{\psi}_1 \\ \dot{\psi}_2) = \frac{\im\gamma B_0}{2}\mqty(\cos\beta & \e^{-\im\Omega t}\sin\beta \\ \e^{+\im\Omega t}\sin\beta & \cos\beta) \mqty(\psi_1 \\ \psi_2)\,.
 \end{equation*}
@@ -925,18 +864,12 @@ Zauważmy, że prawdopodobieństwo przejścia oscyluje z amplitudą zależną od
 Amplituda ta przyjmuje wartość maksymalną dla częstości wymuszenia równej \(|\Omega_\text{rez}| =
 |\omega_0 \cos\beta|\). Zauważmy również, iż niezerowa szerokość połówkowa nie wynika z żadnych
 procesów dyssypatywnych, jak ma to miejsce w np. w przypadku klasycznego oscylatora harmonicznego z
-tłumieniem i wymuszeniem, tylko z samej teorii kwantowej.
-
+tłumieniem i wymuszeniem, tylko z samej teorii kwantowej. }\noindent\rule{\columnwidth}{0.5pt}
 \newpage
 \subsection{OBLICZENIA KWANTOWE}
 
 
 
-% TODO
-
-% my idea on time evolutors (Volterra integral) 
-%
-% ------
 
 
 
