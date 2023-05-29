@@ -3,7 +3,8 @@
 
 % TODO
 
-% * Rewrite the abstract theory to deal explicitly only with finite dimensional case (?). 
+% * Rewrite the abstract theory to deal explicitly only with finite dimensional case (?). [Based on
+%   IBB] 
 % * Focus on spectral theorem and question-projection operator duality as a model of quantum
 %   measurement (this seems elegant). 
 % * Add some continuous example of operator-measured Stieltjes integral (maybe construction of
@@ -36,154 +37,166 @@
 
 \begin{document}
 
-\subsection{TEORIA KWANTÓW}
+\section{ABSTRAKCYJNA TEORIA KWANTÓW}
 
-\subsubsection{Elementy przestrzeni Hilberta}
+\subsection{Elementy teorii przestrzeni Hilberta}
 
+Przez \(\mathbb{V} := (V,\mathbb{C},+,\cdot)\) będziemy oznaczać przestrzeń wektorową nad ciałem
+liczb zespolonych.
+
+\begin{definition}
+Odwzorowanie \(d: V \times V \mapsto \mathbb{R}\) będziemy nazywać \textit{metryką} w zbiorze \(V
+\neq \emptyset\) iff
 \begin{itemize}
 
-    \item Przez \(\mathbb{V} := (V,\mathbb{C},+,\cdot)\) będziemy oznaczać przestrzeń wektorową nad
-    ciałem liczb zespolonych.
+\item \(\forall u,v \in V : d(u,v) \geq 0\), przy czym równość zachodzi iff \(u = v\)
+(\textit{nieujemność})
 
-    \item \textbf{Def.} Odwzorowanie \(d: V \times V \mapsto \mathbb{R}\) będziemy nazywać
-    \textit{metryką} w zbiorze \(V \neq \emptyset\) iff
-    \begin{itemize}
-    
-        \item \(\forall u,v \in V : d(u,v) \geq 0\), przy czym równość zachodzi iff \(u = v\)
-        (\textit{nieujemność})
+\item \(\forall u,v \in V : d(u,v) = d(v,u)\) (\textit{symetria})
 
-        \item \(\forall u,v \in V : d(u,v) = d(v,u)\) (\textit{symetria})
-
-        \item \(\forall u,v,w \in V : d(u,v) + d(v,w) \geq d(u,w)\) (\textit{nierówność trójkąta})
-
-    \end{itemize}
-    Parę \((V,d(\cdot,\cdot))\) będziemy nazywać \textit{przestrzenią metryczną}.
-
-    \item \textbf{Def.} Niech \((V,d)\) będzie przestrzenią metryczną. Mówimy, iż dany ciąg
-    \((u_n)\) elementów zbioru \(V\) jest zbieżny do \(g\in V\) tj. \(\lim_{n\to\infty}u_n = g\) iff
-    \(\lim_{n\to\infty} d(u_n,g) = 0\).
-
-    \item \textbf{Def.} Ciąg \((u_n)\) elementów \(u_n \in V\) będziemy nazywać \textit{ciągiem
-    Cauchy'ego} w przestrzeni metrycznej \((V,d(\cdot,\cdot))\) iff spełnia on kryterium Cauchy'ego
-    tj.
-    \begin{equation*}
-        \forall \epsilon > 0 : \exists N : \forall n,m > N : d(u_n,u_m) < \epsilon\,.
-    \end{equation*}
-
-    \item \textbf{Tw.} Każdy ciąg zbieżny w przestrzeni metrycznej \((V,d)\) jest ciągiem Cauchy'ego
-    w tej przestrzeni.
-
-    \item \textbf{Def.} Przestrzeń metryczną \((V,d(\cdot,\cdot))\) nazwiemy \textit{zupełną} iff
-    każdy ciąg Cauchy'ego \((u_n)\) elementów \(u_n \in V\) jest zbieżny do granicy \(g \in V\).
-
-    \item \textbf{Def.} Niech \(\mathbb{V}\) będzie przestrzenią wektorową. Odwzorowanie
-    \(\braket{\cdot} : V \times V \mapsto \mathbb{C}\) nazwiemy \textit{iloczynem wewnętrznym}
-    wektorów iff
-    \begin{itemize}
-        
-        \item \(\forall u,v \in V : \braket{u}{v}^* = \braket{v}{u}\)
-        
-        \item \(\forall u,v_1,v_2 \in V : \forall \alpha, \beta \in \mathbb{C} : \braket{u}{\alpha
-        v_1 + \beta v_2} = \alpha \braket{u}{v_1} + \beta \braket{u}{v_2}\)
-
-        \item \(\forall u \in V : \braket{u} \geq 0\), przy czym równość zachodzi iff \(u =
-        \mathsf{0}\). Zauważmy tutaj, iż z pierwszego aksjomatu \(\braket{u} \in \mathbb{R}\), gdyż
-        \(\braket{u} = \braket{u}^* \implies \Im{\braket{u}} = 0\).
-
-    \end{itemize}
-    
-    Parę \((\mathbb{V},\braket{\cdot})\) będziemy nazywać \textit{przestrzenią unitarną}.
-
-    \item \textbf{Tw.} Każda przestrzeń unitarna jest metryczna z metryką indukowaną przez iloczyn
-    wewnętrzny \(d(u,v) := \sqrt{\braket{u-v}}\).
-
-    \item \textbf{Tw.} (\textit{Nierówność Cauchy'ego--Schwarza}) Niech
-    \((\mathbb{V},\braket{\cdot})\) -- przestrzeń metryczna. Wówczas
-    \begin{equation*}
-        \forall u,v \in V : |\braket{u}{v}|^2 \leq \braket{u}\braket{v}\,.
-    \end{equation*}  
-
-    \item \textbf{Def.} Przeliczalny zbiór wektorów \(\{v_1,...,v_n\}\) nazwiemy
-    \textit{ortogonalnym} iff 
-    \begin{equation*}
-        \forall i\neq j; i,j\in\{1,...,n\} : \braket{v_i}{v_j} = 0\,.
-    \end{equation*}
-    Ten sam zbiór wektorów nazwiemy \textit{ortonormalnym} iff 
-    \begin{equation*}
-        \forall i,j\in\{1,...,n\} : \braket{v_i}{v_j} = \delta_{ij}\,,
-    \end{equation*}
-    gdzie \(\delta_{ij}\) jest deltą Kroneckera.
-
-    \item \textbf{Tw.} Każda przestrzeń unitarna \((\mathbb{V}, \braket{\cdot})\) posiada bazę
-    ortonormalną, tj. bazę, której wektory bazowe tworzą zbiór ortonormalny.
-
-    \item \textbf{Def.} \textit{Przestrzenią Hilberta} \(\mathscr{H}=(\mathbb{V},\braket{\cdot})\)
-    nazwiemy zupełną przestrzeń unitarną.
-
-    \item \textbf{Def.} Niech \(\mathscr{H} = (\mathbb{V},\braket{\cdot})\) będzie przestrzenią
-    Hilberta. Odwzorowanie \(F:V\mapsto\mathbb{C}\) nazwiemy \textit{funkcjonałem liniowym} w
-    przestrzeni \(\mathscr{H}\) iff
-    \begin{equation*}
-        \begin{split}
-            &\forall u,v \in V : \forall \alpha, \beta \in \mathbb{C} : \\
-            &F(\alpha u+\beta v) = \alpha F(u) + \beta F(v)\,.
-        \end{split}  
-    \end{equation*}
-
-    \item \textbf{Tw.} Niech \(V^*\) oznacza zbiór wszystkich funkcjonałów liniowych
-    \(F:V\mapsto\mathbb{C}\). Wówczas \(\mathbb{V}^*:=(V^*,\mathbb{C},+,\cdot)\), gdzie
-    \begin{itemize}
-        \item \(\forall F_1,F_2 \in V^* : \forall v \in V : (F_1+F_2)(v) = F_1(v) + F_2(v)\)
-
-        \item \(\forall F \in V^* : \forall \alpha \in \mathbb{C} : \forall v \in V : (\alpha \cdot
-        F)(v) = \alpha F(v)\)
-    \end{itemize}
-    jest przestrzenią wektorową, którą nazywamy \textit{przestrzenią dualną}.
-
-    \item \textbf{Tw.} (\textit{Riesza}) Niech \(\mathscr{H}=(\mathbb{V},\braket{\cdot})\) będzie
-    przestrzenią Hilberta, a \(\mathbb{V}^*\) jej przestrzenią dualną. Wówczas istnieje wzajemnie
-    jednoznaczne odwzorowanie wektorów \(v \in V\) na funkcjonały liniowe \(F \in V^*\). Dodatkowo
-    dla każdego funkcjonału \(F\) istnieje dokładnie jeden wektor \(u \in V\) taki, że
-    \begin{equation*}
-        \forall v \in V : F(v) = \braket{u}{v}\,.
-    \end{equation*}
-
-    \item \textbf{Def.} \textit{Iloczynem Kroneckera} macierzy \(\oper{A} = [a_{ij}]_{n\times n}\) i
-    \(\oper{B} = [b_{ij}]_{m\times m}\) nazywamy macierz
-    \begin{equation*}
-        \begin{split}
-            \oper{A} \otimes \oper{B} &= \mqty(a_{11} & \cdots & a_{1n} \\ \vdots & \ddots & \vdots \\ a_{n1} & \cdots & a_{nn}) \otimes \mqty(b_{11} & \cdots & b_{1m} \\ \vdots & \ddots & \vdots \\ b_{m1} & \cdots & b_{mm})\\
-            &= \mqty(a_{11}\oper{B} & \cdots & a_{1n}\oper{B} \\ \vdots & \ddots & \vdots \\ a_{n1}\oper{B} & \cdots & a_{nn}\oper{B})
-        \end{split}
-    \end{equation*}
-
-    \item \textbf{Def.} \textit{Iloczynem tensorowym} przestrzeni Hilberta \(\mathscr{H}_1\) i
-    \(\mathscr{H}_2\) o bazach ortonoromalnych odpowiednio \(\{\phi_i^{(1)}\}\) i
-    \(\{\phi_i^{(2)}\}\) nazywamy przestrzeń Hilberta \(\mathscr{H} = \mathscr{H}_1 \otimes
-    \mathscr{H}_2\) taką, że
-    \begin{itemize}
-        
-        \item Jej bazą ortonormalną jest zbiór \(\{\phi_i^{(1)} \otimes \phi_j^{(2)}\}\), gdzie
-        \(\psi \otimes \phi\) to iloczyn Kroneckera wektorów dla reprezentacji tych wektorów jako
-        macierzy kolumnowych o elementach będących współrzędnymi wektora w danej bazie.
-
-        \item Iloczyn wewnętrzny w przestrzeni \(\mathscr{H}_1 \otimes \mathscr{H}_2\) jest
-        zdefiniowany jako
-        \begin{equation*}
-            \braket{\phi_1 \otimes \phi_2}{\psi_1 \otimes \psi_2} := \braket{\phi_1}{\psi_1}_1 \cdot \braket{\phi_2}{\psi_2}_2\,,
-        \end{equation*}
-        gdzie \(\phi_i,\psi_i \in \mathscr{H}_i\) to pewne wektory, a \(\braket{\cdot}_i\) to
-        iloczyn wewnętrzny w \(\mathscr{H}_i\).
-    \end{itemize}
+\item \(\forall u,v,w \in V : d(u,v) + d(v,w) \geq d(u,w)\) (\textit{nierówność trójkąta})
 
 \end{itemize}
+Parę \((V,d(\cdot,\cdot))\) będziemy nazywać \textit{przestrzenią metryczną}.
+\end{definition}
 
-\subsubsection{Notacja Diraca}
+\begin{definition}
+Niech \((V,d)\) będzie przestrzenią metryczną. Mówimy, iż dany ciąg \((u_n)\) elementów zbioru \(V\)
+jest zbieżny do \(g\in V\) tj. \(u_n \to g\) przy \(n \to \infty\) iff \(d(u_n,g) \to 0\) przy \(n
+\to \infty\).   
+\end{definition}
+
+\begin{definition}
+Ciąg \((u_n)\) elementów \(u_n \in V\) będziemy nazywać \textit{ciągiem Cauchy'ego} w przestrzeni
+metrycznej \((V,d(\cdot,\cdot))\) iff spełnia on kryterium Cauchy'ego tj.
+\begin{equation*}
+    \forall \epsilon > 0 : \exists N : \forall n,m > N : d(u_n,u_m) < \epsilon\,.
+\end{equation*}  
+\end{definition}
+
+\begin{theorem}
+Każdy ciąg zbieżny w przestrzeni metrycznej \((V,d)\) jest ciągiem Cauchy'ego w tej przestrzeni.
+\end{theorem}
+
+\begin{definition}
+Przestrzeń metryczną \((V,d(\cdot,\cdot))\) nazwiemy \textit{zupełną} iff każdy ciąg Cauchy'ego
+\((u_n)\) elementów \(u_n \in V\) jest zbieżny do granicy \(g \in V\).
+\end{definition}
+
+\begin{definition}
+Niech \(\mathbb{V}\) będzie przestrzenią wektorową. Odwzorowanie \(\braket{\cdot} : V \times V
+\mapsto \mathbb{C}\) nazwiemy \textit{iloczynem wewnętrznym} wektorów iff
+\begin{itemize}
+    
+    \item \(\forall u,v \in V : \braket{u}{v}^* = \braket{v}{u}\)
+    
+    \item \(\forall u,v_1,v_2 \in V : \forall \alpha, \beta \in \mathbb{C} : \braket{u}{\alpha v_1 +
+    \beta v_2} = \alpha \braket{u}{v_1} + \beta \braket{u}{v_2}\)
+
+    \item \(\forall u \in V : \braket{u} \geq 0\), przy czym równość zachodzi iff \(u =
+    \mathsf{0}\). Zauważmy tutaj, iż z pierwszego aksjomatu \(\braket{u} \in \mathbb{R}\), gdyż
+    \(\braket{u} = \braket{u}^* \implies \Im{\braket{u}} = 0\). 
+
+\end{itemize}
+Parę \((\mathbb{V},\braket{\cdot})\) będziemy nazywać \textit{przestrzenią unitarną}.
+\end{definition}
+
+\begin{theorem}
+Każda przestrzeń unitarna jest metryczna z metryką indukowaną przez iloczyn wewnętrzny \(d(u,v) :=
+\norm{u - v} = \sqrt{\braket{u-v}}\).
+\end{theorem}
+
+\begin{theorem}[\textit{Nierówność Cauchy'ego--Schwarza}]
+Niech \((\mathbb{V},\braket{\cdot})\) -- przestrzeń unitarna. Wówczas
+\begin{equation*}
+    \forall u,v \in V : |\braket{u}{v}|^2 \leq \braket{u}\braket{v}\,.
+\end{equation*}  
+\end{theorem}
+
+\begin{definition}
+Przeliczalny zbiór wektorów \(\{v_1,...,v_n\}\) nazwiemy \textit{ortogonalnym} iff 
+\begin{equation*}
+    \forall i\neq j; i,j\in\{1,...,n\} : \braket{v_i}{v_j} = 0\,.
+\end{equation*}
+Ten sam zbiór wektorów nazwiemy \textit{ortonormalnym} iff 
+\begin{equation*}
+    \forall i,j\in\{1,...,n\} : \braket{v_i}{v_j} = \delta_{ij}\,,
+\end{equation*}
+gdzie \(\delta_{ij}\) jest deltą Kroneckera.
+\end{definition}
+
+\begin{theorem}
+Każda przestrzeń unitarna \((\mathbb{V}, \braket{\cdot})\) posiada bazę ortonormalną, tj. bazę,
+której wektory bazowe tworzą zbiór ortonormalny.
+\end{theorem}
+
+\begin{definition}
+\textit{Przestrzenią Hilberta} \(\mathscr{H}=(\mathbb{V},\braket{\cdot})\) nazwiemy zupełną
+przestrzeń unitarną.
+\end{definition}
+
+\begin{definition}
+Niech \(\mathscr{H} = (\mathbb{V},\braket{\cdot})\) będzie przestrzenią Hilberta. Odwzorowanie
+liniowe \(F:V\mapsto\mathbb{C}\) nazwiemy \textit{funkcjonałem liniowym} w przestrzeni
+\(\mathscr{H}\).
+\end{definition}
+
+\begin{theorem}
+Niech \(V^*\) oznacza zbiór wszystkich funkcjonałów liniowych \(F:V\mapsto\mathbb{C}\). Wówczas
+\(\mathbb{V}^*:=(V^*,\mathbb{C},+,\cdot)\), gdzie
+\begin{itemize}
+    \item \(\forall F_1,F_2 \in V^* : \forall v \in V : (F_1+F_2)(v) = F_1(v) + F_2(v)\)
+
+    \item \(\forall F \in V^* : \forall \alpha \in \mathbb{C} : \forall v \in V : (\alpha \cdot
+    F)(v) = \alpha F(v)\)
+\end{itemize}
+jest przestrzenią wektorową, którą nazywamy \textit{przestrzenią dualną}.
+\end{theorem}
+
+\begin{theorem}[\textit{Riesza}]
+Niech \(\mathscr{H}=(\mathbb{V},\braket{\cdot})\) będzie przestrzenią Hilberta, a \(\mathbb{V}^*\)
+jej przestrzenią dualną. Wówczas istnieje wzajemnie jednoznaczne odwzorowanie wektorów \(v \in V\)
+na funkcjonały liniowe \(F \in V^*\). Dodatkowo dla każdego funkcjonału \(F\) istnieje dokładnie
+jeden wektor \(u \in V\) taki, że
+\begin{equation*}
+    \forall v \in V : F(v) = \braket{u}{v}\,.
+\end{equation*}
+\end{theorem}
+
+\begin{definition}
+\textit{Iloczynem Kroneckera} macierzy \(\oper{A} = [a_{ij}]_{n\times m}\) i \(\oper{B} =
+[b_{ij}]_{n'\times m'}\) nazywamy macierz wymiaru \(nn'\times mm'\) postaci
+\begin{equation*}
+    \begin{split}
+        \oper{A} \otimes \oper{B} &= \mqty[a_{11} & \cdots & a_{1m} \\ \vdots & \ddots & \vdots \\ a_{n1} & \cdots & a_{nm}] \otimes \mqty[b_{11} & \cdots & b_{1m'} \\ \vdots & \ddots & \vdots \\ b_{n'1} & \cdots & b_{n'm'}] = \mqty[a_{11}\oper{B} & \cdots & a_{1m}\oper{B} \\ \vdots & \ddots & \vdots \\ a_{n1}\oper{B} & \cdots & a_{nm}\oper{B}]
+    \end{split}
+\end{equation*}
+\end{definition}
+
+\begin{definition}
+\textit{Iloczynem tensorowym} przestrzeni Hilberta \(\mathscr{H}_1\) i \(\mathscr{H}_2\) o bazach
+ortonoromalnych odpowiednio \(\{\phi_i^{(1)}\}\) i \(\{\phi_j^{(2)}\}\) nazywamy przestrzeń Hilberta
+\(\mathscr{H} = \mathscr{H}_1 \otimes \mathscr{H}_2\) taką, że:
+\begin{itemize}
+    
+    \item Jej bazą ortonormalną jest zbiór \(\{\phi_i^{(1)} \otimes \phi_j^{(2)}\}\).
+
+    \item Iloczyn wewnętrzny w przestrzeni \(\mathscr{H}_1 \otimes \mathscr{H}_2\) jest zdefiniowany
+    jako
+    \begin{equation*}
+        \braket{\chi_1 \otimes \chi_2}{\psi_1 \otimes \psi_2} := \braket{\chi_1}{\psi_1}_1 \cdot \braket{\chi_2}{\psi_2}_2\,,
+    \end{equation*}
+    gdzie \(\chi_i,\psi_i \in \mathscr{H}_i\) to pewne wektory, a \(\braket{\cdot}_i\) to iloczyn
+    wewnętrzny w \(\mathscr{H}_i\).
+\end{itemize}
+\end{definition}
+
+\subsection{Notacja Diraca}
 
 Niech \(\mathscr{H}\) będzie przestrzenią Hilberta. Wprowadzimy teraz kompaktową notacją wektorów i
-funkcjonałów liniowych wymyśloną przez Diraca. Aby uprościć zapis, będziemy mówili o wektorach
-należących do przestrzeni \(\mathscr{H}\) (używając nawet symbolu należenia \(\in \mathscr{H}\)),
-mając oczywiście formalnie na myśli wektory należące do zbioru \(V\).
+funkcjonałów liniowych wymyśloną przez P.A.M. Diraca. Aby uprościć zapis, będziemy mówili o
+wektorach należących do przestrzeni \(\mathscr{H}\) (używając nawet symbolu należenia \(\in
+\mathscr{H}\)), mając oczywiście formalnie na myśli wektory należące do zbioru \(V\).
 
 Wektory należące do \(\mathscr{H}\) będziemy oznaczać jako
 \begin{equation*}
@@ -202,13 +215,47 @@ przy czym \(\bra{\cdot}\) to tzw. \textit{bra} i formalnie jest to odwzorowanie 
 \mathsf{S}^* \mapsto V^*\), gdzie \(\mathsf{S}^*\) jest zbiorem znaków, których używamy do
 oznaczenia konkretnych funkcjonałów ze zbioru \(V^*\). Ponieważ z tw. Riesza istnieje wzajemnie
 jednoznaczne odwzorowanie funkcjonałów liniowych na wektory, więc możemy utożsamić \(\mathsf{S}^* =
-\mathsf{S}\). 
+\mathsf{S}\).
 
-Iloczyn wewnętrzny wektorów \(\psi\), \(\phi\) tj. \(\braket{\psi}{\phi}\) będziemy teraz
-interpretować jako wartość funkcjonału liniowego \(\bra{\psi}\) (tj. funkcjonału liniowego
-odpowiadającego wektorowi \(\psi\)) dla argumentu \(\ket{\phi}\).
+\subsection{Skończenie wymiarowa przestrzeń Hilberta nad ciałem liczb zespolonych}
 
-\subsubsection{Elementy operatorów liniowych}
+Rozważymy teraz konstrukcję skończenie wymiarowej przestrzeni Hilberta złożonej ze skończenie
+wymiarowej przestrzeni wektorowej \(\mathbb{V} = (\mathbb{C}^n, \mathbb{C}, +, \cdot)\), której
+elementy będziemy w danej bazie \textit{ortonormalnej} \(\{\phi_1, \ldots, \phi_n\}\) zapisywać jako
+\begin{equation*}
+    \mathbb{V} \ni \ket{\psi} = \sum_{i=1}^n a_i \ket{\phi_i} = \mqty[a_1 \\ \vdots \\ a_n]\,,
+\end{equation*}
+gdzie \(a_i = \braket{\phi_i}{\psi}\in\mathbb{C}\) oraz iloczynu wewnętrznego zdefiniowanego jako
+\begin{equation*}
+    \braket{ \sum_{i=1}^n a_i \ket{\phi_i}}{ \sum_{i=1}^n b_i \ket{\phi_i}} := \sum_{i=1}^n a_{i}^*b_i\,.
+\end{equation*}
+Powstała w ten sposób skończenie wymiarowa przestrzeń unitarna jest trywialnie zupełna, a zatem
+skonstruowaliśmy skończenie wymiarową przestrzeń Hilberta. Wektor w tej przestrzeni możemy utożsamić
+(poprzez iloczyn wewnętrzny) z macierzą kolumnową jego współrzędnych w danej bazie ortonormalnej.
+Jasne jest również czym jest funkcjonał liniowy stowarzyszony z danym wektorem
+\begin{equation*}
+    \bra{\psi} = \mqty[a_1 \\ \vdots \\ a_n]^\dagger = \mqty[a_1^* & \ldots & a_n^*]\,,
+\end{equation*}
+gdzie \(\dagger\) oznacza \textit{sprzężenie hermitowskie} macierzy, tj. sprzężoną macierz
+transponowaną. W dalszej części skupimy się głównie na skończenie wymiarowych przestrzeniach
+Hilberta \(((\mathbb{C}^n, \mathbb{C}, +, \cdot),\braket{\cdot})\), gdyż stanowią one podstawę opisu
+teorii obliczeń kwantowych i kwantowej teorii informacji. Należy zdawać sobie jednak sprawę, iż
+stanowi to duże uproszczenie w stosunku do wymagań pełnoprawnych teorii fizycznych (mechanika
+falowa, kwantowa teoria pola), w których niezbędna jest teoria nieskończenie wymiarowych przestrzeni
+Hilberta -- zarówno takich, w których możemy znaleźć nieskończoną ale przeliczalną bazę ortonormalną
+(np. przestrzeń Hilberta rzeczywistych funkcji nieparzystych na odcinku \([-L;L]\) spełniających
+warunki Dirichleta, w której \(f(x) = \sum_{i=1}^\infty a_i\sin\frac{i\pi x}{L}\)), jak i w
+przypadku występującym np. w najprostszym zagadnieniu nierelatywistycznej cząstki swobodnej
+poruszającej się w jednym wymiarze, której funkcja falowa jest dana w postaci
+\begin{equation*}
+    \Psi(x,t) = \frac{1}{\sqrt{2\pi}}\int\limits_{-\infty}^{+\infty}\tilde{\Psi}(k)\e^{\im(kx - \omega t)}\dd{k}
+\end{equation*}
+gdzie wektor \(\Psi(x,t)\) należący do przestrzeni Hilberta funkcji całkowalnych z kwadratem modułu
+jest wyrażony jako ciągła superpozycja wektorów ,,bazowych'' \(\e^{\im(kx - \omega t)}\) (które nie
+należą w ogóle do tej przestrzeni) ze współczynnikami danymi transformatą Fouriera \(\tilde{\Psi}(k)
+= \mathcal{F}\{\Psi(x,0)\}\).
+
+\subsection{Elementy teorii operatorów liniowych}
 
 \begin{itemize}
     
@@ -422,16 +469,14 @@ kolejnych wektorach własnych operatora
     \oper{A} = \sum_{i} \lambda_i \ket{\phi_i}\bra{\phi_i}\,.
 \end{equation*}
 
-\subsubsection{POSTULATY TEORII KWANTÓW}
+\subsection{POSTULATY TEORII KWANTÓW}
 
 Poniżej przedstawiono postulaty ogólnej, abstrakcyjnej teorii kwantów. Postulaty te obowiązują we
 wszystkich realizacjach teorii kwantów np. mechanice falowej, czy kwantowej teorii pola, jednak ze
 względu na swój ogólny charakter same w sobie nie dostarczają narzędzi do rozwiązywania żadnych
 konkretnych problemów fizycznych. Nie należy ich również traktować jako podstaw do aksjomatyzacji
 teorii kwantowej. Stanowią one raczej sposób uporządkowania w spójną strukturę wiedzy dotyczącej
-konkretnych realizacji teorii kwantów. Podane poniżej postulaty to nieco zmodyfikowane postulaty
-pochodzące z książki ,,Teoria kwantów. Mechanika falowa'' I. Białynicki--Birula, M. Cieplak, J.
-Kamiński.
+konkretnych realizacji teorii kwantów
 \medskip
 
 \begin{enumerate}[label=\Roman*.]
@@ -445,7 +490,7 @@ Kamiński.
     w obrębie danej teorii kwantowej, iff istnieje wzajemnie jednoznaczne odwzorowanie tego pytania
     na pewien operator rzutowy \(\oper{P}\). Będziemy wówczas mówili, iż dane pytanie elementarne
     jest reprezentowane przez \(\oper{P}\). Każde pytanie elementarne reprezentowane przez
-    \(\oper{P}\) można zanegować otrzymując pytanie reprezentowane przez\(\oper{I} - \oper{P}\)
+    \(\oper{P}\) można zanegować otrzymując pytanie reprezentowane przez \(\oper{I} - \oper{P}\)
     (zauważmy, że \((\oper{I} - \oper{P})^2 = \oper{I} - \oper{P}\)), natomiast dwa pytania
     elementarne reprezentowane przez \(\oper{P}_1\) i \(\oper{P}_2\) można połączyć spójnikiem
     \begin{itemize}
@@ -461,7 +506,7 @@ Kamiński.
     \item \textbf{O stanach układu.} Stan prostego układu fizycznego jest reprezentowany przez
     unormowany wektor \(\ket{\Psi}\) w abstrakcyjnej przestrzeni Hilberta \(\mathscr{H} =
     (\mathbb{V}, \braket{\cdot})\), przy czym utożsamiamy ze sobą wektory różniące się jedynie
-    globalnym czynnikiem fazowym tj. \(\ket{\Psi} \equiv \e^{\im\alpha}\ket{\Psi}\) dla \(\alpha \in
+    globalnym czynnikiem fazowym tj. \(\ket{\Psi} \cong \e^{\im\alpha}\ket{\Psi}\) dla \(\alpha \in
     \mathbb{R}\).
 
     \item \textbf{O prawdopodobieństwach.} Teoria kwantowa dostarcza jedynie probabilistycznych
@@ -580,31 +625,6 @@ Powyższe równanie nazywamy \textit{twierdzeniem Ehrenfesta}.
 
 Przedstawimy teraz ważną realizację abstrakcyjnej teorii kwantów -- teorię układów dwupoziomowych,
 które stanowią podstawę teorii obliczeń kwantowych i kwantowej teorii informacji.
-
-\subsubsection{Model matematyczny}
-
-Modelem matematycznym teorii układów dwupoziomowych jest przestrzeń Hilberta
-\begin{equation*}
-    \mathscr{H} = ((\mathbb{C}^2,\mathbb{C},+,\cdot), \braket{\cdot})\,,
-\end{equation*}
-gdzie wektory \(\Psi\in\mathbb{C}^2\) będziemy reprezentować w danej bazie ortonormalnej
-\(B=\{\ket{1},\ket{2}\}\) jako macierze kolumnowe o elementach zespolonych
-\begin{equation*}
-    \ket{\Psi} = \psi_1\ket{1} + \psi_2\ket{2} = \mqty(\psi_1 \\ \psi_2)\,.
-\end{equation*}
-Jest oczywiste, że struktura \((\mathbb{C}^2,\mathbb{C},+,\cdot)\) jest przestrzenią wektorową.
-Iloczyn wewnętrzny wektorów \(\Psi\), \(\Phi\) w \(\mathscr{H}\) definiujemy jako
-\begin{equation*}
-    \braket{\Phi}{\Psi} := \psi_1\phi_1^* + \psi_2\phi_2^*\,.
-\end{equation*}
-Z powyższej definicji widoczne jest, czym jest funkcjonał liniowy \(\bra{\Phi}\) odpowiadający
-(zgodnie z tw. Riesza) wektorowi \(\ket{\Phi}\)
-\begin{equation*}
-    \bra{\Phi} = \mqty(\phi_1 \\ \phi_2)^\dagger = \mqty(\phi_1^* & \phi_2^*)\,.
-\end{equation*}
-
-Są to zatem macierze wierszowe będące \textit{sprzężeniami hermitowskimi} macierzy kolumnowych
-reprezentujących wektory.
 
 \subsubsection{Macierze Pauliego}
 

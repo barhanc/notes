@@ -2,12 +2,11 @@
 \ProvidesClass{myclass}
 
 % Article One column
-% \LoadClass[]{article}
-% \RequirePackage[a4paper, total={6in, 9in}]{geometry}
+\LoadClass[]{article}
 
 % Article Two column
-\LoadClass[twocolumn]{article}
-\RequirePackage[a4paper, total={7in, 9in}]{geometry}
+%\LoadClass[twocolumn]{article}
+%\RequirePackage[a4paper, total={7in, 9in}]{geometry}
 
 \setlength{\columnseprule}{0pt}
 \setlength{\columnsep}{1.5cm}
@@ -17,7 +16,16 @@
 \newcommand{\im}{\mathrm{i}}
 \newcommand{\arcangle}{\mathord{<\mspace{-9mu}\mathrel{)}\mspace{2mu}}}
 
-% Colouring
+% Custom environments
+\RequirePackage{amsthm}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Def}[section]
+
+\theoremstyle{definition}
+\newtheorem{theorem}{Tw}[section]
+
+% Coloring
 \RequirePackage[]{hyperref}
 \hypersetup{
     colorlinks=true,
@@ -28,7 +36,7 @@
 
 % Packages
 \usepackage{amssymb}
-\usepackage{amsmath, amsfonts, enumerate, graphicx, hyperref, 
+\usepackage{amsmath, amsfonts, enumerate, graphicx, 
             mathrsfs, physics, wasysym, xcolor}
 
 % Additional packages and commands depending on project:
