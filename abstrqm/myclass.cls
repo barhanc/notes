@@ -15,9 +15,22 @@
 \newcommand{\e}{\mathrm{e}}
 \newcommand{\im}{\mathrm{i}}
 \newcommand{\arcangle}{\mathord{<\mspace{-9mu}\mathrel{)}\mspace{2mu}}}
+\newcommand{\linesep}{\noindent\rule{\columnwidth}{1pt}}
 
 % Custom environments
 \RequirePackage{amsthm}
+
+\newenvironment{textbox}
+    {\begin{center}
+    \begin{tabular}{|p{0.9\textwidth}|}
+    \hline\\
+    }
+    { 
+    \\\\\hline
+    \end{tabular} 
+    \end{center}
+    }
+%
 
 \theoremstyle{definition}
 \newtheorem{definition}{Def}[section]
