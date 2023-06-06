@@ -1,15 +1,14 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{myclass}
 
-% Article One column
+%**** Article One column ****
 \LoadClass[]{article}
 
-% Article Two column
+%**** Article Two column ****
 %\LoadClass[twocolumn]{article}
 %\RequirePackage[a4paper, total={7in, 9in}]{geometry}
-
-\setlength{\columnseprule}{0pt}
-\setlength{\columnsep}{1.5cm}
+%\setlength{\columnseprule}{0pt}
+%\setlength{\columnsep}{1.5cm}
 
 % Custom symbols
 \newcommand{\e}{\mathrm{e}}
@@ -18,8 +17,6 @@
 \newcommand{\linesep}{\noindent\rule{\columnwidth}{1pt}}
 
 % Custom environments
-\RequirePackage{amsthm}
-
 \newenvironment{textbox}
     {\begin{center}
     \begin{tabular}{|p{0.9\textwidth}|}
@@ -32,9 +29,9 @@
     }
 %
 
+\RequirePackage{amsthm}
 \theoremstyle{definition}
 \newtheorem{definition}{Def}[section]
-
 \theoremstyle{definition}
 \newtheorem{theorem}{Tw}[section]
 
@@ -53,5 +50,6 @@
             mathrsfs, physics, wasysym, xcolor}
 
 % Additional packages and commands depending on project:
-\newcommand{\oper}[1]{\boldsymbol{\mathsf{#1}}}
 \usepackage{lipsum, enumitem}
+
+\newcommand{\oper}[1]{\boldsymbol{\mathsf{#1}}}

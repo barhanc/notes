@@ -3,7 +3,7 @@
 
 % TODO
 
-% * Add solved examples NMR, Rabi, rotating em wave, emission-absorption. 
+% * Add solved examples precession (constant H), NMR (H = -hg/2 B s) (Rabi), general (?)
 %
 % * Composite systems made of 2-state systems (2 x 2 & later n x 2 or maybe n x 2 immediately(?))
 % * Composite systems: entanglement, density operator, partial trace, no-cloning theorem,
@@ -263,12 +263,12 @@ danej bazie ortonormalnej \(\{\phi_1,\ldots,\phi_n\}\) są dane przez wartości 
 wektorach bazowych
 \begin{equation*}
 \begin{split}
-\oper{A}\ket{\phi_1} &= a_{11}\ket{\phi_1} + a_{21}\ket{\phi_2} + \ldots + a_{n1}\ket{\phi_n}\\
+\oper{A}\ket{\phi_1} &= A_{11}\ket{\phi_1} + A_{21}\ket{\phi_2} + \ldots + A_{n1}\ket{\phi_n}\\
 &\vdots\\
-\oper{A}\ket{\phi_n} &= a_{1n}\ket{\phi_1} + a_{2n}\ket{\phi_2} + \ldots + a_{nn}\ket{\phi_n}
+\oper{A}\ket{\phi_n} &= A_{1n}\ket{\phi_1} + A_{2n}\ket{\phi_2} + \ldots + A_{nn}\ket{\phi_n}
 \end{split}\quad,
 \end{equation*}
-skąd element \(a_{ij}\) macierzy \(\oper{A}\) w bazie ortonormalnej \(\{\phi_i\}\) jest dany przez
+skąd element \(A_{ij}\) macierzy \(\oper{A}\) w bazie ortonormalnej \(\{\phi_i\}\) jest dany przez
 \begin{equation*}
 A_{ij} = \bra{\phi_i}\oper{A}\ket{\phi_j}\,.
 \end{equation*}
@@ -285,7 +285,7 @@ Podstawiając w miejsce wektorów \(\psi\), \(\phi\) wektory bazy otrzymujemy (w
 wymiarowych przestrzeni Hilberta) zależność między macierzą \(\oper{A}\) i jej sprzężeniem
 hermitowskim \(\oper{A}^\dagger\)
 \begin{equation*}
-a^\dagger_{ij} = a_{ji}^*\,.
+A^\dagger_{ij} = A_{ji}^*\,.
 \end{equation*} 
 
 \begin{definition}
@@ -314,6 +314,8 @@ zachodzi:
     \item \([\oper{A} + \oper{B},\oper{C}] = [\oper{A},\oper{C}] + [\oper{B},\oper{C}]\) ;
     \item \([\oper{A}\oper{B},\oper{C}] = \oper{A}[\oper{B},\oper{C}] +
     [\oper{A},\oper{C}]\oper{B}\) .
+    \item \([[\oper{A}, \oper{B}], \oper{C}] + [[\oper{B},\oper{C}],\oper{A}] + [[\oper{C},
+    \oper{A}], \oper{B}] = \oper{0}\) (\textit{tożsamość Jacobiego})
 \end{itemize}   
 \end{theorem}
 
@@ -382,7 +384,7 @@ W przypadku skończenie wymiarowych przestrzeni Hilberta definicja ta jest pełn
 samosprzężony możemy utożsamiać z macierzami hermitowskimi tj. macierzami, których elementy
 spełniają związek
 \begin{equation*}
-    a_{ij} = a_{ji}^*\,.
+    A_{ij} = A_{ji}^*\,.
 \end{equation*}
 
 W przypadku nieskończenie wymiarowych przestrzeni Hilberta definicja ta jest niepełna gdyż trzeba
@@ -826,7 +828,8 @@ mają postać
 \linesep
 
 Równanie ewolucji możemy zapisać również wykorzystując przedstawienie geometryczne wektorów stanu i
-operatorów. Istotnie różniczkując operator rzutowy \(\oper{\rho} = \ket{\Psi}\bra{\Psi}\) mamy
+operatorów na sferze Blocha. Istotnie różniczkując operator rzutowy \(\oper{\rho} =
+\ket{\Psi}\bra{\Psi}\) mamy
 \begin{equation*}
     \begin{split}
         \pdv{\oper{\rho}}{t} &= \ket{\dot{\Psi}}\bra{\Psi} + \ket{\Psi}\bra{\dot{\Psi}} = \frac{1}{\im\hbar}\ket{\oper{H}\Psi}\bra{\Psi} - \frac{1}{\im\hbar}\ket{\Psi}\bra{\oper{H}\Psi}\\
@@ -892,8 +895,9 @@ Amplituda ta przyjmuje wartość maksymalną dla częstości wymuszenia równej 
 |\omega_0 \cos\beta|\). Zauważmy również, iż niezerowa szerokość połówkowa nie wynika z żadnych
 procesów dyssypatywnych, jak ma to miejsce w np. w przypadku klasycznego oscylatora harmonicznego z
 tłumieniem i wymuszeniem, tylko z samej teorii kwantowej. }\noindent\rule{\columnwidth}{0.5pt}
+
 \newpage
-\subsection{OBLICZENIA KWANTOWE}
+\section{OBLICZENIA KWANTOWE}
 
 
 
