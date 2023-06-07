@@ -3,7 +3,7 @@
 
 % TODO
 
-% * Add solved examples precession (constant H), NMR (H = -hg/2 B s) (Rabi), general (?)
+% * Add solved examples precession (constant H), general (?)
 %
 % * Composite systems made of 2-state systems (2 x 2 & later n x 2 or maybe n x 2 immediately(?))
 % * Composite systems: entanglement, density operator, partial trace, no-cloning theorem,
@@ -727,8 +727,7 @@ elementach zespolonych. Wybrane własności macierzy Pauliego:
     dla \(\mathbf{a} = (a_x,a_y,a_z)\), \(\mathbf{b}=(b_x,b_y,b_z)\) wynosi
     \begin{equation*}
         \begin{split}
-            &(\mathbf{a}\cdot\boldsymbol{\sigma})\cdot(\mathbf{b}\cdot\boldsymbol{\sigma}) = \\
-            &= (a_x\oper{X} + a_y\oper{Y} + a_z\oper{Z})(b_x\oper{X} + b_y\oper{Y} + b_z\oper{Z}) =\\
+            (\mathbf{a}\cdot\boldsymbol{\sigma})\cdot(\mathbf{b}\cdot\boldsymbol{\sigma}) &= (a_x\oper{X} + a_y\oper{Y} + a_z\oper{Z})(b_x\oper{X} + b_y\oper{Y} + b_z\oper{Z})\\
             &= (\mathbf{a}\cdot\mathbf{b})\oper{I} + \im(\mathbf{a}\times\mathbf{b})\cdot\boldsymbol{\sigma}\,.
         \end{split}
     \end{equation*}
@@ -824,9 +823,6 @@ mają postać
         \im\hbar\dot{\beta}  = H_{21}(t)\alpha + H_{22}(t)\beta
     \end{cases}}
 \end{equation*}
-
-\linesep
-
 Równanie ewolucji możemy zapisać również wykorzystując przedstawienie geometryczne wektorów stanu i
 operatorów na sferze Blocha. Istotnie różniczkując operator rzutowy \(\oper{\rho} =
 \ket{\Psi}\bra{\Psi}\) mamy
@@ -843,58 +839,95 @@ Z powyższego mamy więc dla \(\oper{\rho} = \frac{1}{2}(\oper{I} +
     \frac{\hbar}{2}\dot{\mathbf{s}} = \mathbf{H}(t)\times\mathbf{s}}
 \end{equation*}
 
-\linesep
+\subsubsection{Przykłady}
 
-\textcolor{blue}{\textbf{Oscylacje Rabiego.} Rozważmy układ opisany hamiltonianem
+\textbf{Magnetyczny rezonans jądrowy.} Rozważymy teraz zjawisko rezonansu magnetycznego mające
+liczne zastosowania w wielu działach fizyki współczesnej. Rozpatrzmy cząstkę obdarzoną momentem
+magnetycznym \(\mu\), lecz nie posiadającą ładunku elektrycznego (przypadek neutronu), która została
+umieszczona w wirującym z częstością radiową polu magnetycznym
 \begin{equation*}
-    \oper{H} = -\frac{1}{2}\gamma\hbar\mathbf{B}(t)\boldsymbol{\sigma}\,,
-\end{equation*}    
-gdzie
-\begin{equation*}
-    \mathbf{B}(t) = B_0(\sin\beta\cos\Omega t,\sin\beta\sin\Omega t, \cos\beta)\,,
+    \mathbf{B}(t) = B_\text{rf}\cos(\omega t)\mathbf{\hat{x}} - B_\text{rf}\sin(\omega t) \mathbf{\hat{y}} + B_0\mathbf{\hat{z}}\,.
 \end{equation*}
-dla pewnych stałych \(\gamma\), \(B_0\), \(\beta\), \(\Omega\), który opisuje interakcję spinu z
-zewnętrznym polem magnetycznym. Chcemy rozwiązać równanie Schr\"{o}dingera
+Hamiltonian interesującego nas układu dwupoziomowego ma postać
 \begin{equation*}
-    \mqty(\dot{\psi}_1 \\ \dot{\psi}_2) = \frac{\im\gamma B_0}{2}\mqty(\cos\beta & \e^{-\im\Omega t}\sin\beta \\ \e^{+\im\Omega t}\sin\beta & \cos\beta) \mqty(\psi_1 \\ \psi_2)\,.
+    \oper{H} = -\mu\mathbf{B}\cdot\boldsymbol{\sigma} = -\mu\mqty[B_0 & B_\text{rf}\e^{+\im\omega t} \\ B_\text{rf}\e^{-\im\omega t} & B_0]\,.
 \end{equation*}
-Poszukajmy rozwiązań postaci
-\begin{equation*}
-    \mqty(\psi_1 \\ \psi_2) = \mqty(\phi_1\e^{-\frac{\im}{2}\Omega t} \\ \phi_2 \e^{+\frac{\im}{2}\Omega t})\,,
-\end{equation*}
-skąd otrzymujemy
-\begin{equation*}
-    \mqty(\dot{\phi}_1 \\ \dot{\phi}_2) = \frac{\im}{2} \mqty(\Omega +\omega_0\cos\beta & \omega_0\sin\beta \\ \omega_0\sin\beta & -(\Omega +\omega_0\cos\beta)) \mqty(\phi_1 \\ \phi_2)\,,
-\end{equation*}
-gdzie \(\omega_0 := \gamma B_0\). Wartości własne powyższej macierzy to
-\begin{equation*}
-    \lambda = \pm\frac{\im}{2}\sqrt{\omega_0^2 + \Omega^2 + 2\omega_0\Omega\cos\beta} = \pm\frac{\im}{2}\Lambda\,,
-\end{equation*}
-natomiast wektory własne mają postać
-\begin{equation*}
-    \alpha_\pm \mqty( -\omega_0\sin\beta \\ \Omega + \omega_0\cos\beta \mp \Lambda)\,,
-\end{equation*}
-dla pewnych niezerowych stałych \(\alpha_+\), \(\alpha_-\). Rozwiązanie na wektor \(\ket{\phi(t)}\)
-ma więc postać
+Równania ewolucji na amplitudy prawdopodobieństwa mają więc postać
 \begin{equation*}
     \begin{split}
-        \ket{\phi(t)} &= \alpha_+\mqty(-\omega_0\sin\beta \\ \Omega+\omega_0\cos\beta - \Lambda)\e^{\im\Lambda t/2} \\
-        &+ \alpha_- \mqty(-\omega_0\sin\beta \\ \Omega + \omega_0\cos\beta+\Lambda)\e^{-\Lambda t/2}\,.
-    \end{split}
+        &\frac{1}{\im\omega_0}\dot{\alpha} =\eta\e^{+\im\omega t}\beta + \alpha \\
+        &\frac{1}{\im\omega_0}\dot{\beta} = \eta\e^{-\im\omega t}\alpha - \beta
+    \end{split}\quad,
 \end{equation*}
-Zakładając, iż w stanie początkowym \(\ket{\Psi(0)} = \ket{2}\) możemy obliczyć prawdopodobieństwo
-przejścia do stanu \(\ket{1}\)
+gdzie wprowadziliśmy parametry \(\omega_0 := \mu B_0 / \hbar\) i \(\eta := B_\text{rf}/B_0\).
+Poszukajmy rozwiązań postaci
 \begin{equation*}
-    p_{2\to1}(t) = |\braket{1}{\Psi}|^2 = \frac{\omega_0^2\sin^2\beta}{\Lambda^2}\sin^2\left(\frac{\Lambda t}{2}\right)\,.
+    \mqty[\alpha\\\beta] = \mqty[\phi_1(t)\e^{+\im\omega t/2} \\ \phi_2(t)\e^{-\im\omega t/2}]\,.
 \end{equation*}
-Zauważmy, że prawdopodobieństwo przejścia oscyluje z amplitudą zależną od częstości wymuszenia
+Po podstawieniu otrzymujemy układ równań
 \begin{equation*}
-    p_\text{max}(\Omega) = \frac{\sin^2\beta}{1 + \left(\frac{\Omega}{\gamma B_0}\right)^2 + 2\left(\frac{\Omega}{\gamma B_0}\right) \cos\beta} \,.
+    \frac{1}{\im\omega_0}\mqty[\dot{\phi}_1 \\ \dot{\phi}_2] = \mqty[\xi & \eta \\ \eta & -\xi]\mqty[\phi_1 \\ \phi_2]\,,
 \end{equation*}
-Amplituda ta przyjmuje wartość maksymalną dla częstości wymuszenia równej \(|\Omega_\text{rez}| =
-|\omega_0 \cos\beta|\). Zauważmy również, iż niezerowa szerokość połówkowa nie wynika z żadnych
-procesów dyssypatywnych, jak ma to miejsce w np. w przypadku klasycznego oscylatora harmonicznego z
-tłumieniem i wymuszeniem, tylko z samej teorii kwantowej. }\noindent\rule{\columnwidth}{0.5pt}
+gdzie \(\xi = 1 - \frac{\omega}{2\omega_0}\). Powyższy układ równań możemy łatwo rozwiązać
+poszukując rozwiązań postaci
+\begin{equation*}
+    \mqty[\phi_1(t) \\ \phi_2(t)] = \mqty[\Phi_1 \\ \Phi_2] \e^{\im\omega_0\lambda t}\,,
+\end{equation*}
+co po podstawieniu prowadzi do zagadnienia własnego
+\begin{equation*}
+    \mqty[\xi & \eta \\ \eta & -\xi]\mqty[\Phi_1 \\ \Phi_2] = \lambda \mqty[\Phi_1 \\ \Phi_2]\,.
+\end{equation*}
+Łatwo sprawdzić, iż wartości i wektory własne wynoszą odpowiednio
+\begin{equation*}
+    \lambda_\pm = \pm \sqrt{\xi^2 + \eta^2}\,,\quad \mqty[\Phi_1 \\ \Phi_2] = a_\pm\mqty[\frac{\eta}{\lambda_\pm - \xi} \\ 1]\,.
+\end{equation*}
+Rozwiązanie ma zatem postać
+\begin{equation*}
+    \mqty[\phi_1 \\ \phi_2] = a_+\mqty[\frac{\eta}{\lambda_+-\xi}\\1]\e^{+\im\Omega t} + a_-\mqty[\frac{\eta}{\lambda_--\xi}\\1]\e^{-\im\Omega t}\,,
+\end{equation*}
+gdzie \(\boxed{\Omega := \sqrt{\left(\omega_0 - \frac{1}{2}\omega\right)^2 +
+\left(\frac{\omega_0B_\text{rf}}{B_0}\right)^2}}\) to tzw. \textit{częstość Rabiego}. Załóżmy, iż w
+chwili początkowej \(\alpha = 0\) i \(\beta = 1\), wówczas
+\begin{equation*}
+    a_+ = \frac{\lambda_+ - \xi}{\lambda_+ - \lambda_-}\,,\quad a_- = 1 - a_+ = \frac{-\lambda_-+\xi}{\lambda_+ - \lambda_-}\,,
+\end{equation*}
+skąd
+\begin{equation*}
+    \begin{split}
+        &\alpha(t) = \frac{\im\omega_0B_\text{rf}}{\Omega B_0}\e^{+\im\omega t/2}\\
+        &\beta(t) = \left\{\cos(\Omega t) +\frac{\im}{\Omega}\left(\frac{1}{2}\omega - \omega_0\right)\sin(\Omega t)\right\}\e^{-\im\omega t/2}
+    \end{split}\quad.
+\end{equation*}
+Z powyższego prawdopodobieństwo \(p_{1\to0}\) znalezienia układu w stanie \(\ket{0}\) wynosi
+\begin{equation*}
+        p_{1\to0}(t) = |\alpha|^2 = \left(\frac{\omega_0B_\text{rf}}{\Omega B_0}\right)^2\sin^2(\Omega t) = \frac{1}{2}\left(\frac{\omega_0B_\text{rf}}{\Omega B_0}\right)^2(1-\cos(2\Omega t))\,.
+\end{equation*}
+Natomiast prawdopodobieństwo \(p_{1\to1}\) znalezienia układu w stanie \(\ket{1}\) wynosi
+\begin{equation*}
+        p_{1\to1}(t) = |\beta|^2 =\cos^2(\Omega t) + \left(\frac{\omega_0 - \frac{1}{2}\omega}{\Omega}\right)^2\sin^2(\Omega t) = 1 - p_{1\to 0}(t)\,.
+\end{equation*}
+Prawdopodobieństwa oscylują w czasie z częstością równą podwojonej częstości Rabiego. Amplituda tych
+oscylacji wynosi
+\begin{equation*}
+    \frac{1}{2}\left(\frac{\omega_0B_\text{rf}}{\Omega B_0}\right)^2 = \frac{\omega_0^2B_\text{rf}^2}{2B_0^2}\frac{1}{\left(\omega_0 - \frac{1}{2}\omega\right)^2 +
+    \left(\frac{\omega_0B_\text{rf}}{B_0}\right)^2}
+\end{equation*}
+i przyjmuje wartość maksymalną, gdy spełniony jest \textit{warunek rezonansu} postaci
+\begin{equation*}
+    \boxed{\hbar\omega = 2\mu B_0}
+\end{equation*}
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.7\columnwidth]{figs/nmr.png}
+    \caption{Wykres podwojonej amplitudy oscylacji Rabiego w funkcji częstości pola magnetycznego.
+    Na powyższym wykresie \(b=B_\text{rf}\) i \(B=B_0\)}
+\end{figure}
+
+\linesep
+
+\textbf{Precesja momentu magnetycznego.} Rozważmy ponownie cząstkę obdarzoną momentem magnetycznym,
+ale nie obdarzoną ładunkiem elektrycznym, która została umieszczona w stałym w czasie i jednorodnym
+polu magnetycznym \(\mathbf{B}\).
 
 \newpage
 \section{OBLICZENIA KWANTOWE}
