@@ -3,7 +3,6 @@
 
 % TODO
 
-% * Some stuff I forgor: show that [A,B] = iC where C is hermitian, 
 % * Rotations SU(2), SO(3)
 % * Adiabatic theorem
 %
@@ -17,8 +16,8 @@
 %   Examples
 %
 % * possible physical realizations of quantum computing (gates + adiabatic/topological(?)), I'll
-%   probably focus on Josephson junctions and charge qubits as they seem most elegant (maybe
-%   NMR/qdots as well)
+%   probably focus on Josephson junctions and charge qubits as they seem most elegant (maybe qdots
+%   as well)
 %
 % * A short overview of classical and quantum information theory (I don't want to go very deep there
 %   at the moment): Shannon/Von Neumann entropy, quantum information transfer/cryptography
@@ -843,12 +842,10 @@ Z powyższego mamy więc dla \(\oper{\rho} = \frac{1}{2}(\oper{I} +
 
 Przedstawienie geometryczne wektora stanu na sferze Blocha nie jest jedynie obserwacją matematyczną.
 Pozwala ono zwizualizować semi-klasyczną ewolucję wektorowej wielkości fizycznej \(\mathbf{S}\)
-\footnote{W mechanice kwantowej wielkość \(\boldsymbol{\mu} = \frac{1}{2}g\mu_\text{B}\mathbf{S}\)
-jest spinowym momentem magnetycznym cząstki kwantowej. W powyższym wzorze \(g\) to bezwymiarowy
-czynnik, a \(\mu_\text{B}\) to stała fizyczna zwana \textit{magnetonem Bohra}.}, której składowe
-\(S_x\), \(S_y\), \(S_z\) są w przestrzeni \(\mathscr{H}\) reprezentowane przez samosprzężone
-operatory Pauliego \(\oper{X}\), \(\oper{Y}\), \(\oper{Z}\). Istotnie zgodnie z twierdzeniem
-Ehrenfesta
+\footnote{W mechanice kwantowej wielkość \(\boldsymbol{\mu} \propto \mathbf{S}\) jest spinowym
+momentem magnetycznym cząstki kwantowej.}, której składowe \(S_x\), \(S_y\), \(S_z\) są w
+przestrzeni \(\mathscr{H}\) reprezentowane przez samosprzężone operatory Pauliego \(\oper{X}\),
+\(\oper{Y}\), \(\oper{Z}\). Istotnie zgodnie z twierdzeniem Ehrenfesta
 \begin{equation*}
     \dv{\expval{\mathbf{S}}}{t} = \frac{\im}{\hbar}\bra{\Psi}[\oper{H}, \boldsymbol{\sigma}]\ket{\Psi} = \frac{\im}{\hbar}\bra{\Psi}\left([\oper{H},\oper{X}],[\oper{H},\oper{Y}],[\oper{H},\oper{Z}]\right)\ket{\Psi}\,.
 \end{equation*}
@@ -1006,6 +1003,8 @@ szczególnym przypadku \(B(t) = B_0\) mamy
     s_x = a\cos(\omega_\text{L}t + \delta)\,,\quad s_y = -a\sin(\omega_\text{L}t + \delta)\,,\quad s_z=\text{const.}\,,
 \end{equation*}
 gdzie \(\boxed{\omega_\text{L} = 2\mu B_0/\hbar }\) to tzw. \textit{częstość Larmora}.
+
+\subsection{Twierdzenie adiabatyczne}
 
 \newpage
 \section{OBLICZENIA KWANTOWE}
