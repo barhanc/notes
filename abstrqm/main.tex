@@ -3,7 +3,9 @@
 
 % TODO
 
-% * Add solved examples precession (constant H), general (?)
+% * Some stuff I forgor: show that [A,B] = iC where C is hermitian, 
+% * Rotations SU(2), SO(3)
+% * Adiabatic theorem
 %
 % * Composite systems made of 2-state systems (2 x 2 & later n x 2 or maybe n x 2 immediately(?))
 % * Composite systems: entanglement, density operator, partial trace, no-cloning theorem,
@@ -344,7 +346,7 @@ gdzie \(\{\phi_i\}\) jest dowolną ortonormalną bazą przestrzeni \(\mathscr{H}
         \Trace{\oper{ABC}} = \Trace{\oper{BCA}} = \Trace{\oper{CAB}}\,.
     \end{equation*}
 
-    \item \(\Trace{\oper{A}} = (\Trace{\oper{A}^\dagger})^*\)
+    \item \(\Trace{\oper{A}} = \left(\Trace{\oper{A}^\dagger}\right)^*\)
     \item \(\det{\e^{\oper{A}}} = \e^{\Trace{\oper{A}}}\)
 \end{itemize}  
 \end{theorem}
@@ -839,6 +841,35 @@ Z powyższego mamy więc dla \(\oper{\rho} = \frac{1}{2}(\oper{I} +
     \frac{\hbar}{2}\dot{\mathbf{s}} = \mathbf{H}(t)\times\mathbf{s}}
 \end{equation*}
 
+Przedstawienie geometryczne wektora stanu na sferze Blocha nie jest jedynie obserwacją matematyczną.
+Pozwala ono zwizualizować semi-klasyczną ewolucję wektorowej wielkości fizycznej \(\mathbf{S}\)
+\footnote{W mechanice kwantowej wielkość \(\boldsymbol{\mu} = \frac{1}{2}g\mu_\text{B}\mathbf{S}\)
+jest spinowym momentem magnetycznym cząstki kwantowej. W powyższym wzorze \(g\) to bezwymiarowy
+czynnik, a \(\mu_\text{B}\) to stała fizyczna zwana \textit{magnetonem Bohra}.}, której składowe
+\(S_x\), \(S_y\), \(S_z\) są w przestrzeni \(\mathscr{H}\) reprezentowane przez samosprzężone
+operatory Pauliego \(\oper{X}\), \(\oper{Y}\), \(\oper{Z}\). Istotnie zgodnie z twierdzeniem
+Ehrenfesta
+\begin{equation*}
+    \dv{\expval{\mathbf{S}}}{t} = \frac{\im}{\hbar}\bra{\Psi}[\oper{H}, \boldsymbol{\sigma}]\ket{\Psi} = \frac{\im}{\hbar}\bra{\Psi}\left([\oper{H},\oper{X}],[\oper{H},\oper{Y}],[\oper{H},\oper{Z}]\right)\ket{\Psi}\,.
+\end{equation*}
+Jednocześnie dla \(\oper{H} = \mathbf{H}\cdot\boldsymbol{\sigma}\)
+\begin{equation*}
+    \begin{split}
+        &[\oper{H},\oper{X}] = -2\im H_y\oper{Z} + 2\im H_z \oper{Y}\\
+        &[\oper{H},\oper{Y}] = -2\im H_z\oper{X} + 2\im H_x \oper{Z}\\
+        &[\oper{H},\oper{Z}] = -2\im H_x\oper{Y} + 2\im H_y \oper{X}
+    \end{split}\quad,
+\end{equation*}
+skąd
+\begin{equation*}
+    \frac{\hbar}{2}\dv{\expval{\mathbf{S}}}{t} = \mathbf{H} \times \expval{\mathbf{S}}\,.
+\end{equation*}
+Widzimy zatem, iż ruch wektora \(\mathbf{s}\) po sferze Blocha odpowiada ewolucji wartości
+oczekiwanej wielkości fizycznej \(\mathbf{S}\), którą to ewolucję możemy w przybliżeniu
+semi-klasycznym traktować jako faktyczną ewolucję tych wielkości.
+
+\subsubsection{Obroty na sferze}
+
 \subsubsection{Przykłady}
 
 \textbf{Magnetyczny rezonans jądrowy.} Rozważymy teraz zjawisko rezonansu magnetycznego mające
@@ -850,7 +881,7 @@ umieszczona w wirującym z częstością radiową polu magnetycznym
 \end{equation*}
 Hamiltonian interesującego nas układu dwupoziomowego ma postać
 \begin{equation*}
-    \oper{H} = -\mu\mathbf{B}\cdot\boldsymbol{\sigma} = -\mu\mqty[B_0 & B_\text{rf}\e^{+\im\omega t} \\ B_\text{rf}\e^{-\im\omega t} & B_0]\,.
+    \oper{H} = -\mu\mathbf{B}\cdot\boldsymbol{\sigma} = -\mu\mqty[B_0 & B_\text{rf}\e^{+\im\omega t} \\ B_\text{rf}\e^{-\im\omega t} & -B_0]\,.
 \end{equation*}
 Równania ewolucji na amplitudy prawdopodobieństwa mają więc postać
 \begin{equation*}
@@ -894,7 +925,7 @@ chwili początkowej \(\alpha = 0\) i \(\beta = 1\), wówczas
 skąd
 \begin{equation*}
     \begin{split}
-        &\alpha(t) = \frac{\im\omega_0B_\text{rf}}{\Omega B_0}\e^{+\im\omega t/2}\\
+        &\alpha(t) = \frac{\im\omega_0B_\text{rf}}{\Omega B_0}\sin(\Omega t)\e^{+\im\omega t/2}\\
         &\beta(t) = \left\{\cos(\Omega t) +\frac{\im}{\Omega}\left(\frac{1}{2}\omega - \omega_0\right)\sin(\Omega t)\right\}\e^{-\im\omega t/2}
     \end{split}\quad.
 \end{equation*}
@@ -923,11 +954,58 @@ i przyjmuje wartość maksymalną, gdy spełniony jest \textit{warunek rezonansu
     Na powyższym wykresie \(b=B_\text{rf}\) i \(B=B_0\)}
 \end{figure}
 
+Zauważmy, iż opisane zjawisko stanowi podstawę do manipulacji qbitami. Istotnie w stanie rezonansu
+wektor stanu ewoluuje zgodnie z
+\begin{equation*}
+    \ket{\Psi(t)} = \alpha(t)\ket{0} + \beta(t)\ket{1} = \im\sin(\Omega t)\e^{+\im\omega_0 t}\ket{0} + \cos(\Omega t)\e^{-\im\omega_0 t}\ket{1}
+\end{equation*}
+Poprzez dostosowanie czasu \(t\) przez jaki układ dwupoziomowy oddziałuje z wirowym polem możemy
+sterować stanem \(\Psi\) w jakim się znajduje, przykładowo jeśli początkowo układ był w stanie
+\(\ket{1}\) to włączając wirowe pole magnetyczne na czas \(t = \pi/2\Omega\) układ przechodzi do
+stanu \(\ket{0}\) (pomijając nieistotny globalny czynnik fazowy).
+
 \linesep
 
 \textbf{Precesja momentu magnetycznego.} Rozważmy ponownie cząstkę obdarzoną momentem magnetycznym,
-ale nie obdarzoną ładunkiem elektrycznym, która została umieszczona w stałym w czasie i jednorodnym
-polu magnetycznym \(\mathbf{B}\).
+ale nie obdarzoną ładunkiem elektrycznym, która została umieszczona w jednorodnym polu magnetycznym
+\(\mathbf{B} = B(t)\mathbf{\hat{z}}\). Równania ewolucji składowych wektora na sferze Blocha mają
+postać
+\begin{equation*}
+    \frac{\hbar}{2}\dot{s}_x = +\mu s_y\,,\quad \frac{\hbar}{2}\dot{s}_y = -\mu Bs_x\,,\quad \frac{\hbar}{2}\dot{s}_z = 0
+\end{equation*}
+skąd \(s_z = \text{const.}\) natomiast sprzężone równania na \(s_x\) i \(s_y\) możemy rozdzielić
+wprowadzając zmienne zespolone
+\begin{equation*}
+    \xi = s_x + \im s_y\,,\quad \eta = s_x - \im s_y = \xi^*\,,
+\end{equation*}
+dla których zachodzi
+\begin{equation*}
+    \begin{split}
+        &\frac{\hbar}{2}\dot{\xi} = \mu B s_y - \im \mu B s_x = -\im \mu B \xi\\
+        &\frac{\hbar}{2}\dot{\eta} = \mu B s_y + \im \mu B s_x = +\im \mu B \eta
+    \end{split}\quad,
+\end{equation*}
+skąd
+\begin{equation*}
+    \begin{split}
+        \xi(t) = a\exp(-\frac{2\im\mu}{\hbar}\int\limits_0^tB(t')\dd{t'} - \im\delta)\\
+        \eta(t) = a\exp(+\frac{2\im\mu}{\hbar}\int\limits_0^tB(t')\dd{t'} + \im\delta)
+    \end{split}\quad,
+\end{equation*}
+Z powyższego mamy więc
+\begin{equation*}
+    \begin{split}
+        &s_x = \frac{\xi + \eta}{2} = a \cos(\frac{2\mu}{\hbar}\int\limits_0^tB(t')\dd{t'} + \delta)\\
+        &s_y = \frac{\xi - \eta}{2\im} = -a\sin(\frac{2\mu}{\hbar}\int\limits_0^tB(t')\dd{t'} + \delta)\\
+        &s_z = \text{const.}
+    \end{split}\quad.
+\end{equation*}
+Równania te opisują precesję wektora \(\mathbf{s}\) wokół osi \(z\) z zależną od czasu częstością. W
+szczególnym przypadku \(B(t) = B_0\) mamy
+\begin{equation*}
+    s_x = a\cos(\omega_\text{L}t + \delta)\,,\quad s_y = -a\sin(\omega_\text{L}t + \delta)\,,\quad s_z=\text{const.}\,,
+\end{equation*}
+gdzie \(\boxed{\omega_\text{L} = 2\mu B_0/\hbar }\) to tzw. \textit{częstość Larmora}.
 
 \newpage
 \section{OBLICZENIA KWANTOWE}
