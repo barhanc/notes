@@ -3,7 +3,6 @@
 
 % TODO
 
-% * Rotations SU(2), SO(3)
 % * Adiabatic theorem
 %
 % * Composite systems made of 2-state systems (2 x 2 & later n x 2 or maybe n x 2 immediately(?))
@@ -20,7 +19,7 @@
 %   as well)
 %
 % * A short overview of classical and quantum information theory (I don't want to go very deep there
-%   at the moment): Shannon/Von Neumann entropy, quantum information transfer/cryptography
+%   at the moment): Shannon/Von Neumann entropy, channels, quantum information transfer/cryptography
 %   ------
 
 
@@ -391,8 +390,8 @@ spełniają związek
 W przypadku nieskończenie wymiarowych przestrzeni Hilberta definicja ta jest niepełna gdyż trzeba
 mieć świadomość, iż równość operatorów oznacza z definicji równość ich dziedzin, co wymaga
 wprowadzenia rozróżnienia między operatorami jedynie \textit{symetrycznymi} (tj. spełniającymi
-równość \(\bra{\psi}\oper{A}\ket{\phi} = \bra{\phi}\oper{A}\ket{\psi}\) dla dowolnych \(\psi,\phi\in
-D(\oper{A})\)), a operatorami samosprzężonymi.
+równość \(\bra{\psi}\oper{A}\ket{\phi} = \bra{\phi}\oper{A}\ket{\psi}^*\) dla dowolnych
+\(\psi,\phi\in D(\oper{A})\)), a operatorami samosprzężonymi.
 
 Operatory samosprzężone odgrywają wyróżnioną rolę w teorii kwantowej ze względu na trzy twierdzenia,
 które są dla nich spełnione.
@@ -599,9 +598,9 @@ konkretnych realizacji teorii kwantów
     \begin{equation*}
         \oper{H}\ket{\Psi} = \im\hbar\partial_t\ket{\Psi}\,,
     \end{equation*}
-    gdzie w ogólności \(\oper{H} = \oper{H}(t)\) jest operatorem Hamiltona danego układu tworzonym
-    wedle określonych reguł w danej realizacji teorii kwantów, natomiast \(\hbar\) to stała fizyczna
-    o wymiarze działania
+    gdzie \(\oper{H}(t)\) jest specjalnym operatorem samosprzężonym (zwanym operatorem Hamiltona lub
+    po prostu hamiltonianem) reprezentującym hamiltonian układu, tworzonym wedle określonych reguł w
+    danej realizacji teorii kwantów, natomiast \(\hbar\) to stała fizyczna o wymiarze działania
     \begin{equation*}
         \hbar = \frac{h}{2\pi} = 1.054571817\ldots \cdot 10^{-34}\,\text{J}\cdot\text{s}
     \end{equation*}
@@ -850,12 +849,12 @@ przestrzeni \(\mathscr{H}\) reprezentowane przez samosprzężone operatory Pauli
     \dv{\expval{\mathbf{S}}}{t} = \frac{\im}{\hbar}\bra{\Psi}[\oper{H}, \boldsymbol{\sigma}]\ket{\Psi} = \frac{\im}{\hbar}\bra{\Psi}\left([\oper{H},\oper{X}],[\oper{H},\oper{Y}],[\oper{H},\oper{Z}]\right)\ket{\Psi}\,.
 \end{equation*}
 Jednocześnie dla \(\oper{H} = \mathbf{H}\cdot\boldsymbol{\sigma}\)
-\begin{equation*}
+\begin{equation*}\boxed{
     \begin{split}
         &[\oper{H},\oper{X}] = -2\im H_y\oper{Z} + 2\im H_z \oper{Y}\\
         &[\oper{H},\oper{Y}] = -2\im H_z\oper{X} + 2\im H_x \oper{Z}\\
         &[\oper{H},\oper{Z}] = -2\im H_x\oper{Y} + 2\im H_y \oper{X}
-    \end{split}\quad,
+    \end{split}}\quad,
 \end{equation*}
 skąd
 \begin{equation*}
@@ -865,7 +864,71 @@ Widzimy zatem, iż ruch wektora \(\mathbf{s}\) po sferze Blocha odpowiada ewoluc
 oczekiwanej wielkości fizycznej \(\mathbf{S}\), którą to ewolucję możemy w przybliżeniu
 semi-klasycznym traktować jako faktyczną ewolucję tych wielkości.
 
-\subsubsection{Obroty na sferze}
+\subsubsection{Obroty na sferze Blocha}
+
+Powyższe rozważania pokazują, iż w przedstawieniu geometrycznym stan \(\Psi\) reprezentowany przez
+jednostkowy wektor \(\mathbf{s}\) na sferze Blocha ewoluuje w taki sposób, iż efektywnie jego
+położenie na sferze Blocha w czasie \(t\) można przedstawić jako obrót wektora położenia w czasie
+\(t_0\) o pewien kąt \(\varphi\) wokół ustalonej osi \(\mathbf{\hat{n}}\)
+\begin{equation*}
+    \mathbf{s}(t) = \overleftrightarrow{\mathbf{R}}_\mathbf{\hat{n}}(\varphi)\mathbf{s}(t_0)\,.
+\end{equation*}
+W ujęciu abstrakcyjnego wektora \(\ket{\Psi}\) przekształcenie to odpowiada oczywiście pewnemu
+przekształceniu unitarnemu \(\oper{U}\), tj.
+\begin{equation*}
+    \ket{\Psi(t)} = \oper{U}\ket{\Psi(t_0)}\,.
+\end{equation*}
+Warte zbadania wydaje się więc wyznaczenie operatora \(\oper{U}\), który odpowiada obrotowi na
+sferze Blocha. Aby wyznaczyć jawny wzór na operator \(\oper{U}\) rozważmy infinitezymalny obrót
+wektora \(\mathbf{s}\) wokół osi \(\mathbf{\hat{n}}\) o kąt \(\epsilon\). Jak łatwo pokazać
+\begin{equation*}
+    \mathbf{s}' = \overleftrightarrow{\mathbf{R}}_\mathbf{\hat{n}}(\epsilon)\mathbf{s} = \mathbf{s} + \epsilon(\mathbf{s}\times\mathbf{\hat{n}})
+\end{equation*}
+w przybliżeniu do wyrazów liniowych względem \(\epsilon\). Wektor rzeczywisty \(\mathbf{s}\)
+najłatwiej powiązać z abstrakcyjnym wektorem \(\ket{\Psi}\) poprzez operator rzutowy \(\oper{\rho} =
+\ket{\Psi}\bra{\Psi}\) dla którego zachodzi
+\begin{equation*}
+    \ket{\oper{U}\Psi}\bra{\oper{U}\Psi} = \oper{U}\oper{\rho}\oper{U}^\dagger = \frac{1}{2}\left(\oper{I} + \mathbf{s}'\cdot\boldsymbol{\sigma}\right)\,,
+\end{equation*}
+skąd
+\begin{equation*}
+    \mathbf{s}\cdot\oper{U}\boldsymbol{\sigma}\oper{U}^\dagger = (\mathbf{s} + \epsilon(\mathbf{s}\times\mathbf{\hat{n}}))\cdot\boldsymbol{\sigma} = \mathbf{s}\cdot(\boldsymbol{\sigma} + \epsilon(\mathbf{\hat{n}}\times\boldsymbol{\sigma}))\,.
+\end{equation*}
+Otrzymujemy zatem równanie
+\begin{equation*}
+    \oper{U}\boldsymbol{\sigma}\oper{U}^\dagger = \boldsymbol{\sigma} + \epsilon(\mathbf{\hat{n}}\times\boldsymbol{\sigma})\,.
+\end{equation*}
+Poszukajmy \(\oper{U}\) spełniających to równanie postaci
+\begin{equation*}
+    \oper{U} = \oper{I} + \im\epsilon\oper{A}\,,\quad \oper{U}^\dagger = \oper{I} - \im\epsilon\oper{A}^\dagger\,,
+\end{equation*}
+gdzie \(\oper{A}\) jest operatorem samosprzężonym postaci \(\oper{A} =
+\mathbf{a}\cdot\boldsymbol{\sigma}\). Zauważmy, iż tak zdefiniowany \(\oper{U}\) jest unitarny w
+przybliżeniu do wyrazów liniowych względem \(\epsilon\). Podstawiając powyższe wzory na \(\oper{U}\)
+oraz \(\oper{U}^\dagger\) i ograniczając się do wyrazów liniowych względem \(\epsilon\) otrzymujemy
+\begin{equation*}
+    \im\epsilon[\oper{A}, \boldsymbol{\sigma}] = \epsilon(\mathbf{\hat{n}}\times\boldsymbol{\sigma}).
+\end{equation*}
+Widzimy zatem, iż taki, a nie inny strzał na postać operatora \(\oper{U}\) był podyktowany
+wyprowadzonymi wcześniej wzorami na komutatory operatora samosprzężonego z operatorami Pauliego,
+które naśladują strukturę zwykłego trójwymiarowego iloczynu wektorowego. Z powyższego otrzymujemy
+zatem \(\mathbf{a} = \frac{1}{2}\mathbf{\hat{n}}\), skąd
+\begin{equation*}\boxed{
+    \oper{U} = \oper{I} + \frac{\im \epsilon}{2} \mathbf{\hat{n}} \cdot \boldsymbol{\sigma}}\,.
+\end{equation*}
+Stąd łatwo możemy już uzyskać operator unitarny \(\oper{U}_\mathbf{\hat{n}}(\varphi)\) odpowiadający
+obrotowi o kąt \(\varphi\) wokół osi \(\mathbf{\hat{n}}\)
+\begin{equation*}\boxed{
+    \oper{U}_\mathbf{\hat{n}}(\varphi) = \lim_{N\to\infty}\left(\oper{I} + \frac{\im \varphi}{2N} \mathbf{\hat{n}} \cdot \boldsymbol{\sigma}\right)^N = \exp{\frac{\im}{2}\varphi\mathbf{\hat{n}}\cdot\boldsymbol{\sigma}} = \oper{I}\cos\frac{\varphi}{2} + \im(\mathbf{\hat{n}}\cdot\boldsymbol{\sigma})\sin\frac{\varphi}{2}}
+\end{equation*}
+W szczególności dla obrotów wokół osi \(x\), \(y\), \(z\) mamy odpowiednio
+\begin{equation*}\boxed{
+    \begin{split}
+        &\oper{U}_\mathbf{\hat{x}}(\varphi) = \mqty[\cos\frac{\varphi}{2} & \im\sin\frac{\varphi}{2} \\ \im\sin\frac{\varphi}{2} & \cos\frac{\varphi}{2}]\\
+        &\oper{U}_\mathbf{\hat{y}}(\varphi) = \mqty[\cos\frac{\varphi}{2} & \sin\frac{\varphi}{2} \\ -\sin\frac{\varphi}{2} & \cos\frac{\varphi}{2}]\\
+        &\oper{U}_\mathbf{\hat{z}}(\varphi) = \mqty[\e^{+\im\varphi/2} & 0 \\ 0 & \e^{-\im\varphi/2}]
+    \end{split}}\quad.
+\end{equation*}
 
 \subsubsection{Przykłady}
 
