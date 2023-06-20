@@ -26,8 +26,10 @@
 \noindent\rule{\textwidth}{.5pt}
 \subsubsection*{Wzór Taylora}
 \begin{itemize}
-    \item \(f(x)\approx f(a)+\frac{(x-a)}{1!}f'(a)+\frac{(x-a)^2}{2!}f''(a)+...+\frac{(x-a)^n}{n!}f^{(n)}(a)\)
-    \item \(f(x,y)\approx f(0,0)+\pdv{f}{x}\,x+\pdv{f}{y}\,y+\frac{1}{2}\pdv[2]{f}{x}\,x^2+\pdv[2]{f}{x}{y}\,xy+\frac{1}{2}\pdv[2]{f}{y}\,y^2\)
+    \item \(f(x)\approx
+    f(a)+\frac{(x-a)}{1!}f'(a)+\frac{(x-a)^2}{2!}f''(a)+...+\frac{(x-a)^n}{n!}f^{(n)}(a)\)
+    \item \(f(x,y)\approx
+    f(0,0)+\pdv{f}{x}\,x+\pdv{f}{y}\,y+\frac{1}{2}\pdv[2]{f}{x}\,x^2+\pdv[2]{f}{x}{y}\,xy+\frac{1}{2}\pdv[2]{f}{y}\,y^2\)
 \end{itemize}
 \noindent\rule{\textwidth}{.5pt}
 \begin{multicols}{2}
@@ -71,8 +73,10 @@
 \end{itemize}
 \subsubsection*{Tożsamości wektorowe}
 \begin{itemize}
-    \item \(\mathbf{A}\cdot(\mathbf{B}\times\mathbf{C})=\mathbf{B}\cdot(\mathbf{C}\times\mathbf{A})\)
-    \item \(\mathbf{A}\times(\mathbf{B}\times\mathbf{C})=\mathbf{B}(\mathbf{A}\cdot\mathbf{C})-\mathbf{C}(\mathbf{A}\cdot\mathbf{B})\)
+    \item
+    \(\mathbf{A}\cdot(\mathbf{B}\times\mathbf{C})=\mathbf{B}\cdot(\mathbf{C}\times\mathbf{A})\)
+    \item
+    \(\mathbf{A}\times(\mathbf{B}\times\mathbf{C})=\mathbf{B}(\mathbf{A}\cdot\mathbf{C})-\mathbf{C}(\mathbf{A}\cdot\mathbf{B})\)
 \end{itemize}
 \subsubsection*{Operator nabla}
 \begin{itemize}
@@ -83,8 +87,10 @@
     \item \(\nabla\cdot(\mathbf{A}+\mathbf{B})=\nabla\cdot\mathbf{A}+\nabla\cdot\mathbf{B}\)
     \item \(\nabla\cdot(k\mathbf{A})=k\nabla\cdot\mathbf{A}\)
     \item \(\nabla\cdot (f\mathbf{A})=f(\nabla\cdot\mathbf{A})+\mathbf{A}\cdot\nabla f\)
-    \item \(\nabla\cdot(\frac{\mathbf{A}}{f})=\frac{f(\nabla\cdot\mathbf{A})-\mathbf{A}\cdot\nabla f}{f^2}\)
-    \item \(\nabla\cdot(\mathbf{A}\times\mathbf{B})=\mathbf{B}\cdot(\nabla\times\mathbf{A})-\mathbf{A}\cdot(\nabla\times\mathbf{B})\)
+    \item \(\nabla\cdot(\frac{\mathbf{A}}{f})=\frac{f(\nabla\cdot\mathbf{A})-\mathbf{A}\cdot\nabla
+    f}{f^2}\)
+    \item
+    \(\nabla\cdot(\mathbf{A}\times\mathbf{B})=\mathbf{B}\cdot(\nabla\times\mathbf{A})-\mathbf{A}\cdot(\nabla\times\mathbf{B})\)
     \item \(\nabla\times(\mathbf{A}+\mathbf{B})=\nabla\times\mathbf{A}+\nabla\times\mathbf{B}\)
     \item \(\nabla\times(k\mathbf{A})=k\nabla\times\mathbf{A}\)
     \item \(\nabla\times(f\mathbf{A})=f(\nabla\times\mathbf{A})-\mathbf{A}\times(\nabla f)\)
@@ -117,16 +123,21 @@
     \item Twierdzenie dotyczące pól bezwirowych
     \begin{itemize}
         \item \(\nabla\times\mathbf{A}=0\) w całej przestrzeni
-        \item \(\int_a^b\mathbf{A}\cdot\dd{\mathbf{l}}\) nie zależy od drogi pomiędzy punktami \(a\) i \(b\)
-        \item \(\oint_\ell \mathbf{A}\cdot\dd{\mathbf{l}}=0\) dla dowolnego zamkniętego konturu \(\ell\)
+        \item \(\int_a^b\mathbf{A}\cdot\dd{\mathbf{l}}\) nie zależy od drogi pomiędzy punktami \(a\)
+        i \(b\)
+        \item \(\oint_\ell \mathbf{A}\cdot\dd{\mathbf{l}}=0\) dla dowolnego zamkniętego konturu
+        \(\ell\)
         \item \(\mathbf{A}=-\nabla\varphi\), gdzie \(\varphi\) jest pewnym polem skalarnym
     \end{itemize}
     \item Twierdzenie dotyczące pól o zerowej dywergencji
     \begin{itemize}
         \item \(\nabla\cdot \mathbf{B}=0\) w całej przestrzeni
-        \item \(\int_\mathcal{S}\mathbf{B}\cdot\dd{\mathbf{S}}\) nie zależy od wyboru powierzchni całkowania \(\mathcal{S}\) przy zadanym konturze
-        \item \(\oint_\mathcal{S}\mathbf{B}\cdot\dd{\mathbf{S}}=0\) dla dowolnej powierzchni zamkniętej \(\mathcal{S}\)
-        \item \(\mathbf{B}=\nabla\times\boldsymbol{\Phi}\), gdzie \(\boldsymbol{\Phi}\) to tzw. potencjał wektorowy
+        \item \(\int_\mathcal{S}\mathbf{B}\cdot\dd{\mathbf{S}}\) nie zależy od wyboru powierzchni
+        całkowania \(\mathcal{S}\) przy zadanym konturze
+        \item \(\oint_\mathcal{S}\mathbf{B}\cdot\dd{\mathbf{S}}=0\) dla dowolnej powierzchni
+        zamkniętej \(\mathcal{S}\)
+        \item \(\mathbf{B}=\nabla\times\boldsymbol{\Phi}\), gdzie \(\boldsymbol{\Phi}\) to tzw.
+        potencjał wektorowy
     \end{itemize}
 \end{enumerate}
 \noindent\rule{\textwidth}{.5pt}

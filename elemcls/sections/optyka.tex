@@ -2,7 +2,8 @@
 
 \begin{document}
 \section{Optyka}
-\textit{It was not observation but theory which led me to this result which experience then confirmed.}\begin{flushright}Augustin-Jean Fresnel\end{flushright}
+\textit{It was not observation but theory which led me to this result which experience then
+confirmed.}\begin{flushright}Augustin-Jean Fresnel\end{flushright}
 \begin{center}
     \pgfspectra[width=10 cm, height=2cm, axis, axis color=white, axis font color=black]
 \end{center}
@@ -11,20 +12,24 @@ Bezwzględny współczynnik załamania światła w danym ośrodku \(n\) definiuj
 \begin{equation*}
     n=\frac{c}{v}\,,
 \end{equation*}
-gdzie \(v\) jest prędkością światła w tym ośrodku. Okazuje się, że występuje zależność \(v=v(\omega)\) (tzw. zjawisko \textit{dyspersji}). Dla typowych materiałów optycznych \(v\propto1/\omega\).
+gdzie \(v\) jest prędkością światła w tym ośrodku. Okazuje się, że występuje zależność
+\(v=v(\omega)\) (tzw. zjawisko \textit{dyspersji}). Dla typowych materiałów optycznych
+\(v\propto1/\omega\).
 \subsubsection{Zjawiska odbicia i załamania}
 \noindent\fbox{%
     \parbox{\textwidth}{%
         \textbf{Prawo odbicia}\\
-        Promień padający, odbity i normalna do powierzchni padania leżą w jednej płaszczyźnie, a kąt padania jest równy kątowi odbicia.
-    }%
+        Promień padający, odbity i normalna do powierzchni padania leżą w jednej płaszczyźnie, a kąt
+    padania jest równy kątowi odbicia. }%
 }
 \medskip
 
 \noindent\fbox{%
     \parbox{\textwidth}{%
         \textbf{Prawo Snelliusa}\\
-        Promień padający, załamany i normalna do powierzchni padania leżą w jednej płaszczyźnie, a stosunek sinusa kąta padania do sinusa kąta załamania jest równy względnemu współczynnikowi załamania światła
+        Promień padający, załamany i normalna do powierzchni padania leżą w jednej płaszczyźnie, a
+        stosunek sinusa kąta padania do sinusa kąta załamania jest równy względnemu współczynnikowi
+        załamania światła
         \begin{equation*}
             \frac{\sin\alpha}{\sin\beta}=\frac{n_\beta}{n_\alpha}\,.
         \end{equation*}
@@ -32,33 +37,42 @@ gdzie \(v\) jest prędkością światła w tym ośrodku. Okazuje się, że wyst�
 }
 
 \subsubsection*{Zjawisko całkowitego wewnętrznego odbicia}
- Z prawa Snella wynika, że jeśli \(n_\beta>n_\alpha\) to \(\alpha>\beta\). Wynika stąd, że istnieje taki graniczny kąt \(\beta_\text{gr}\), że \(\alpha=\pi/2\). Z prawa Snella mamy wówczas \(n_\beta/n_\alpha=\sin \frac{\pi}{2}/\sin\beta_\text{gr}\), skąd
+ Z prawa Snella wynika, że jeśli \(n_\beta>n_\alpha\) to \(\alpha>\beta\). Wynika stąd, że istnieje
+ taki graniczny kąt \(\beta_\text{gr}\), że \(\alpha=\pi/2\). Z prawa Snella mamy wówczas
+ \(n_\beta/n_\alpha=\sin \frac{\pi}{2}/\sin\beta_\text{gr}\), skąd
 \begin{equation*}
     \beta_\text{gr}=\arcsin\frac{n_\alpha}{n_\beta}\,.
 \end{equation*}
 \noindent\fbox{%
     \parbox{\textwidth}{%
         \textbf{Zasada Fermata}\\
-        Promień świetlny poruszający się w danym ośrodku między punktami \(A\), \(B\) ma tę własność, że droga optyczna
+        Promień świetlny poruszający się w danym ośrodku między punktami \(A\), \(B\) ma tę
+        własność, że droga optyczna
         \begin{equation*}
             ct=\int_A^Bn(\mathbf{r})\dd{l}
         \end{equation*}
-        jest stacjonarna.
-    }%
+        jest stacjonarna. }%
 }\\
 
-W powyższym wzorze \(\dd{l}\) to fragment tzw. \textit{drogi geometrycznej}, a \(n(\mathbf{r})\) jest polem skalarnym opisującym współczynnik załamania światła w danym obszarze. Takie sformułowanie zasady Fermata pozwala w prosty sposób rozwiązywać zadania polegające na znalezieniu trajektorii biegu promienia świetlnego w ośrodku o zmiennym współczynniku załamania. Poniżej zamieszczam trzy zadania.
+W powyższym wzorze \(\dd{l}\) to fragment tzw. \textit{drogi geometrycznej}, a \(n(\mathbf{r})\)
+jest polem skalarnym opisującym współczynnik załamania światła w danym obszarze. Takie sformułowanie
+zasady Fermata pozwala w prosty sposób rozwiązywać zadania polegające na znalezieniu trajektorii
+biegu promienia świetlnego w ośrodku o zmiennym współczynniku załamania. Poniżej zamieszczam trzy
+zadania.
 \medskip
 
 \textbf{Zadania.}
 \begin{enumerate}
-    \item \textit{Na ośrodek przezroczysty o współczynniku załamania zależnym od \(y\), w punkcie \(y=0\), pod kątem prostym pada promień światła. Jaka powinna być postać funkcji \(n(y)\), aby wewn. ośrodka promień biegł po paraboli \(y(x)=\alpha x^2\)? Przyjmij \(n(0)=n_0\).}
+    \item \textit{Na ośrodek przezroczysty o współczynniku załamania zależnym od \(y\), w punkcie
+    \(y=0\), pod kątem prostym pada promień światła. Jaka powinna być postać funkcji \(n(y)\), aby
+    wewn. ośrodka promień biegł po paraboli \(y(x)=\alpha x^2\)? Przyjmij \(n(0)=n_0\).}
 \medskip
 
 \textit{Rozwiązanie.}
 \medskip
 
-Rozpatrzmy warstwę ośrodka na wysokości \(y\) i grubości \(\dd y\). Czas \(\dd t\) potrzebny światłu na przebycie tej warstwy wynosi
+Rozpatrzmy warstwę ośrodka na wysokości \(y\) i grubości \(\dd y\). Czas \(\dd t\) potrzebny światłu
+na przebycie tej warstwy wynosi
 \begin{equation*}
     \dd{t}=\frac{\sqrt{\dd{y}^2+\dd{x}^2}}{c/n(y)}\,.
 \end{equation*}
@@ -66,7 +80,10 @@ Całkowity czas \(t\) potrzebny światłu na przebycie odległości \(\Delta y=y
 \begin{equation*}
     ct=\int_{y_A}^{y_B} n(y)\sqrt{x'(y)^2+1}\,\dd{y}=\int_{y_A}^{y_B} \mathcal{F}(x(y), x'(y), y)\,\dd{y}\,.
 \end{equation*}
-Zgodnie z zasadą Fermata światło przebywa drogę z A do B po trajektorii \(y(x)\), dla której czas \(t\) potrzebny na jej przebycie jest stacjonarny. Z rachunku wariacyjnego wiemy, że aby wielkość dana w postaci powyższej całki była stacjonarna, funkcja podcałkowa \(\mathcal{F}\) musi spełniać równania Eulera-Lagrange'a
+Zgodnie z zasadą Fermata światło przebywa drogę z A do B po trajektorii \(y(x)\), dla której czas
+\(t\) potrzebny na jej przebycie jest stacjonarny. Z rachunku wariacyjnego wiemy, że aby wielkość
+dana w postaci powyższej całki była stacjonarna, funkcja podcałkowa \(\mathcal{F}\) musi spełniać
+równania Eulera-Lagrange'a
 \begin{equation*}
     \pdv{\mathcal{F}}{x}=\dv{}{y}\pdv{\mathcal{F}}{x'}\,.
 \end{equation*}
@@ -74,11 +91,13 @@ Ponieważ \(\partial\mathcal{F}/\partial x=0\), zatem
 \begin{equation*}
 \pdv{\mathcal{F}}{x'}=n(y)\frac{x'(y)}{\sqrt{x'(y)^2+1}}=n(y)\frac{\dd{x}}{\sqrt{\dd{x}^2+\dd{y}^2}}=\text{const}=p\,.
 \end{equation*}
- Z powyższego równania możemy z jednej strony znaleźć trajektorię \(y(x)\) dla danego \(n(y)\) poprzez rozwiązanie równania różniczkowego
+ Z powyższego równania możemy z jednej strony znaleźć trajektorię \(y(x)\) dla danego \(n(y)\)
+ poprzez rozwiązanie równania różniczkowego
 \begin{equation*}
     \dv{y}{x}=\sqrt{\frac{n^2(y)}{p^2}-1}\,,
 \end{equation*}
-lub wyznaczyć funkcję \(n(y)\) dla znanej trajektorii \(y(x)\) przez przekształcenie powyższego równania
+lub wyznaczyć funkcję \(n(y)\) dla znanej trajektorii \(y(x)\) przez przekształcenie powyższego
+równania
 \begin{equation*}
     n(y)=p\sqrt{y'(x)^2+1}\,.
 \end{equation*}
@@ -87,16 +106,21 @@ W naszym zadaniu \(y'(x)=2\alpha x=2\sqrt{\alpha y}\), zatem otrzymujemy
     n(y)=n_0\sqrt{1+4\alpha y}\,.
 \end{equation*}
 \subsubsection*{Pewne uogólnienia}
-Drogę optyczną \(ct\) możemy również zapisać w innym układzie współrzędnych. Prawdopodobnie najbardziej przydatnym z nich jest układ współrzędnych biegunowych \((r,\phi)\)
+Drogę optyczną \(ct\) możemy również zapisać w innym układzie współrzędnych. Prawdopodobnie
+najbardziej przydatnym z nich jest układ współrzędnych biegunowych \((r,\phi)\)
 \begin{equation*}
     ct=\int_{A}^{B}n(r,\phi)\sqrt{\dd{r}^2+r^2\dd{\phi}^2}\,.
 \end{equation*}
-Jeżeli rozpatrujemy przypadek, w którym gęstość optyczna zmienia się radialnie, wówczas przeprowadzając analogicznie obliczenia, możemy wyznaczyć ogólne rów. różniczkowe, którego rozwiązanie dla danej postaci \(n(r)\) jest trajektorią światła w tym ośrodku (we wsp. biegunowych)
+Jeżeli rozpatrujemy przypadek, w którym gęstość optyczna zmienia się radialnie, wówczas
+przeprowadzając analogicznie obliczenia, możemy wyznaczyć ogólne rów. różniczkowe, którego
+rozwiązanie dla danej postaci \(n(r)\) jest trajektorią światła w tym ośrodku (we wsp. biegunowych)
 \begin{equation*}
     \dv[]{r}{\phi}=r\sqrt{\frac{n^2(r)}{P^2}r^2-1}\,.
 \end{equation*}
 
-\item \textit{Na ośrodek przezroczysty o współczynniku załamania zależnym od \(y\), w punkcie \(y=a\), pod kątem prostym pada promień światła. Jaka powinna być postać funkcji \(n(y)\), aby wewn. ośrodka promień biegł po sinusoidzie \(y(x)=a\cos mx\)? Przyjmij, że \(n(a)\) jest znane.}
+\item \textit{Na ośrodek przezroczysty o współczynniku załamania zależnym od \(y\), w punkcie
+\(y=a\), pod kątem prostym pada promień światła. Jaka powinna być postać funkcji \(n(y)\), aby wewn.
+ośrodka promień biegł po sinusoidzie \(y(x)=a\cos mx\)? Przyjmij, że \(n(a)\) jest znane.}
 \medskip
 
 \textit{Rozwiązanie.}
@@ -117,11 +141,13 @@ Z poprzednich rozważań mamy zatem
     \text{Odp.: }\,n(y)=n(a)\sqrt{m^2\left(a^2-y^2\right)+1}\,.
 \end{equation*}
 \item
-\noindent\textit{Dana jest przezroczysta kula o promieniu \(R\) umieszczona w powietrzu \(n_0\approx 1\). Współczynnik załamania światła w tej kuli zmienia się radialnie zgodnie ze wzorem
+\noindent\textit{Dana jest przezroczysta kula o promieniu \(R\) umieszczona w powietrzu \(n_0\approx
+1\). Współczynnik załamania światła w tej kuli zmienia się radialnie zgodnie ze wzorem
 \begin{equation*}
     n(r)=\frac{R+a}{r+a}\,.
 \end{equation*}
-Na kulę pod kątem \(\alpha\) pada promień świetlny. Wyznacz najmniejszą odległość \(d\) tego promienia od środka kuli.}
+Na kulę pod kątem \(\alpha\) pada promień świetlny. Wyznacz najmniejszą odległość \(d\) tego
+promienia od środka kuli.}
 \medskip
 
 \textit{Rozwiązanie.}
@@ -131,7 +157,8 @@ Ponieważ \(\dv{r}{\phi}|_{r=d}=0\), zatem
 \begin{equation*}
     0=d\sqrt{\frac{n^2(d)}{P^2}d^2-1}\quad \implies \quad n(d)=\frac{P}{d}\,.
 \end{equation*}
-Pozostaje wyznaczyć wielkość zachowaną podczas ruchu promienia świetlnego w rozważanym ośrodku -- \(P\) (można mówić o optycznej całce ruchu \(P\)). Z równań Lagrange'a mamy
+Pozostaje wyznaczyć wielkość zachowaną podczas ruchu promienia świetlnego w rozważanym ośrodku --
+\(P\) (można mówić o optycznej całce ruchu \(P\)). Z równań Lagrange'a mamy
 \begin{equation*}
     \pdv{\mathcal{F}}{\phi'}=n(r)\frac{r^2\phi'(r)}{\sqrt{1+r^2\phi'(r)^2}}=n(r)\frac{r^2\dd{\phi}}{\sqrt{\dd{r}^2+r^2\dd{\phi}^2}}=P\,.
 \end{equation*}
@@ -148,22 +175,34 @@ Mamy \(n(R)=1\), zatem \(\sin\beta(R)=\sin\alpha\), więc \(P=R\sin\alpha\), sk�
 \end{equation*}
 \end{enumerate}
 \subsubsection{Zwierciadła}
-W ogólności będziemy oznaczać \(F\) -- ognisko zwierciadła, \(G\) -- środek optyczny zwierciadła, tj. punkt przecięcia zwierciadła z jego płaszczyzną symetrii. Definiujemy ogniskową zwierciadła \(f\) jako odległość \(f=|GF|\).
+W ogólności będziemy oznaczać \(F\) -- ognisko zwierciadła, \(G\) -- środek optyczny zwierciadła,
+tj. punkt przecięcia zwierciadła z jego płaszczyzną symetrii. Definiujemy ogniskową zwierciadła
+\(f\) jako odległość \(f=|GF|\).
 \medskip
 
-\textbf{\textit{Zwierciadła sferyczne.}} Zwierciadłem sferycznym nazywamy wycinek sfery pokryty materiałem odbijającym promienie świetlne. Jeśli materiał odbijający znajduje się na wewnętrznej części sfery wówczas jest to \textit{zwierciadło wklęsłe}, w przeciwnym wypadku jest to \textit{zwierciadło wypukłe}. W konstrukcjach przyjmujemy, że dla zwierciadła sferycznego \(f=\pm R/2\), gdzie \(R\) jest promieniem sfery, z której zostało wycięte zwierciadło. W rzeczywistości  przybliżenie to jest dobre tylko dla promieni przyosiowych, dla których możemy pominąć wpływ \textit{aberracji sferycznej}. Istotnie nietrudno pokazać, że promień równoległy do osi optycznej biegnący w odległości \(d\) od niej po odbiciu przetnie oś optyczną w punkcie \(F'\) takim, że
+\textbf{\textit{Zwierciadła sferyczne.}} Zwierciadłem sferycznym nazywamy wycinek sfery pokryty
+materiałem odbijającym promienie świetlne. Jeśli materiał odbijający znajduje się na wewnętrznej
+części sfery wówczas jest to \textit{zwierciadło wklęsłe}, w przeciwnym wypadku jest to
+\textit{zwierciadło wypukłe}. W konstrukcjach przyjmujemy, że dla zwierciadła sferycznego \(f=\pm
+R/2\), gdzie \(R\) jest promieniem sfery, z której zostało wycięte zwierciadło. W rzeczywistości
+przybliżenie to jest dobre tylko dla promieni przyosiowych, dla których możemy pominąć wpływ
+\textit{aberracji sferycznej}. Istotnie nietrudno pokazać, że promień równoległy do osi optycznej
+biegnący w odległości \(d\) od niej po odbiciu przetnie oś optyczną w punkcie \(F'\) takim, że
 \begin{equation*}
     |GF'|=f^*=2f-\frac{f}{\sqrt{1-d^2/4f^2}}\,,
 \end{equation*}
-gdzie \(|f|=R/2\). Dla \(2f\gg d\) otrzymujemy oczywiście \(f^*\approx f\). Równanie zwierciadła sferycznego ma postać
+gdzie \(|f|=R/2\). Dla \(2f\gg d\) otrzymujemy oczywiście \(f^*\approx f\). Równanie zwierciadła
+sferycznego ma postać
 \begin{equation*}
     \frac{1}{x}+\frac{1}{y}=\frac{1}{f}\,,
 \end{equation*}
-gdzie \(x\) jest położeniem przedmiotu, \(y\) położeniem obrazu. Powiększenie obrazu \(p\) definiujemy jako
+gdzie \(x\) jest położeniem przedmiotu, \(y\) położeniem obrazu. Powiększenie obrazu \(p\)
+definiujemy jako
 \begin{equation*}
     p=\left|\frac{y}{x}\right|\,.
 \end{equation*}
-\textit{Wzór Newtona.} Niech \(x_1\), \(x_2\) oznaczają odpowiednio odległość \(F\) od przedmiotu oraz obrazu. Wówczas zachodzi
+\textit{Wzór Newtona.} Niech \(x_1\), \(x_2\) oznaczają odpowiednio odległość \(F\) od przedmiotu
+oraz obrazu. Wówczas zachodzi
 \begin{equation*}
     x_1=x-f\,,\quad x_2=y-f\,,\quad xy=fx+fy\,,
 \end{equation*}
@@ -171,7 +210,9 @@ skąd otrzymujemy
 \begin{equation*}
     x_1x_2=(x-f)(y-f)=xy-xf-yf+f^2=f^2\,.
 \end{equation*}
-\indent \textbf{\textit{Zwierciadła paraboliczne.}} Zwierciadłem parabolicznym nazywamy paraboloidę obrotową pokrytą materiałem odbijającym promienie świetlne. W ogólności ogniskowa \(f\) zwierciadła powstałego przez obrót wokół osi Y krzywej będącej wykresem funkcji parzystej \(y(x)\) wynosi
+\indent \textbf{\textit{Zwierciadła paraboliczne.}} Zwierciadłem parabolicznym nazywamy paraboloidę
+obrotową pokrytą materiałem odbijającym promienie świetlne. W ogólności ogniskowa \(f\) zwierciadła
+powstałego przez obrót wokół osi Y krzywej będącej wykresem funkcji parzystej \(y(x)\) wynosi
 \begin{equation*}
    f=y(x)+\frac{x}{2}\left(\frac{1}{y'(x)}-y'(x)\right)\,.
 \end{equation*}
@@ -179,16 +220,22 @@ Dla \(y=ax^2\), otrzymujemy
 \begin{equation*}
     f=\frac{1}{4a}\,,
 \end{equation*}
-zatem widzimy, że dla zwierciadła parabolicznego istotnie wiązka promieni równoległych do osi optycznej skupia się w jednym punkcie \(\mathcal{F}\).
+zatem widzimy, że dla zwierciadła parabolicznego istotnie wiązka promieni równoległych do osi
+optycznej skupia się w jednym punkcie \(\mathcal{F}\).
 \medskip
 
-\textit{Zasada odwracalności biegu promieni.} Zawsze możemy odwrócić bieg promienia świetlnego zamieniając obraz z przedmiotem rzeczywistym.
+\textit{Zasada odwracalności biegu promieni.} Zawsze możemy odwrócić bieg promienia świetlnego
+zamieniając obraz z przedmiotem rzeczywistym.
 \subsubsection{Soczewki}
-Soczewka to ciało przezroczyste ograniczone dwiema sferami o promieniach \(r_1\) i \(r_2\). Dla soczewek cienkich i pomijając aberrację sferyczną mamy
+Soczewka to ciało przezroczyste ograniczone dwiema sferami o promieniach \(r_1\) i \(r_2\). Dla
+soczewek cienkich i pomijając aberrację sferyczną mamy
 \begin{equation*}
     Z=\frac{1}{f}=\left(\frac{n}{n_0}-1\right)\left(\frac{1}{r_1}+\frac{1}{r_2}\right)\,,
 \end{equation*}
-gdzie analogicznie \(f\) jest odległością między ogniskiem soczewki \(F\), a jej środkiem optycznym \(\mathcal{G}\). Dla soczewek cienkich i pomijając aberrację sferyczną wiązka promieni równoległych padających na soczewkę skupiającą pod kątem \(\vartheta\) do osi optycznej jest skupiana w punkcie \(F'\) leżącym na prostej przechodzącej przez \(F\) i prostopadłej do osi optycznej takim, że
+gdzie analogicznie \(f\) jest odległością między ogniskiem soczewki \(F\), a jej środkiem optycznym
+\(\mathcal{G}\). Dla soczewek cienkich i pomijając aberrację sferyczną wiązka promieni równoległych
+padających na soczewkę skupiającą pod kątem \(\vartheta\) do osi optycznej jest skupiana w punkcie
+\(F'\) leżącym na prostej przechodzącej przez \(F\) i prostopadłej do osi optycznej takim, że
 \begin{equation*}
     |FF'|=f\tan\vartheta\,.
 \end{equation*}
@@ -199,17 +246,27 @@ Równanie soczewki ma postać
 gdzie \(x\) jest położeniem przedmiotu, \(y\) położeniem obrazu.
 
 \subsection{Optyka falowa}
-Optykę geometryczną możemy stosować w przypadkach, kiedy wymiary wszelkich obiektów (soczewek, pryzmatów itp.) są o wiele większe od długości fali światła użytego w doświadczeniu. Eksperymentem ilustrującym falową naturę światła jest doświadczenie Younga.
+Optykę geometryczną możemy stosować w przypadkach, kiedy wymiary wszelkich obiektów (soczewek,
+pryzmatów itp.) są o wiele większe od długości fali światła użytego w doświadczeniu. Eksperymentem
+ilustrującym falową naturę światła jest doświadczenie Younga.
 \subsubsection{Doświadczenie Younga}
-W doświadczeniu Younga mamy ekran z dwiema niewielkimi szczelinami \(S_1\) i \(S_2\), w których znajdują się koherentne i zgodne w fazie źródła \(F_1\) i \(F_2\), które emitują monochromatyczne światło (w rzeczywistym eksperymencie Young użył dodatkowego ekranu z pojedynczą szczeliną umieszczonego wcześniej). Na odległym ekranie obserwujemy wówczas tzw. prążki interferencyjne. Drgania pola elektrycznego fal świetlnej generowanych przez źródła \(F_1\) i \(F_2\) wynoszą \(E_0\sin\omega t\) z dokładnością do przesunięcia fazowego. Drgania pól elektrycznych fal w punkcie o współrzędnej kątowej \(\vartheta\) na położonym daleko ekranie wynoszą odpowiednio
+W doświadczeniu Younga mamy ekran z dwiema niewielkimi szczelinami \(S_1\) i \(S_2\), w których
+znajdują się koherentne i zgodne w fazie źródła \(F_1\) i \(F_2\), które emitują monochromatyczne
+światło (w rzeczywistym eksperymencie Young użył dodatkowego ekranu z pojedynczą szczeliną
+umieszczonego wcześniej). Na odległym ekranie obserwujemy wówczas tzw. prążki interferencyjne.
+Drgania pola elektrycznego fal świetlnej generowanych przez źródła \(F_1\) i \(F_2\) wynoszą
+\(E_0\sin\omega t\) z dokładnością do przesunięcia fazowego. Drgania pól elektrycznych fal w punkcie
+o współrzędnej kątowej \(\vartheta\) na położonym daleko ekranie wynoszą odpowiednio
 \begin{equation*}
     E_1=E_0\sin\omega t\quad\text{i}\quad E_2=E_0\sin(\omega t+k\Delta s)\,,
 \end{equation*}
-gdzie \(\Delta s\) jest różnicą dróg geometrycznych dwóch promieni. Jeśli ekran jest bardzo daleko możemy przyjąć
+gdzie \(\Delta s\) jest różnicą dróg geometrycznych dwóch promieni. Jeśli ekran jest bardzo daleko
+możemy przyjąć
 \begin{equation*}
     \Delta s=d\sin\vartheta\,,
 \end{equation*}
-gdzie \(d\) jest odległością między szczelinami. Maksymalne wzmocnienie fal (interferencja konstruktywna) zajdzie oczywiście gdy
+gdzie \(d\) jest odległością między szczelinami. Maksymalne wzmocnienie fal (interferencja
+konstruktywna) zajdzie oczywiście gdy
 \begin{equation*}
     (\text{max})\quad \delta=k\Delta s=2\pi m\,,\quad m\in\mathbb{Z}
 \end{equation*}
@@ -217,27 +274,35 @@ natomiast całkowite wygaszenie fal zajdzie, gdy
 \begin{equation*}
     (\text{min})\quad \delta=k\Delta s=2\pi m +\pi\,,\quad m\in\mathbb{Z}\,.
 \end{equation*}
-Z powyższego otrzymujemy, że położenia kątowe maksimów \(\vartheta_\text{max}\) oraz minimów \(\vartheta_\text{min}\) są dane wzorami
+Z powyższego otrzymujemy, że położenia kątowe maksimów \(\vartheta_\text{max}\) oraz minimów
+\(\vartheta_\text{min}\) są dane wzorami
 \begin{equation*}
     \vartheta_\text{max}=\arcsin\frac{m\lambda}{d}\quad\text{oraz}\quad \vartheta_\text{min}=\arcsin\frac{(m+\frac{1}{2})\lambda}{d}\,.
 \end{equation*}
 \subsubsection{Siatka dyfrakcyjna}
-Siatka dyfrakcyjna to układ wielu \(N\) równoległych niewielkich szczelin umieszczonych w równych odległościach \(d\) od siebie. Położenia kątowe maksimów (ale nie minimów) są takie same jak w doświadczeniu Younga. Jeśli światło pada na siatkę pod kątem \(\beta\), to wówczas
+Siatka dyfrakcyjna to układ wielu \(N\) równoległych niewielkich szczelin umieszczonych w równych
+odległościach \(d\) od siebie. Położenia kątowe maksimów (ale nie minimów) są takie same jak w
+doświadczeniu Younga. Jeśli światło pada na siatkę pod kątem \(\beta\), to wówczas
 \begin{equation*}
     \delta =kd(\sin\vartheta+\sin\beta)\,.
 \end{equation*}
-Obliczmy natężenie światła \(I(\vartheta)\) na daleko położonym ekranie, gdy na siatkę pada prostopadle światło monochromatyczne. Potrzebne są nam do tego następujące fakty.
+Obliczmy natężenie światła \(I(\vartheta)\) na daleko położonym ekranie, gdy na siatkę pada
+prostopadle światło monochromatyczne. Potrzebne są nam do tego następujące fakty.
 \begin{enumerate}
-    \item Natężenie światła jest wprost proporcjonalne do średniej z kwadratu wypadkowego pola elektrycznego
+    \item Natężenie światła jest wprost proporcjonalne do średniej z kwadratu wypadkowego pola
+    elektrycznego
     \begin{equation*}
         I\propto \langle E_\text{tot}^2\rangle\,.
     \end{equation*}
     
-    \item Dla źródeł koherentnych, aby obliczyć wypadkowe natężenie światła obliczamy najpierw wypadkowe natężenie pola elektrycznego, a następnie uśredniamy je, zgodnie z punktem pierwszym.
+    \item Dla źródeł koherentnych, aby obliczyć wypadkowe natężenie światła obliczamy najpierw
+    wypadkowe natężenie pola elektrycznego, a następnie uśredniamy je, zgodnie z punktem pierwszym.
     
-    \item Dla źródeł niekoherentych obliczamy najpierw średnie natężenia światła, a następnie je sumujemy.
+    \item Dla źródeł niekoherentych obliczamy najpierw średnie natężenia światła, a następnie je
+    sumujemy.
 \end{enumerate}
-Będziemy oznaczać \(A^2=\langle E_\text{tot}^2\rangle\). Źródła są koherentne, zatem obliczmy najpierw \(E_\text{tot}\)
+Będziemy oznaczać \(A^2=\langle E_\text{tot}^2\rangle\). Źródła są koherentne, zatem obliczmy
+najpierw \(E_\text{tot}\)
 \begin{equation*}
     E_\text{tot}=\sum_{\alpha=0}^{N-1}E_0\sin(\omega t+\alpha\delta)=E_0(P\sin\omega t +Q\cos\omega t)\,,
 \end{equation*}
@@ -249,7 +314,8 @@ Z powyższego mamy zatem
 \begin{equation*}
     A^2=\frac{\omega }{2\pi}\int_0^{2\pi/\omega}E_\text{tot}^2\dd{t}=\frac{1}{2}E_0^2(P^2+Q^2)\,.
 \end{equation*}
-Dla \(\delta=0\), tj. dla centralnego maksimum \(\vartheta=0\) mamy \(A^2(0)=E_0^2N^2/2\). Dla \(\vartheta\in (-\pi/2;0)\cup(0;\pi/2)\) mamy z kolei
+Dla \(\delta=0\), tj. dla centralnego maksimum \(\vartheta=0\) mamy \(A^2(0)=E_0^2N^2/2\). Dla
+\(\vartheta\in (-\pi/2;0)\cup(0;\pi/2)\) mamy z kolei
 \begin{equation*}
     A^2(\vartheta)=\frac{1}{2}E_0^2\sin^2\left(\frac{N\delta}{2}\right)\csc^2\left(\frac{\delta}{2}\right)\,,
 \end{equation*}
@@ -258,7 +324,11 @@ skąd, przyjmując \(I(0)=I_0\), otrzymujemy
     I(\vartheta)=\frac{I_0}{N^2}\sin^2\left(\frac{Nkd\sin\vartheta}{2}\right)\csc^2\left(\frac{kd\sin\vartheta}{2}\right)\,,\quad \vartheta\in\left(-\frac{\pi}{2};\frac{\pi}{2}\right)\,.
 \end{equation*}
 \subsubsection{Dyfrakcja na pojedynczej szczelinie}
-W doświadczeniu Younga i siatce dyfrakcyjnej zakładaliśmy, że szczeliny są niezwykle małe, jednak w rzeczywistości mają one skończone rozmiary. Rozpatrzmy szczelinę o szerokości \(D\). Możemy przeanalizować obraz powstający na położonym daleko ekranie, gdy na szczelinę pada prostopadle światło monochromatyczne korzystając ze wzoru na natężenie światła dla siatki dyfrakcyjnej. Istotnie podstawiając \(d=D/(N-1)\) mamy 
+W doświadczeniu Younga i siatce dyfrakcyjnej zakładaliśmy, że szczeliny są niezwykle małe, jednak w
+rzeczywistości mają one skończone rozmiary. Rozpatrzmy szczelinę o szerokości \(D\). Możemy
+przeanalizować obraz powstający na położonym daleko ekranie, gdy na szczelinę pada prostopadle
+światło monochromatyczne korzystając ze wzoru na natężenie światła dla siatki dyfrakcyjnej. Istotnie
+podstawiając \(d=D/(N-1)\) mamy 
 \begin{equation*}
 \begin{split}
     I(\vartheta)&=\lim_{N\to\infty}\frac{I_0}{N^2}\sin^2\left(\frac{Nkd\sin\vartheta}{2}\right)\csc^2\left(\frac{kd\sin\vartheta}{2}\right)\\
@@ -274,7 +344,14 @@ czyli dla punktów o położeniu kątowym
     \vartheta_\text{min}=\arcsin\frac{m\lambda}{D}\,.
 \end{equation*}
 \subsubsection{Interferencja w cienkich warstwach}
-Gdy fala monochromatyczna poruszająca się w pewnym ośrodku \(n\) odbija się od ośrodka o większej gęstości optycznej \(n'>n\) , wówczas jej faza zmienia się o \(\pi\). Rozpatrzmy światło monochromatyczne padające prostopadle na cienką warstwę (np. oleju) o grubości \(w\) i gęstości optycznej \(n\). Będziemy mieli wówczas do czynienia z interferencją. Istotnie jeśli drganie pola elektrycznego padającego światła wynosi \(E_0\sin\omega t\), to po odbiciu od górnej strony warstwy mamy \(E_1=E_0\sin(\omega t+\pi)\), natomiast po przejściu przez warstwę i odbiciu od dolnej strony warstwy mamy \(E_2=E_0\sin(\omega t+2kw)\), gdzie \(k=2\pi n/\lambda\), a \(\lambda=\frac{2\pi c}{\omega}\). Różnica faz wynosi zatem
+Gdy fala monochromatyczna poruszająca się w pewnym ośrodku \(n\) odbija się od ośrodka o większej
+gęstości optycznej \(n'>n\) , wówczas jej faza zmienia się o \(\pi\). Rozpatrzmy światło
+monochromatyczne padające prostopadle na cienką warstwę (np. oleju) o grubości \(w\) i gęstości
+optycznej \(n\). Będziemy mieli wówczas do czynienia z interferencją. Istotnie jeśli drganie pola
+elektrycznego padającego światła wynosi \(E_0\sin\omega t\), to po odbiciu od górnej strony warstwy
+mamy \(E_1=E_0\sin(\omega t+\pi)\), natomiast po przejściu przez warstwę i odbiciu od dolnej strony
+warstwy mamy \(E_2=E_0\sin(\omega t+2kw)\), gdzie \(k=2\pi n/\lambda\), a \(\lambda=\frac{2\pi
+c}{\omega}\). Różnica faz wynosi zatem
 \begin{equation*}
     \delta =2kw-\pi\,.
 \end{equation*}
@@ -286,25 +363,42 @@ a całkowite wygaszenie, gdy \(\delta=2\pi m+\pi\), czyli
 \begin{equation*}
     2w_\text{min}=m\frac{\lambda}{n}\,.
 \end{equation*}
-\textbf{Zadanie.} \textit{Na płytkę szklaną o grubości 100.25 \(\lambda\) pada prostopadle promień światła laserowego, którego długość fali wewnątrz płytki wynosi \(\lambda\). Gdy światło o natężeniu \(I\) pada na powierzchnię styku powietrze--szkło lub szkło--powietrze, wiązka przechodząca będzie miała natężenie \(rI\) (dla pewnego ustalonego \(0<r<1\)), zaś odbita: \((1-r)I\). Wyznacz natężenie wiązki przechodzącej przez płytkę i wiązki odbitej od płytki. Przyjmij, że szkło nie pochłania światła.}
+\textbf{Zadanie.} \textit{Na płytkę szklaną o grubości 100.25 \(\lambda\) pada prostopadle promień
+światła laserowego, którego długość fali wewnątrz płytki wynosi \(\lambda\). Gdy światło o natężeniu
+\(I\) pada na powierzchnię styku powietrze--szkło lub szkło--powietrze, wiązka przechodząca będzie
+miała natężenie \(rI\) (dla pewnego ustalonego \(0<r<1\)), zaś odbita: \((1-r)I\). Wyznacz natężenie
+wiązki przechodzącej przez płytkę i wiązki odbitej od płytki. Przyjmij, że szkło nie pochłania
+światła.}
 \medskip
 
 \textit{Rozwiązanie.}
 \medskip
 
-Ponieważ źródłem padającego światła jest laser, więc światło jest monochromatyczne. Niech pole elektryczne padającego światła będzie dane wzorem
+Ponieważ źródłem padającego światła jest laser, więc światło jest monochromatyczne. Niech pole
+elektryczne padającego światła będzie dane wzorem
 \begin{equation*}
     E_\text{pad}=E_0\sin \omega t\,.
 \end{equation*}
-Pole elektryczne światła odbitego od płytki będzie superpozycją pól elektrycznych promieni świetlnych odbitych kolejno od górnej i dolnej powierzchni płytki. Ponieważ te drgania (pola elektrycznego) są koherentne, zatem aby obliczyć wypadkowe natężenie światła musimy najpierw obliczyć wypadkowe pole elektryczne (nie możemy dodawać natężeń światła). Ponieważ \(I\sim E^2\), więc amplituda pola elektrycznego promienia po przejściu przez granicę powietrze--szkło wyniesie \(\sqrt{r}E_0\), a promienia odbitego \(\sqrt{1-r}E_0\). Wprowadźmy parametr \(l=\sqrt{1-r}\). Pole elektryczne promienia odbitego od górnej powierzchni od strony powietrza wynosi
+Pole elektryczne światła odbitego od płytki będzie superpozycją pól elektrycznych promieni
+świetlnych odbitych kolejno od górnej i dolnej powierzchni płytki. Ponieważ te drgania (pola
+elektrycznego) są koherentne, zatem aby obliczyć wypadkowe natężenie światła musimy najpierw
+obliczyć wypadkowe pole elektryczne (nie możemy dodawać natężeń światła). Ponieważ \(I\sim E^2\),
+więc amplituda pola elektrycznego promienia po przejściu przez granicę powietrze--szkło wyniesie
+\(\sqrt{r}E_0\), a promienia odbitego \(\sqrt{1-r}E_0\). Wprowadźmy parametr \(l=\sqrt{1-r}\). Pole
+elektryczne promienia odbitego od górnej powierzchni od strony powietrza wynosi
 \begin{equation*}
     lE_0\sin(\omega t+\pi)=lE_0\sin(\phi+\pi)\,.
 \end{equation*}
-Pole elektryczne \(n\)-tego promienia wychodzącego z płytki po górnej stronie po \(n\) odbiciach od dolnej powierzchni płytki wynosi
+Pole elektryczne \(n\)-tego promienia wychodzącego z płytki po górnej stronie po \(n\) odbiciach od
+dolnej powierzchni płytki wynosi
 \begin{equation*}
     E_n=rl^{2n-1}E_0\sin(\phi+n\delta)\,,
 \end{equation*}
-gdzie \(\delta=\frac{4\pi}{\lambda}h\) (\(h\) - grubość płytki). Istotnie amplituda pola elektrycznego promienia po przejściu przez granicę powietrze--szkło wynosi \(\sqrt{r}E_0\), każde odbicie mnoży ją przez czynnik \(l\), a odbić tych jest zawsze nieparzyście wiele, dodatkowo przy przejściu ponownym przez granicę szkło-powietrze należy ją pomnożyć przez czynnik \(\sqrt{r}\). Wypadkowe pole elektryczne światła odbitego od płytki wynosi więc
+gdzie \(\delta=\frac{4\pi}{\lambda}h\) (\(h\) - grubość płytki). Istotnie amplituda pola
+elektrycznego promienia po przejściu przez granicę powietrze--szkło wynosi \(\sqrt{r}E_0\), każde
+odbicie mnoży ją przez czynnik \(l\), a odbić tych jest zawsze nieparzyście wiele, dodatkowo przy
+przejściu ponownym przez granicę szkło-powietrze należy ją pomnożyć przez czynnik \(\sqrt{r}\).
+Wypadkowe pole elektryczne światła odbitego od płytki wynosi więc
 \begin{equation*}
     E_\text{tot}=lE_0\sin(\phi+\pi)+rE_0\left[l\sin(\phi+\delta)+l^3\sin(\phi+2\delta)+...\right]\,.
 \end{equation*}
@@ -312,7 +406,8 @@ Podstawiając \(h=\lambda/4\) otrzymujemy \(\delta=\pi\) zatem
 \begin{equation*}
     E_\text{tot}=-lE_0\sin\phi+rE_0\sin\phi\left[(-l-l^5-l^9-...)+(l^3+l^7+...)\right]\,.
 \end{equation*}
-Wyrażenie w nawiasie kwadratowym jest równe sumie dwóch szeregów geometrycznych, które z łatwością można obliczyć
+Wyrażenie w nawiasie kwadratowym jest równe sumie dwóch szeregów geometrycznych, które z łatwością
+można obliczyć
 \begin{equation*}
     E_\text{tot}=-lE_0\sin\phi+rE_0\sin\phi\frac{-l}{1+l^2}=-E_0\sin\phi \frac{2l}{1+l^2}\,.
 \end{equation*}
@@ -329,35 +424,57 @@ Oczywiście ze względu na zachowanie energii natężenie światła przechodząc
     I_p=I-I_o=I-4I\frac{1-r}{(2-r)^2}\,.
 \end{equation*}
 \subsubsection{Polaryzacja}
-Światło jest falą poprzeczną, tj. kierunki drgań wektorów \(\mathbf{E}\) i \(\mathbf{B}\) są prostopadłe do wektora falowego \(\mathbf{k}\). Fala płasko spolaryzowana to fala, w której kierunek drgań \(\mathbf{E}\) leż w każdej chwili w tej samej płaszczyźnie. Typowe źródła światła nie emitują fal płaskich, tylko tzw. \textit{fale niespolaryzowane}, których płaszczyzny drgań są zorientowane przypadkowo wokół \(\mathbf{k}\).
+Światło jest falą poprzeczną, tj. kierunki drgań wektorów \(\mathbf{E}\) i \(\mathbf{B}\) są
+prostopadłe do wektora falowego \(\mathbf{k}\). Fala płasko spolaryzowana to fala, w której kierunek
+drgań \(\mathbf{E}\) leż w każdej chwili w tej samej płaszczyźnie. Typowe źródła światła nie emitują
+fal płaskich, tylko tzw. \textit{fale niespolaryzowane}, których płaszczyzny drgań są zorientowane
+przypadkowo wokół \(\mathbf{k}\).
 \subsubsection*{Płytki polaryzujące}
-W płytce polaryzującej istnieje charakterystyczny kierunek polaryzacji. Płytka przepuszcza tylko te fale, dla których kierunki drgań \(\mathbf{E}\) są równoległe do kierunku polaryzacji. Jeśli \(I_0\) oznacza natężenie światła spolaryzowanego liniowo padającego na polaryzator w taki sposób, że płasczyzny polaryzacji fali i polaryzatora tworzą kat \(\theta\) to zgodnie z \textbf{prawem Malusa} natężenie światła po przejściu przez polaryzator wynosi
+W płytce polaryzującej istnieje charakterystyczny kierunek polaryzacji. Płytka przepuszcza tylko te
+fale, dla których kierunki drgań \(\mathbf{E}\) są równoległe do kierunku polaryzacji. Jeśli \(I_0\)
+oznacza natężenie światła spolaryzowanego liniowo padającego na polaryzator w taki sposób, że
+płasczyzny polaryzacji fali i polaryzatora tworzą kat \(\theta\) to zgodnie z \textbf{prawem Malusa}
+natężenie światła po przejściu przez polaryzator wynosi
 \begin{equation*}
     I=I_0\cos^2\theta\,.
 \end{equation*}
-Jeśli na polaryzator skierujemy światło niespolaryzowane o natężeniu \(I_0\) to niezależnie od ustawienia osi polaryzatora \(I=I_0/2\).
+Jeśli na polaryzator skierujemy światło niespolaryzowane o natężeniu \(I_0\) to niezależnie od
+ustawienia osi polaryzatora \(I=I_0/2\).
 \subsubsection*{Polaryzacja przez odbicie}
-Jeśli na materiał o gęstości optycznej \(n\) skierujemy światło będące złożeniem dwóch fal płaskich o prostopadłych polaryzacjach: w płaszczyźnie wyznaczonej przez promień padający i normalną do płaszczyzny padania (tzw. polaryzacja \(p\)) oraz w płaszczyźnie prostopadłej (tzw. polaryzacja \(s\)), to doświadczalnie stwierdzono, że istnieje kąt \(\alpha_B\) (\textit{kąt Brewstera}), taki, że promień odbity ma tylko polaryzację \(s\) oraz promień załamany jest prostopadły to promienia odbitego. Z prawa Snella mamy więc
+Jeśli na materiał o gęstości optycznej \(n\) skierujemy światło będące złożeniem dwóch fal płaskich
+o prostopadłych polaryzacjach: w płaszczyźnie wyznaczonej przez promień padający i normalną do
+płaszczyzny padania (tzw. polaryzacja \(p\)) oraz w płaszczyźnie prostopadłej (tzw. polaryzacja
+\(s\)), to doświadczalnie stwierdzono, że istnieje kąt \(\alpha_B\) (\textit{kąt Brewstera}), taki,
+że promień odbity ma tylko polaryzację \(s\) oraz promień załamany jest prostopadły to promienia
+odbitego. Z prawa Snella mamy więc
 \begin{equation*}
     \tan\alpha_B=\frac{n}{n_0}\,.
 \end{equation*}
 
 \subsection{Promieniowanie termiczne}
-Przy rozchodzeniu się fal EM przenoszona jest energia. Natężenie światła izotropowego źródła punktowego o mocy \(P_s\) w odległości \(r\) od niego wynosi
+Przy rozchodzeniu się fal EM przenoszona jest energia. Natężenie światła izotropowego źródła
+punktowego o mocy \(P_s\) w odległości \(r\) od niego wynosi
 \begin{equation*}
     I(r)=\frac{P_s}{4\pi r^2}\,.
 \end{equation*}
 \subsubsection*{Model ciała doskonale czarnego}
-Rozgrzane do wysokich temperatur ciała są źródłami światła widzialnego (np. żarówki wolframowe). Wszystkie ciała emitują promieniowanie termiczne do otoczenia (niekoniecznie w spektrum widzialnym) oraz je absorbują w każdej temperaturze większej od 0 K. Gdy dwa ciała znajdują się w równowadze termicznej szybkość emicji \(P_e\) jest równa szybkości absorpcji \(P_a\).
+Rozgrzane do wysokich temperatur ciała są źródłami światła widzialnego (np. żarówki wolframowe).
+Wszystkie ciała emitują promieniowanie termiczne do otoczenia (niekoniecznie w spektrum widzialnym)
+oraz je absorbują w każdej temperaturze większej od 0 K. Gdy dwa ciała znajdują się w równowadze
+termicznej szybkość emicji \(P_e\) jest równa szybkości absorpcji \(P_a\).
 \medskip
 
-Ciało doskonale czarne pochłania całkowicie padające nań promieniowanie. Niewielki otwór dużej wnęki, której wewnętrzne ścianki pokryto sadzą jest modelem ciała doskonale czarnego.
+Ciało doskonale czarne pochłania całkowicie padające nań promieniowanie. Niewielki otwór dużej
+wnęki, której wewnętrzne ścianki pokryto sadzą jest modelem ciała doskonale czarnego.
 \medskip
 
 \noindent\fbox{%
     \parbox{\textwidth}{%
         \textbf{Prawo Stefana-Boltzmanna}\\
-        Całkowita emisja energetyczna \(R=\int_0^\infty R(\lambda)\dd{\lambda}\) (gdzie \(R(\lambda)\) jest mocą na jednostkę powierzchni wypromieniowywaną przez ciało w postaci fali EM o długości z przedziału \((\lambda, \lambda+\dd{\lambda})\)) ciała doskonale czarnego jest wprost proporcjonalna do czwartej potęgi jego temperatury
+        Całkowita emisja energetyczna \(R=\int_0^\infty R(\lambda)\dd{\lambda}\) (gdzie
+        \(R(\lambda)\) jest mocą na jednostkę powierzchni wypromieniowywaną przez ciało w postaci
+        fali EM o długości z przedziału \((\lambda, \lambda+\dd{\lambda})\)) ciała doskonale
+        czarnego jest wprost proporcjonalna do czwartej potęgi jego temperatury
         \begin{equation*}
             R=\sigma T^4\,.
         \end{equation*}
@@ -365,7 +482,8 @@ Ciało doskonale czarne pochłania całkowicie padające nań promieniowanie. Ni
 }
 
 \subsubsection*{Prawo Plancka}
-Zgodnie z prawem Plancka moc na jednostkę powierzchni wypromieniowywana przez ciało doskonale czarne w postaci fali EM o długości fali z zakresu \((\lambda, \lambda+\dd{\lambda})\) wynosi
+Zgodnie z prawem Plancka moc na jednostkę powierzchni wypromieniowywana przez ciało doskonale czarne
+w postaci fali EM o długości fali z zakresu \((\lambda, \lambda+\dd{\lambda})\) wynosi
 \begin{equation*}
     R(\lambda)=\frac{8\pi c^2h}{\lambda^5}\frac{1}{\e^{\frac{hc}{\lambda kT}}-1}\,.
 \end{equation*}

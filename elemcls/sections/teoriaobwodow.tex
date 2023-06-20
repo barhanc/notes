@@ -4,7 +4,11 @@
 \section{Podstawy teorii obwodów}
 
 \subsection{Elementy obwodów}
-W poniższych notatkach zajmujemy się głównie obwodami złożonymi z liniowych, skupionych elementów pasywnych \(R\), \(L\), \(C\) oraz źródeł prądowych i napięciowych. Dowolny dwójnik jest jednoznacznie określony poprzez podanie zależności pomiędzy napięciem \(U(t)\) przyłożonym pomiędzy jego zaciskami, a natężeniem prądu \(I(t)\) przepływającego przez niego. Dla skupionych, liniowych elementów \(R\), \(L\), \(C\) zależności te wyglądają następująco:
+W poniższych notatkach zajmujemy się głównie obwodami złożonymi z liniowych, skupionych elementów
+pasywnych \(R\), \(L\), \(C\) oraz źródeł prądowych i napięciowych. Dowolny dwójnik jest
+jednoznacznie określony poprzez podanie zależności pomiędzy napięciem \(U(t)\) przyłożonym pomiędzy
+jego zaciskami, a natężeniem prądu \(I(t)\) przepływającego przez niego. Dla skupionych, liniowych
+elementów \(R\), \(L\), \(C\) zależności te wyglądają następująco:
 \begin{enumerate}
     \item dla rezystora: \(U(t)=RI(t)\)
      \begin{figure}[h]
@@ -32,7 +36,10 @@ W poniższych notatkach zajmujemy się głównie obwodami złożonymi z liniowyc
     \end{figure}
 \end{enumerate}
 \subsubsection{Prawa Kirchhoffa}
-Podstawowymi prawami, z których korzystamy w analizie obwodów elektrycznych są prawa Kirchhoffa będące wygodnym sformułowaniem odpowiednio równania ciągłości oraz faktu, że dla stałych w czasie pól magnetycznych rotacja pola elektrycznego wynosi 0 (obwody zawierające indukcyjność wymagają osobnej dyskusji).
+Podstawowymi prawami, z których korzystamy w analizie obwodów elektrycznych są prawa Kirchhoffa
+będące wygodnym sformułowaniem odpowiednio równania ciągłości oraz faktu, że dla stałych w czasie
+pól magnetycznych rotacja pola elektrycznego wynosi 0 (obwody zawierające indukcyjność wymagają
+osobnej dyskusji).
 \begin{enumerate}[I.]
     \item \textbf{Prądowe prawo Kirchhoffa (PPK)}\\
     Algebraiczna suma natężeń prądów przepływających przez węzęł jest równa 0.
@@ -40,7 +47,8 @@ Podstawowymi prawami, z których korzystamy w analizie obwodów elektrycznych s�
         \sum_\alpha I_\alpha (t)=0\,.
     \end{equation*}
     \item \textbf{Napięciowe prawo Kirchhoffa (NPK)}\\
-    Algebraiczna suma sił elektromotorycznych i przyrostów napięć w dowolnym obwodzie zamkniętym jest równa 0.
+    Algebraiczna suma sił elektromotorycznych i przyrostów napięć w dowolnym obwodzie zamkniętym
+    jest równa 0.
     \begin{equation*}
         \sum_\alpha \mathcal{E}_\alpha(t)+\sum_\beta U_\beta (t)=0\,.
     \end{equation*}
@@ -59,7 +67,11 @@ Wielkość zastępcza dla równoległego połączenia:
     \item kondensatorów: \(C_z=\sum C_\alpha\).
 \end{itemize}
 \subsubsection*{Połączenie równoległe źródeł napięciowych}
-Rzeczywiste źródło napięciowe możemy modelować jako szeregowe połączenie idealnego źródła SEM \(\mathcal{E}\) oraz rezystancji wewnętrznej \(r\). Rozważmy połączenie równoległe \(n\) źródeł napięciowych. Chcemy wyznaczyć zastępczą SEM i zastępczy opór takiego układu. Niech \(u\) oznacza napięcie na zaciskach zastępczego źródła, \(i\) natężenie prądu przepływającego przez zastępcze źródło. Z PPK i NPK mamy
+Rzeczywiste źródło napięciowe możemy modelować jako szeregowe połączenie idealnego źródła SEM
+\(\mathcal{E}\) oraz rezystancji wewnętrznej \(r\). Rozważmy połączenie równoległe \(n\) źródeł
+napięciowych. Chcemy wyznaczyć zastępczą SEM i zastępczy opór takiego układu. Niech \(u\) oznacza
+napięcie na zaciskach zastępczego źródła, \(i\) natężenie prądu przepływającego przez zastępcze
+źródło. Z PPK i NPK mamy
 \begin{equation*}
     \begin{split}
         & i=\sum_{\alpha=1}^ni_\alpha\,,\\
@@ -76,7 +88,8 @@ skąd
     U=\left(\sum_{\alpha=1}^n\frac{\mathcal{E}_\alpha}{r_\alpha}\right)\left(\sum_{\alpha=1}^n\frac{1}{r_\alpha}\right)^{-1}-i\left(\sum_{\alpha=1}^n\frac{1}{r_\alpha}\right)^{-1}
 \end{split}
 \end{equation*}
-Niech \(\mathcal{E}\) oznacza zastępczą SEM, a \(r\) oznacza zastępczą rezystancję wewnętrzną. Zachodzi
+Niech \(\mathcal{E}\) oznacza zastępczą SEM, a \(r\) oznacza zastępczą rezystancję wewnętrzną.
+Zachodzi
 \begin{equation*}
     U=\mathcal{E}-ir\,.
 \end{equation*}
@@ -88,18 +101,31 @@ Porównując ostatnie dwa wzory otrzymujemy
 \end{equation*}
 
 \subsection{Liniowe obwody rezystancyjne}
-W poniższym paragrafie rozpatrujemy obwody złożone jedynie z rezystorów. Poza prostymi szeregowo-równoległymi połączoniami oporników, dla których rozwiązanie obwodu nie sprawia większej trudności istnieją również inne układy, których nie można zredukować do takich połączeń. Oczywistym przykładem jest układ typu mostek. Istnieje wiele twierdzeń które pomagają w analizie takich układów, a jak przekonamy się w paragrafie dotyczącym transformacji Laplace'a twierdzenia te pozwalają rozwiązać praktycznie dowolny obwód zawierający elementy \(R\), \(L\), \(C\) z niemal dowolnym wymuszeniem \(u(t)\). Najważniejszym ogólnym twierdzeniem, na którym opiera się wiele mniejszych twierdzeń to tzw. \textbf{zasada superpozycji}:
+W poniższym paragrafie rozpatrujemy obwody złożone jedynie z rezystorów. Poza prostymi
+szeregowo-równoległymi połączoniami oporników, dla których rozwiązanie obwodu nie sprawia większej
+trudności istnieją również inne układy, których nie można zredukować do takich połączeń. Oczywistym
+przykładem jest układ typu mostek. Istnieje wiele twierdzeń które pomagają w analizie takich
+układów, a jak przekonamy się w paragrafie dotyczącym transformacji Laplace'a twierdzenia te
+pozwalają rozwiązać praktycznie dowolny obwód zawierający elementy \(R\), \(L\), \(C\) z niemal
+dowolnym wymuszeniem \(u(t)\). Najważniejszym ogólnym twierdzeniem, na którym opiera się wiele
+mniejszych twierdzeń to tzw. \textbf{zasada superpozycji}:
 \begin{enumerate}[]
-    \item Jeżeli w danej części sieci elektrycznej dopuszczalne są zbiory natężeń prądów i napięć \(\{i_1(t),...,u_1(t),...\}\) oraz \(\{ i_1'(t),...,u_1'(t),... \}\) to dopuszczalny jest również zbiór \(\{i_1(t)+i_1'(t),...,u_1(t)+u_1'(t),...\}\).
+    \item Jeżeli w danej części sieci elektrycznej dopuszczalne są zbiory natężeń prądów i napięć
+    \(\{i_1(t),...,u_1(t),...\}\) oraz \(\{ i_1'(t),...,u_1'(t),... \}\) to dopuszczalny jest
+    również zbiór \(\{i_1(t)+i_1'(t),...,u_1(t)+u_1'(t),...\}\).
 \end{enumerate}
 \subsubsection*{Twierdzenie o zamianie dwójnika}
-Dowolny dwójnik, tj. układ posiadający dwa wyjścia A i B jest równoważny pojedynczemu rezystorowi \(R\) spełniającemu warunek \(R=\frac{u_{AB}}{i_{AB}}\), gdzie \(u_{AB}\) jest napięciem pomiedzy zaciskami A i B, a \(i_{A}\) jest natężeniem prądu wpływającego do wejścia A.
+Dowolny dwójnik, tj. układ posiadający dwa wyjścia A i B jest równoważny pojedynczemu rezystorowi
+\(R\) spełniającemu warunek \(R=\frac{u_{AB}}{i_{AB}}\), gdzie \(u_{AB}\) jest napięciem pomiedzy
+zaciskami A i B, a \(i_{A}\) jest natężeniem prądu wpływającego do wejścia A.
 
 \subsubsection*{Twierdzenie o zamianie trójnika}
-Dowolny trójnik, tj układ posiadający trzy wyjścia A, B, C jest równoważny połączeniu w gwiazdę odpowiednich trzech rezystorów \(R_A\), \(R_B\), \(R_C\).
+Dowolny trójnik, tj układ posiadający trzy wyjścia A, B, C jest równoważny połączeniu w gwiazdę
+odpowiednich trzech rezystorów \(R_A\), \(R_B\), \(R_C\).
 
 \subsubsection*{Transformacja gwiazda-trójkąt}
-Połączenie rezystorów \(R_{12}\), \(R_{23}\), \(R_{13}\) w trójkąt jest równoważne połączeniu rezystorów \(R_1\), \(R_2\), \(R_3\) w gwiazdę, gdzie
+Połączenie rezystorów \(R_{12}\), \(R_{23}\), \(R_{13}\) w trójkąt jest równoważne połączeniu
+rezystorów \(R_1\), \(R_2\), \(R_3\) w gwiazdę, gdzie
 \begin{equation*}
     R_\alpha=\frac{R_{\alpha\beta}R_{\alpha\gamma}}{R_{12}+R_{23}+R_{13}}\quad \alpha\neq\beta\neq\gamma\,.
 \end{equation*}
@@ -107,22 +133,17 @@ Połączenie rezystorów \(R_{12}\), \(R_{23}\), \(R_{13}\) w trójkąt jest ró
 \begin{figure}[h]
 \centering
   \begin{circuitikz}[european resistors]
-  \draw (0,0) to [R, l_=$R_1$] (-2, 0)
-    to [-] (-2,-2)
-    to [R, l_=$R_4$] (0,-2)
-     node[label={[font=\footnotesize]below:$D$}] {}
-    to [R, l=$r$, *-*] (0,0)
-     node[label={[font=\footnotesize]above:$C$}] {}
-    to [R, l^=$R_2$] (2,0)
-    to [-] (2,-2)
-    to [R, l^=$R_3$] (0,-2)
-    (-3,-1)   node[label={[font=\footnotesize]left:$A$}] {}
-    to [short, *-*, i=$I_0$] (-2,-1)
-    (2,-1) to [short, *-*] (3,-1)
-     node[label={[font=\footnotesize]right:$B$}] {};
+  \draw (0,0) to [R, l_=$R_1$] (-2, 0) to [-] (-2,-2) to [R, l_=$R_4$] (0,-2)
+    node[label={[font=\footnotesize]below:$D$}] {} to [R, l=$r$, *-*] (0,0)
+    node[label={[font=\footnotesize]above:$C$}] {} to [R, l^=$R_2$] (2,0) to [-] (2,-2) to [R,
+    l^=$R_3$] (0,-2) (-3,-1)   node[label={[font=\footnotesize]left:$A$}] {} to [short, *-*,
+    i=$I_0$] (-2,-1) (2,-1) to [short, *-*] (3,-1) node[label={[font=\footnotesize]right:$B$}] {};
   \end{circuitikz}
 \end{figure}
-Rozważmy układ typu mostek zbudowany z 5 rezystorów \(R_1\), \(R_2\), \(R_3\), \(R_4\) i \(r\). Załóżmy, że układ ten podłączamy do źródła prądowego \(I_0\), tak, że natężenie prądu wpływającego do mostka wynosi \(I_0\). Chcemy wyznaczyć natężenie prądu \(i\) płynącego przez rezystor \(r\). Z PPK i NPK mamy
+Rozważmy układ typu mostek zbudowany z 5 rezystorów \(R_1\), \(R_2\), \(R_3\), \(R_4\) i \(r\).
+Załóżmy, że układ ten podłączamy do źródła prądowego \(I_0\), tak, że natężenie prądu wpływającego
+do mostka wynosi \(I_0\). Chcemy wyznaczyć natężenie prądu \(i\) płynącego przez rezystor \(r\). Z
+PPK i NPK mamy
 \begin{equation*}
     \begin{split}
         &I_0=i_1+i_2\\
@@ -144,7 +165,8 @@ gdzie
 \end{equation*}
 Zauważmy, że jeśli \(R_1R_3=R_2R_4\) to \(i=0\). Mówimy, że wówczas mostek jest zrównoważony.
 \subsubsection{Mostek jako czwórnik. Reciprocity theorem.}
-Wyznaczymy teraz rezystancję zastępczą pomiędzy punktami \(AB\) i \(CD\). Korzystając z transformacji gwiazda-trójkąt łatwo pokazać, że
+Wyznaczymy teraz rezystancję zastępczą pomiędzy punktami \(AB\) i \(CD\). Korzystając z
+transformacji gwiazda-trójkąt łatwo pokazać, że
 \begin{equation*}
 \begin{split}
     R_{AB}&=\frac{R_1R_4}{R_1+R_4+r}+\left(\frac{1}{R_2+\frac{rR_1}{R_1+R_4+r}}+\frac{1}{R_3+\frac{rR_4}{R_1+R_4+r}}\right)^{-1}\\
@@ -160,7 +182,8 @@ Jeżeli do węzła \(A\) wpływa prąd \(I_0\) to napięcie \(U_{CD}\) wynosi
 \begin{equation*}
     U_{CD}=ir=\frac{I_0r}{K}(R_2R_4-R_1R_3)\,.
 \end{equation*}
-Wyznaczmy teraz napięcie \(U_{AB}\), gdy do węzła \(C\) wpływa prąd \(I_0\). Wówczas napięcie \(U_{CD}\) wynosi
+Wyznaczmy teraz napięcie \(U_{AB}\), gdy do węzła \(C\) wpływa prąd \(I_0\). Wówczas napięcie
+\(U_{CD}\) wynosi
 \begin{equation*}
     U_{CD}=I_0R_{CD}=\frac{rI_0}{K}R_{14}R_{23}\,.
 \end{equation*}
@@ -192,13 +215,8 @@ Rozpatrzmy poniższe obwody. Wyznaczymy dla nich przebiegi \(I(t)\).
 \begin{figure}[h]
   \centering
   \begin{circuitikz}[european resistors]
-    \draw (0,0) to [C, l_=$C$] (2,0)
-    to [short] (2,-2)
-    to [R, l^=$R$] (0,-2)
-    to [switch, *-*] (0,0)
-    (0,0) to [short] (-2,0)
-    to  [battery2, l_=$\mathcal{E}$] (-2,-2)
-    to [switch, *-*] (0,-2);
+    \draw (0,0) to [C, l_=$C$] (2,0) to [short] (2,-2) to [R, l^=$R$] (0,-2) to [switch, *-*] (0,0)
+    (0,0) to [short] (-2,0) to  [battery2, l_=$\mathcal{E}$] (-2,-2) to [switch, *-*] (0,-2);
   \end{circuitikz}
   \caption{Obwód RC.}
 \end{figure}
@@ -223,7 +241,8 @@ Rozpatrzmy poniższe obwody. Wyznaczymy dla nich przebiegi \(I(t)\).
     \begin{equation*}
         \mathcal{E}-R\dot Q-\frac{1}{C}Q=0\,.
     \end{equation*}
-    Jest to niejednorodne liniowe równanie różniczkowe, którego rozwiązanie z warunkiem \(Q(0)=0\) ma postać
+    Jest to niejednorodne liniowe równanie różniczkowe, którego rozwiązanie z warunkiem \(Q(0)=0\)
+    ma postać
     \begin{equation*}
         Q(t)=\mathcal{E}C\left(1-e^{-t/RC}\right)\,,\quad\text{czyli}\quad I(t)=\frac{\mathcal{E}}{R}e^{-t/RC}\,.
     \end{equation*}
@@ -231,13 +250,8 @@ Rozpatrzmy poniższe obwody. Wyznaczymy dla nich przebiegi \(I(t)\).
 \begin{figure}[h]
   \centering
   \begin{circuitikz}[european resistors]
-    \draw (0,0) to [L, l_=$L$] (2,0)
-    to [short] (2,-2)
-    to [R, l^=$R$] (0,-2)
-    to [switch, *-*] (0,0)
-    (0,0) to [short] (-2,0)
-    to  [battery2, l_=$\mathcal{E}$] (-2,-2)
-    to [switch, *-*] (0,-2);
+    \draw (0,0) to [L, l_=$L$] (2,0) to [short] (2,-2) to [R, l^=$R$] (0,-2) to [switch, *-*] (0,0)
+    (0,0) to [short] (-2,0) to  [battery2, l_=$\mathcal{E}$] (-2,-2) to [switch, *-*] (0,-2);
   \end{circuitikz}
   \caption{Obwód RL.}
 \end{figure}
@@ -262,7 +276,8 @@ Dla obwodu RL z odłączonym źródłem SEM zachodzi
     \begin{equation*}
         \mathcal{E}-IR-L\dot I=0\,.
     \end{equation*}
-    Jest to niejednorodne liniowe równanie różniczkowe, którego rozwiązanie z warunkiem brzegowym \(I(0)=0\) ma postać
+    Jest to niejednorodne liniowe równanie różniczkowe, którego rozwiązanie z warunkiem brzegowym
+    \(I(0)=0\) ma postać
     \begin{equation*}
         I(t)=\frac{\mathcal{E}}{R}\left(1-e^{-Rt/L}\right)\,.
     \end{equation*}
@@ -271,10 +286,7 @@ Dla obwodu RL z odłączonym źródłem SEM zachodzi
     \begin{figure}[h]
   \centering
   \begin{circuitikz}[european resistors]
-    \draw (0,0) to [L, l_=$L$] (3,0)
-    to [R, l_=$R$] (3,2)
-    to [C, l_=$C$] (0,2)
-    to [short] (0,0);
+    \draw (0,0) to [L, l_=$L$] (3,0) to [R, l_=$R$] (3,2) to [C, l_=$C$] (0,2) to [short] (0,0);
   \end{circuitikz}
   \caption{Obwód RLC}
 \end{figure}
@@ -282,7 +294,8 @@ Z NPK otrzymujemy równanie różniczkowe
 \begin{equation*}
     \ddot I+2\beta\dot I+\omega_0^2I=0\,,
 \end{equation*}
-gdzie \(2\beta=R/L\) i \(\omega_0^2=1/LC\). Jest to oczywiście równanie tłumionego oscylatora harmonicznego. Rozwiązaniem w przypadku słabego tłumienia \(\beta<\omega_0\) jest
+gdzie \(2\beta=R/L\) i \(\omega_0^2=1/LC\). Jest to oczywiście równanie tłumionego oscylatora
+harmonicznego. Rozwiązaniem w przypadku słabego tłumienia \(\beta<\omega_0\) jest
 \begin{equation*}
     I(t)=Ae^{-\beta t}\cos(\omega t-\delta)\,,
 \end{equation*}
@@ -294,22 +307,24 @@ gdzie \(A\) i \(\delta\) są stałymi wyznaczanymi przez warunki początkowe, a 
 \begin{figure}[ht]
   \centering
   \begin{circuitikz}[european resistors]
-    \draw (0,0) to [L, l_=$L$] (3,0)
-    to [R, l_=$R$] (3,2)
-    to [C, l_=$C$] (0,2)
-    to [sV, l_=$\mathcal{E}_0\sin\Omega t$] (0,0);
+    \draw (0,0) to [L, l_=$L$] (3,0) to [R, l_=$R$] (3,2) to [C, l_=$C$] (0,2) to [sV,
+    l_=$\mathcal{E}_0\sin\Omega t$] (0,0);
   \end{circuitikz}
   \caption{Obwód RLC z wymuszeniem sinusoidalnym}
 \end{figure}
-Rozpatrzmy obwód przedstawiony na schemacie zawierający źródło SEM \(\mathcal{E}_0\sin\Omega t\). Z NPK otrzymujemy
+Rozpatrzmy obwód przedstawiony na schemacie zawierający źródło SEM \(\mathcal{E}_0\sin\Omega t\). Z
+NPK otrzymujemy
 \begin{equation*}
     \ddot I+2\beta \dot I+\omega_0^2I=\frac{\mathcal{E}_0\Omega}{L}\cos\Omega t=f_0\cos\Omega t\,,
 \end{equation*}
-gdzie analogicznie \(2\beta=R/L\) i \(\omega_0^2=1/LC\). Jest to niejednorodne liniowe równanie różniczkowe, o którym mówiliśmy w przypadku wymuszonego oscylatora harmonicznego. Rozwiązanie stacjonarne tego równania ma postać (patrz sekcja \textit{Drgania wymuszone})
+gdzie analogicznie \(2\beta=R/L\) i \(\omega_0^2=1/LC\). Jest to niejednorodne liniowe równanie
+różniczkowe, o którym mówiliśmy w przypadku wymuszonego oscylatora harmonicznego. Rozwiązanie
+stacjonarne tego równania ma postać (patrz sekcja \textit{Drgania wymuszone})
 \begin{equation*}
     I_s(t)=\frac{f_0}{\sqrt{4\beta^2\Omega^2+(\omega_0^2-\Omega^2)^2}}\cos\left(\Omega t-\arctan \frac{2\beta\Omega}{\omega_0^2-\Omega^2}\right)\,.
 \end{equation*}
-Korzystając z tożsamości \(\sin(\alpha+\pi/2)=\cos\alpha\) i \(\arctan(u)+\arctan(1/u)=\pi/2\) otrzymujemy
+Korzystając z tożsamości \(\sin(\alpha+\pi/2)=\cos\alpha\) i \(\arctan(u)+\arctan(1/u)=\pi/2\)
+otrzymujemy
 \begin{equation*}
     I_s(t)=\frac{f_0}{\sqrt{4\beta^2\Omega^2+(\omega_0^2-\Omega^2)^2}}\sin\left(\Omega t+\arctan\frac{\omega_0^2-\Omega^2}{2\beta\Omega}\right)\,.
 \end{equation*}
@@ -317,9 +332,14 @@ Podstawiając wyrażenia na \(f_0\), \(\beta\) i \(\omega_0\) otrzymujemy
 \begin{equation*}
     I_s(t)=\frac{\mathcal{E}_0}{\sqrt{R^2+(X_L+X_C)^2}}\sin\left(\Omega t-\arctan\frac{X_L+X_C}{R}\right)\,,
 \end{equation*}
-gdzie wprowadziliśmy reaktancję indukcyjną \(X_L=\Omega L\) i pojemnościową \(X_C=-1/\Omega C\). Oczywiście jest to rozwiązanie szczególne równania różniczkowego, ale jest ono dla nas najbardziej interesujące, gdyż jeśli tylko \(R\neq0\) to po odpowiednim czasie rozwiązanie jednorodne zanika i w stanie stacjonarnym \(I(t)=I_s(t)\).
+gdzie wprowadziliśmy reaktancję indukcyjną \(X_L=\Omega L\) i pojemnościową \(X_C=-1/\Omega C\).
+Oczywiście jest to rozwiązanie szczególne równania różniczkowego, ale jest ono dla nas najbardziej
+interesujące, gdyż jeśli tylko \(R\neq0\) to po odpowiednim czasie rozwiązanie jednorodne zanika i w
+stanie stacjonarnym \(I(t)=I_s(t)\).
 \subsubsection*{Rezonans}
-Podobnie jak dla układów mechanicznych, również tutaj mamy do czynienia ze zjawiskiem rezonansu. Jeśli układ jest podłączony do źródła napięcia sinusoidalnego to mówimy o tzw. rezonansie prądów. Obliczmy częstość rezonansową. W stanie ustalonym amplituda natężenia prądu \(A\) wynosi
+Podobnie jak dla układów mechanicznych, również tutaj mamy do czynienia ze zjawiskiem rezonansu.
+Jeśli układ jest podłączony do źródła napięcia sinusoidalnego to mówimy o tzw. rezonansie prądów.
+Obliczmy częstość rezonansową. W stanie ustalonym amplituda natężenia prądu \(A\) wynosi
 \begin{equation*}
     A(\Omega)=\frac{\mathcal{E}_0}{\sqrt{R^2+(\Omega L-1/\Omega C)^2}}\,,
 \end{equation*}
@@ -327,13 +347,20 @@ skąd rozwiązując równanie \(I'(\omega_\text{rez})=0\) otrzymujemy
 \begin{equation*}
     \omega_\text{rez}=\frac{1}{\sqrt{LC}}=\omega_0\,,\quad A_\text{rez}=\frac{\mathcal{E}_0}{R}\,.
 \end{equation*}
-Widzimy, że w przypadku rezonansu prądu w obwodzie RLC częstość rezonansowa jest równa ściśle częstości drgań własnych układu \(\omega_0\).
+Widzimy, że w przypadku rezonansu prądu w obwodzie RLC częstość rezonansowa jest równa ściśle
+częstości drgań własnych układu \(\omega_0\).
 \subsubsection{Impedancja}
-Aby znaleźć rozwiązanie stacjonarne dowolnego układu złożonego z elementów \(R\), \(L\), \(C\) przy wymuszeniu sinusoidalnym nie musimy wcale rozwiązywać skomplikowanych układów równań różniczkowych. Istotnie okazuje się, że dla takich obwodów możemy wprowadzić wielkość zespoloną \(\mathcal{Z}\) nazywaną impedancją, taką, że zależność między amplitudą zespoloną \(\mathcal{I}\) natężenia prądu, a amplitudą zespoloną \(\mathcal{U}\) napięcia w stanie stacjonarnym na każdym z elementów można zapisać jako
+Aby znaleźć rozwiązanie stacjonarne dowolnego układu złożonego z elementów \(R\), \(L\), \(C\) przy
+wymuszeniu sinusoidalnym nie musimy wcale rozwiązywać skomplikowanych układów równań różniczkowych.
+Istotnie okazuje się, że dla takich obwodów możemy wprowadzić wielkość zespoloną \(\mathcal{Z}\)
+nazywaną impedancją, taką, że zależność między amplitudą zespoloną \(\mathcal{I}\) natężenia prądu,
+a amplitudą zespoloną \(\mathcal{U}\) napięcia w stanie stacjonarnym na każdym z elementów można
+zapisać jako
 \begin{equation*}
     U_0e^{i \delta}=\mathcal{U}=\mathcal{IZ}=I_0e^{i \psi}\mathcal{Z}\,.
 \end{equation*}
-W stanie stacjonarnym przy wymuszeniu \(\sin\Omega t\) lub \(\cos\Omega t\) napięcie i natężenie prądu na danym elemencie są dane przez odpowiednio część urojoną lub rzeczywistą wyrażeń
+W stanie stacjonarnym przy wymuszeniu \(\sin\Omega t\) lub \(\cos\Omega t\) napięcie i natężenie
+prądu na danym elemencie są dane przez odpowiednio część urojoną lub rzeczywistą wyrażeń
 \begin{equation*}
     I_0e^{i\delta}e^{i\Omega t}\,,\quad U_0e^{i\psi}e^{i\Omega t}\,.
 \end{equation*}
@@ -341,7 +368,14 @@ Dla elementów \(R\), \(L\), \(C\) mamy odpowiednio
 \begin{equation*}
     \mathcal{Z}_R=R\,,\quad \mathcal{Z}_L=iX_L=i\omega L\,,\quad \mathcal{Z}_C=iX_C=\frac{1}{i\omega C}\,.
 \end{equation*}
-Impedancje można dodawać tak jak rezystancje w liniowych obwodach rezystancyjnych. Zamiast rozwiązywać układ równań różniczkowych możemy rozwiązać układ równań algebraicznych aby znaleźć zespolone amplitudy \(\mathcal{I}\) i \(\mathcal{U}\) we wszystkich gałęziach obwodu. Dla obwodów prądu przemiennego w stanie stacjonarnym możemy stosować wszystkie narzędzia analizy liniowych obwodów rezystancyjnych jeśli tylko posługujemy się zespolonymi wielkościami \(\mathcal{I}\), \(\mathcal{U}\), \(\mathcal{Z}\). Jeśli \(\mathcal{Z}\) jest impedancją zastępczą układu podłączonego do napięcia sinusoidalnego \(\mathcal{E}(t)=\mathcal{E}_0\sin\omega t\), to amplituda zespolona natężenia prądu płynącego przez źródło wynosi
+Impedancje można dodawać tak jak rezystancje w liniowych obwodach rezystancyjnych. Zamiast
+rozwiązywać układ równań różniczkowych możemy rozwiązać układ równań algebraicznych aby znaleźć
+zespolone amplitudy \(\mathcal{I}\) i \(\mathcal{U}\) we wszystkich gałęziach obwodu. Dla obwodów
+prądu przemiennego w stanie stacjonarnym możemy stosować wszystkie narzędzia analizy liniowych
+obwodów rezystancyjnych jeśli tylko posługujemy się zespolonymi wielkościami \(\mathcal{I}\),
+\(\mathcal{U}\), \(\mathcal{Z}\). Jeśli \(\mathcal{Z}\) jest impedancją zastępczą układu
+podłączonego do napięcia sinusoidalnego \(\mathcal{E}(t)=\mathcal{E}_0\sin\omega t\), to amplituda
+zespolona natężenia prądu płynącego przez źródło wynosi
 \begin{equation*}
     I_0e^{i\delta}=\mathcal{I}_0=\frac{\mathcal{E}_0}{\mathcal{Z}}\,.
 \end{equation*}
@@ -353,7 +387,8 @@ oraz
 \begin{equation*}
     \frac{\mathcal{E}_0}{\mathcal{Z}}=\frac{\mathcal{E}_0}{\mathcal{Z}\mathcal{Z}^*}\mathcal{Z}^*=\frac{\mathcal{E}_0}{|\mathcal{Z}|^2}\mathcal{Z}^*\,.
 \end{equation*}
-Porównując te wyrażenia możemy zapisać wyrażenia na amplitudę \(I_0\) i przesunięcie fazowe \(\delta\)
+Porównując te wyrażenia możemy zapisać wyrażenia na amplitudę \(I_0\) i przesunięcie fazowe
+\(\delta\)
 \begin{equation*}
     I_0=\frac{\mathcal{E}_0}{|\mathcal{Z}|}\,,\quad \tan\delta=\frac{\Im{\mathcal{Z}^*}}{\Re{\mathcal{Z}^*}}\,.
 \end{equation*}
@@ -366,23 +401,25 @@ Natężenie prądu płynącego przez źródło w stanie stacjonarnym wynosi wów
 \begin{figure}[ht]
   \centering
   \begin{circuitikz}[european resistors]
-    \draw (0,0) to [short] (3,0)
-    to [R, l_=$\mathcal{Z}$] (3,2)
-    to [short] (0,2)
-    to [sV, l_=$\mathcal{E}_0\sin\Omega t$] (0,0);
+    \draw (0,0) to [short] (3,0) to [R, l_=$\mathcal{Z}$] (3,2) to [short] (0,2) to [sV,
+    l_=$\mathcal{E}_0\sin\Omega t$] (0,0);
   \end{circuitikz}
   \caption{Obwód zasilany napięciem sinusoidalnym}
 \end{figure}
-Rozpatrzmy dowolny obwód złożony z idealnych elementów \(R\), \(L\) \(C\) zasilany napięciem sinusoidalnym \(U(t)=U_0\sin\omega t\). Niech \(\mathcal{Z}\) oznacza impedancję zastępczą tego obwodu. Chwilowa moc wydzielana na elemencie \(\mathcal{Z}\) w stanie stacjonarnym wynosi
+Rozpatrzmy dowolny obwód złożony z idealnych elementów \(R\), \(L\) \(C\) zasilany napięciem
+sinusoidalnym \(U(t)=U_0\sin\omega t\). Niech \(\mathcal{Z}\) oznacza impedancję zastępczą tego
+obwodu. Chwilowa moc wydzielana na elemencie \(\mathcal{Z}\) w stanie stacjonarnym wynosi
 \begin{equation*}
     P(t)=I(t)U_0\sin\omega t=I_0U_0\sin(\omega t-\delta)\sin\omega t\,.
 \end{equation*}
-Obliczmy moc średnią \(\langle P\rangle\) wydzielaną na \(\mathcal{Z}\) w jednym okresie \(T=2\pi/\omega\)
+Obliczmy moc średnią \(\langle P\rangle\) wydzielaną na \(\mathcal{Z}\) w jednym okresie
+\(T=2\pi/\omega\)
 \begin{equation*}
     \langle P\rangle=\frac{\omega}{2\pi}\int_0^{2\pi/\omega}P(t)\dd{t}=\frac{1}{2}I_0U_0\cos\delta\,.
 \end{equation*}
 \subsubsection*{Wartość skuteczna}
-Niech \(X(t)\) będzie funkcją okresową o okresie \(T\). Wartość skuteczną funkcji \(X(t)\) definiujemy jako
+Niech \(X(t)\) będzie funkcją okresową o okresie \(T\). Wartość skuteczną funkcji \(X(t)\)
+definiujemy jako
 \begin{equation*}
     X_\text{rms}=\sqrt{\frac{1}{T}\int_0^{T}X^2(t)\dd{t}}\,.
 \end{equation*}
@@ -395,7 +432,13 @@ Obliczmy wartości \(I_\text{rms}\) i \(U_\text{rms}\) dla powyższego przykład
     \langle P\rangle=\frac{1}{2}I_0^2|\mathcal{Z}|\frac{\Re{\mathcal{Z}^*}}{|\mathcal{Z}|}=I_\text{rms}^2\Re{\mathcal{Z}}\,.
 \end{equation*}
 \subsubsection{Impedancja operatorowa}
-Pojęcie impedancji można uogólnić na wymuszenia nieokresowe jeśli tylko dla danego wymuszenia \(U(t)\) istnieje transformata Laplace'a \(\mathcal{U}(s)=\mathscr{L}\{U(t)\}\). Metoda ta pozwala sprowadzić rozwiązywanie układu równań różniczkowych do rozwiązywania układu równań algebraicznych. Co ważne metoda ta pozwala znaleźć ogólne rozwiązanie, a nie tylko rozwiązanie stacjonarne jak w przypadku opisanej powyżej metody symbolicznej. Wprowadzając \textit{impedancję operatorową} \(\mathcal{Z}(s)\) możemy dokonać transformacji dowolnego obwodu złożonego z liniowych, skupionych dwójników. Poniżej przedstawiono transformacje elementów \(R\), \(L\) i \(C\).
+Pojęcie impedancji można uogólnić na wymuszenia nieokresowe jeśli tylko dla danego wymuszenia
+\(U(t)\) istnieje transformata Laplace'a \(\mathcal{U}(s)=\mathscr{L}\{U(t)\}\). Metoda ta pozwala
+sprowadzić rozwiązywanie układu równań różniczkowych do rozwiązywania układu równań algebraicznych.
+Co ważne metoda ta pozwala znaleźć ogólne rozwiązanie, a nie tylko rozwiązanie stacjonarne jak w
+przypadku opisanej powyżej metody symbolicznej. Wprowadzając \textit{impedancję operatorową}
+\(\mathcal{Z}(s)\) możemy dokonać transformacji dowolnego obwodu złożonego z liniowych, skupionych
+dwójników. Poniżej przedstawiono transformacje elementów \(R\), \(L\) i \(C\).
 \begin{enumerate}
     \item \textit{Transformacja rezystora.} Dla rezystora mamy
     \begin{equation*}
@@ -413,8 +456,8 @@ Pojęcie impedancji można uogólnić na wymuszenia nieokresowe jeśli tylko dla
     \begin{figure}[h!]
   \centering
   \begin{circuitikz}[european resistors]
-    \draw (0,0) to [R, l_=$R$, i=$I(t)$, *-*] (3,0);
-    \draw (4,0) to [R, l_=$\mathcal{Z}_R(s)$,i=$\mathcal{I}(s)$, *-*] (7,0);
+    \draw (0,0) to [R, l_=$R$, i=$I(t)$, *-*] (3,0); \draw (4,0) to [R,
+    l_=$\mathcal{Z}_R(s)$,i=$\mathcal{I}(s)$, *-*] (7,0);
   \end{circuitikz}
   \caption{Transformacja rezystora}
 \end{figure}
@@ -431,14 +474,13 @@ skąd
 \begin{equation*}
     \mathcal{Z}_L(s)=sL\,.
 \end{equation*}
-Obrazem cewki w transformacji Laplace'a jest więc szeregowe połączenie impedancji \(\mathcal{Z}_L(s)\) i źródła SEM \(\mathcal{E}_L=LI(0)\).
+Obrazem cewki w transformacji Laplace'a jest więc szeregowe połączenie impedancji
+\(\mathcal{Z}_L(s)\) i źródła SEM \(\mathcal{E}_L=LI(0)\).
 \begin{figure}[ht]
   \centering
   \begin{circuitikz}[european resistors]
-    \draw (0,0) to [L, l_=$L$, i=$I(t)$, *-*] (3,0);
-    \draw (4,0) to [R, l_=$\mathcal{Z}_L(s)$, *-] (6,0)
-    to [battery2, l_=$LI(0)$] (7,0)
-    to [short, i=$\mathcal{I}(s)$, -*] (8,0);
+    \draw (0,0) to [L, l_=$L$, i=$I(t)$, *-*] (3,0); \draw (4,0) to [R, l_=$\mathcal{Z}_L(s)$, *-]
+    (6,0) to [battery2, l_=$LI(0)$] (7,0) to [short, i=$\mathcal{I}(s)$, -*] (8,0);
   \end{circuitikz}
   \caption{Transformacja cewki}
 \end{figure}
@@ -454,21 +496,29 @@ skąd
 \begin{equation*}
     \mathcal{Z}_C(s)=\frac{1}{sC}\,.
 \end{equation*}
-Obrazem kondensatora w transformacji Laplace'a jest więc szeregowe połączenie impedancji \(\mathcal{Z}_C(s)\) i źródła SEM \(\mathcal{E}_C=-U(0)/s\).
+Obrazem kondensatora w transformacji Laplace'a jest więc szeregowe połączenie impedancji
+\(\mathcal{Z}_C(s)\) i źródła SEM \(\mathcal{E}_C=-U(0)/s\).
 \begin{figure}[ht]
   \centering
   \begin{circuitikz}[european resistors]
-    \draw (0,0) to [C, l_=$C$, i=$I(t)$, *-*] (3,0);
-    \draw (4,0) to [R, l_=$\mathcal{Z}_C(s)$, *-] (6,0);
-    \draw (7,0) to [battery2, l^=$\frac{U(0)}{s}$, *-] (6,0);
+    \draw (0,0) to [C, l_=$C$, i=$I(t)$, *-*] (3,0); \draw (4,0) to [R, l_=$\mathcal{Z}_C(s)$, *-]
+    (6,0); \draw (7,0) to [battery2, l^=$\frac{U(0)}{s}$, *-] (6,0);
   \end{circuitikz}
   \caption{Transformacja kondensatora}
 \end{figure}
 \end{enumerate}
 \subsubsection{Analiza wykorzystująca złożenie krótkich impulsów}
-Niech dany będzie pewien obwód złożony z idealnych elementów R, L, C. Aby znaleźć odpowiedź \(I(t)\) tego układu na dowolne wymuszenie \(V(t)\) często w pierwszym kroku możemy przeanalizować odpowiedź owego układu na wymuszenie impulsowe \(\delta(t)\) zdefiniowane następująco
+Niech dany będzie pewien obwód złożony z idealnych elementów R, L, C. Aby znaleźć odpowiedź \(I(t)\)
+tego układu na dowolne wymuszenie \(V(t)\) często w pierwszym kroku możemy przeanalizować odpowiedź
+owego układu na wymuszenie impulsowe \(\delta(t)\) zdefiniowane następująco
 \begin{equation*}
     \delta(t)=\begin{cases}V_0&\quad\text{dla \(0<t<\Delta t\)}\\ 0 &\quad\text{dla \(t>\Delta t\)}\end{cases}\,,
 \end{equation*}
-gdzie \(\Delta t\) jest wielkością bardzo małą. Ponieważ dowolne wymuszenie \(V(t)\) można uważać za superpozycję wielu impulsów, powstające prądy będą kombinacją liniową odpowiednich prądów \textit{impulsowych}. Należy tutaj pamiętać, że dla czasów znacznie mniejszych od stałych czasowych kondensatora i cewki, ładunek (a zatem również napięcie) na kondensatorze nie zmienia się, a w przypadku cewki natężenie prądu płynącego przez nią pozostaje bez zmian. Dla czasów znacznie mniejszych od odpowiednich stałych czasowych kondensatory można więc zastąpić źródłami napięciowymi, a cewki źródłami prądowymi.
+gdzie \(\Delta t\) jest wielkością bardzo małą. Ponieważ dowolne wymuszenie \(V(t)\) można uważać za
+superpozycję wielu impulsów, powstające prądy będą kombinacją liniową odpowiednich prądów
+\textit{impulsowych}. Należy tutaj pamiętać, że dla czasów znacznie mniejszych od stałych czasowych
+kondensatora i cewki, ładunek (a zatem również napięcie) na kondensatorze nie zmienia się, a w
+przypadku cewki natężenie prądu płynącego przez nią pozostaje bez zmian. Dla czasów znacznie
+mniejszych od odpowiednich stałych czasowych kondensatory można więc zastąpić źródłami napięciowymi,
+a cewki źródłami prądowymi.
 \end{document}
