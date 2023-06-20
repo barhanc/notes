@@ -1,0 +1,53 @@
+\documentclass[a4paper, 12pt]{article}
+
+\usepackage{amssymb, amsmath, enumerate, graphicx, hyperref, mathrsfs, physics, wasysym}
+%-----------------------------------------------
+\usepackage[polish]{babel}
+%-----------------------------------------------
+\usepackage[a4paper]{geometry}
+\setlength{\columnseprule}{0pt}
+\setlength{\columnsep}{1.5cm}
+
+\newcommand{\e}{\mathrm{e}}
+\newcommand{\im}{\mathrm{i}}
+\newcommand{\arcangle}{%
+  \mathord{<\mspace{-9mu}\mathrel{)}\mspace{2mu}}%
+}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+%-----------------------------------------------
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=violet,
+    pdftitle={myclassics},
+    }
+%-----------------------------------------------
+% Additional packages depending on project:
+\usepackage{tikz,tkz-euclide}
+\usepackage[]{circuitikz}
+\usepackage{pgf-spectra,booktabs,blindtext,pgfplots,multicol,subfiles}
+\usetikzlibrary{calc, positioning, shapes, backgrounds, fit, arrows}
+\usetikzlibrary{decorations.markings}
+\pgfplotsset{compat=1.15}
+%-----------------------------------------------
+
+\begin{document}
+\tableofcontents
+\newpage
+\subfile{sections/math}
+\newpage
+\subfile{sections/mechanika}
+\newpage
+\subfile{sections/stw}
+\newpage
+\subfile{sections/termodynamika}
+\newpage
+\subfile{sections/elektrodynamika}
+\newpage
+\subfile{sections/teoriaobwodow}
+\newpage
+\subfile{sections/optyka}
+
+\end{document}
