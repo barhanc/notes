@@ -3,8 +3,6 @@
 
 % TODO
 
-% * Adiabatic theorem
-%
 % * Composite systems made of 2-state systems (2 x 2 & later n x 2 or maybe n x 2 immediately(?))
 % * Composite systems: entanglement, density operator, partial trace, no-cloning theorem,
 %   decoherence, Bell's theory
@@ -21,7 +19,10 @@
 % * A short overview of classical and quantum information theory (I don't want to go very deep there
 %   at the moment): Shannon/Von Neumann entropy, channels, quantum information transfer/cryptography
 %   ------
-
+% * General ICT using Ehrenfest theorem
+%
+%
+%
 
 \author{Bartosz Hanc}
 % My notes regarding abstract foundations of quantum theory and introduction to quantum computing
@@ -1068,6 +1069,79 @@ szczególnym przypadku \(B(t) = B_0\) mamy
 gdzie \(\boxed{\omega_\text{L} = 2\mu B_0/\hbar }\) to tzw. \textit{częstość Larmora}.
 
 \subsection{Twierdzenie adiabatyczne}
+
+\begin{theorem}[\textit{adiabatyczne}]
+    Niech \(\oper{H}(t)\) będzie hamiltonianem (o dyskretnym i niezdegenerowanym spektrum) pewnego
+    układu kwantowego, który zmienia się \textit{bardzo powoli} (adiabatycznie) \(\oper{H}(t_i) \to
+    \oper{H}(t_f)\) w czasie \(\Delta t = t_f - t_i\). Wówczas jeśli układ w chwili początkowej
+    \(t_i\) znajdował się w \(n\)--tym stanie własnym hamiltonianu \(\oper{H}(t_i)\) to po
+    adiabatycznej ewolucji w chwili końcowej \(t_f\) będzie znajdował się w \(n\)--tym stanie
+    własnym hamiltonianu \(\oper{H}(t_f)\).
+\end{theorem}
+
+Niech \(\{\psi_n(t)\}\) będzie zbiorem wektorów własnych hamiltonianu \(\oper{H}(t)\). Funkcję
+falową \(\Psi\) w chwili \(t\) możemy zatem zapisać jako
+\begin{equation*}
+    \ket{\Psi(t)} = \sum_n c_n(t)\ket{\psi_n(t)}
+\end{equation*}
+gdzie \(\oper{H}(t)\ket{\psi_n(t)} = \lambda_n(t)\ket{\psi_n(t)}\). Jednocześnie z równania
+Schr\"{o}dingera mamy
+\begin{equation*}
+    \begin{split}
+        \oper{H}(t)\ket{\Psi(t)} &= \sum_n c_n(t) \lambda_n(t)\ket{\psi_n(t)} = \im\hbar\partial_t\ket{\Psi(t)} \\
+        &= \im\hbar \sum_n \left(\dot{c}_n(t)\ket{\psi_n(t)} + c_n(t)\ket{\dot{\psi}_n(t)}\right)
+    \end{split}
+\end{equation*}
+Działając na powyższe równanie \(\bra{\psi_m(t)}\) otrzymujemy
+\begin{equation*}
+    \lambda_m(t)c_m(t) = \im\hbar\dot{c}_m(t) + \im\hbar\sum_n c_n(t) \braket{\psi_m(t)}{\dot{\psi}_n(t)}\,.
+\end{equation*}
+Różniczkując równanie własne mamy natomiast
+\begin{equation*}
+    \dot{\oper{H}}(t)\ket{\psi_n(t)} + \oper{H}(t)\ket{\dot{\psi}_n(t)} = \dot{\lambda}_n(t)\ket{\psi_n(t)} + \lambda_n(t)\ket{\dot{\psi}_n(t)}\,.
+\end{equation*}
+Działając na to równanie \(\bra{\psi_m(t)}\) oraz pamiętając, iż z tw. spektralnego 
+\begin{equation*}
+    \oper{H}(t) = \sum_n \lambda_n(t) \ket{\psi_n(t)}\bra{\psi_n(t)}
+\end{equation*}
+otrzymujemy
+\begin{equation*}
+    \begin{split}
+        &\bra{\psi_m(t)}\dot{\oper{H}}(t)\ket{\psi_n(t)} + \lambda_m(t)\braket{\psi_m(t)}{\dot{\psi}_n(t)} \\
+        &= \dot{\lambda}_n(t)\braket{\psi_m(t)}{\psi_n(t)} + \lambda_n(t)\braket{\psi_m(t)}{\dot{\psi}_n(t)}
+    \end{split}\quad.
+\end{equation*}
+Dla \(m \neq n\) mamy więc
+\begin{equation*}
+    \braket{\psi_m(t)}{\dot{\psi}_n(t)} = \frac{\bra{\psi_m(t)}\dot{\oper{H}}(t)\ket{\psi_n(t)}}{\lambda_n(t) - \lambda_m(t)}\,.
+\end{equation*}
+Możemy zatem zapisać równanie ewolucji na współczynniki \(c_m\) jako
+\begin{equation*}
+    -\dot{c}_m(t) = \left[\frac{\im}{\hbar}\lambda_m(t) + \braket{\psi_m(t)}{\dot{\psi}_m(t)}\right]c_m(t) + \sum_{n \neq m} c_n(t) \frac{\bra{\psi_m(t)}\dot{\oper{H}}(t)\ket{\psi_n(t)}}{\lambda_n(t) - \lambda_m(t)}
+\end{equation*}
+Przybliżenie adiabatyczne polega na pominięciu drugiego członu po prawej stronie tj. zakładamy że w
+każdej chwili \(t\) widmo hamiltonianu jest niezdegenerowane czyli \(\forall t: \forall n\neq m:
+\lambda_n(t) \neq \lambda_m(t)\) oraz zakładamy, iż pochodna hamiltonianu jest bardzo mała. Wówczas mamy
+\begin{equation*}\boxed{
+    \dot{c}_m(t) \approx \im \left[-\frac{1}{\hbar}\lambda_m(t) + \im\braket{\psi_m(t)}{\dot{\psi}_m(t)}\right] c_m(t)}
+\end{equation*}
+skąd rozwiązanie to
+\begin{equation*}
+    c_m(t) = c_m(0)\e^{\im\theta_m(t)}\e^{\im\gamma_m(t)}\,,
+\end{equation*}
+gdzie
+\begin{equation*}
+    \theta_m(t) := -\frac{1}{\hbar}\int\limits_0^t \lambda_m(t')\dd{t'} \in \mathbb{R}
+\end{equation*}
+to tzw. \textit{faza dynamiczna}, a
+\begin{equation*}
+    \gamma_m(t) := \im\int\limits_0^t \braket{\psi_m(t')}{\dot{\psi}_m(t')} \dd{t'} \in \mathbb{R}
+\end{equation*}
+to tzw. \textit{faza geometryczna}. Aby przekonać się, iż \(\gamma_m \in \mathbb{R}\) wystarczy zróżniczkować warunek unormowania 
+\begin{equation*}
+    0 = \dv{\braket{\psi_m}}{t} = \braket{\psi_m}{\dot{\psi}_m}^* + \braket{\psi_m}{\dot{\psi}_m} = 2\Re{\braket{\psi_m}{\dot{\psi}_m}}\,.
+\end{equation*}
+
 
 \newpage
 \section{Obliczenia kwantowe}
