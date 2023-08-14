@@ -19,16 +19,16 @@
 % * A short overview of classical and quantum information theory (I don't want to go very deep there
 %   at the moment): Shannon/Von Neumann entropy, channels, quantum information transfer/cryptography
 %   ------
-% * General ICT using Ehrenfest theorem
 %
 %
 %
 
+\title{Podstawy teorii kwantów}
 \author{Bartosz Hanc}
 % My notes regarding abstract foundations of quantum theory and introduction to quantum computing
 
 \begin{document}
-
+\tableofcontents
 \section{Abstrakcyjna teoria kwantów}
 
 \subsection{Elementy teorii przestrzeni Hilberta}
@@ -183,7 +183,7 @@ ortonoromalnych odpowiednio \(\{\phi_i^{(1)}\}\) i \(\{\phi_j^{(2)}\}\) nazywamy
 \end{itemize}
 \end{definition}
 
-\subsection{Notacja Diraca}
+\subsubsection*{Notacja Diraca}
 
 Niech \(\mathscr{H}\) będzie przestrzenią Hilberta. Wprowadzimy teraz kompaktową notacją wektorów i
 funkcjonałów liniowych wymyśloną przez P.A.M. Diraca. Aby uprościć zapis, będziemy mówili o
@@ -209,7 +209,7 @@ oznaczenia konkretnych funkcjonałów ze zbioru \(V^*\). Ponieważ z tw. Riesza 
 jednoznaczne odwzorowanie funkcjonałów liniowych na wektory, więc możemy utożsamić \(\mathsf{S}^* =
 \mathsf{S}\).
 
-\subsection{Skończenie wymiarowa przestrzeń Hilberta nad ciałem liczb zespolonych}
+\subsubsection*{Skończenie wymiarowa przestrzeń Hilberta nad $\mathbb{C}$}
 
 Rozważymy teraz konstrukcję skończenie wymiarowej przestrzeni Hilberta złożonej ze skończenie
 wymiarowej przestrzeni wektorowej \(\mathbb{V} = (\mathbb{C}^n, \mathbb{C}, +, \cdot)\), której
@@ -219,7 +219,11 @@ elementy będziemy w danej bazie \textit{ortonormalnej} \(\{\phi_1, \ldots, \phi
 \end{equation*}
 gdzie \(a_i = \braket{\phi_i}{\psi}\in\mathbb{C}\) oraz iloczynu wewnętrznego zdefiniowanego jako
 \begin{equation*}
-    \braket{ \sum_{i=1}^n a_i \ket{\phi_i}}{ \sum_{i=1}^n b_i \ket{\phi_i}} := \sum_{i=1}^n a_{i}^*b_i\,.
+    \braket{\psi}{\phi} := \sum_{i=1}^n a_{i}^*b_i
+\end{equation*}
+dla
+\begin{equation*}
+    \psi = \mqty[a_1 \\ \vdots \\ a_n]\,,\quad \phi = \mqty[b_1 \\ \vdots \\ b_n]\,.
 \end{equation*}
 Powstała w ten sposób skończenie wymiarowa przestrzeń unitarna jest trywialnie zupełna, a zatem
 skonstruowaliśmy skończenie wymiarową przestrzeń Hilberta. Wektor w tej przestrzeni możemy utożsamić
@@ -361,7 +365,7 @@ który jest zbieżny jednostajnie na \(\mathbb{R}\) do \(f\). Wówczas funkcję 
 \begin{equation*}
 f(\oper{A}) := \sum_{n=0}^\infty \frac{a_n}{n!}\oper{A}^n\,,
 \end{equation*}
-gdzie przyjmujemy \(\oper{A}^0 := \oper{I}\). W szczególności mamy
+gdzie przyjmujemy \(\oper{A}^0 := \oper{1}\). W szczególności mamy
 \begin{itemize}
     \item \(\exp(\oper{A}) := \sum_{n=0}^\infty \frac{1}{n!}\oper{A}^n\)
 
@@ -443,7 +447,7 @@ z założenia \(\braket{\phi} = 1\) oraz samosprzężony
 jest operatorem rzutowym. W szczególności, jeśli \(\{\phi_i\}\) jest ortonormalną bazą przestrzeni
 \(\mathscr{H}\), to
 \begin{equation*}
-    \sum_i \ket{\phi_i}\bra{\phi_i} = \oper{I}\,.
+    \sum_i \ket{\phi_i}\bra{\phi_i} = \oper{1}\,.
 \end{equation*}
 
 \linesep
@@ -451,7 +455,7 @@ jest operatorem rzutowym. W szczególności, jeśli \(\{\phi_i\}\) jest ortonorm
 \begin{definition}
 \textit{Operatorem unitarnym} nazywamy operator \(\oper{U}\) taki, że
 \begin{equation*}
-    \oper{U}\oper{U}^\dagger = \oper{U}^\dagger\oper{U} = \oper{I}\,.
+    \oper{U}\oper{U}^\dagger = \oper{U}^\dagger\oper{U} = \oper{1}\,.
 \end{equation*}
 \end{definition}
 
@@ -463,7 +467,6 @@ na zachowywaniu wartości iloczynu wewnętrznego dwóch wektorów, a zatem w szc
 
 \linesep
 
-\begin{textbox}
 \begin{theorem}[\textit{spektralne}]
 Niech \(\mathscr{H}\) będzie przestrzenią Hilberta. Dla każdego samosprzężonego operatora liniowego
 \(\oper{A}\) w \(\mathscr{H}\) istnieje unikalna rodzina operatorów rzutowych \(\oper{P}(\lambda)\)
@@ -476,7 +479,7 @@ indeksowanych ciągłym parametrem \(\lambda \in \mathbb{R}\) taka, że
     
     \item \(\lim_{\lambda\to-\infty}\oper{P}(\lambda) = \oper{0}\)
 
-    \item \(\lim_{\lambda\to+\infty}\oper{P}(\lambda) = \oper{I}\)
+    \item \(\lim_{\lambda\to+\infty}\oper{P}(\lambda) = \oper{1}\)
 
     \item \(\oper{A} = \int\limits_{-\infty}^{+\infty}\lambda \dd{\oper{P}(\lambda)}\)
 
@@ -496,7 +499,6 @@ Dodatkowo dla dowolnej funkcji operatora \(f\) zachodzi
     f(\oper{A}) = \int\limits_{-\infty}^{+\infty} f(\lambda) \dd{\oper{P}(\lambda)}\,.
 \end{equation*}
 \end{theorem}        
-\end{textbox}
 
 W szczególnym przypadku, gdy operator samosprzężony \(\oper{A}\) ma niezdegenerowane widmo
 \(\{\lambda_i\}\) będące zbiorem przeliczalnym, wiemy, że zbiór unormowanych wektorów własnych
@@ -539,25 +541,23 @@ konkretnych realizacji teorii kwantów
     w obrębie danej teorii kwantowej iff istnieje wzajemnie jednoznaczne przyporządkowanie tego
     pytania do pewnego operatora rzutowego \(\oper{P}\). Będziemy wówczas mówili, iż dane pytanie
     elementarne jest reprezentowane przez \(\oper{P}\). Każde pytanie elementarne reprezentowane
-    przez \(\oper{P}\) można zanegować otrzymując pytanie reprezentowane przez \(\oper{I} -
-    \oper{P}\) (zauważmy, że \((\oper{I} - \oper{P})^2 = \oper{I} - \oper{P}\)), natomiast dwa
-    pytania elementarne reprezentowane przez \(\oper{P}_1\) i \(\oper{P}_2\) można połączyć
-    spójnikiem
+    przez \(\oper{P}\) można zanegować otrzymując pytanie reprezentowane przez \(\oper{1} -
+    \oper{P}\), natomiast dwa pytania elementarne reprezentowane przez \(\oper{P}_1\) i
+    \(\oper{P}_2\) można połączyć spójnikiem
     \begin{itemize}
         \item ,,I''; otrzymując pytanie reprezentowane przez \(\oper{P}_1\oper{P}_2\), przy czym z
         oczywistych względów musi zachodzić \([\oper{P}_1, \oper{P}_2] = \oper{\mathsf{0}}\)
 
         \item ,,LUB''; otrzymując pytanie reprezentowane przez \(\oper{P}_1 + \oper{P}_2\), przy
-        czym musi zachodzić \(\oper{P}_1\oper{P}_2 = \oper{\mathsf{0}}\) (istotnie \((\oper{P}_1 +
-        \oper{P}_2)^2 = \oper{P}_1 + \oper{P}_2 \)).
+        czym musi zachodzić \(\oper{P}_1\oper{P}_2 = \oper{\mathsf{0}}\) (istotnie wówczas
+        \((\oper{P}_1 + \oper{P}_2)^2 = \oper{P}_1 + \oper{P}_2 \)).
 
     \end{itemize}
 
-    \item \textbf{O stanach układu.} Stan prostego układu fizycznego jest reprezentowany przez
-    unormowany wektor \(\ket{\Psi}\) w abstrakcyjnej przestrzeni Hilberta \(\mathscr{H} =
-    (\mathbb{V}, \braket{\cdot})\), przy czym utożsamiamy ze sobą wektory różniące się jedynie
-    globalnym czynnikiem fazowym tj. \(\ket{\Psi} \cong \e^{\im\alpha}\ket{\Psi}\) dla \(\alpha \in
-    \mathbb{R}\).
+    \item \textbf{O stanach układu.} Stan układu fizycznego jest reprezentowany przez unormowany
+    wektor \(\ket{\Psi}\) w pewnej przestrzeni Hilberta \(\mathscr{H}\), przy czym utożsamiamy ze
+    sobą wektory różniące się jedynie globalnym czynnikiem fazowym tj. \(\ket{\Psi} \sim
+    \e^{\im\alpha}\ket{\Psi}\), \(\alpha \in \mathbb{R}\).
 
     \item \textbf{O prawdopodobieństwach.} Teoria kwantowa dostarcza jedynie probabilistycznych
     odpowiedzi na rozstrzygalne pytania elementarne. Prawdopodobieństwo \(p\), iż odpowiedź na
@@ -566,46 +566,40 @@ konkretnych realizacji teorii kwantów
     \begin{equation*}
         p = \bra{\Psi}\oper{P}\ket{\Psi}\,.
     \end{equation*}
-    Zauważmy, iż trywialnie \(p\in\mathbb{R}\) oraz z nierówności Cauchy'ego--Schwarza mamy
-    \begin{equation*}
-        p^2 \leq \braket{\Psi} \braket{\oper{P}\Psi} = \bra{\Psi}\oper{P}^2\ket{\Psi} = p\,,
-    \end{equation*}
-    skąd \(p(p-1) \leq 0\), czyli \(p \in [0;1]\).
 
     \item \textbf{O wielkościach fizycznych.} Każda wielkość fizyczna \(A\) występująca w danej
     teorii kwantowej jest reprezentowana przez samosprzężony operator liniowy \(\oper{A}\) i
     stowarzyszoną z nim na mocy twierdzenia spektralnego rodzinę operatorów rzutowych
     \(\oper{P}_A(\lambda)\). Operator rzutowy \(\oper{P}_A(\lambda)\) reprezentuje pytanie:
-    \textit{czy wielkość fizyczna \(A\) ma wartość nie większą od \(\lambda\)?}, natomiast operator
-    rzutowy \(\oper{I}-\oper{P}_A(\lambda)\): \textit{czy wielkość fizyczna \(A\) ma wartość większą
-    od \(\lambda\)?} Na mocy postulatu drugiego możemy skonstruować pytanie: \textit{czy wielkość
-    fizyczna \(A\) ma wartość z przedziału \((\lambda_1;\lambda_2]\)?}, reprezentowane przez
-    operator 
+    \begin{quote}
+        czy wielkość fizyczna \(A\) ma wartość nie większą od \(\lambda\)?
+    \end{quote}
+    natomiast operator rzutowy \(\oper{1}-\oper{P}_A(\lambda)\): 
+    \begin{quote}
+        czy wielkość fizyczna \(A\) ma wartość większą od \(\lambda\)?
+    \end{quote}
+    Na mocy postulatu drugiego możemy skonstruować pytanie:
+    \begin{quote}
+        czy wielkość fizyczna \(A\) ma wartość z przedziału \((\lambda_1;\lambda_2]\)?
+    \end{quote}
+    reprezentowane przez operator 
     \begin{equation*}
-        (\oper{I} - \oper{P}_A(\lambda_1))\oper{P}_A(\lambda_2) =
+        \left[\oper{1} - \oper{P}_A(\lambda_1)\right]\oper{P}_A(\lambda_2) =
         \oper{P}_A(\lambda_2)-\oper{P}_A(\lambda_1)\,.
     \end{equation*}
-    Wartość oczekiwaną wielkości \(A\) dla układu reprezentowanego przez \(\Psi\) obliczamy jako
+    Wartość oczekiwaną funkcji \(f\) wielkości \(A\) dla układu reprezentowanego przez \(\Psi\)
+    obliczamy jako
     \begin{equation*}
-        \langle A \rangle = \bra{\Psi}\oper{A}\ket{\Psi}\,.
+        \langle f(A) \rangle = \bra{\Psi}f(\oper{A})\ket{\Psi}\,.
     \end{equation*}
 
-    \item \textbf{O ewolucji układu w czasie.} Prawdopodobieństwo \(p\) odpowiedzi twierdzącej na
-    pytanie \(\oper{P}\) dla układu reprezentowanego przez \(\Psi\) ewoluuje w czasie zgodnie z
-    \begin{equation*}
-        p(t) = \bra{\Psi(t)}\oper{P}\ket{\Psi(t)}\,,
-    \end{equation*}
-    gdzie wektory stanu \(\ket{\Psi}\) ewoluują zgodnie z \textit{równaniem Schr\"{o}dingera}
+    \item \textbf{O ewolucji układu w czasie.} Stan układu \(\ket{\Psi}\) ewoluuje zgodnie z
+    \textit{równaniem Schr\"{o}dingera}
     \begin{equation*}
         \oper{H}\ket{\Psi} = \im\hbar\partial_t\ket{\Psi}\,,
     \end{equation*}
-    gdzie \(\oper{H}(t)\) jest specjalnym operatorem samosprzężonym (zwanym operatorem Hamiltona lub
-    po prostu hamiltonianem) reprezentującym hamiltonian układu, tworzonym wedle określonych reguł w
-    danej realizacji teorii kwantów, natomiast \(\hbar\) to stała fizyczna o wymiarze działania
-    \begin{equation*}
-        \hbar = \frac{h}{2\pi} = 1.054571817\ldots \cdot 10^{-34}\,\text{J}\cdot\text{s}
-    \end{equation*}
-    zwana \textit{zredukowaną stałą Plancka}.
+    gdzie \(\oper{H}\) jest specjalnym operatorem samosprzężonym reprezentującym hamiltonian układu,
+    tworzonym wedle określonych reguł w danej realizacji teorii kwantów.
     
     \item \textbf{O układach złożonych.} Przestrzeń Hilberta \(\mathscr{H}\) układu złożonego ma
     strukturę iloczynu tensorowego przestrzeni Hilberta układów prostych wchodzących w jego skład
@@ -613,18 +607,17 @@ konkretnych realizacji teorii kwantów
 
 \end{enumerate}
 
-\subsection{Zasada nieoznaczoności}
+\subsubsection*{Zasady nieoznaczoności}
 
 Niech \(A\) będzie pewną wielkością fizyczną reprezentowaną przez operator \(\oper{A}\). Zdefiniujmy
-odchylenie standardowe \(\sigma_A \geq 0\) wielkości \(A\) dla układu w stanie \(\Psi\) jako
+odchylenie standardowe \(\sigma_A\) wielkości \(A\) dla układu w stanie \(\Psi\) jako
 \begin{equation*}
-    \sigma_A^2 := \langle (A - \langle A \rangle)^2 \rangle = \braket{(\oper{A}-a)\Psi}{(\oper{A}-a)\Psi}\,,
+    \sigma_A := \sqrt{\expval{(A - \expval{A})^2}} = \sqrt{\bra{\Psi}\oper{\mathcal{A}}^2\ket{\Psi}}\,,
 \end{equation*}
-gdzie \(a = \expval{A}\) jest wartością oczekiwaną wielkości \(A\). Dla dowolnych dwóch wielkość
-fizycznych \(A\) i \(B\) w układzie reprezentowanym przez \(\Psi\) mamy z nierówności
-Cauchy'ego--Schwarza
+gdzie \(\oper{\mathcal{A}} := \oper{A} - \expval{A}\). Dla dowolnych dwóch wielkość fizycznych \(A\)
+i \(B\) w układzie reprezentowanym przez \(\Psi\) mamy z nierówności Cauchy'ego--Schwarza
 \begin{equation*}
-    \sigma_A^2\sigma_B^2 \geq \left|\braket{(\oper{A}-a)\Psi}{(\oper{B}-b)\Psi}\right|^2\,.
+    \sigma_A^2\sigma_B^2 \geq \left|\braket{\oper{\mathcal{A}}\Psi}{\oper{\mathcal{B}}\Psi}\right|^2\,.
 \end{equation*}
 Jednocześnie dla dowolnego \(z = x + \im y \in\mathbb{C}\) mamy
 \begin{equation*}
@@ -634,27 +627,24 @@ Z powyższego mamy więc
 \begin{equation*}
     \sigma_A^2\sigma_B^2 \geq \left[\frac{1}{2\im}\left(\braket{\oper{\mathcal{A}}\Psi}{\oper{\mathcal{B}}\Psi} - \braket{\oper{\mathcal{B}}\Psi}{\oper{\mathcal{A}}\Psi}\right)\right]^2 + \left[\frac{1}{2}(\braket{\oper{\mathcal{A}}\Psi}{\oper{\mathcal{B}}\Psi} + \braket{\oper{\mathcal{B}}\Psi}{\oper{\mathcal{A}}\Psi})\right]^2\,,
 \end{equation*}
-gdzie \(\oper{\mathcal{A}} := \oper{A} - a\), \(\oper{\mathcal{B}} := \oper{B} - b\). Jednocześnie
+skąd po prostych przekształceniach otrzymujemy
 \begin{equation*}
-    \begin{split}
-        &\braket{\oper{\mathcal{A}}\Psi}{\oper{\mathcal{B}}\Psi} - \braket{\oper{\mathcal{B}}\Psi}{\oper{\mathcal{A}}\Psi} =
-        \bra{\Psi}(\oper{\mathcal{A}}\oper{\mathcal{B}}\ket{\Psi}-\oper{\mathcal{B}}\oper{\mathcal{A}}\ket{\Psi})=\\
-        &\bra{\Psi}[\oper{\mathcal{A}},\oper{\mathcal{B}}]\ket{\Psi} = \bra{\Psi}[\oper{A},\oper{B}]\ket{\Psi}\,.
-    \end{split}
-\end{equation*}
-oraz
-\begin{equation*}
-    \braket{\oper{\mathcal{A}}\Psi}{\oper{\mathcal{B}}\Psi} + \braket{\oper{\mathcal{B}}\Psi}{\oper{\mathcal{A}}\Psi} = \bra{\Psi}\{\oper{\mathcal{A}},\oper{\mathcal{B}}\}\ket{\Psi} = \bra{\Psi}\{\oper{A},\oper{B}\}\ket{\Psi} - 2\expval{A}\expval{B}
-\end{equation*}
-Ostatecznie otrzymujemy więc
-\begin{equation*}
-    \boxed{
     \sigma_A^2\sigma_B^2 \geq \left(\frac{1}{2\im}\bra{\Psi}[\oper{A},\oper{B}]\ket{\Psi}\right)^2 + \left(\frac{1}{2}\bra{\Psi}\{\oper{A},\oper{B}\}\ket{\Psi} - \expval{A}\expval{B}\right)^2
-    }\quad.
+    \quad.
 \end{equation*}
-Powyższą nierówność nazywamy \textit{uogólnioną zasadą nieoznaczoności}.
+Powyższą nierówność nazywamy \textit{zasadą nieoznaczoności Schr\"{o}dingera}. W szczególności z
+powyższego wynika \textit{zasada nieoznaczoności Robertsona}
+\begin{equation*}
+    \sigma_A^2\sigma_B^2 \geq \left(\frac{1}{2\im}\bra{\Psi}[\oper{A},\oper{B}]\ket{\Psi}\right)^2
+    \quad,
+\end{equation*}
+która dla operatorów spełniających \textit{kanoniczną relację komutacyjną} \([\oper{A},\oper{B}] =
+\im\hbar\oper{1}\) przyjmuje postać \textit{zasady nieoznaczonosci Heisenberga}
+\begin{equation*}
+    \sigma_A\sigma_B \geq \frac{\hbar}{2}\quad.
+\end{equation*}
 
-\subsection{Twierdzenie Ehrenfesta}
+\subsubsection*{Twierdzenie Ehrenfesta}
 
 Niech \(A\) będzie pewną wielkością fizyczną reprezentowaną przez operator \(\oper{A}\), wówczas
 \begin{equation*}
@@ -667,11 +657,37 @@ Jednocześnie z równania Schr\"{o}dingera mamy \(\oper{H}\Psi=\im\hbar{\partial
 \end{equation*}
 ale ze względu na fakt, iż \(\oper{H}\) jest operatorem samosprzężonym mamy
 \begin{equation*}
-    \boxed{
     \dv{\expectationvalue{A}}{t} = \bra{\Psi}\pdv{\oper{A}}{t}\ket{\Psi} + \frac{\im}{\hbar}\bra{\Psi}[\oper{H},\oper{A}]\ket{\Psi}
-    }\quad.
+    \quad.
 \end{equation*}
 Powyższe równanie nazywamy \textit{twierdzeniem Ehrenfesta}.
+
+\subsubsection*{Zasada nieoznaczoności energii--czasu}
+
+Z twierdzenia Ehrenfesta dla operatora \(\oper{A}\) niezależnego od czasu mamy
+\begin{equation*}
+    \dv{\expval{A}}{t} = \frac{\im}{\hbar}\bra{\Psi}[\oper{H}, \oper{A}]\ket{\Psi}\,.
+\end{equation*}
+Jednocześnie z zasady nieoznaczoności Robertsona mamy
+\begin{equation*}
+    \sigma_H^2\sigma_A^2 \geq \left(\frac{1}{2\im}\bra{\Psi}[\oper{H}, \oper{A}]\ket{\Psi}\right)^2\,.
+\end{equation*}
+Podstawiając wyrażenie na wartość oczekiwaną komutatora otrzymujemy z powyższego
+\begin{equation*}
+    \sigma_H\sigma_A \geq \frac{\hbar}{2} \left|\dv{\expval{A}}{t}\right|\,.
+\end{equation*}
+Jeśli wartość oczekiwana nie zmienia się w czasie to powyższa nierówność nie mówi nic odkrywczego.
+Jeśli jednak rozważymy pewien proces, podczas którego wartość oczekiwana zmienia się w czasie
+\(\Delta t\) o \(\Delta A\) to możemy dokonać przybliżenia 
+\begin{equation*}
+    \frac{\sigma_A}{\left|\dv{\expval{A}}{t}\right|} \approx \frac{|\Delta A|}{|\Delta A| / \Delta t} = \Delta t\,,
+\end{equation*}
+a wówczas z powyższej nierówności otrzymujemy zależność
+\begin{equation*}
+    \sigma_H\Delta t \gtrsim \frac{\hbar}{2}\,,
+\end{equation*}
+którą nazywamy \textit{zasadą nieoznaczoności energii--czasu}.
+
 
 \subsection{Kwantowe układy dwupoziomowe}
 
@@ -704,7 +720,7 @@ elementach zespolonych. Wybrane własności macierzy Pauliego:
 
     \item \(\Tr\oper{X} = \Tr\oper{Y} = \Tr\oper{Z} = 0\)
 
-    \item \(\oper{X}^2 = \oper{Y}^2 = \oper{Z}^2 = \oper{I}\)
+    \item \(\oper{X}^2 = \oper{Y}^2 = \oper{Z}^2 = \oper{1}\)
 
     \item Iloczyny macierzy Pauliego spełniają związki
     \begin{equation*}
@@ -729,13 +745,13 @@ elementach zespolonych. Wybrane własności macierzy Pauliego:
     \begin{equation*}
         \begin{split}
             (\mathbf{a}\cdot\boldsymbol{\sigma})\cdot(\mathbf{b}\cdot\boldsymbol{\sigma}) &= (a_x\oper{X} + a_y\oper{Y} + a_z\oper{Z})(b_x\oper{X} + b_y\oper{Y} + b_z\oper{Z})\\
-            &= (\mathbf{a}\cdot\mathbf{b})\oper{I} + \im(\mathbf{a}\times\mathbf{b})\cdot\boldsymbol{\sigma}\,.
+            &= (\mathbf{a}\cdot\mathbf{b})\oper{1} + \im(\mathbf{a}\times\mathbf{b})\cdot\boldsymbol{\sigma}\,.
         \end{split}
     \end{equation*}
 
     \item Wielkość \(\exp(\im\mathbf{a}\cdot\boldsymbol{\sigma})\) wynosi
     \begin{equation*}
-            \exp(\im\mathbf{a}\cdot\boldsymbol{\sigma}) = \oper{I} \cos{|\mathbf{a}|} + \im\left(\frac{\mathbf{a}}{|\mathbf{a}|}\cdot\boldsymbol{\sigma}\right)\sin{|\mathbf{a}|}\,.
+            \exp(\im\mathbf{a}\cdot\boldsymbol{\sigma}) = \oper{1} \cos{|\mathbf{a}|} + \im\left(\frac{\mathbf{a}}{|\mathbf{a}|}\cdot\boldsymbol{\sigma}\right)\sin{|\mathbf{a}|}\,.
     \end{equation*}
 
 \end{itemize}
@@ -743,7 +759,7 @@ elementach zespolonych. Wybrane własności macierzy Pauliego:
 Zauważmy, że dowolny operator samosprzężony \(\oper{A}\) w rozpatrywanej przestrzeni \(\mathscr{H}\)
 ma postać
 \begin{equation*}
-    \oper{A} = \mqty[a_0 + a_z & a_x - \im a_y \\ a_x + \im a_y & a_0 - a_z] = a_0\oper{I} + \mathbf{a}\cdot\boldsymbol{\sigma}\,, 
+    \oper{A} = \mqty[a_0 + a_z & a_x - \im a_y \\ a_x + \im a_y & a_0 - a_z] = a_0\oper{1} + \mathbf{a}\cdot\boldsymbol{\sigma}\,, 
 \end{equation*}
 gdzie \(a_0,a_x,a_y,a_z \in \mathbb{R}\). Jednocześnie bez straty ogólności możemy przyjąć \(a_0 =
 0\), gdyż stała ta przesuwa jedynie widmo operatora \(\oper{A}\) o ustaloną wartość, co pozwala
@@ -780,7 +796,7 @@ Możemy połączyć oba przedstawienia tj. przedstawienia operatora i wektora st
 wektora stanu użyjemy operatora rzutowania na stan \(\Psi\). Możemy rozłożyć go wówczas (jak każdy
 operator samosprzężony) na macierze Pauliego
 \begin{equation*}
-    \ket{\Psi}\bra{\Psi} = s_0\oper{I} + \mathbf{s}\cdot\boldsymbol{\sigma}\,,
+    \ket{\Psi}\bra{\Psi} = s_0\oper{1} + \mathbf{s}\cdot\boldsymbol{\sigma}\,,
 \end{equation*}
 przy czym parametry \(s_0,s_x,s_y,s_z\) muszą spełniać
 \begin{equation*}
@@ -788,14 +804,14 @@ przy czym parametry \(s_0,s_x,s_y,s_z\) muszą spełniać
 \end{equation*}
 czyli
 \begin{equation*}
-    s_0\oper{I} + \mathbf{s}\cdot\boldsymbol{\sigma} = (s_0^2 + |\mathbf{s}|^2)\oper{I} + 2s_0\mathbf{s}\cdot\boldsymbol{\sigma}\,,
+    s_0\oper{1} + \mathbf{s}\cdot\boldsymbol{\sigma} = (s_0^2 + |\mathbf{s}|^2)\oper{1} + 2s_0\mathbf{s}\cdot\boldsymbol{\sigma}\,,
 \end{equation*}
 skąd \(s_0 = |\mathbf{s}| = 1/2\). Operator rzutowania \(\ket{\Psi}\bra{\Psi}\) możemy zatem w
 ogólności rozłożyć na macierze Pauliego w następujący sposób
 \begin{equation*}
-    \ket{\Psi}\bra{\Psi} = \frac{1}{2}(\oper{I} + \mathbf{s}\cdot\boldsymbol{\sigma})\,,
+    \ket{\Psi}\bra{\Psi} = \frac{1}{2}(\oper{1} + \mathbf{s}\cdot\boldsymbol{\sigma})\,,
 \end{equation*}
-gdzie przeskalowaliśmy zmienne \(s_x,s_y,s_z\) tak, że teraz \(\boxed{|\mathbf{s}| = 1}\).
+gdzie przeskalowaliśmy zmienne \(s_x,s_y,s_z\) tak, że teraz \(|\mathbf{s}| = 1\).
 
 Widzimy więc, iż stan \(\Psi\) możemy reprezentować jako wektor \(\mathbf{s}\) określający punkt na
 sferze jednostkowej w trójwymiarowej przestrzeni, a operator samosprzężony jako dowolny wektor
@@ -818,11 +834,11 @@ dla hamiltonianu postaci
     \oper{H} = \mqty[H_{11}(t) & H_{12}(t) \\ H_{21}(t) & H_{22}(t)]
 \end{equation*}
 mają postać
-\begin{equation*}\boxed{
+\begin{equation*}
     \begin{cases}
         \im\hbar\dot{\alpha} = H_{11}(t)\alpha + H_{12}(t)\beta\\
         \im\hbar\dot{\beta}  = H_{21}(t)\alpha + H_{22}(t)\beta
-    \end{cases}}
+    \end{cases}
 \end{equation*}
 Równanie ewolucji możemy zapisać również wykorzystując przedstawienie geometryczne wektorów stanu i
 operatorów na sferze Blocha. Istotnie różniczkując operator rzutowy \(\oper{\rho} =
@@ -834,28 +850,27 @@ operatorów na sferze Blocha. Istotnie różniczkując operator rzutowy \(\oper{
     \end{split}
 \end{equation*}
 
-Z powyższego mamy więc dla \(\oper{\rho} = \frac{1}{2}(\oper{I} +
-\mathbf{s}\cdot\boldsymbol{\sigma})\) i \(\oper{H} = \mathbf{H}(t)\cdot\boldsymbol{\sigma}\)
-\begin{equation*}\boxed{
-    \frac{\hbar}{2}\dot{\mathbf{s}} = \mathbf{H}(t)\times\mathbf{s}}
+Z powyższego mamy więc dla \(\oper{\rho} = \frac{1}{2}(\oper{1} +
+\mathbf{s}\cdot\boldsymbol{\sigma})\) i \(\oper{H} = \mathbf{H}\cdot\boldsymbol{\sigma}\)
+\begin{equation*}
+    \frac{\hbar}{2}\dot{\mathbf{s}} = \mathbf{H}\times\mathbf{s}
 \end{equation*}
 
 Przedstawienie geometryczne wektora stanu na sferze Blocha nie jest jedynie obserwacją matematyczną.
-Pozwala ono zwizualizować semi-klasyczną ewolucję wektorowej wielkości fizycznej \(\mathbf{S}\)
-\footnote{W mechanice kwantowej wielkość \(\boldsymbol{\mu} \propto \mathbf{S}\) jest spinowym
-momentem magnetycznym cząstki kwantowej.}, której składowe \(S_x\), \(S_y\), \(S_z\) są w
-przestrzeni \(\mathscr{H}\) reprezentowane przez samosprzężone operatory Pauliego \(\oper{X}\),
-\(\oper{Y}\), \(\oper{Z}\). Istotnie zgodnie z twierdzeniem Ehrenfesta
+Pozwala ono zwizualizować semi-klasyczną ewolucję wektorowej wielkości fizycznej \(\mathbf{S}\),
+której składowe \(S_x\), \(S_y\), \(S_z\) są w przestrzeni \(\mathscr{H}\) reprezentowane przez
+samosprzężone operatory Pauliego \(\oper{X}\), \(\oper{Y}\), \(\oper{Z}\). Istotnie zgodnie z
+twierdzeniem Ehrenfesta
 \begin{equation*}
     \dv{\expval{\mathbf{S}}}{t} = \frac{\im}{\hbar}\bra{\Psi}[\oper{H}, \boldsymbol{\sigma}]\ket{\Psi} = \frac{\im}{\hbar}\bra{\Psi}\left([\oper{H},\oper{X}],[\oper{H},\oper{Y}],[\oper{H},\oper{Z}]\right)\ket{\Psi}\,.
 \end{equation*}
 Jednocześnie dla \(\oper{H} = \mathbf{H}\cdot\boldsymbol{\sigma}\)
-\begin{equation*}\boxed{
+\begin{equation*}
     \begin{split}
         &[\oper{H},\oper{X}] = -2\im H_y\oper{Z} + 2\im H_z \oper{Y}\\
         &[\oper{H},\oper{Y}] = -2\im H_z\oper{X} + 2\im H_x \oper{Z}\\
         &[\oper{H},\oper{Z}] = -2\im H_x\oper{Y} + 2\im H_y \oper{X}
-    \end{split}}\quad,
+    \end{split}\quad,
 \end{equation*}
 skąd
 \begin{equation*}
@@ -889,7 +904,7 @@ w przybliżeniu do wyrazów liniowych względem \(\epsilon\). Wektor rzeczywisty
 najłatwiej powiązać z abstrakcyjnym wektorem \(\ket{\Psi}\) poprzez operator rzutowy \(\oper{\rho} =
 \ket{\Psi}\bra{\Psi}\) dla którego zachodzi
 \begin{equation*}
-    \ket{\oper{U}\Psi}\bra{\oper{U}\Psi} = \oper{U}\oper{\rho}\oper{U}^\dagger = \frac{1}{2}\left(\oper{I} + \mathbf{s}'\cdot\boldsymbol{\sigma}\right)\,,
+    \ket{\oper{U}\Psi}\bra{\oper{U}\Psi} = \oper{U}\oper{\rho}\oper{U}^\dagger = \frac{1}{2}\left(\oper{1} + \mathbf{s}'\cdot\boldsymbol{\sigma}\right)\,,
 \end{equation*}
 skąd
 \begin{equation*}
@@ -901,7 +916,7 @@ Otrzymujemy zatem równanie
 \end{equation*}
 Poszukajmy \(\oper{U}\) spełniających to równanie postaci
 \begin{equation*}
-    \oper{U} = \oper{I} + \im\epsilon\oper{A}\,,\quad \oper{U}^\dagger = \oper{I} - \im\epsilon\oper{A}^\dagger\,,
+    \oper{U} = \oper{1} + \im\epsilon\oper{A}\,,\quad \oper{U}^\dagger = \oper{1} - \im\epsilon\oper{A}^\dagger\,,
 \end{equation*}
 gdzie \(\oper{A}\) jest operatorem samosprzężonym postaci \(\oper{A} =
 \mathbf{a}\cdot\boldsymbol{\sigma}\). Zauważmy, iż tak zdefiniowany \(\oper{U}\) jest unitarny w
@@ -914,85 +929,69 @@ Widzimy zatem, iż taki, a nie inny strzał na postać operatora \(\oper{U}\) by
 wyprowadzonymi wcześniej wzorami na komutatory operatora samosprzężonego z operatorami Pauliego,
 które naśladują strukturę zwykłego trójwymiarowego iloczynu wektorowego. Z powyższego otrzymujemy
 zatem \(\mathbf{a} = \frac{1}{2}\mathbf{\hat{n}}\), skąd
-\begin{equation*}\boxed{
-    \oper{U} = \oper{I} + \frac{\im \epsilon}{2} \mathbf{\hat{n}} \cdot \boldsymbol{\sigma}}\,.
+\begin{equation*}
+    \oper{U} = \oper{1} + \frac{\im \epsilon}{2} \mathbf{\hat{n}} \cdot \boldsymbol{\sigma}\,.
 \end{equation*}
 Stąd łatwo możemy już uzyskać operator unitarny \(\oper{U}_\mathbf{\hat{n}}(\varphi)\) odpowiadający
 obrotowi o kąt \(\varphi\) wokół osi \(\mathbf{\hat{n}}\)
-\begin{equation*}\boxed{
-    \oper{U}_\mathbf{\hat{n}}(\varphi) = \lim_{N\to\infty}\left(\oper{I} + \frac{\im \varphi}{2N} \mathbf{\hat{n}} \cdot \boldsymbol{\sigma}\right)^N = \exp{\frac{\im}{2}\varphi\mathbf{\hat{n}}\cdot\boldsymbol{\sigma}} = \oper{I}\cos\frac{\varphi}{2} + \im(\mathbf{\hat{n}}\cdot\boldsymbol{\sigma})\sin\frac{\varphi}{2}}
+\begin{equation*}
+    \oper{U}_\mathbf{\hat{n}}(\varphi) = \lim_{N\to\infty}\left(\oper{1} + \frac{\im \varphi}{2N} \mathbf{\hat{n}} \cdot \boldsymbol{\sigma}\right)^N = \exp{\frac{\im}{2}\varphi\mathbf{\hat{n}}\cdot\boldsymbol{\sigma}} = \oper{1}\cos\frac{\varphi}{2} + \im(\mathbf{\hat{n}}\cdot\boldsymbol{\sigma})\sin\frac{\varphi}{2}
 \end{equation*}
 W szczególności dla obrotów wokół osi \(x\), \(y\), \(z\) mamy odpowiednio
-\begin{equation*}\boxed{
+\begin{equation*}
     \begin{split}
         &\oper{U}_\mathbf{\hat{x}}(\varphi) = \mqty[\cos\frac{\varphi}{2} & \im\sin\frac{\varphi}{2} \\ \im\sin\frac{\varphi}{2} & \cos\frac{\varphi}{2}]\\
         &\oper{U}_\mathbf{\hat{y}}(\varphi) = \mqty[\cos\frac{\varphi}{2} & \sin\frac{\varphi}{2} \\ -\sin\frac{\varphi}{2} & \cos\frac{\varphi}{2}]\\
         &\oper{U}_\mathbf{\hat{z}}(\varphi) = \mqty[\e^{+\im\varphi/2} & 0 \\ 0 & \e^{-\im\varphi/2}]
-    \end{split}}\quad.
+    \end{split}\quad.
 \end{equation*}
 
-\subsubsection{Przykłady}
-
-\textbf{Magnetyczny rezonans jądrowy.} Rozważymy teraz zjawisko rezonansu magnetycznego mające
-liczne zastosowania w wielu działach fizyki współczesnej. Rozpatrzmy cząstkę obdarzoną momentem
-magnetycznym \(\mu\), lecz nie posiadającą ładunku elektrycznego (przypadek neutronu), która została
-umieszczona w wirującym z częstością radiową polu magnetycznym
+\subsubsection{Przykład -- magnetyczny rezonans jądrowy }
+Rozpatrzmy cząstkę obdarzoną momentem magnetycznym \(\mu\) o spinie połówkowym i nie posiadającą
+ładunku elektrycznego (neutron), która została umieszczona w wirującym z częstością radiową polu
+magnetycznym
 \begin{equation*}
     \mathbf{B}(t) = B_\text{rf}\cos(\omega t)\mathbf{\hat{x}} - B_\text{rf}\sin(\omega t) \mathbf{\hat{y}} + B_0\mathbf{\hat{z}}\,.
 \end{equation*}
-Hamiltonian interesującego nas układu dwupoziomowego ma postać
+Cząstka ta stanowi pewien układ dwupoziomowy, którego oddziaływanie z polem magnetycznym jest
+opisane hamiltonianem Pauliego
 \begin{equation*}
     \oper{H} = -\mu\mathbf{B}\cdot\boldsymbol{\sigma} = -\mu\mqty[B_0 & B_\text{rf}\e^{+\im\omega t} \\ B_\text{rf}\e^{-\im\omega t} & -B_0]\,.
 \end{equation*}
 Równania ewolucji na amplitudy prawdopodobieństwa mają więc postać
 \begin{equation*}
-    \begin{split}
-        &\frac{1}{\im\omega_0}\dot{\alpha} =\eta\e^{+\im\omega t}\beta + \alpha \\
-        &\frac{1}{\im\omega_0}\dot{\beta} = \eta\e^{-\im\omega t}\alpha - \beta
-    \end{split}\quad,
+    \begin{cases}
+        \frac{1}{\im\omega_0}\dot{\alpha} =n e^{+\im\omega t}\beta + \alpha \\
+        \frac{1}{\im\omega_0}\dot{\beta} = n \e^{-\im\omega t}\alpha - \beta
+    \end{cases}\quad,
 \end{equation*}
-gdzie wprowadziliśmy parametry \(\omega_0 := \mu B_0 / \hbar\) i \(\eta := B_\text{rf}/B_0\).
-Poszukajmy rozwiązań postaci
+gdzie wprowadziliśmy parametry \(\omega_0 := \mu B_0 / \hbar\) i \(n := B_\text{rf}/B_0\). Łatwo
+sprawdzić, iż rozwiązaniem powyższego układu równań jest
 \begin{equation*}
-    \mqty[\alpha\\\beta] = \mqty[\phi_1(t)\e^{+\im\omega t/2} \\ \phi_2(t)\e^{-\im\omega t/2}]\,.
+    \begin{cases}
+        \alpha(t) = \left(c_1 \e^{+\im\Omega t} + c_2 \e^{-\im \Omega t}\right) n \e^{+\im\omega t / 2}\\
+        \beta(t)  = \left(c_1 m_+\e^{+\im\Omega t} + c_2 m_-\e^{-\im\Omega t}\right)\e^{-\im\omega t / 2} 
+    \end{cases}\quad,
 \end{equation*}
-Po podstawieniu otrzymujemy układ równań
+gdzie
 \begin{equation*}
-    \frac{1}{\im\omega_0}\mqty[\dot{\phi}_1 \\ \dot{\phi}_2] = \mqty[\xi & \eta \\ \eta & -\xi]\mqty[\phi_1 \\ \phi_2]\,,
+    m_\pm = \pm\sqrt{n^2 + \left(1 - \frac{\omega}{2\omega_0}\right)^2} - \left(1 - \frac{\omega}{2\omega_0}\right)
 \end{equation*}
-gdzie \(\xi = 1 - \frac{\omega}{2\omega_0}\). Powyższy układ równań możemy łatwo rozwiązać
-poszukując rozwiązań postaci
+oraz
 \begin{equation*}
-    \mqty[\phi_1(t) \\ \phi_2(t)] = \mqty[\Phi_1 \\ \Phi_2] \e^{\im\omega_0\lambda t}\,,
+    \Omega = \sqrt{n^2\omega_0^2 + \left(\omega_0 - \frac{\omega}{2}\right)^2}\,.
 \end{equation*}
-co po podstawieniu prowadzi do zagadnienia własnego
+Zdefiniowaną wielkość \(\Omega\) nazywamy \textit{częstością Rabiego}. Załóżmy, iż w chwili
+początkowej \(\alpha = 0\) i \(\beta = 1\), wówczas
 \begin{equation*}
-    \mqty[\xi & \eta \\ \eta & -\xi]\mqty[\Phi_1 \\ \Phi_2] = \lambda \mqty[\Phi_1 \\ \Phi_2]\,.
-\end{equation*}
-Łatwo sprawdzić, iż wartości i wektory własne wynoszą odpowiednio
-\begin{equation*}
-    \lambda_\pm = \pm \sqrt{\xi^2 + \eta^2}\,,\quad \mqty[\Phi_1 \\ \Phi_2] = a_\pm\mqty[\frac{\eta}{\lambda_\pm - \xi} \\ 1]\,.
-\end{equation*}
-Rozwiązanie ma zatem postać
-\begin{equation*}
-    \mqty[\phi_1 \\ \phi_2] = a_+\mqty[\frac{\eta}{\lambda_+-\xi}\\1]\e^{+\im\Omega t} + a_-\mqty[\frac{\eta}{\lambda_--\xi}\\1]\e^{-\im\Omega t}\,,
-\end{equation*}
-gdzie \(\boxed{\Omega := \sqrt{\left(\omega_0 - \frac{1}{2}\omega\right)^2 +
-\left(\frac{\omega_0B_\text{rf}}{B_0}\right)^2}}\) to tzw. \textit{częstość Rabiego}. Załóżmy, iż w
-chwili początkowej \(\alpha = 0\) i \(\beta = 1\), wówczas
-\begin{equation*}
-    a_+ = \frac{\lambda_+ - \xi}{\lambda_+ - \lambda_-}\,,\quad a_- = 1 - a_+ = \frac{-\lambda_-+\xi}{\lambda_+ - \lambda_-}\,,
-\end{equation*}
-skąd
-\begin{equation*}
-    \begin{split}
-        &\alpha(t) = \frac{\im\omega_0B_\text{rf}}{\Omega B_0}\sin(\Omega t)\e^{+\im\omega t/2}\\
-        &\beta(t) = \left\{\cos(\Omega t) +\frac{\im}{\Omega}\left(\frac{1}{2}\omega - \omega_0\right)\sin(\Omega t)\right\}\e^{-\im\omega t/2}
-    \end{split}\quad.
+\begin{split}
+    &\alpha(t) = \frac{\im n\omega_0}{\Omega}\sin(\Omega t)\e^{+\im\omega t/2}\\
+    &\beta(t) = \left\{\cos(\Omega t) +\frac{\im}{\Omega}\left(\frac{1}{2}\omega - \omega_0\right)\sin(\Omega t)\right\}\e^{-\im\omega t/2}
+\end{split}\quad.
 \end{equation*}
 Z powyższego prawdopodobieństwo \(p_{1\to0}\) znalezienia układu w stanie \(\ket{0}\) wynosi
 \begin{equation*}
-        p_{1\to0}(t) = |\alpha|^2 = \left(\frac{\omega_0B_\text{rf}}{\Omega B_0}\right)^2\sin^2(\Omega t) = \frac{1}{2}\left(\frac{\omega_0B_\text{rf}}{\Omega B_0}\right)^2(1-\cos(2\Omega t))\,.
+        p_{1\to0}(t) = |\alpha|^2 = \left(\frac{n\omega_0}{\Omega}\right)^2\sin^2(\Omega t) = \frac{1}{2}\left(\frac{n\omega_0}{\Omega}\right)^2(1-\cos(2\Omega t))\,.
 \end{equation*}
 Natomiast prawdopodobieństwo \(p_{1\to1}\) znalezienia układu w stanie \(\ket{1}\) wynosi
 \begin{equation*}
@@ -1001,19 +1000,13 @@ Natomiast prawdopodobieństwo \(p_{1\to1}\) znalezienia układu w stanie \(\ket{
 Prawdopodobieństwa oscylują w czasie z częstością równą podwojonej częstości Rabiego. Amplituda tych
 oscylacji wynosi
 \begin{equation*}
-    \frac{1}{2}\left(\frac{\omega_0B_\text{rf}}{\Omega B_0}\right)^2 = \frac{\omega_0^2B_\text{rf}^2}{2B_0^2}\frac{1}{\left(\omega_0 - \frac{1}{2}\omega\right)^2 +
-    \left(\frac{\omega_0B_\text{rf}}{B_0}\right)^2}
+    \frac{1}{2}\left(\frac{n\omega_0}{\Omega}\right)^2 = \frac{n^2\omega_0^2}{2}\frac{1}{\left(\omega_0 - \frac{1}{2}\omega\right)^2 +
+    \left(n\omega_0\right)^2}
 \end{equation*}
 i przyjmuje wartość maksymalną, gdy spełniony jest \textit{warunek rezonansu} postaci
 \begin{equation*}
-    \boxed{\hbar\omega = 2\mu B_0}
+    \hbar\omega = 2\mu B_0\,.
 \end{equation*}
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=0.7\columnwidth]{figs/nmr.png}
-    \caption{Wykres podwojonej amplitudy oscylacji Rabiego w funkcji częstości pola magnetycznego.
-    Na powyższym wykresie \(b=B_\text{rf}\) i \(B=B_0\)}
-\end{figure}
 
 Zauważmy, iż opisane zjawisko stanowi podstawę do manipulacji qbitami. Istotnie w stanie rezonansu
 wektor stanu ewoluuje zgodnie z
@@ -1025,125 +1018,6 @@ sterować stanem \(\Psi\) w jakim się znajduje, przykładowo jeśli początkowo
 \(\ket{1}\) to włączając wirowe pole magnetyczne na czas \(t = \pi/2\Omega\) układ przechodzi do
 stanu \(\ket{0}\) (pomijając nieistotny globalny czynnik fazowy).
 
-\linesep
-
-\textbf{Precesja momentu magnetycznego.} Rozważmy ponownie cząstkę obdarzoną momentem magnetycznym,
-ale nie obdarzoną ładunkiem elektrycznym, która została umieszczona w jednorodnym polu magnetycznym
-\(\mathbf{B} = B(t)\mathbf{\hat{z}}\). Równania ewolucji składowych wektora na sferze Blocha mają
-postać
-\begin{equation*}
-    \frac{\hbar}{2}\dot{s}_x = +\mu B s_y\,,\quad \frac{\hbar}{2}\dot{s}_y = -\mu Bs_x\,,\quad \frac{\hbar}{2}\dot{s}_z = 0
-\end{equation*}
-skąd \(s_z = \text{const.}\) natomiast sprzężone równania na \(s_x\) i \(s_y\) możemy rozdzielić
-wprowadzając zmienne zespolone
-\begin{equation*}
-    \xi = s_x + \im s_y\,,\quad \eta = s_x - \im s_y = \xi^*\,,
-\end{equation*}
-dla których zachodzi
-\begin{equation*}
-    \begin{split}
-        &\frac{\hbar}{2}\dot{\xi} = \mu B s_y - \im \mu B s_x = -\im \mu B \xi\\
-        &\frac{\hbar}{2}\dot{\eta} = \mu B s_y + \im \mu B s_x = +\im \mu B \eta
-    \end{split}\quad,
-\end{equation*}
-skąd
-\begin{equation*}
-    \begin{split}
-        \xi(t) = a\exp(-\frac{2\im\mu}{\hbar}\int\limits_0^tB(t')\dd{t'} - \im\delta)\\
-        \eta(t) = a\exp(+\frac{2\im\mu}{\hbar}\int\limits_0^tB(t')\dd{t'} + \im\delta)
-    \end{split}\quad,
-\end{equation*}
-Z powyższego mamy więc
-\begin{equation*}
-    \begin{split}
-        &s_x = \frac{\xi + \eta}{2} = a \cos(\frac{2\mu}{\hbar}\int\limits_0^tB(t')\dd{t'} + \delta)\\
-        &s_y = \frac{\xi - \eta}{2\im} = -a\sin(\frac{2\mu}{\hbar}\int\limits_0^tB(t')\dd{t'} + \delta)\\
-        &s_z = \text{const.}
-    \end{split}\quad.
-\end{equation*}
-Równania te opisują precesję wektora \(\mathbf{s}\) wokół osi \(z\) z zależną od czasu częstością. W
-szczególnym przypadku \(B(t) = B_0\) mamy
-\begin{equation*}
-    s_x = a\cos(\omega_\text{L}t + \delta)\,,\quad s_y = -a\sin(\omega_\text{L}t + \delta)\,,\quad s_z=\text{const.}\,,
-\end{equation*}
-gdzie \(\boxed{\omega_\text{L} = 2\mu B_0/\hbar }\) to tzw. \textit{częstość Larmora}.
-
-\subsection{Twierdzenie adiabatyczne}
-
-\begin{theorem}[\textit{adiabatyczne}]
-    Niech \(\oper{H}(t)\) będzie hamiltonianem (o dyskretnym i niezdegenerowanym spektrum) pewnego
-    układu kwantowego, który zmienia się \textit{bardzo powoli} (adiabatycznie) \(\oper{H}(t_i) \to
-    \oper{H}(t_f)\) w czasie \(\Delta t = t_f - t_i\). Wówczas jeśli układ w chwili początkowej
-    \(t_i\) znajdował się w \(n\)--tym stanie własnym hamiltonianu \(\oper{H}(t_i)\) to po
-    adiabatycznej ewolucji w chwili końcowej \(t_f\) będzie znajdował się w \(n\)--tym stanie
-    własnym hamiltonianu \(\oper{H}(t_f)\).
-\end{theorem}
-
-Niech \(\{\psi_n(t)\}\) będzie zbiorem wektorów własnych hamiltonianu \(\oper{H}(t)\). Funkcję
-falową \(\Psi\) w chwili \(t\) możemy zatem zapisać jako
-\begin{equation*}
-    \ket{\Psi(t)} = \sum_n c_n(t)\ket{\psi_n(t)}
-\end{equation*}
-gdzie \(\oper{H}(t)\ket{\psi_n(t)} = \lambda_n(t)\ket{\psi_n(t)}\). Jednocześnie z równania
-Schr\"{o}dingera mamy
-\begin{equation*}
-    \begin{split}
-        \oper{H}(t)\ket{\Psi(t)} &= \sum_n c_n(t) \lambda_n(t)\ket{\psi_n(t)} = \im\hbar\partial_t\ket{\Psi(t)} \\
-        &= \im\hbar \sum_n \left(\dot{c}_n(t)\ket{\psi_n(t)} + c_n(t)\ket{\dot{\psi}_n(t)}\right)
-    \end{split}
-\end{equation*}
-Działając na powyższe równanie \(\bra{\psi_m(t)}\) otrzymujemy
-\begin{equation*}
-    \lambda_m(t)c_m(t) = \im\hbar\dot{c}_m(t) + \im\hbar\sum_n c_n(t) \braket{\psi_m(t)}{\dot{\psi}_n(t)}\,.
-\end{equation*}
-Różniczkując równanie własne mamy natomiast
-\begin{equation*}
-    \dot{\oper{H}}(t)\ket{\psi_n(t)} + \oper{H}(t)\ket{\dot{\psi}_n(t)} = \dot{\lambda}_n(t)\ket{\psi_n(t)} + \lambda_n(t)\ket{\dot{\psi}_n(t)}\,.
-\end{equation*}
-Działając na to równanie \(\bra{\psi_m(t)}\) oraz pamiętając, iż z tw. spektralnego 
-\begin{equation*}
-    \oper{H}(t) = \sum_n \lambda_n(t) \ket{\psi_n(t)}\bra{\psi_n(t)}
-\end{equation*}
-otrzymujemy
-\begin{equation*}
-    \begin{split}
-        &\bra{\psi_m(t)}\dot{\oper{H}}(t)\ket{\psi_n(t)} + \lambda_m(t)\braket{\psi_m(t)}{\dot{\psi}_n(t)} \\
-        &= \dot{\lambda}_n(t)\braket{\psi_m(t)}{\psi_n(t)} + \lambda_n(t)\braket{\psi_m(t)}{\dot{\psi}_n(t)}
-    \end{split}\quad.
-\end{equation*}
-Dla \(m \neq n\) mamy więc
-\begin{equation*}
-    \braket{\psi_m(t)}{\dot{\psi}_n(t)} = \frac{\bra{\psi_m(t)}\dot{\oper{H}}(t)\ket{\psi_n(t)}}{\lambda_n(t) - \lambda_m(t)}\,.
-\end{equation*}
-Możemy zatem zapisać równanie ewolucji na współczynniki \(c_m\) jako
-\begin{equation*}
-    -\dot{c}_m(t) = \left[\frac{\im}{\hbar}\lambda_m(t) + \braket{\psi_m(t)}{\dot{\psi}_m(t)}\right]c_m(t) + \sum_{n \neq m} c_n(t) \frac{\bra{\psi_m(t)}\dot{\oper{H}}(t)\ket{\psi_n(t)}}{\lambda_n(t) - \lambda_m(t)}
-\end{equation*}
-Przybliżenie adiabatyczne polega na pominięciu drugiego członu po prawej stronie tj. zakładamy że w
-każdej chwili \(t\) widmo hamiltonianu jest niezdegenerowane czyli \(\forall t: \forall n\neq m:
-\lambda_n(t) \neq \lambda_m(t)\) oraz zakładamy, iż pochodna hamiltonianu jest bardzo mała. Wówczas mamy
-\begin{equation*}\boxed{
-    \dot{c}_m(t) \approx \im \left[-\frac{1}{\hbar}\lambda_m(t) + \im\braket{\psi_m(t)}{\dot{\psi}_m(t)}\right] c_m(t)}
-\end{equation*}
-skąd rozwiązanie to
-\begin{equation*}
-    c_m(t) = c_m(0)\e^{\im\theta_m(t)}\e^{\im\gamma_m(t)}\,,
-\end{equation*}
-gdzie
-\begin{equation*}
-    \theta_m(t) := -\frac{1}{\hbar}\int\limits_0^t \lambda_m(t')\dd{t'} \in \mathbb{R}
-\end{equation*}
-to tzw. \textit{faza dynamiczna}, a
-\begin{equation*}
-    \gamma_m(t) := \im\int\limits_0^t \braket{\psi_m(t')}{\dot{\psi}_m(t')} \dd{t'} \in \mathbb{R}
-\end{equation*}
-to tzw. \textit{faza geometryczna}. Aby przekonać się, iż \(\gamma_m \in \mathbb{R}\) wystarczy zróżniczkować warunek unormowania 
-\begin{equation*}
-    0 = \dv{\braket{\psi_m}}{t} = \braket{\psi_m}{\dot{\psi}_m}^* + \braket{\psi_m}{\dot{\psi}_m} = 2\Re{\braket{\psi_m}{\dot{\psi}_m}}\,.
-\end{equation*}
-
-
-\newpage
 \section{Obliczenia kwantowe}
 
 

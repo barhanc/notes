@@ -2,8 +2,7 @@
 \ProvidesClass{myclass}
 
 %**** Article One column ****
-\LoadClass[12pt]{article}
-\RequirePackage[a4paper]{geometry}
+\LoadClass{article}
 
 %**** Article Two column ****
 %\LoadClass[twocolumn]{article}
@@ -18,18 +17,6 @@
 \newcommand{\linesep}{\noindent\rule{\columnwidth}{1pt}}
 
 % Custom environments
-\newenvironment{textbox}
-    {\begin{center}
-    \begin{tabular}{|p{0.9\textwidth}|}
-    \hline\\
-    }
-    { 
-    \\\\\hline
-    \end{tabular} 
-    \end{center}
-    }
-%
-
 \RequirePackage{amsthm}
 \theoremstyle{definition}
 \newtheorem{definition}{Def}[section]
@@ -54,3 +41,4 @@
 \usepackage{lipsum, enumitem}
 
 \newcommand{\oper}[1]{\boldsymbol{\mathsf{#1}}}
+% \newcommand{\oper}[1]{\hat{#1}}
