@@ -1,0 +1,602 @@
+\documentclass{myclass}
+\usepackage[polish]{babel}
+
+\title{Statystyczne uczenie maszynowe}
+\author{Bartosz Hanc}
+
+\begin{document}
+
+\subsubsection*{Definicja przestrzeni probabilistycznej}
+
+Rozkładem prawdopodobieństwa \(P\) w pewnym zbiorze zdarzeń elementarnych \(\Omega \neq \emptyset\)
+nazywamy odwzorowanie
+\begin{equation*}
+    P: \Sigma \mapsto [0;1]\,,
+\end{equation*}
+gdzie \(\Sigma\) jest rodziną podzbiorów \(\Omega\) (inaczej rodziną zdarzeń) taką, że
+\begin{equation*}
+    \Omega \in \Sigma\,,\quad A \in \Sigma \implies A' \in \Sigma\,,\quad \forall A_1, A_2, \ldots \in \Sigma : \bigcup_{i}
+    A_i \in \Sigma\,,
+\end{equation*}
+które spełnia: \(P(\Omega) = 1\) oraz dla dowolnych parami rozłącznych zdarzeń \(A_1, A_2, \ldots
+\in \Sigma\) zachodzi
+\begin{equation*}
+    P\left(\bigcup_i A_i\right) = \sum_i P(A_i)\,.
+\end{equation*}
+Trójkę \((\Omega, \Sigma, P)\) nazywamy przestrzenią probabilistyczną. Z powyższej definicji
+wynikają znane własności prawdopodobieństwa tj. \(P(A') = 1 - P(A)\) oraz \(P(A \cup B) = P(A) +
+P(B) - P(A , B)\). 
+
+\subsubsection*{Prawdopodobieństwo warunkowe}
+
+Definiujemy również prawdopodobieństwo warunkowe zdarzenia \(A\) pod warunkiem zdarzenia \(B\) o
+dodatnim prawdopodobieństwie 
+\begin{equation*}
+    P(A \mid B) := \frac{P(A , B)}{P(B)}\,.
+\end{equation*}
+Na podstawie powyższej definicji definiujemy niezależność zdarzeń \(A\), \(B\) jako własność
+\(P(A,B) = P(A)P(B)\), co dla zdarzenia \(B\) o dodatnim prawdopodobieństwie jest równoważne z \(P(A
+\mid B) = P(A)\). Ponadto jeśli zdarzenia \(A_1, A_2, \ldots \in \Sigma\) są parami rozłączne i
+zachodzi \(\bigcup_i A_i = \Omega\) to dla dowolnego zdarzenia \(B \in \Sigma\) możemy zapisać
+\begin{equation*}
+    P(B) = \sum_i P(B \mid A_i) P(A_i)\,.
+\end{equation*}
+Z definicji prawdopodobieństwa warunkowego trywialnie udowodnić twierdzenie Bayesa
+\begin{equation*}
+    P(A \mid B) = \frac{P(B \mid A) P(A)}{P(B)}\,.
+\end{equation*}
+
+\subsubsection*{Zmienne losowe}
+
+W uczeniu maszynowym będą interesować nas zmienne o wartościach w \(\mathbb{R}^n\). Zmienne takie
+nazywamy zmiennymi losowymi wielowymiarowymi i definiujemy jako odwzorowania
+\begin{equation*}
+    X: \Omega \mapsto \mathbb{R}^n
+\end{equation*}
+takie, że dla każdego \(A \subseteq \mathbb{R}^n\) zbiór \(\{\omega \in \Omega \mid X(\omega) \in
+A\}\) należy do rodziny zdarzeń \(\Sigma\). Przy takiej definicji prawdopodobieństwo, iż zmienna
+\(X\) ma wartość należącą do pewnego przedziału \(A\) wynosi
+\begin{equation*}
+    P(X \in A) = P(\{\omega \in \Omega \mid X(\omega) \in A\})\,.
+\end{equation*}
+
+Dowolny rozkład prawdopodobieństwa zmiennej losowej \(n\)--wymiarowej \(X = (X_1, X_2, \ldots,
+X_n)\) jest wyznaczony jednoznacznie przez zadanie funkcji \(F(\mathbf{x}): \mathbb{R}^n \mapsto
+[0;1]\) zwanej dystrybuantą zdefiniowanej jako
+\begin{equation*}
+    F(\mathbf{x}) = F(x_1, \ldots, x_n) := P(X_1 \leq x_1, \ldots, X_n \leq x_n)\,.
+\end{equation*}
+Zasadniczo będą nas interesować jednak dwa przypadki rozkładów prawdopodobieństwa zmiennych
+losowych: rozkłady dyskretne i rozkłady ciągłe. W przypadku rozkładu dyskretnego istnieje pewien
+przeliczalny zbiór \(S \subset \mathbb{R}^n\) taki, że \(P(X \in S) = 1\). Rozkład ten jest zadany
+jednoznacznie przez podanie \(|S|\) liczb \(p_i > 0\) określających prawdopodobieństwa \(p_i = P(X =
+\mathbf{x}_i)\) dla wszystkich \(\mathbf{x}_i \in S\). W przypadku rozkładu ciągłego istnieje z
+kolei funkcja \(p(\mathbf{x}): \mathbb{R}^n \mapsto [0; \infty)\) taka, że
+\begin{equation*}
+    P(X_1 \in [a_1; b_1], \ldots, X_n \in [a_n; b_n]) = \int\limits_{a_1}^{b_1}\cdots\int\limits_{a_n}^{b_n}p(\mathbf{x})\dd[n]{\mathbf{x}}\,.
+\end{equation*}
+Funkcje \(p(\mathbf{x})\) nazywamy gęstością prawdopodobieństwa. W obu przypadkach musi być
+spełniony warunek unormowania postaci odpowiednio
+\begin{equation*}
+    \sum_i p_i = 1\,,\quad \int\limits_{\mathbb{R}^n}p(\mathbf{x})\dd[n]{\mathbf{x}} = 1\,.
+\end{equation*}
+
+Będziemy często wykorzystywać wartość oczekiwaną pewnej funkcji \(f(\mathbf{x})\) zmiennej losowej
+\(X\) zdefiniowaną odpowiednio dla rozkładu \(p\) -- dyskretnego lub ciągłego jako
+\begin{equation*}
+    \mathbb{E}[f(\mathbf{x})] := \sum_{\mathbf{x}_i \in S} f(\mathbf{x}_i)p_i \cong \int\limits_{\mathbb{R}^n}f(\mathbf{x})p(\mathbf{x})\dd[n]{\mathbf{x}}\,.
+\end{equation*}
+Zauważmy przy tym, iż funkcja \(f(\mathbf{x})\) może być zupełnie dowolna, np. dla funkcji
+charakterystycznej (indykatorowej) zbioru \(A \subset \mathbb{R}^n\) \(f(\mathbf{x}) =
+\mathcal{I}_A\) mamy \(\mathbb{E}[\mathcal{I}_A(\mathbf{x})] = P(X \in A)\) lub dla iloczynu funkcji
+Heaviside'a \(f(\mathbf{x}) = \theta(t_1 - x_1)\cdots\theta(t_n - x_n)\) mamy
+\(\mathbb{E}[f(\mathbf{x})] = F(t_1,\ldots, t_n)\).
+
+\subsubsection*{Rozkłady brzegowe}
+
+Niech \(X = (X_1, \ldots, X_n)\) będzie \(n\)--wymiarową zmienną losową o dystrybuancie
+\(F(\mathbf{x})\). Rozkład brzegowy względem \(k\) zmiennych \(X_{\sigma(1)},\ldots,X_{\sigma(k)}\)
+definiujemy jako rozkład wyznaczony przez dystrybuantę
+\begin{equation*}
+    F_{X_{\sigma(1)},\ldots,X_{\sigma(k)}} (x_{\sigma(1)},\ldots,x_{\sigma(k)}) := \lim_{x_{\sigma(k+1)}\to\infty,\ldots,x_{\sigma(n)}\to\infty} F(x_1,\ldots,x_n)\,.
+\end{equation*}
+
+\subsubsection*{Zmienne losowe niezależne}
+Niech \(X = (X_1, \ldots, X_k)\) będzie \(n\)--wymiarową zmienną losową o rozkładzie wyznaczonym
+przez dystrybuantę \(F(\mathbf{x})\). Powiemy, iż zmienne losowe \(n_1,\ldots,n_k\) -- wymiarowych
+(\(n_1 + \ldots + n_k = n\)) \(X_1, \ldots, X_k\) są niezależne iff dla dowolnych
+\(\mathbf{x}_1\in\mathbb{R}^{n_1},\ldots,\mathbf{x}_k\in\mathbb{R}^{n_k}\) zachodzi
+\begin{equation*}
+    F(\mathbf{x}_1,\ldots,\mathbf{x}_k) = F_{X_1}(\mathbf{x}_1)\cdot\ldots\cdot F_{X_k}(\mathbf{x}_k)\,.
+\end{equation*}
+
+\subsubsection*{Rozkłady warunkowe}
+
+W ogólnym przypadku zmiennej losowej \(n\) -- wymiarowej \(Z = (Z_1, \ldots, Z_n)\) o ciągłym
+rozkładzie \(p(\mathbf{z})\) jeśli wydzielimy zmienne \(k\) i \(n-k\) -- wymiarowe \(X =
+(Z_{\sigma(1)}, \ldots, Z_{\sigma(k)})\), \(Y = (Z_{\sigma(k+1)}, \ldots, Z_{\sigma(n)})\) to
+rozkład warunkowy zmiennej \(X \mid Y\) definiujemy jako rozkład zadany przez gęstość
+prawdopodobieństwa
+\begin{equation*}
+    p(\mathbf{x} \mid \mathbf{y}) := \frac{p(\mathbf{z})}{p_Y(\mathbf{y})} = \frac{p(\mathbf{x},\mathbf{y})}{p_Y(\mathbf{y})}\,.
+\end{equation*}
+
+\subsubsection*{Transformacja zmiennych wielowymiarowych}
+
+Niech \(X = (X_1, \ldots, X_n)\) będzie zmienną losową wielowymiarową o rozkładzie ciągłym o
+gęstości \(p_X(\mathbf{x})\). Rozważmy bijekcję \((X_1, \ldots, X_n) \mapsto (Y_1, \ldots, Y_n)\).
+Chcemy znaleźć wyrażenie na gęstość \(p_Y(\mathbf{y})\) w nowych zmiennych. Ponieważ infinitezymalne
+prawdopodobieństwo jest niezmiennicze względem zmiany współrzędnych więc zachodzi
+\begin{equation*}
+    p_X(x_1,\ldots, x_n)\dd{x_1}\ldots\dd{x_n} = p_Y(y_1,\ldots, y_n)\dd{y_1}\ldots\dd{y_n}\,,
+\end{equation*}
+skąd
+\begin{equation*}
+    p_Y(y_1,\ldots,y_n) = \left|\frac{\partial(x_1,\ldots,x_n)}{\partial(y_1,\ldots,y_n)}\right|p_X(x_1(\mathbf{y}),\ldots,x_n(\mathbf{y}))\,.
+\end{equation*}
+
+\subsubsection*{Macierz kowariancji}
+
+Macierz kowariancji funkcji \(f(\mathbf{x})\) zmiennej losowej \(X\) definiujemy jako
+\begin{equation*}
+    \oper{\Sigma}[f(\mathbf{x})] := \mathbb{E}\left[(f(\mathbf{x}) - \boldsymbol{\mu}_f)(f(\mathbf{x}) - \boldsymbol{\mu}_f)^\top\right]\,,
+\end{equation*}
+gdzie \(\boldsymbol{\mu}_f = \mathbb{E}[f(\mathbf{x})]\). Elementy diagonalne
+\(\mathsf{\Sigma}_{ii}\) tej macierzy nazywamy wariancjami zmiennych \(X_i\), natomiast elementy
+pozadiagonalne \(\mathsf{\Sigma}_{ij}\) nazywamy kowariancjami zmiennych \(X_i\) i \(X_j\).
+Oczywiście \(\oper{\Sigma}\) jest macierzą symetryczną. Nadto jeśli \(f\) jest funkcją
+identycznościową tj. \(f(\mathbf{x}) = \mathbf{x}\) to \(\oper{\Sigma}\) jest macierzą nieujemnie
+określoną, gdyż dla dowolnego \(\mathbf{v} \in \mathbb{R}^n\) mamy
+\begin{equation*}
+    \mathbf{v}^\top \oper{\Sigma} \mathbf{v} = \mathbb{E}[\mathbf{v}^\top (\mathbf{x} - \boldsymbol{\mu})(\mathbf{x} - \boldsymbol{\mu})^\top \mathbf{v}] = \mathbb{E}[z^2] \geq 0\,,
+\end{equation*}
+gdzie \(z = \mathbf{v}^\top (\mathbf{x} - \boldsymbol{\mu}) \in \mathbb{R}\). Jeśli \(X_1, \ldots,
+X_n\) są niezależne i \(f\) jest funkcją identycznościową to \(\oper{\Sigma}\) jest macierzą
+diagonalną.
+
+\subsubsection*{Wielowymiarowy rozkład normalny}
+
+Jeśli zmienna wielowymiarowa \(X = (X_1, \ldots, X_n)\) ma wielowymiarowy rozkład normalny (z ang.
+\textit{Multivariate Normal distribution -- MVN}) z wartością oczekiwaną \(\boldsymbol{\mu}\) i
+macierzą kowariancji \(\oper{\Sigma}\), co oznaczamy jako \(X \sim \mathcal{N}(\boldsymbol{\mu},
+\oper{\Sigma})\), to gęstość prawdopodobieństwa jest dana
+\begin{equation*}
+    \phi(\mathbf{x}) = \frac{1}{\sqrt{(2\pi)^n\det\oper{\Sigma}}}\exp\left\{-\frac{1}{2}(\mathbf{x} - \boldsymbol{\mu})^\top\oper{\Sigma}^{-1}(\mathbf{x} - \boldsymbol{\mu})\right\}
+\end{equation*}
+Macierz \(\oper{\Lambda} = \oper{\Sigma}^{-1}\) nazywamy macierzą precyzji. Jeśli \(\mathbf{v}_i\)
+są unormowanymi wektorami własnymi macierzy \(\oper{\Sigma}\), a \(\lambda_i\) odpowiadającymi im
+wartościami własnymi i zakładając, iż widmo \(\{\lambda_i\}\) jest niezdegenerowane mamy z
+twierdzenia spektralnego
+\begin{equation*}
+    \oper{\Lambda} = \sum_{i=1}^n\frac{1}{\lambda_i}\mathbf{v}_i\mathbf{v}_i^\top
+\end{equation*}
+oraz wiemy, iż wektory \(\{\mathbf{v}_i\}\) tworzą bazę ortonormalną przestrzeni \(\mathbb{R}^n\). Z
+powyższego możemy zatem wyrazić wektor \(\mathbf{x} - \boldsymbol{\mu}\) jako kombinację liniową
+wektorów \(\{\mathbf{v}_i\}\) tj.
+\begin{equation*}
+    \mathbf{x} - \boldsymbol{\mu} = \sum_{i=1}^n t_i\mathbf{v}_i\,,
+\end{equation*}
+co pozwala zapisać gęstość prawdopodobieństwa jako
+\begin{equation*}
+    \phi(t_1,\ldots,t_2) \cong \exp\left\{-\frac{1}{2}\sum_{i=1}^n\frac{t_i^2}{\lambda_i}\right\}\,.
+\end{equation*}
+Z powyższego wzoru widać, iż poziomice gęstości są wielowymiarowymi elipsoidami, których półosie są
+skierowane wzdłuż wektorów własnych \(\oper{\Sigma}\) i mają długości proporcjonalne do
+\(\sqrt{\lambda_i}\).
+
+Powiemy, iż wielowymiarowa zmienna losowa \(X \sim \mathcal{N}(\boldsymbol{\mu}, \oper{\Sigma})\) ma
+standardowy wielowymiarowy rozkład normalny jeśli \(\boldsymbol{\mu} = \mathbf{0}\) i
+\(\oper{\Sigma} = \oper{1}\). Wówczas
+\begin{equation*}
+    \phi(\mathbf{x}) = \frac{1}{\sqrt{(2\pi)^n}}\exp\left\{-\frac{1}{2}\mathbf{x}^\top\mathbf{x}\right\}\,.
+\end{equation*}
+
+Można wykazać, iż jeśli \(X \sim \mathcal{N}(\boldsymbol{\mu}, \oper{\Sigma})\) dla
+\(\oper{\Sigma}\) o niezdegenerowanym widmie to wszystkie rozkłady brzegowe i warunkowe \(X\) są
+rozkładami normalnymi.
+
+\subsubsection*{Zbieżność w rachunku prawdopodobieństwa}
+
+W rachunku prawdopodobieństwa definiujemy trzy zasadnicze rodzaje zbieżności ciągu zmiennych
+losowych \((X_n)\). 
+\begin{itemize}
+    \item Ciąg \((X_n)\) jest zbieżny do \(X\) stochastycznie iff
+    \begin{equation*}
+        \forall \epsilon > 0: \lim_{n\to\infty} P(|X_n - X| < \epsilon) = 1\,.
+    \end{equation*}
+
+    \item Ciąg \((X_n)\) jest zbieżny do \(X\) z prawdopodobieństwem 1 iff
+    \begin{equation*}
+        P\left(\lim_{n\to\infty} X_n = X\right) = 1\,.
+    \end{equation*}
+
+    \item Ciąg \((X_n)\) \(n\)--wymiarowych zmiennych losowych jest zbieżny do \(X\) według
+    dystrybuant iff
+    \begin{equation*}
+        \forall \mathbf{x} \in \mathbb{R}^n, F_X(\mathbf{x}) \text{ -- ciągła w \(\mathbf{x}\)}: \lim_{n\to\infty} F_{X_n}(\mathbf{x}) = F_X(\mathbf{x})
+    \end{equation*}
+
+\end{itemize}
+
+Pomiędzy tak zdefiniowanymi rodzajami zbieżności zachodzą następujące implikacje:
+\begin{enumerate}
+    \item \(X_n \to X\) z prawdopodobieństwem 1 \(\implies\) \(X_n \to X\) stochastycznie
+    \item \(X_n \to X\) stochastycznie \(\implies\) \(X_n \to X\) według dystrybuant
+    \item \(X_n \to X\) stochastycznie \(\implies\) istnieje podciąg \((X_{n_k})\) zbieżny do \(X\)
+    z prawdopodobieństwem 1
+\end{enumerate}
+
+\subsubsection*{Wnioskowanie statystyczne}
+
+Modelem statystycznym nazwiemy parę \((\chi, \mathcal{P})\), gdzie \(\mathcal{P}\) jest rodziną
+rozkładów prawdopodobieństwa w zbiorze \(\chi\), przy czym będziemy zakładać \(\chi = \mathbb{R}^n\)
+\begin{equation*}
+    \mathcal{P} := \left\{p(\mathbf{x} \mid \theta) \mid \theta \in \Theta \right\}\,,
+\end{equation*}
+gdzie \(\Theta\) jest zbiorem parametrów modelu \(\mathcal{P}\). Prostą próbą losową w modelu
+\(\mathcal{P}\) nazwiemy ciąg niezależnych zmiennych losowych \(X_1, \ldots, X_n\) o wartościach w
+\(\mathbb{R}^n\) i pochodzących z tego samego rozkładu \(p(\mathbf{x} \mid \theta) \in \mathcal{P}\)
+(w angielskiej terminologii taki ciąg zmiennych losowych nazwiemy \textit{i.i.d.} tj.
+\textit{independent and identically distributed}). Statystyką z kolei nazwiemy zmienną losową \(T\)
+będącą funkcją prostej próby losowej tj. \(T = T(X_1, \ldots, X_n)\). Być może najważniejszym
+przykładem statystyki jest średnia oznaczana jako \(\overline{X}\)
+\begin{equation*}
+    \overline{X}(X_1, \ldots, X_n) := \frac{X_1 + \ldots + X_n}{n}\,.
+\end{equation*}
+
+\subsubsection*{Silne prawo wielkich liczb}
+
+Niech \((X_n)\) będzie ciągiem zmiennych losowych i.i.d. z pewnego rozkładu \(X \sim \mathcal{D}\).
+Przez \((\overline{X}_n)\) oznaczmy ciąg średnich częściowych tj.
+\begin{equation*}
+    \overline{X}_n = \frac{1}{n}\sum_{i=1}^n X_i\,.
+\end{equation*}
+Wówczas zachodzi silne prawo wielkich liczb
+\begin{equation*}
+    P\left(\lim_{n\to\infty} \overline{X}_n = \mathbb{E}[X]\right) = 1\,,
+\end{equation*}
+czyli średnia próbek zbiega do wartości oczekiwanej z prawdopodobieństwem 1.
+
+Silne prawo wielkich liczb daje nam potężne narzędzie do szacowania wartości oczekiwanych, gdyż
+możemy je przybliżać średnią z dużej liczby próbek losowych, a dokładność tego przybliżenia zależy
+jedynie od liczby próbek i wariancji \(X\). Jeśli \(X\) jest zmienną wielowymiarową to dokładność
+przybliżenia nie zależy wprost od liczby wymiarów i unikamy tzw. \textit{curse of dimensionality}.
+
+\subsubsection*{Centralne Twierdzenie Graniczne}
+
+Niech \((X_n)\) będzie ciągiem \(k\)--wymiarowych zmiennych losowych i.i.d. z dowolnego rozkładu \(X
+\sim \mathcal{D}\) o wartości oczekiwanej \(\boldsymbol{\mu} = \mathbb{E}[\mathbf{x}]\) i
+odwracalnej macierzy kowariancji \(\oper{\Sigma}\). Oznaczając przez \((\overline{X}_n)\) ciąg
+średnich częściowych ciągu \((X_n)\) zachodzi
+\begin{equation*}
+    \sqrt{n}\left(\overline{X}_n - \boldsymbol{\mu}\right) \to Z \sim \mathcal{N}(\mathbf{0}, \oper{\Sigma})\,.
+\end{equation*}
+
+Oznacza to, iż dla ciągu \(X_1,\ldots,X_n\) zmiennych losowych i.i.d. z praktycznie dowolnego
+rozkładu \(X\sim\mathcal{D}\) dla odpowiednio dużych \(n\) średnią z próbek możemy traktować jako
+zmienną losową o rozkładzie normalnym \(\mathcal{N}(\boldsymbol{\mu}, n^{-1/2}\oper{\Sigma})\).
+
+
+\subsubsection*{Estymatory punktowe MLE i MAP}
+
+Rozważamy model statystyczny \(\mathcal{P} = \left\{p(\mathbf{x} \mid \theta) \mid \theta \in
+\Theta\right\}\). Estymatorem parametru \(\theta\) nazwiemy statystykę
+\(\hat{\theta}(X_1,\ldots,X_n)\) służącą do oszacowania wartości tego parametru. Wartość tej
+statystki dla konkretnej realizacji prostej próby losowej
+\(\hat{\theta}(\mathbf{x}_1,\ldots,\mathbf{x}_n)\) nazwiemy estymatą parametru \(\theta\). Dodatkowo
+definiujemy obciążenie (z ang. \textit{bias}) estymatora jako wielkość
+\begin{equation*}
+    \mathbb{B}[\hat{\theta}] := \mathbb{E}[\hat{\theta}] - \theta\,.
+\end{equation*}
+
+Zasadniczo będą nas interesować dwa rodzaje estymat: MLE i MAP. W przypadku estymaty MLE (z ang.
+\textit{Maximum Likelihood Estimate}) definiujemy funkcję wiarygodności (\textit{likelihood}) dla
+modelu \(\mathcal{P} = \left\{p(\mathbf{x} \mid \theta) \mid \theta \in \Theta\right\}\) i
+realizacji prostej próby losowej (którą nazwiemy również danymi lub obserwacjami)
+\(D=(\mathbf{x}_1,\ldots,\mathbf{x}_n)\) jako
+\begin{equation*}
+    p(D \mid \theta) = \prod_{i=1}^n p(\mathbf{x}_i \mid \theta)\,.
+\end{equation*}
+Estymatą MLE nazywamy taką wartość parametru \(\theta_\text{MLE} \in \Theta\), że
+\begin{equation*}
+    p(D \mid \theta_\text{MLE}) = \max_{\theta \in \Theta} p(D \mid \theta)\,.
+\end{equation*}
+Ponieważ znajdywanie maksimum funkcji będącej iloczynem nie jest zadaniem przyjemnym (chociażby
+obliczanie pochodnych iloczynu funkcji jest trudniejsze od sumy), więc wprowadzamy zanegowaną
+logarytmiczną funkcję wiarygodności
+\begin{equation*}
+    \ell(D \mid \theta) = -\log p(D \mid \theta) = -\sum_{i=1}^n \log p(\mathbf{x}_i \mid \theta)\,,
+\end{equation*}
+wówczas ze względu na fakt, iż funkcja \(\log x\) jest ściśle rosnąca estymatę MLE możemy
+równoważnie wyznaczyć jako
+\begin{equation*}
+    \ell(D \mid \theta_\text{MLE}) = \min_{\theta \in \Theta} \ell(D \mid \theta)\,.
+\end{equation*}
+Funkcję \(\ell\) będziemy również nazywać funkcją kosztu.
+
+W przypadku estymaty MAP (z ang. \textit{Maximum a posteriori estimate}) wprowadzamy gęstość
+rozkładu a posteriori jako
+\begin{equation*}
+    p(\theta \mid D) = \frac{1}{Z}p(D \mid \theta)\pi(\theta)\,,
+\end{equation*}
+gdzie \(Z\) jest stałą wynikającą z warunku unormowania, a \(\pi(\theta)\) to gęstość
+prawdopodobieństwa opisująca rozkład a priori parametru \(\theta\). Estymatą MAP nazywamy taką
+wartość parametru \(\theta_\text{MAP} \in \Theta\), że
+\begin{equation*}
+    p(\theta_\text{MAP} \mid D) = \max_{\theta \in \Theta} p(\theta \mid D)\,.
+\end{equation*}
+Zauważmy przy tym iż liczba \(Z\) nie jest nam potrzebna, gdyż wystarczy zmaksymalizować licznik tj.
+\begin{equation*}
+    \theta_\text{MAP} = \arg\max_{\theta \in \Theta} p(D \mid \theta)\pi(\theta)\,.
+\end{equation*}
+
+\subsubsection*{Wnioskowanie Bayesowskie}
+
+Zajmiemy się teraz wnioskowaniem opartym na twierdzeniu Bayesa. Rozpatrujemy model statystyczny
+\(\mathcal{P} = \left\{p(\mathbf{x} \mid \theta) \mid \theta \in \Theta\right\}\). Załóżmy, iż mamy
+obserwacje \(D = (\mathbf{x}_1, \ldots, \mathbf{x}_n)\), wówczas twierdzenie Bayesa możemy zapisać
+jako
+\begin{equation*}
+    p(\theta \mid D) = \frac{p(D \mid \theta)\pi(\theta)}{p_D(D)} = \frac{p(D \mid \theta)\pi(\theta)}{\int\limits_\Theta p(D \mid \theta)\pi(\theta) \dd{\theta}}\,,
+\end{equation*}
+gdzie \(p(\theta \mid D)\) nazywamy rozkładem a posteriori (posteriorem), \(p(D \mid \theta)\) --
+wiarygodnością (likelihood), a \(\pi(\theta)\) -- rozkładem a priori (priorem).
+
+Całe wnioskowanie Bayesowskie opiera się na wyznaczeniu rozkładu a posteriori, który wyraża całą
+naszą wiedzę o estymowanym parametrze \(\theta\). Na podstawie tego rozkładu możemy wyznaczyć
+estymatę punktową MAP, jak również niepewność związaną z wyznaczeniem tej estymaty np. poprzez
+wyznaczenie przedziału wiarygodności \(C_{1-\alpha}(\theta \mid D) = [\theta_l ; \theta_u]\)
+takiego, że
+\begin{equation*}
+    P(\theta \in [\theta_l ; \theta_u] \mid D) = 1 - \alpha\,,
+\end{equation*}
+dla ustalonego \(0 < \alpha < 1\). Możemy również skonstruować rozkład predykcyjny (z ang.
+\textit{posterior predictive distribution}) określający prawdopodobieństwo zaobserwowania nowej
+obserwacji \(\mathbf{x}\)
+\begin{equation*}
+    p(\mathbf{x} \mid D) = \int\limits_\Theta p(\mathbf{x} \mid \theta) p(\theta \mid D) \dd{\theta}\,.
+\end{equation*}
+
+\subsubsection*{Modele Gaussowskie}
+
+Jak już wspomnieliśmy w przypadku gdy zmienna losowa ma wielowymiarowy rozkład normalny
+\(\mathcal{N}(\boldsymbol{\mu}, \oper{\Sigma})\) wszystkie rozkłady brzegowe i warunkowe są również
+rozkładami normalnymi. W szczególnym przypadku gdy zmienne \(k\) i \(n-k\) --wymiarowe
+\(\mathbf{x}\) i \(\mathbf{y}\) mają łącznie rozkład normalny
+\begin{equation*}
+    \mqty[\mathbf{x} \\ \mathbf{y}] \sim \mathcal{N}(\boldsymbol{\mu}, \oper{\Sigma})\,,
+\end{equation*}
+gdzie
+\begin{equation*}
+    \boldsymbol{\mu} = \mqty[\boldsymbol{\mu}_\mathbf{x} \\ \boldsymbol{\mu}_\mathbf{y}]\,,\quad \oper{\Sigma} = \mqty[\oper{\Sigma}_{\mathbf{xx}} & \oper{\Sigma}_{\mathbf{xy}} \\ \oper{\Sigma}_{\mathbf{yx}} & \oper{\Sigma}_\mathbf{yy}]
+\end{equation*}
+można pokazać iż
+\begin{equation*}
+    \mathbf{x} \mid \mathbf{y} \sim \mathcal{N}(\boldsymbol{\mu}_{\mathbf{x}|\mathbf{y}}, \oper{\Sigma}_{\mathbf{x}|\mathbf{y}})\,,\quad \mathbf{y} \sim \mathcal{N}(\boldsymbol{\mu}_\mathbf{y}, \oper{\Sigma}_\mathbf{yy})\,,
+\end{equation*}
+gdzie
+\begin{equation*}
+    \begin{split}
+        &\boldsymbol{\mu}_{\mathbf{x}|\mathbf{y}} = \boldsymbol{\mu}_\mathbf{x} + \oper{\Sigma}_\mathbf{xy}\oper{\Sigma}_\mathbf{yy}^{-1}(\mathbf{y} - \boldsymbol{\mu}_\mathbf{y})\\
+        &\oper{\Sigma}_{\mathbf{x}|\mathbf{y}} = \oper{\Sigma}_\mathbf{xx} - \oper{\Sigma}_\mathbf{xy}\oper{\Sigma}_\mathbf{yy}^{-1}\oper{\Sigma}_\mathbf{yx}
+    \end{split}\quad.
+\end{equation*}
+
+\subsubsection*{Liniowe modele Gaussowskie}
+
+Powyższe własności rozkładów łącznych pozwalają jawnie wnioskować w tzw. liniowych modelach
+Gaussowskich (z ang. \textit{Linear Gaussian Models}). Załóżmy, iż nasze obserwacje są modelowane
+przez \(n\)--wymiarową zmienną losową \(\mathbf{y}\) o rozkładzie normalnym z estymowanym parametrem
+\(\mathbf{x}\) i znanymi parametrami \(\oper{A}, \mathbf{b}, \oper{\Sigma}_\mathbf{y}\) tak, że
+wiarygodność ma postać
+\begin{equation*}
+    \mathbf{y}\mid\mathbf{x} \sim \mathcal{N}(\oper{A}\mathbf{x} + \mathbf{b}, \oper{\Sigma}_\mathbf{y})\,,
+\end{equation*}
+gdzie \(\oper{A}\) jest macierzą wymiaru \(n\times k\). Jako prior na parametr \(\mathbf{x}\)
+przyjmiemy również rozkład normalny o pewnych zadanych parametrach \(\boldsymbol{\mu}_\mathbf{x},
+\oper{\Sigma}_\mathbf{x}\) (taki wybór rozkładu a priori nazywamy rozkładem sprzężonym do
+wiarygodności)
+\begin{equation*}
+    \mathbf{x} \sim \mathcal{N}(\boldsymbol{\mu}_\mathbf{x}, \oper{\Sigma}_\mathbf{x})\,.
+\end{equation*}
+Wówczas łatwo pokazać, iż rozkład a posteriori jest rozkładem normalnym
+\begin{equation*}
+    \mathbf{x} \mid \mathbf{y} \sim \mathcal{N}(\boldsymbol{\mu}_{\mathbf{x}|\mathbf{y}}, \oper{\Sigma}_{\mathbf{x}|\mathbf{y}})
+\end{equation*}
+z parametrami
+\begin{equation*}
+    \begin{split}
+        &\oper{\Sigma}_{\mathbf{x}|\mathbf{y}} = \left[\oper{\Sigma}_\mathbf{x}^{-1} + \oper{A}^\top\oper{\Sigma}_\mathbf{y}^{-1}\oper{A}\right]^{-1}\\
+        &\boldsymbol{\mu}_{\mathbf{x}|\mathbf{y}} = \oper{\Sigma}_{\mathbf{x}|\mathbf{y}}\left[\oper{A}^\top\oper{\Sigma}_\mathbf{y}^{-1}(\mathbf{y} - \mathbf{b}) + \oper{\Sigma}_\mathbf{x}^{-1}\boldsymbol{\mu}_\mathbf{x}\right]
+    \end{split}\quad.
+\end{equation*}
+
+Załóżmy teraz, iż mamy ciąg obserwacji \((\mathbf{y}_1, \ldots, \mathbf{y}_m)\). Wnioskowanie
+Bayesowskie możemy wówczas stosować iteracyjnie tzn. na początku dla 0 obserwacji rozkład
+estymowanego parametru jest opisany przez prior \(\mathcal{N}(\boldsymbol{\mu}_0,
+\oper{\Sigma}_0)\). Po zaobserwowaniu jednego \(\mathbf{y}_1\) aktualizujemy nasze przekonania co do
+parametru \(\mathbf{x}\) zgodnie z powyższym wzorem i otrzymujemy rozkład normalny o parametrach
+\begin{equation*}
+    \begin{split}
+        &\oper{\Sigma}_1 = \left[\oper{\Sigma}_0^{-1} + \oper{A}^\top\oper{\Sigma}_\mathbf{y}^{-1}\oper{A}\right]^{-1}\\
+        &\boldsymbol{\mu}_1 = \oper{\Sigma}_1\left[\oper{A}^\top\oper{\Sigma}_\mathbf{y}^{-1}(\mathbf{y}_1 - \mathbf{b}) + \oper{\Sigma}_0^{-1}\boldsymbol{\mu}_0\right]
+    \end{split}\quad.
+\end{equation*}
+Po zaobserwowaniu kolejnego \(\mathbf{y}_2\) ponownie wykorzystujemy powyższe wzory ale jako prior
+wykorzystując rozkład w poprzedniej iteracji. W ogólności możemy zapisać wzór rekurencyjny na
+\(m+1\) rozkład jako
+\begin{equation*}
+    \begin{split}
+        &\oper{\Sigma}_{m+1} = \left[\oper{\Sigma}_m^{-1} + \oper{A}^\top\oper{\Sigma}_\mathbf{y}^{-1}\oper{A}\right]^{-1}\\
+        &\boldsymbol{\mu}_{m+1} = \oper{\Sigma}_{m+1}\left[\oper{A}^\top\oper{\Sigma}_\mathbf{y}^{-1}(\mathbf{y}_{m+1} - \mathbf{b}) + \oper{\Sigma}_m^{-1}\boldsymbol{\mu}_m\right]
+    \end{split}\quad,
+\end{equation*}
+skąd możemy od razu podać wzór na parametry \(m\)--tego rozkładu
+\begin{equation*}
+    \begin{split}
+        &\oper{\Sigma}_{m} = \left[\oper{\Sigma}_0^{-1} + m\oper{A}^\top\oper{\Sigma}_\mathbf{y}^{-1}\oper{A}\right]^{-1}\\
+        &\boldsymbol{\mu}_{m} = \oper{\Sigma}_{m}\left[\oper{A}^\top\oper{\Sigma}_\mathbf{y}^{-1}\left(\sum_{i=1}^{m}\mathbf{y}_{i} - m\mathbf{b}\right) + \oper{\Sigma}_0^{-1}\boldsymbol{\mu}_0\right]
+    \end{split}\quad.
+\end{equation*}
+Taki sam wynik można by uzyskać rozpatrując łączny rozkład a posteriori dla obserwacji \(D =
+(\mathbf{y}_1, \ldots, \mathbf{y}_m)\) tj.
+\begin{equation*}
+    \begin{split}
+        &p(\mathbf{x} \mid D) \cong \pi(\mathbf{x})\prod_{i=1}^m p(\mathbf{y}_i \mid \mathbf{x})\cong \\
+        &\exp\left\{-\frac{1}{2}\left[(\mathbf{x}-\boldsymbol{\mu}_0)^\top\oper{\Sigma}_0^{-1}(\mathbf{x}-\boldsymbol{\mu}_0) + \sum_{i=1}^m(\mathbf{y}_i - \oper{A}\mathbf{x}-\mathbf{b})^\top\oper{\Sigma}_\mathbf{y}^{-1}(\mathbf{y}_i - \oper{A}\mathbf{x}-\mathbf{b})\right]\right\}
+    \end{split}\,.
+\end{equation*}
+
+\subsubsection*{Regresja liniowa}
+
+Załóżmy, iż modelujemy obserwacje postaci \((y,\mathbf{x})\) gdzie \(y\) to skalar zwany zmienną
+objaśnianą, którego wartość obserwujemy, a \(\mathbf{x}\) to wektor zmiennych objaśniających, który
+kontrolujemy tj. zakładamy, iż wektor \(\mathbf{x}\) dla danego pomiaru \(y\) znamy dokładnie.
+Dodatkowo zakładamy, iż \(y\) zależy liniowo od \(\mathbf{x}\) tj.
+\begin{equation*}
+    y = \mathbf{w}^\top\mathbf{x} + \epsilon\,,
+\end{equation*}
+gdzie \(\epsilon \sim \mathcal{N}(0, \sigma^2)\) dla znanego \(\sigma\) jest tzw. błędem losowym, a
+\(\mathbf{w}\) jest estymowanym przez nas parametrem. Możemy zatem zapisać
+\begin{equation*}
+    y \mid \mathbf{w} \sim \mathcal{N}(\mathbf{w}^\top\mathbf{x}, \sigma^2)\,.
+\end{equation*}
+Powiedzmy, iż zaobserwowaliśmy ciąg obserwacji \(D = (y_1, \ldots, y_m)\) dla zadanych (lub
+dokładnie znanych) przez nas \((\mathbf{x}_1,\ldots,\mathbf{x}_m)\). Wiarygodność ma zatem postać
+\begin{equation*}
+    p(D \mid \mathbf{w}) \cong \prod_{i=1}^m \exp\left\{-\frac{1}{2\sigma^2}\left(y_i - \mathbf{w}^\top\mathbf{x}_i\right)^2\right\}\,.
+\end{equation*}
+W przypadku regresji liniowej zamiast pełnego wnioskowania Bayesowskiego o parametrze \(\mathbf{w}\)
+często stosuje się prostsze podejście polegające na znalezieniu estymaty punktowej MLE. Zanegowana
+logarytmiczna funkcja wiarygodności ma postać
+\begin{equation*}
+    \ell(D \mid \mathbf{w}) = \frac{1}{2\sigma^2}\sum_{i=1}^m(y_i - \mathbf{w}^\top\mathbf{x}_i)^2 + \text{const.}
+\end{equation*}
+Człon stały możemy oczywiście pominąć i zapisać
+\begin{equation*}
+    \ell(D \mid \mathbf{w}) \cong \sum_{i=1}^m(y_i - \mathbf{w}^\top\mathbf{x}_i)^2 = \left(\mathbf{y} - \oper{X}\mathbf{w}\right)^\top\left(\mathbf{y} - \oper{X}\mathbf{w}\right)\,,
+\end{equation*}
+gdzie
+\begin{equation*}
+    \mathbf{y} = \mqty[y_1 \\ \vdots \\ y_m]\,,\quad \oper{X} = \mqty[\mathbf{x}_1^\top \\ \vdots \\ \mathbf{x}_m^\top]\,.
+\end{equation*}
+Ponieważ otrzymana funkcja \(\ell\) ma postać formy kwadratowej, więc problem optymalizacyjny
+polegający na znalezieniu minimum \(\ell\) nazywa się metodą najmniejszych kwadratów (z ang.
+\textit{OLS -- Ordinary Least Squares}). Aby wyznaczyć estymatę \(\mathbf{w}_\text{MLE}\) musimy
+rozwiązać równanie
+\begin{equation*}
+    \pdv{\ell}{\mathbf{w}} = \pdv{~}{\mathbf{w}}\left[\mathbf{y}^\top\mathbf{y} + \mathbf{w}^\top\oper{X}^\top\oper{X}\mathbf{w} - 2\mathbf{y}^\top\oper{X}\mathbf{w}\right] = \mathbf{0}\,,
+\end{equation*}
+skąd
+\begin{equation*}
+    2\oper{X}^\top\oper{X}\mathbf{w} - 2\oper{X}^\top\mathbf{y} = \mathbf{0}\,,
+\end{equation*}
+zatem
+\begin{equation*}
+    \mathbf{w}_\text{MLE} = (\oper{X}^\top\oper{X})^{-1}\oper{X}^\top\mathbf{y}\,.
+\end{equation*}
+Pełniejszą informację o parametrze \(\mathbf{w}\) możemy uzyskać rozpatrując rozkład a posteriori
+\(p(\mathbf{w} \mid D)\). Jeśli jako prior przyjmiemy rozkład normalny z pewnymi parametrami
+\(\boldsymbol{\mu}_0, \oper{\Sigma}_0\) to zauważmy, iż otrzymujemy instancję liniowego modelu
+Gaussowskiego
+\begin{equation*}
+    \begin{split}
+        \mathbf{y} \mid \mathbf{w} &\sim \mathcal{N}(\oper{X}\mathbf{w}, \sigma^2\oper{1})\\
+        \mathbf{w} &\sim \mathcal{N}(\boldsymbol{\mu}_0, \oper{\Sigma}_0)
+    \end{split}\quad,
+\end{equation*}
+skąd rozkład a posteriori jest rozkładem normalnym
+\begin{equation*}
+    \mathbf{w} \mid \mathbf{y} \sim \mathcal{N}(\boldsymbol{\mu}_m, \oper{\Sigma}_m)
+\end{equation*}
+o parametrach
+\begin{equation*}
+    \begin{split}
+        &\oper{\Sigma}_m = \left[\oper{\Sigma}_0^{-1} + \sigma^{-2}\oper{X}^\top\oper{X}\right]^{-1}\\
+        &\boldsymbol{\mu}_m = \oper{\Sigma}_m\left[\sigma^{-2}\oper{X}^\top\mathbf{y} + \oper{\Sigma}_0^{-1}\boldsymbol{\mu}_0\right]    
+    \end{split}\quad.
+\end{equation*}
+W powyższych wzorach nazwy parametrów nie są przykładowe: po zaobserwowaniu 0 przykładów rozkład
+parametru \(\mathbf{w}\) jest rozkładem a priori \(\mathcal{N}(\boldsymbol{\mu}_0,
+\oper{\Sigma}_0)\); po zaobserwowaniu po jednej wartości \(y_i\) w \(m\) zadanych (znanych
+dokładnie) punktach \(\mathbf{x}_i\) otrzymujemy rozkład a posteriori
+\(\mathcal{N}(\boldsymbol{\mu}_m, \oper{\Sigma}_m)\). Gdybyśmy w każdym z \(m\) punktów
+\(\mathbf{x}_i\) dokonywali pomiaru \(y_i\) \(s\)--krotnie to wtedy wykorzystując wzory wyprowadzone
+przy iteracyjnym stosowaniu wnioskowania w liniowym modelu Gaussowskim otrzymujemy rozkład normalny
+o parametrach
+\begin{equation*}
+    \begin{split}
+        &\oper{\Sigma}_{m;s} = \left[\oper{\Sigma}_0^{-1} + \frac{s}{\sigma^2}\oper{X}^\top\oper{X}\right]^{-1}\\
+        &\boldsymbol{\mu}_{m;s} = \oper{\Sigma}_{m;s}\left[\sigma^{-2}\oper{X}^\top\sum_{i=1}^s\mathbf{y}_i + \oper{\Sigma}_0^{-1}\boldsymbol{\mu}_0\right]    
+    \end{split}\quad.
+\end{equation*} 
+Rozkład predykcyjny dla nowej obserwacji \(y\) poczynionej w punkcie \(\mathbf{x}\) jest dany przez
+\begin{equation*}
+    p(y \mid \mathbf{y}) = \int\limits_{\mathbb{R}^n}p(y\mid\mathbf{w})p(\mathbf{w}\mid\mathbf{y}) \dd[n]\mathbf{w}\,.
+\end{equation*}
+Nietrudno zauważyć, iż będzie to rozkład normalny o parametrach
+\begin{equation*}
+    \begin{split}
+        \mu_{y|\mathbf{y}} = \mathbb{E}[y\mid\mathbf{y}] &= \int\limits_{\mathbb{R}} y p(y\mid\mathbf{y}) \dd{y} = \int\limits_{\mathbb{R}^n}\dd[n]{\mathbf{w}} p(\mathbf{w}\mid\mathbf{y}) \int\limits_\mathbb{R}\dd{y} yp(y\mid\mathbf{w}) \\
+        &= \int\limits_{\mathbb{R}^n}\dd[n]{\mathbf{w}} p(\mathbf{w}\mid\mathbf{y}) \mathbf{x}^\top\mathbf{w} = \mathbf{x}^\top\boldsymbol{\mu}_m\,.
+    \end{split}
+\end{equation*}
+oraz
+\begin{equation*}
+    \begin{split}
+        \sigma_{y|\mathbf{y}}^2 &= \mathbb{E}\left[(y - \mu_{y|\mathbf{y}} )^2 \mid \mathbf{y}\right] = \int\limits_{\mathbb{R}^n}\dd[n]{\mathbf{w}} p(\mathbf{w}\mid\mathbf{y}) \int\limits_\mathbb{R}\dd{y} (y-\mu_{y|\mathbf{y}})^2p(y\mid\mathbf{w})\\
+        &= \int\limits_{\mathbb{R}^n}\dd[n]{\mathbf{w}} p(\mathbf{w}\mid\mathbf{y}) \int\limits_\mathbb{R}\dd{y} \left(y^2 + \mu_{y|\mathbf{y}}^2 - 2\mu_{y|\mathbf{y}}y\right)p(y\mid\mathbf{w})\\
+        &= \int\limits_{\mathbb{R}^n}\dd[n]{\mathbf{w}} p(\mathbf{w}\mid\mathbf{y}) \left(\sigma^2 + (\mathbf{x}^\top\mathbf{w})^2 + \mu_{y|\mathbf{y}}^2 - 2\mu_{y|\mathbf{y}}\mathbf{x}^\top\mathbf{w}\right)\\
+        &=\sigma^2 + \int\limits_{\mathbb{R}^n}\dd[n]{\mathbf{w}} p(\mathbf{w}\mid\mathbf{y}) \left(\mathbf{x}^\top\mathbf{w} - \mathbf{x}^\top\boldsymbol{\mu}_m\right)^2\\
+        &=\sigma^2 + \mathbf{x}^\top \mathbb{E}[(\mathbf{w}-\boldsymbol{\mu}_m)(\mathbf{w}-\boldsymbol{\mu}_m)^\top\mid\mathbf{y}]\mathbf{x} = \sigma^2 +\mathbf{x}^\top\oper{\Sigma}_m\mathbf{x}\,.
+    \end{split}
+\end{equation*}
+Powyżej skorzystaliśmy ze znanego faktu, iż dla jednowymiarowej zmiennej losowej zachodzi \(\sigma^2
+= \mathbb{E}[(X - \mu_X)^2] = \mathbb{E}[X^2] - \mu_X^2\), skąd \(\mathbb{E}[X^2] = \sigma^2 +
+\mu_X^2\). Podsumowując rozkład predykcyjny ma postać
+\begin{equation*}
+    y \mid \mathbf{y} \sim \mathcal{N}(\mathbf{x}^\top\boldsymbol{\mu}_m, \sigma^2 + \mathbf{x}^\top\oper{\Sigma}_m\mathbf{x})\,.
+\end{equation*}
+
+\subsubsection*{Regularyzacja}
+
+Regularyzacją nazywamy proces polegający na wprowadzeniu ad hoc do zagadnienia optymalizacji
+dodatkowych członów tak, aby rozwiązanie było ,,regularne'' (prostsze, nieosobliwe, jednoznaczne
+...). W przypadku funkcji kosztu \(\ell\) najczęściej dodajemy człon penalizujący rozwiązania o
+dużej normie estymowanego parametru postaci
+\begin{equation*}
+    \gamma\norm{\theta}
+\end{equation*}
+dla pewnej normy \(\norm{\cdot}\) i hiper-parametru \(\gamma\) określającego siłę regularyzacji. W
+kontekście Bayesowskim regularyzację można również rozumieć jako pewną niechęć (,,tłumienie'',
+zachowawczość) modelu do zmiany rozkładu a priori estymowanego parametru po pojawieniu się kolejnych
+obserwacji.
+
+Przykładowo jeśli w zagadnieniu Bayesowskiej regresji liniowej jako prior przyjmiemy rozkład
+normalny
+\begin{equation*}
+    \mathbf{w} \sim \mathcal{N}(\mathbf{0}, \tau^2\oper{1})
+\end{equation*}
+to rozkład a posteriori jest rozkładem normalnym o parametrach
+\begin{equation*}
+    \begin{split}
+        &\oper{\Sigma}_m = \sigma^2 \left[\gamma\oper{1} + \oper{X}^\top\oper{X}\right]^{-1}\\
+        &\boldsymbol{\mu}_m = \left[\gamma\oper{1} + \oper{X}^\top\oper{X}\right]^{-1}\oper{X}^\top\mathbf{y}
+    \end{split}\quad,
+\end{equation*}
+gdzie \(\gamma = \sigma^2 / \tau^2\) jest hiper-parametrem określającym siłę regularyzacji.
+Zauważmy, że im większa jest wartość \(\gamma\) (mniejsza niepewność związana z rozkładem a priori)
+tym drugi człon w nawiasie staje się mniej istotny. Taki sam wynik możemy uzyskać metodą OLS jeśli
+do funkcji kosztu dodamy człon regularyzujący dla zwykłej normy euklidesowej. Zagadnienie
+minimalizacji funkcji kosztu będącej formą kwadratową z dodanym członem regularyzującym nazywamy
+również regresją grzbietową.
+
+\subsubsection*{Procesy Gaussowskie}
+
+
+
+\subsubsection*{Regresja logistyczna}
+
+\subsubsection*{Wnioskowanie metodami Monte Carlo}
+
+\end{document}

@@ -2,6 +2,5 @@
 .vscode
 
 # LaTeX
-/miscell_math
 /elemcls
-/stat
+# /stat
