@@ -704,7 +704,7 @@ Zauważmy, iż jest to instancja modelu Gaussowskiego, więc rozkład warunkowy 
     \begin{split}
         &\boldsymbol{\mu} = k(Y,X)k^{-1}(X,X)\mathbf{f}_X\\
         &\oper{\Sigma} = k(Y,Y) - k(Y,X)k^{-1}(X,X)k(X,Y)
-    \end{split}
+    \end{split}\quad.
 \end{equation*}
 Dodatkową niepewność związaną z pomiarem wartości \(\mathbf{f}_X\) możemy uchwycić zmieniając postać
 jądra 
@@ -722,7 +722,130 @@ określona. Wówczas rozkład predykcyjny ma parametry
     \end{split}\quad.
 \end{equation*}
 
-\subsubsection*{Regresja logistyczna}
+\subsubsection*{Wieloklasowa regresja logistyczna}
+
+Załóżmy, iż modelujemy obserwacje postaci \((t,\mathbf{x})\), gdzie \(t \in
+\{\tau_1,\tau_2,\ldots,\tau_s\}\) to etykieta określająca przynależność do jednej z \(s\) klas, a
+\(\mathbf{x} \in \mathbb{R}^n\) jest znanym (lub zadanym) przez nas dokładnie wektorem cech obiektu
+dla których zaobserwowaną klasą jest \(t\). Zakładamy ponadto, iż prawdopodobieństwo przynależności
+do klasy \(\tau_j\) (jednej z \(s\) klas) dla wektora cech \(\mathbf{x}\) ma postać tzw. funkcji
+softmax
+\begin{equation*}
+    \pi_j(\mathbf{x}) = \frac{1}{Z(\mathbf{x})}\e^{\mathbf{w}_j^\top\mathbf{x}}\,,
+\end{equation*}
+gdzie \(\mathbf{w}_j\) są estymowanymi przez nas parametrami. Ze względu na warunek unormowania
+musimy mieć
+\begin{equation*}
+    \sum_{j=1}^s \pi_j = 1\,,
+\end{equation*}
+skąd stała normalizacyjna \(Z(\mathbf{x})\) ma postać
+\begin{equation*}
+    Z(\mathbf{x}) = \sum_{j=1}^s \e^{\mathbf{w}_j^\top\mathbf{x}}
+\end{equation*}
+Rozkład zmiennej losowej \(t\) jest  w takim razie dyskretnym rozkładem wielopunktowym (z ang.
+\textit{categorical distribution}) postaci
+\begin{equation*}
+    t \mid \mathbf{w}_1,\ldots,\mathbf{w}_s \sim \text{Cat}(\pi_1(\mathbf{x}),\ldots,\pi_s(\mathbf{x}))\,.
+\end{equation*}
+Zauważmy, iż prawdopodobieństwo wylosowania etykiety \(t\) dla parametrów \(\mathbf{w}_j\) możemy
+zapisać jako
+\begin{equation*}
+    p(t \mid \mathbf{w}_1,\ldots,\mathbf{w}_s) = \prod_{j=1}^s \pi_j(\mathbf{x})^{\delta(t,\tau_j)}\,.
+\end{equation*}
+Powiedzmy, że mamy obserwacje \(D = (t_1,\ldots,t_m)\) dla znanych (lub zadanych) przez nas
+dokładnie wektorów cech \((\mathbf{x}_1, \ldots, \mathbf{x}_m)\). Funkcja wiarygodności ma wówczas
+postać
+\begin{equation*}
+    p(D \mid \mathbf{w}_1,\ldots,\mathbf{w}_s) = \prod_{i=1}^m p(t_i \mid \mathbf{w}_1,\ldots,\mathbf{w}_s) = \prod_{i=1}^m \prod_{j=1}^s \pi_j(\mathbf{x}_i)^{\delta(t_i,\tau_j)}\,.
+\end{equation*}
+Jako prior dla parametrów \(\mathbf{w}_j\) przyjmiemy rozkład normalny z pewnym hiper-parametrem
+\(\gamma\)
+\begin{equation*}
+    \forall j\in \{1,\ldots,s\} : \mathbf{w}_j \sim \mathcal{N}(\mathbf{0}, \gamma^{-1}\oper{1})\,.
+\end{equation*}
+W przypadku regresji logistycznej ograniczymy się do znalezienia estymaty MAP parametrów
+\(\mathbf{w}_j\) tak, aby w przyszłości do nowego wektora cech \(\mathbf{x}\) przyporządkować klasę
+o największym prawdopodobieństwie \(\pi_j(\mathbf{x})\). Znalezienie estymaty MAP sprowadza się do
+znalezienia minimum zregularyzowanej funkcji kosztu
+\begin{equation*}
+    \begin{split}
+        \ell^*(D \mid \mathbf{w}_1,\ldots,\mathbf{w}_s) &= -\log [p(D \mid \mathbf{w}_1,\ldots,\mathbf{w}_s ) \pi(\mathbf{w}_1, \ldots, \mathbf{w}_s)] \\
+        &= - \log \left[\prod_{k=1}^s\e^{-\frac{\gamma}{2}\mathbf{w}_k^\top\mathbf{w}_k}\prod_{i=1}^m \prod_{j=1}^s \pi_j(\mathbf{x}_i)^{\delta(t_i,\tau_j)}\right]\\
+        &= \frac{\gamma}{2}\sum_{j=1}^s \mathbf{w}_j^\top\mathbf{w}_j - \sum_{i=1}^m\sum_{j=1}^s \delta(t_i,\tau_j)\log\pi_j(\mathbf{x}_i)\,.
+    \end{split}
+\end{equation*}
+Niestety dla tak zdefiniowanej funkcji kosztu nie można znaleźć wzoru na minimum w postaci
+analitycznej, dlatego wykorzystamy numeryczny algorytm optymalizacji zwany spadkiem wzdłuż
+gradientu.
+
+\linesep
+\subsubsection*{Metoda spadku wzdłuż gradientu}
+Algorytm spadku wzdłuż gradientu (z ang. \textit{gradient descent}) dla funkcji \(f(\mathbf{x}_1,
+\ldots, \mathbf{x}_m)\) ma postać
+\begin{enumerate}
+    \item Wybierz parametry początkowe \(\mathbf{x}_1^{(0)}, \ldots, \mathbf{x}_m^{(0)}\)
+    \item Powtarzaj
+    \begin{equation*}
+        \begin{split}
+            &\mathbf{x}_1^{(t+1)} = \mathbf{x}_1^{(t)} - \epsilon_1\pdv{f}{\mathbf{x}_1}\bigg|_{\mathbf{x}_1^{(t)}, \ldots, \mathbf{x}_m^{(t)}}\\
+            &\vdots\\
+            &\mathbf{x}_m^{(t+1)} = \mathbf{x}_m^{(t)} - \epsilon_m\pdv{f}{\mathbf{x}_m}\bigg|_{\mathbf{x}_1^{(t)}, \ldots, \mathbf{x}_m^{(t)}}
+        \end{split}
+    \end{equation*}
+    gdzie \(\epsilon_1,\ldots,\epsilon_m\) to hiper-parametry zwane stałymi uczącymi (z ang.
+    \textit{learning rate}).
+\end{enumerate}
+Zakładając \(\epsilon_1 = \ldots = \epsilon_m = \epsilon\) i wprowadzając
+\begin{equation*}
+    \oper{X} := \mqty[\mathbf{x}_1^\top \\ \vdots \\ \mathbf{x}_m^\top]\,,\quad \pdv{f}{\oper{X}} := \mqty[\pdv{f}{\mathbf{x}_1}^\top \\ \vdots \\ \pdv{f}{\mathbf{x}_m}^\top]
+\end{equation*}
+możemy zapisać powyższe równania w kompaktowej formie
+\begin{equation*}
+    \oper{X}^{(t+1)} = \oper{X}^{(t)} - \epsilon \pdv{f}{\oper{X}}\bigg|_{\oper{X}^{(t)}}
+\end{equation*}
+\linesep
+
+Aby zminimalizować numerycznie funkcję kosztu \(\ell^*\) stosując metodę spadku wzdłuż gradientu
+musimy obliczyć pochodne funkcji kosztu po parametrach \(\mathbf{w}_j\)
+\begin{equation*}
+    \pdv{\ell^*}{\mathbf{w}_k} = \gamma\mathbf{w}_k - \sum_{i=1}^m\sum_{j=1}^s \delta(t_i,\tau_j)\pdv{~}{\mathbf{w}_k}\log\pi_j(\mathbf{x}_i)\,,
+\end{equation*}
+ale
+\begin{equation*}
+    \begin{split}
+        \pdv{~}{\mathbf{w}_k}\log\pi_j(\mathbf{x}_i) &= \frac{1}{\pi_j(\mathbf{x}_i)}\frac{Z(\mathbf{x}_i)\pdv{\e^{\mathbf{x}_i^\top\mathbf{w}_j}}{\mathbf{w}_k} - \e^{\mathbf{x}_i^\top\mathbf{w}_j}\pdv{Z(\mathbf{x}_i)}{\mathbf{w}_k}}{Z^2(\mathbf{x}_i)}\\
+        &= \frac{Z(\mathbf{x}_i)}{\e^{\mathbf{x}_i^\top\mathbf{w}_j}}\frac{Z(\mathbf{x}_i)\mathbf{x}_i\e^{\mathbf{x}_i^\top\mathbf{w}_k}\delta_{jk} - \e^{\mathbf{x}_i^\top\mathbf{w}_j}\e^{\mathbf{x}_i^\top\mathbf{w}_k}\mathbf{x}_i}{Z^2(\mathbf{x}_i)}\\
+        &= \mathbf{x}_i\delta_{jk} - \mathbf{x}_i\pi_k(\mathbf{x}_i)
+    \end{split}
+\end{equation*}
+zatem
+\begin{equation*}
+    \pdv{\ell^*}{\mathbf{w}_k} = \gamma\mathbf{w}_k - \sum_{i=1}^m\mathbf{x}_i\sum_{j=1}^s \delta(t_i, \tau_j)\delta_{jk} + \sum_{i=1}^m\mathbf{x}_i\pi_k(\mathbf{x}_i)\sum_{j=1}^s\delta(t_i, \tau_j)\,.
+\end{equation*}
+Zauważmy jednak, iż
+\begin{equation*}
+    \sum_{j=1}^s\delta(t_i, \tau_j) = 1\,,\quad \sum_{j=1}^s \delta(t_i, \tau_j)\delta_{jk} = \delta(t_i, \tau_k)\,,
+\end{equation*}
+zatem ostatecznie
+\begin{equation*}
+    \pdv{\ell^*}{\mathbf{w}_k} = \gamma\mathbf{w}_k + \sum_{i=1}^m \mathbf{x}_i\left[\pi_k(\mathbf{x}_i) - \delta(t_i, \tau_k)\right]\,.
+\end{equation*}
+Wprowadzając macierze
+\begin{equation*}
+    \begin{split}
+        &\oper{X} = \mqty[\mathbf{x}_1^\top \\ \vdots \\ \mathbf{x}_m^\top]\,,\quad \oper{W} = \mqty[\mathbf{w}_1^\top \\ \vdots \\ \mathbf{w}_s^\top]\,,\\
+        &\oper{S} = \mqty[\pi_1(\mathbf{x}_1) & \cdots & \pi_s(\mathbf{x}_1) \\ \vdots & \ddots & \vdots \\ \pi_1(\mathbf{x}_m) & \cdots & \pi_s(\mathbf{x}_m)]\,,\quad \oper{T} = \mqty[\delta(t_1,\tau_1) & \cdots & \delta(t_1,\tau_s) \\ \vdots & \ddots & \vdots \\ \delta(t_m, \tau_1) & \cdots & \delta(t_m, \tau_s)]
+    \end{split}
+\end{equation*}
+możemy w takim razie zapisać zdefiniowaną wyżej macierz pochodnych wymaganych do algorytmu spadku
+wzdłuż gradient w kompaktowej formie jako
+\begin{equation*}
+    \pdv{\ell^*}{\oper{W}} = (\oper{S} - \oper{T})^\top\oper{X}\,.
+\end{equation*}
+Zauważmy, iż zregularyzowana funkcja kosztu rośnie wraz ze wzrostem liczby obserwacji \(m\) wynika z
+tego, iż stała ucząca musi być zależna od liczby przykładów. Możemy na przykład stwierdzić, iż
+\(\epsilon \leftarrow m^{-1}\epsilon\). Wówczas minimalizujemy tak naprawdę średni koszt na przykład
+\(\ell^* / m\).
 
 \subsubsection*{Wnioskowanie metodami Monte Carlo}
 
