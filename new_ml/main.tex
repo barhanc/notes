@@ -593,7 +593,134 @@ również regresją grzbietową.
 
 \subsubsection*{Procesy Gaussowskie}
 
+Jak już wspomnieliśmy macierz kowariancji \(n\)--wymiarowej zmiennej losowej \(\mathbf{x}\) o
+wartości oczekiwanej \(\boldsymbol{\mu}\) jest zdefiniowana jako
+\begin{equation*}
+    \oper{\Sigma} = \mathbb{E}\left[(\mathbf{x} - \boldsymbol{\mu})(\mathbf{x} - \boldsymbol{\mu})^\top\right]\,.
+\end{equation*}
+Pokazaliśmy również, iż macierz ta jest nieujemnie określona. Dodatkowo pokażemy, iż dla każdej
+nieujemnie określonej macierzy symetrycznej \(\oper{K}\) wymiaru \(n\times n\) istnieje
+\(n\)--wymiarowa zmienna losowa o wielowymiarowym rozkładzie normalnym dla której \(\oper{K}\) jest
+macierzą kowariancji. Istotnie dla każdej nieujemnie określonej macierzy symetrycznej istnieje
+macierz \(\oper{L}\) taka, że
+\begin{equation*}
+    \oper{K} = \oper{L}\oper{L}^\top\,,
+\end{equation*}
+jest to tzw. dekompozycja Choleskiego. Niech \(\mathbf{z} \sim \mathcal{N}(\mathbf{0}, \oper{1})\),
+wówczas zmienna losowa \(\oper{L}\mathbf{z}\) ma rozkład o zerowej wartości oczekiwanej i macierzy
+kowariancji
+\begin{equation*}
+    \mathbb{E}\left[(\oper{L}\mathbf{z})(\oper{L}\mathbf{z})^\top\right] = \mathbb{E}\left[\oper{L}\mathbf{z}\mathbf{z}^\top\oper{L}^\top\right] = \oper{L}\mathbb{E}[\mathbf{z}\mathbf{z}^\top]\oper{L}^\top = \oper{L}\oper{1}\oper{L}^\top = \oper{K}\,.
+\end{equation*}
+Powyższe własności wskazują, iż macierze kowariancji można w pewnym sensie utożsamiać z nieujemnie
+określonymi macierzami symetrycznymi.
 
+Zdefiniujemy teraz funkcję kowariancji \(k: \mathbb{R}^n\times\mathbb{R}^n\mapsto\mathbb{R}\) taką,
+że \(\forall m\in\mathbb{N} : \forall X = \{\mathbf{x}_1,\ldots,\mathbf{x}_m\} \subset
+\mathbb{R}^n\) macierz
+\begin{equation*}
+    k(X,X) = \mqty[k(\mathbf{x}_1, \mathbf{x}_1) & k(\mathbf{x}_1, \mathbf{x}_2) & \cdots & k(\mathbf{x}_1, \mathbf{x}_m)\\
+    k(\mathbf{x}_2, \mathbf{x}_1) & k(\mathbf{x}_2, \mathbf{x}_2) & \cdots & k(\mathbf{x}_2, \mathbf{x}_m)\\
+    \vdots & \vdots & \ddots & \vdots\\
+    k(\mathbf{x}_m, \mathbf{x}_1) & k(\mathbf{x}_m, \mathbf{x}_2) & \cdots & k(\mathbf{x}_m, \mathbf{x}_m)\\]
+\end{equation*}
+jest dodatnio określoną macierzą symetryczną. Funkcję \(k\) nazywamy również jądrem dodatnio
+określonym (z ang. \textit{positive definite kernel}) lub jądrem Mercera. Dla dwóch zbiorów punktów
+\(X = \{\mathbf{x}_1,\ldots,\mathbf{x}_m\} \subset \mathbb{R}^n\) i \(Y =
+\{\mathbf{y}_1,\ldots,\mathbf{y}_s\} \subset \mathbb{R}^n\) i funkcji kowariancji \(k\) wprowadzimy
+oznaczenie
+\begin{equation*}
+    k(X,Y) := \mqty[k(\mathbf{x}_1, \mathbf{y}_1) & k(\mathbf{x}_1, \mathbf{y}_2) & \cdots & k(\mathbf{x}_1, \mathbf{y}_s)\\
+    k(\mathbf{x}_2, \mathbf{y}_1) & k(\mathbf{x}_2, \mathbf{y}_2) & \cdots & k(\mathbf{x}_2, \mathbf{y}_s)\\
+    \vdots & \vdots & \ddots & \vdots\\
+    k(\mathbf{x}_m, \mathbf{y}_1) & k(\mathbf{x}_m, \mathbf{y}_2) & \cdots & k(\mathbf{x}_m, \mathbf{y}_s)\\]\,.
+\end{equation*}
+Poniżej podajemy kilka przykładów funkcji kowariancji
+\begin{itemize}
+    \item \textit{Gaussian kernel} dla normy \(\norm{\cdot}\) i hiper-parametru \(l\)
+    \begin{equation*}
+        k(\mathbf{x}, \mathbf{y}) = \exp\left\{-\frac{1}{2l^2}\norm{\mathbf{x} - \mathbf{y}}^2\right\}
+    \end{equation*}
+    
+    \item \textit{Periodic kernel} dla normy \(\norm{\cdot}\) i hiper-parametrów \(l, p\)
+    \begin{equation*}
+        k(\mathbf{x},\mathbf{y}) = \exp\left\{-\frac{2}{l^2}\sin^2\left(\frac{\pi}{p}\norm{\mathbf{x} - \mathbf{y}}\right)\right\}
+    \end{equation*}
+
+    \item \textit{White noise kernel} dla hiper-parametru \(\sigma\)
+    \begin{equation*}
+        k(\mathbf{x},\mathbf{y}) = \sigma^2 \delta_{\mathbf{x},\mathbf{y}}
+    \end{equation*}
+
+    \item \textit{Mat\'ern kernel} dla normy \(\norm{\cdot}\) i hiper-parametrów \(l, \nu\)
+    \begin{equation*}
+        k(\mathbf{x},\mathbf{y}) = \frac{2^{1-\nu}}{\Gamma(\nu)}\left(\frac{\sqrt{2\nu}}{l}\norm{\mathbf{x} - \mathbf{y}}\right)^\nu K_\nu\left(\frac{\sqrt{2\nu}}{l}\norm{\mathbf{x} - \mathbf{y}}\right)\,,
+    \end{equation*}
+    gdzie \(\Gamma(x)\) to funkcja gamma Eulera, a \(K_\nu(x)\) to zmodyfikowana funkcja Bessela
+    2-go rodzaju rzędu \(\nu\).
+
+\end{itemize}
+Dodatkowo suma lub iloczyn dwóch funkcji kowariancji oraz złożenie funkcji kowariancji z wielomianem
+o nieujemnych współczynnikach jest również funkcją kowariancji.
+
+Procesem Gaussowskim (z ang. \textit{Gaussian Process}) nazywamy rodzinę skalarnych zmiennych
+losowych indeksowanych przez punkty \(\mathbf{x} \in \mathbb{R}^n\)
+\begin{equation*}
+    \mathcal{GP} = \left\{f_\mathbf{x} \mid \mathbf{x} \in \mathbb{R}^n\right\}
+\end{equation*}
+taką że każdy skończony podzbiór \(\mathcal{GP}\) ma łącznie wielowymiarowy rozkład normalny tj. dla
+dowolnego zbioru \(X = \{\mathbf{x}_1, \ldots, \mathbf{x}_m\} \subset \mathbb{R}^n\) zachodzi
+\begin{equation*}
+    \mqty[f_{\mathbf{x}_1} \\ \vdots \\ f_{\mathbf{x}_m}] \sim \mathcal{N}(\boldsymbol{\mu}_X, \oper{\Sigma}_{X})\,.
+\end{equation*}
+Zauważmy, iż process Gaussowski możemy jednoznacznie zdefiniować podając ,,przepisy'' na parametry
+\(\boldsymbol{\mu}_X\) i \(\oper{\Sigma}_X\) dla dowolnego zbioru \(X\). W praktyce często
+przyjmujemy \(\boldsymbol{\mu}_X = \mathbf{0}\), natomiast przepisem na macierz kowariancji może być
+zdefiniowana wyżej funkcja kowariancji \(k(X,X)\) tj.
+\begin{equation*}
+    \mqty[f_{\mathbf{x}_1} \\ \vdots \\ f_{\mathbf{x}_m}] \sim \mathcal{N}(\mathbf{0}, k(X,X))\,.
+\end{equation*}
+Process Gaussowski daje nam w praktyce rozkład prawdopodobieństwa nad funkcjami
+\(f:\mathbb{R}^n\mapsto\mathbb{R}\), których charakter jest określony przez jądro \(k\) (np. funkcja
+gładka dla jądra Gaussowskiego, okresowa dla jądra periodycznego, itp.). Zauważmy, że nie
+wnioskujemy tu o parametrach konkretnej rodziny funkcji (jak w przypadku regresji liniowej);
+interesuje nas jedynie rozkład predykcyjny. Załóżmy, iż w zadanych (lub dokładnie znanych) przez nas
+punktach \(X = \{\mathbf{x}_1,\mathbf{x}_2,\ldots,\mathbf{x}_m\}\) zaobserwowaliśmy wartości pewnej
+funkcji, o których zakładamy, iż pochodzą z procesu Gaussowskiego zadanego jądrem \(k\), które
+wyraża nasze założenia a priori co do charakteru badanej funkcji
+\begin{equation*}
+    \mathbf{f}_X = \mqty[f_{\mathbf{x}_1} \\ \vdots \\ f_{\mathbf{x}_m}] \sim \mathcal{N}(\mathbf{0}, k(X,X))\,.
+\end{equation*}
+Powiedzmy, iż chcemy znać wartości \(\mathbf{f}_Y\) tej funkcji w zadanych punktach \(Y =
+\{\mathbf{y}_1,\mathbf{y}_2,\ldots,\mathbf{y}_s\}\). Ponieważ założyliśmy, iż wartości funkcji
+pochodzą z procesu Gaussowskiego, więc rozkład łączny \(\mathbf{f}_X\) i \(\mathbf{f}_Y\) jest
+rozkładem normalnym
+\begin{equation*}
+    \mqty[\mathbf{f}_X \\ \mathbf{f}_Y] \sim \mathcal{N}\left(\mathbf{0}, \mqty[k(X,X) & k(X,Y) \\ k(Y,X) & k(Y,Y)]\right)\,.
+\end{equation*}
+Zauważmy, iż jest to instancja modelu Gaussowskiego, więc rozkład warunkowy \(\mathbf{f}_Y\mid
+\mathbf{f}_X\) jest również rozkładem normalnym o parametrach
+\begin{equation*}
+    \begin{split}
+        &\boldsymbol{\mu} = k(Y,X)k^{-1}(X,X)\mathbf{f}_X\\
+        &\oper{\Sigma} = k(Y,Y) - k(Y,X)k^{-1}(X,X)k(X,Y)
+    \end{split}
+\end{equation*}
+Dodatkową niepewność związaną z pomiarem wartości \(\mathbf{f}_X\) możemy uchwycić zmieniając postać
+jądra 
+\begin{equation*}
+    k(\mathbf{x},\mathbf{y}) \leftarrow k(\mathbf{x},\mathbf{y}) + \mathcal{I}_X(\mathbf{x})\sigma^2\delta_{\mathbf{x},\mathbf{y}}\,,
+\end{equation*}
+gdzie \(\sigma\) jest hiper-parametrem określającym precyzję pomiaru. Oczywiście \(k\) jest dalej
+funkcją kowariancji, gdyż takie podstawienie powoduje jedynie dodanie dodatnich członów do pewnych
+elementów diagonalnych macierzy kowariancji, więc macierz ta jest nadal symetryczna i dodatnio
+określona. Wówczas rozkład predykcyjny ma parametry
+\begin{equation*}
+    \begin{split}
+        &\boldsymbol{\mu} = k(Y,X)\left[k(X,X) + \sigma^2\oper{1}\right]^{-1}\mathbf{f}_X\\
+        &\oper{\Sigma} = k(Y,Y) - k(Y,X)\left[k(X,X) + \sigma^2\oper{1}\right]^{-1}k(X,Y)
+    \end{split}\quad.
+\end{equation*}
 
 \subsubsection*{Regresja logistyczna}
 
