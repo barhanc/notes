@@ -740,7 +740,7 @@ musimy mieć
 \end{equation*}
 skąd stała normalizacyjna \(Z(\mathbf{x})\) ma postać
 \begin{equation*}
-    Z(\mathbf{x}) = \sum_{j=1}^s \e^{\mathbf{w}_j^\top\mathbf{x}}
+    Z(\mathbf{x}) = \sum_{j=1}^s \e^{\mathbf{w}_j^\top\mathbf{x}}\,.
 \end{equation*}
 Rozkład zmiennej losowej \(t\) jest  w takim razie dyskretnym rozkładem wielopunktowym (z ang.
 \textit{categorical distribution}) postaci
@@ -801,7 +801,7 @@ Zakładając \(\epsilon_1 = \ldots = \epsilon_m = \epsilon\) i wprowadzając
 \end{equation*}
 możemy zapisać powyższe równania w kompaktowej formie
 \begin{equation*}
-    \oper{X}^{(t+1)} = \oper{X}^{(t)} - \epsilon \pdv{f}{\oper{X}}\bigg|_{\oper{X}^{(t)}}
+    \oper{X}^{(t+1)} = \oper{X}^{(t)} - \epsilon \pdv{f}{\oper{X}}\bigg|_{\oper{X}^{(t)}}\,.
 \end{equation*}
 \linesep
 
@@ -842,11 +842,96 @@ wzdłuż gradient w kompaktowej formie jako
 \begin{equation*}
     \pdv{\ell^*}{\oper{W}} = (\oper{S} - \oper{T})^\top\oper{X}\,.
 \end{equation*}
-Zauważmy, iż zregularyzowana funkcja kosztu rośnie wraz ze wzrostem liczby obserwacji \(m\) wynika z
-tego, iż stała ucząca musi być zależna od liczby przykładów. Możemy na przykład stwierdzić, iż
-\(\epsilon \leftarrow m^{-1}\epsilon\). Wówczas minimalizujemy tak naprawdę średni koszt \(\ell^* /
+Zauważmy, iż zregularyzowana funkcja kosztu rośnie wraz ze wzrostem liczby obserwacji \(m\). Wynika
+z tego, iż stała ucząca musi być zależna od liczby przykładów. Możemy na przykład stwierdzić, iż
+\(\epsilon \leftarrow m^{-1}\epsilon\) i wówczas minimalizujemy tak naprawdę średni koszt \(\ell^* /
 m\).
 
 \subsubsection*{Wnioskowanie metodami Monte Carlo}
+
+Całe wnioskowanie Bayesowskie opiera się na wyznaczaniu rozkładów a posteriori, które wyrażają naszą
+wiedzę o estymowanym parametrze. Do tej pory rozważaliśmy modele Bayesowskie dla których prior i
+wiarygodność były dane przez rozkłady normalne. Dzięki temu mogliśmy wyprowadzić analityczne wzory
+na parametry rozkładu a posteriori, który również był rozkładem normalnym. Dla wielu interesujących
+modeli nie jesteśmy jednak w stanie tego zrobić (np. w zagadnieniu regresji logistycznej
+ograniczyliśmy się jedynie do estymaty punktowej), gdyż obliczenie stałej normalizującej dla
+rozkładu \(p(\theta \mid D)\) może wymagać obliczenia całki, której nie jesteśmy w stanie wyrazić w
+sposób jawny lub sumy po wykładniczo wielu elementach. Wnioskowanie Bayesowskie można jednak
+prowadzić w modelach, w których nie dysponujemy jawnym wzorem na gęstość prawdopodobieństwa rozkładu
+a posteriori. Okazuje się, iż do generowania próbek z rozkładu \(p(\theta \mid D)\) wystarcza
+znajomość tego rozkładu z dokładnością do stałej normalizującej, a zatem wystarczy znać rozkład
+łączny \(p(\theta, D) = p(D\mid\theta)\pi(\theta)\). Generowanie próbek z kolei wystarcza natomiast,
+na mocy silnego prawa wielkich liczb, do szacowania wartości średnich dowolnych funkcji estymowanego
+parametru \(\theta\). Przypomnijmy, iż na mocy silnego prawa wielkich liczb ciąg średnich
+częściowych \((\overline{X}_n)\) ciągu zmiennych losowych \((X_n)\) i.i.d. z rozkładu \(X \sim
+\mathcal{D}\) jest zbieżny z prawdopodobieństwem 1 do wartości oczekiwanej \(\mathbb{E}[X]\) tj.
+\begin{equation*}
+    P\left(\lim_{n \to \infty} \overline{X}_n = \mathbb{E}[X]\right) = 1\,.
+\end{equation*}
+Wartość oczekiwaną \(\mathbb{E}[X]\) możemy zatem przybliżyć średnią \(\overline{X}_n\) z dużej
+ilości próbek.
+
+Wnioskowanie Monte Carlo pozwala nam szacować różne wielkości w tzw. hierarchicznych modelach
+Bayesowskich (z ang. \textit{Bayesian hierarchical modeling}). Rozważmy jeszcze raz przykład
+regresji liniowej w ujęciu Bayesowskim, ale rozważmy teraz model postaci
+\begin{equation*}
+    \begin{split}
+        \sigma^2 &\sim \mathcal{D}(\lambda)\\
+        \mathbf{w} &\sim \mathcal{N}(\boldsymbol{\mu}_0, \oper{\Sigma}_0)\\
+        y \mid \mathbf{w}, \sigma^2 &\sim \mathcal{N}(\mathbf{w}^\top\mathbf{x}, \sigma^2)
+    \end{split}\quad,
+\end{equation*}
+gdzie \(\lambda, \boldsymbol{\mu}_0, \oper{\Sigma}_0\) są pewnymi hiper-parametrami. Dla takiego
+modelu nie możemy w ogólności znaleźć jawnej postaci rozkładu a posteriori. Jeśli jednak umiemy
+generować próbki z rozkładu łącznego
+\begin{equation*}
+    Z\cdot p(\mathbf{w}, \sigma^2 \mid D) = p(D, \mathbf{w}, \sigma^2) = p(D \mid \mathbf{w},\sigma^2)\pi(\mathbf{w})\pi(\sigma^2)
+\end{equation*}
+to wszystkie interesujące wielkości możemy oszacować jako odpowiednie średnie.
+\linesep
+\subsubsection*{Algorytm Importance Sampling (IS)}
+
+Załóżmy, iż chcemy obliczyć wartość oczekiwaną pewnej funkcji zmiennej losowej \(\mathbf{x}\)
+względem skomplikowanego rozkładu prawdopodobieństwa \(p(\mathbf{x})\), który znamy jedynie z
+dokładnością do stałej normalizującej
+\begin{equation*}
+    p(\mathbf{x}) = \frac{1}{Z_p}\tilde{p}(\mathbf{x})
+\end{equation*}
+tj. szukamy
+\begin{equation*}
+    \mathbb{E}_p[f(\mathbf{x})] = \int f(\mathbf{x}) p(\mathbf{x}) \dd[n]\mathbf{x}\,.
+\end{equation*}
+Jeśli umiemy generować próbki \(\mathbf{x}\) z innego rozkładu \(q(\mathbf{x})\), który nazywamy
+rozkładem proponującym kandydatów (z ang. \textit{proposal distribution}) to możemy zapisać
+\begin{equation*}
+    \begin{split}
+        \mathbb{E}_p[f(\mathbf{x})] &= \int f(\mathbf{x}) p(\mathbf{x}) \dd[n]\mathbf{x} = \int f(\mathbf{x}) \frac{p(\mathbf{x})}{q(\mathbf{x})} q(\mathbf{x}) \dd[n]\mathbf{x}\\
+         &=\mathbb{E}_q\left[f(\mathbf{x}) \frac{p(\mathbf{x})}{q(\mathbf{x})}\right] = \frac{Z_q}{Z_p}\mathbb{E}_q\left[f(\mathbf{x}) \frac{\tilde{p}(\mathbf{x})}{\tilde{q}(\mathbf{x})}\right]\,.
+    \end{split}\quad.
+\end{equation*}
+Stosunek stałych \(Z_p / Z_q\) również możemy oszacować z próbek z \(q\), gdyż mamy
+\begin{equation*}
+    Z_p = \int \tilde{p}(\mathbf{x}) \dd[n]{\mathbf{x}} = Z_q\int \frac{\tilde{p}(\mathbf{x})}{\tilde{q}(\mathbf{x})} q(\mathbf{x})\dd[n]{\mathbf{x}} = Z_q \mathbb{E}_q\left[\frac{\tilde{p}(\mathbf{x})}{\tilde{q}(\mathbf{x})}\right]\,,
+\end{equation*}
+skąd ostatecznie
+\begin{equation*}
+    \mathbb{E}_p[f(\mathbf{x})] = \frac{\mathbb{E}_q\left[f(\mathbf{x}) \frac{\tilde{p}(\mathbf{x})}{\tilde{q}(\mathbf{x})}\right]}{\mathbb{E}_q\left[\frac{\tilde{p}(\mathbf{x})}{\tilde{q}(\mathbf{x})}\right]}\,.
+\end{equation*}
+Jeśli z rozkładu \(q\) wygenerowaliśmy próbki \(X =
+\left\{\mathbf{x}_1,\ldots,\mathbf{x}_m\right\}\) to na mocy silnego prawa wielkich liczb mamy
+\begin{equation*}
+    \mathbb{E}_p[f(\mathbf{x})] \approx \frac{\sum_{i=1}^m f(\mathbf{x}_i) \frac{\tilde{p}(\mathbf{x}_i)}{\tilde{q}(\mathbf{x}_i)}}{\sum_{i=1}^m \frac{\tilde{p}(\mathbf{x}_i)}{\tilde{q}(\mathbf{x}_i)}} = \sum_{i=1}^m \lambda_i f(\mathbf{x}_i)\,,
+\end{equation*}
+gdzie
+\begin{equation*}
+    \lambda_i = \frac{\tilde{p}(\mathbf{x}_i) / \tilde{q}(\mathbf{x}_i)}{\sum_{j=1}^m \tilde{p}(\mathbf{x}_j) / \tilde{q}(\mathbf{x}_j) }\,.
+\end{equation*}
+
+\linesep
+
+\subsubsection*{Markov Chain Monte Carlo (MCMC)}
+
+\linesep
+
 
 \end{document}
