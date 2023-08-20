@@ -1051,9 +1051,15 @@ Pozostaje tylko wykazać, iż spełnione jest kryterium lokalnego balansu. Istot
     \end{split}\quad,
 \end{equation*}
 skąd \(\pi_\text{MH}(\mathbf{y}\mid\mathbf{x})p(\mathbf{x}) =
-\pi_\text{MH}(\mathbf{x}\mid\mathbf{y})p(\mathbf{y})\). Zauważmy, iż nie musimy znać \(p(\mathbf{x})\) z dokładnością do stałej normalizującej, gdyż
+\pi_\text{MH}(\mathbf{x}\mid\mathbf{y})p(\mathbf{y})\). Zauważmy, iż nie musimy znać
+\(p(\mathbf{x})\) z dokładnością do stałej normalizującej, gdyż
 \begin{equation*}
     \frac{p(\mathbf{y})}{p(\mathbf{x})} = \frac{\tilde{p}(\mathbf{y})/Z_p}{\tilde{p}(\mathbf{x})/Z_p} =  \frac{\tilde{p}(\mathbf{y})}{\tilde{p}(\mathbf{x})}\,.
 \end{equation*}
+Poza algorytmem Metropolisa--Hastingsa jest wiele innych algorytmów z rodziny MCMC. Większość z nich
+implementuje konkretny sposób generowania (zostawiając resztę struktury) tak, aby zmniejszyć
+korelację po okresie przejściowym i przyspieszyć zbieżność. Standardowo wykorzystywanymi algorytmami
+z tej klasy są algorytmy HMC (\textit{Hamiltonian Monte Carlo}) oraz NUTS (\textit{No U-Turn
+Sampler}). 
 
 \end{document}
