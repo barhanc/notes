@@ -243,7 +243,8 @@ przykładem statystyki jest średnia oznaczana jako \(\overline{X}\)
 \begin{equation*}
     \overline{X}(X_1, \ldots, X_n) := \frac{X_1 + \ldots + X_n}{n}\,.
 \end{equation*}
-Wartość oczekiwana statystyki średniej \(\overline{X}(X_1, \ldots, X_n)\) dla \(X_i\) z rozkładu \(X \sim \mathcal{D}\) o gęstości \(p\) wynosi
+Wartość oczekiwana statystyki średniej \(\overline{X}(X_1, \ldots, X_n)\) dla \(X_i\) z rozkładu \(X
+\sim \mathcal{D}\) o gęstości \(p\) wynosi
 \begin{equation*}
     \mathbb{E}[\overline{X}] = \int\cdots\int\frac{1}{n}\left(\sum_{i=1}^nX_i\right)p(X_1)\cdots p(X_n) \dd{X_1}\ldots\dd{X_n} = \mathbb{E}[X]\,.
 \end{equation*}
@@ -899,8 +900,12 @@ generować próbki z rozkładu łącznego
 \begin{equation*}
     Z\cdot p(\mathbf{w}, \sigma^2 \mid D) = p(D, \mathbf{w}, \sigma^2) = p(D \mid \mathbf{w},\sigma^2)\pi(\mathbf{w})\pi(\sigma^2)
 \end{equation*}
-to wszystkie interesujące wielkości możemy oszacować jako odpowiednie średnie.
-\linesep
+to wszystkie interesujące wielkości możemy oszacować jako odpowiednie średnie. Pozostaje pytanie w
+jaki sposób generować próbki ze skomplikowanych rozkładów prawdopodobieństwa, których gęstości znamy
+jedynie z dokładnością do stałej normalizującej. Poniżej przedstawimy dwa algorytmy próbkowania:
+algorytm IS oraz Metropolisa--Hastingsa będący szczególną realizacją całej rodziny algorytmów
+próbkowania zwanych Markov Chain Monte Carlo (MCMC).
+
 \subsubsection*{Algorytm Importance Sampling (IS)}
 
 Załóżmy, iż chcemy obliczyć wartość oczekiwaną pewnej funkcji zmiennej losowej \(\mathbf{x}\)
@@ -913,15 +918,17 @@ tj. szukamy
 \begin{equation*}
     \mathbb{E}_p[f(\mathbf{x})] = \int f(\mathbf{x}) p(\mathbf{x})\dd[n]\mathbf{x}\,.
 \end{equation*}
-Jeśli umiemy generować próbki \(\mathbf{x}\) z innego rozkładu \(q(\mathbf{x})\), który nazywamy
-rozkładem proponującym kandydatów (z ang. \textit{proposal distribution}) to możemy zapisać
+Jeśli umiemy generować próbki \(\mathbf{x}\) z innego (prostszego) rozkładu \(q(\mathbf{x})\), który
+nazywamy rozkładem proponującym kandydatów (z ang. \textit{proposal distribution}) to możemy zapisać
 \begin{equation*}
     \begin{split}
         \mathbb{E}_p[f(\mathbf{x})] &= \int\limits_{\mathbb{R}^n}f(\mathbf{x})p(\mathbf{x})\dd[n]\mathbf{x} = \int\limits_{\mathbb{R}^n}f(\mathbf{x})\frac{p(\mathbf{x})}{q(\mathbf{x})}q(\mathbf{x})\dd[n]\mathbf{x}\\
          &=\mathbb{E}_q\left[f(\mathbf{x}) \frac{p(\mathbf{x})}{q(\mathbf{x})}\right] = \frac{Z_q}{Z_p}\mathbb{E}_q\left[f(\mathbf{x}) \frac{\tilde{p}(\mathbf{x})}{\tilde{q}(\mathbf{x})}\right]\,.
     \end{split}\quad.
 \end{equation*}
-Stosunek stałych \(Z_p / Z_q\) również możemy oszacować z próbek z \(q\), gdyż mamy
+Zakładamy tutaj, iż nośnik rozkładu \(p\) zawiera się w nośniku \(q\) tj. \(\text{supp}\,p \subseteq
+\text{supp}\,q\). Stosunek stałych \(Z_p / Z_q\) również możemy oszacować z próbek z \(q\), gdyż
+mamy
 \begin{equation*}
     Z_p = \int\limits_{\mathbb{R}^n}\tilde{p}(\mathbf{x})\dd[n]{\mathbf{x}} = Z_q\int\limits_{\mathbb{R}^n}\frac{\tilde{p}(\mathbf{x})}{\tilde{q}(\mathbf{x})} q(\mathbf{x})\dd[n]{\mathbf{x}} = Z_q \mathbb{E}_q\left[\frac{\tilde{p}(\mathbf{x})}{\tilde{q}(\mathbf{x})}\right]\,,
 \end{equation*}
@@ -940,7 +947,8 @@ gdzie
 \end{equation*}
 
 Algorytm Importance Sampling jest prostym algorytmem Monte Carlo, który ma jeden zasadniczy problem.
-W jaki sposób mamy wybrać rozkład proponujący kandydatów \(q\)? Pewną odpowiedź na to pytanie sugeruje analiza wariancji statystyki 
+W jaki sposób mamy wybrać rozkład proponujący kandydatów \(q\)? Pewną odpowiedź na to pytanie
+sugeruje analiza wariancji statystyki 
 \begin{equation*}
     \overline{f}_m(\mathbf{x}_1,\ldots,\mathbf{x}_m) = \frac{1}{m}\sum_{i=1}^m \frac{f(\mathbf{x}_i)p(\mathbf{x}_i)}{q(\mathbf{x}_i)}
 \end{equation*}
@@ -950,13 +958,102 @@ dla \(\mathbf{x}_i \sim q\) i zakładając dla uproszczenia, iż \(f\) jest funk
         \text{Var}[\overline{f}_m] &= \frac{1}{m}\text{Var}_q\left[f(\mathbf{x})\frac{p(\mathbf{x})}{q(\mathbf{x})}\right] = \frac{1}{m}\int\limits_{\mathbb{R}^n}\frac{(f(\mathbf{x})p(\mathbf{x}) - \mu_fq(\mathbf{x}))^2}{q(\mathbf{x})}\dd[n]{\mathbf{x}}\,.
     \end{split}
 \end{equation*}
-Chcemy oczywiście, aby wariancja była jak najmniejsza, gdyż wówczas mała liczba próbek da dobre przybliżenie wartości oczekiwanej. Rozkład proponujący kandydatów powinien być zatem proporcjonalny do \(f(\mathbf{x})p(\mathbf{x})\), co może być trudne do praktycznego zrealizowania.
+Chcemy oczywiście, aby wariancja była jak najmniejsza, gdyż wówczas mała liczba próbek da dobre
+przybliżenie wartości oczekiwanej. Rozkład proponujący kandydatów powinien być zatem proporcjonalny
+do \(f(\mathbf{x})p(\mathbf{x})\), co może być trudne do praktycznego zrealizowania.
 
-\linesep
+\subsubsection*{Algorytm Metropolisa--Hastingsa}
 
-\subsubsection*{Markov Chain Monte Carlo (MCMC)}
+Cała klasa algorytmów próbkowania MCMC opiera się na idei wyrażenia generowania próbek jako ewolucji
+pewnego łańcucha Markowa. Łańcuchem Markowa nazywamy ciąg zmiennych losowych \((X_t)\) o wartościach
+w \(\mathbb{R}^n\) taki, że spełnione jest kryterium Markowa
+\begin{equation*}
+    \forall A \subset \mathbb{R}^n: P(X_t \in A \mid X_{t-1} = \mathbf{x}_{t-1}, \ldots, X_0 = \mathbf{x}_0) = P(X_t \in A \mid X_{t-1} = \mathbf{x}_{t-1})\,.
+\end{equation*}
+Elementy ciągu nazywamy stanami łańcucha Markowa. Dany łańcuch jest zadany jednoznacznie przez
+podanie gęstości prawdopodobieństwa przejścia łańcucha ze stanu \(\mathbf{x} \to \mathbf{y}\), którą
+będziemy oznaczać przez \(\pi(\mathbf{y} \mid \mathbf{x})\) (zakładamy, iż prawdopodobieństwo
+przejścia jest niezależne od chwili \(t\) -- łańcuch taki nazywamy jednorodnym). Funkcja \(\pi\)
+spełnia oczywiście warunek unormowania
+\begin{equation*}
+    \int\limits_{\mathbb{R}^n} \pi(\mathbf{y} \mid \mathbf{x}) \dd[n]{\mathbf{y}}\,,
+\end{equation*} 
+istotnie prawdopodobieństwo przejścia gdziekolwiek ze stanu \(\mathbf{x}\) jest równe 1. Będziemy
+zakładać dodatkowo, iż \(\forall \mathbf{x},\mathbf{y}\in\mathbb{R}^n: \pi(\mathbf{y} \mid
+\mathbf{x}) > 0\). Rozkład \(p(\mathbf{x})\) łańcucha Markowa (tj. rozkład prawdopodobieństwa z
+którego losujemy stan łańcucha w danej chwili \(t\)) z daną funkcją przejścia \(\pi\) nazwiemy
+rozkładem stacjonarnym tego łańcucha iff
+\begin{equation*}
+    p(\mathbf{y}) = \int\limits_{\mathbb{R}^n} \pi(\mathbf{y} \mid \mathbf{x})p(\mathbf{x}) \dd[n]{\mathbf{x}}\,.
+\end{equation*}
+Rozkład stacjonarny danego łańcucha oznaczymy przez \(p^*(\mathbf{x})\). Zauważmy, iż jeśli stan
+początkowy łańcucha \(X_0\) pochodzi z rozkładu stacjonarnego \(p^*\) to każdy kolejny stan \(X_t\)
+również pochodzi z rozkładu stacjonarnego. Jeśli z kolei stan początkowy pochodzi z jakiegoś innego
+rozkładu \(p_0\) to rozkład łańcucha w chwili \(t\) jest dany przez relację rekurencyjną
+\begin{equation*}
+    p_t(\mathbf{y}) = \int\limits_{\mathbb{R}^n} \pi(\mathbf{y} \mid \mathbf{x})p_{t-1}(\mathbf{x}) \dd[n]{\mathbf{x}}\,,\quad\text{dla \(t > 1\).}
+\end{equation*}
+Rozkładem granicznym łańcucha Markowa nazwiemy granicę w sensie zbieżności punktowej
+\begin{equation*}
+    \lim_{t\to\infty} p_t(\mathbf{x})\,.
+\end{equation*}
+Przy podanych wyżej założeniach istnieje twierdzenie, które mówi iż taki łańcuch Markowa posiada
+jednoznaczny rozkład stacjonarny tożsamy z rozkładem granicznym. Ponadto warunkiem wystarczającym,
+aby dany rozkład \(p(\mathbf{x})\) był rozkładem stacjonarnym łańcucha Markowa jest
+\begin{equation*}
+    \forall\mathbf{x}, \mathbf{y} \in \mathbb{R}^n: \pi(\mathbf{y}\mid\mathbf{x}) p(\mathbf{x}) = \pi(\mathbf{x} \mid \mathbf{y}) p(\mathbf{y})\,,
+\end{equation*}
+co wynika z scałkowania powyższego równania
+\begin{equation*}
+    \int\limits_{\mathbb{R}^n} \pi(\mathbf{y}\mid\mathbf{x}) p(\mathbf{x}) \dd[n]{\mathbf{x}} = \int\limits_{\mathbb{R}^n} \pi(\mathbf{x} \mid \mathbf{y}) p(\mathbf{y}) \dd[n]{\mathbf{x}} = p(\mathbf{y}) \int\limits_{\mathbb{R}^n} \pi(\mathbf{x} \mid \mathbf{y}) \dd[n]{\mathbf{x}} = p(\mathbf{y})\,.
+\end{equation*}
+Kryterium to nazywamy kryterium lokalnego balansu (z ang. \textit{detailed balance condition}).
 
-\linesep
+Podstawowa idea wykorzystania łańcuchów Markowa do generowania próbek ze skomplikowanego rozkładu
+\(p\) jest więc następująca: tworzymy łańcuch Markowa opisany powyżej, dla którego \(p\) jest
+rozkładem stacjonarnym, wówczas rozpoczynając w dowolnym dopuszczalnym stanie początkowym \(X_0\) po
+wykonaniu dużej liczby kroków (etap ten nazywamy okresem przejściowym z ang. \textit{burn-in
+period}) stan \(X_t\) (dla \(t \gg 1\)) tego łańcucha będzie w przybliżeniu pochodził z rozkładu
+granicznego \(p\) (nie jest jednak prosto stwierdzić po jak długim okresie przejściowym przybliżenie
+to jest wystarczająco dobre). Aby otrzymać z takiej procedury próbki prawdziwie i.i.d. każda z
+próbek musiałaby pochodzić z ponownego uruchomienia takiego łańcucha. Oczywiście jest to
+nieefektywne, więc w praktyce generujemy próbki z jednego łańcucha po prostu odrzucając pewne z nich
+tak aby uniknąć znaczących korelacji.
 
+Pozostaje pytanie jak skonstruować funkcję przejścia \(\pi(\mathbf{y} \mid \mathbf{x})\) dla danego
+rozkładu granicznego \(p(\mathbf{x})\). Podstawową konstrukcję podaje algorytm
+Metropolisa--Hastingsa:
+\begin{enumerate}
+    \item Jako stan początkowy przyjmij dowolną dopuszczalną wartość \(\mathbf{x} \leftarrow
+    \mathbf{x}_0\).
+    \item Powtarzaj:
+    \begin{enumerate}
+        \item Będąc w aktualnym stanie \(\mathbf{x}\) z prostego rozkładu proponującego kandydatów
+        \(q(\mathbf{y} \mid \mathbf{x})\) wylosuj kandydata \(\mathbf{y}\) na wartość łańcucha w
+        kolejnym stanie.
+        \item Z prawdopodobieństwem
+        \begin{equation*}
+            r(\mathbf{y} \mid \mathbf{x}) = \min\left\{1, \frac{p(\mathbf{y})q(\mathbf{x} \mid \mathbf{y})}{p(\mathbf{x})q(\mathbf{y} \mid \mathbf{x})}\right\}
+        \end{equation*}
+        zaakceptuj kandydata jako nowy stan i przejdź do stanu \(\mathbf{y}\). W przeciwnym razie
+        pozostać w stanie \(\mathbf{x}\)
+    \end{enumerate}
+\end{enumerate}
+Funkcja przejścia ma zatem postać
+\begin{equation*}
+    \pi_\text{MH}(\mathbf{y}\mid\mathbf{x}) = q(\mathbf{y} \mid \mathbf{x}) r(\mathbf{y} \mid \mathbf{x})\,.
+\end{equation*}
+Pozostaje tylko wykazać, iż spełnione jest kryterium lokalnego balansu. Istotnie mamy
+\begin{equation*}
+    \begin{split}
+        &\pi_\text{MH}(\mathbf{y}\mid\mathbf{x})p(\mathbf{x}) = \min\left\{q(\mathbf{y}\mid\mathbf{x})p(\mathbf{x}), q(\mathbf{x}\mid\mathbf{y})p(\mathbf{y})\right\}\\
+        &\pi_\text{MH}(\mathbf{x}\mid\mathbf{y})p(\mathbf{y}) = \min\left\{q(\mathbf{x}\mid\mathbf{y})p(\mathbf{y}), q(\mathbf{y}\mid\mathbf{x})p(\mathbf{x})\right\}
+    \end{split}\quad,
+\end{equation*}
+skąd \(\pi_\text{MH}(\mathbf{y}\mid\mathbf{x})p(\mathbf{x}) =
+\pi_\text{MH}(\mathbf{x}\mid\mathbf{y})p(\mathbf{y})\). Zauważmy, iż nie musimy znać \(p(\mathbf{x})\) z dokładnością do stałej normalizującej, gdyż
+\begin{equation*}
+    \frac{p(\mathbf{y})}{p(\mathbf{x})} = \frac{\tilde{p}(\mathbf{y})/Z_p}{\tilde{p}(\mathbf{x})/Z_p} =  \frac{\tilde{p}(\mathbf{y})}{\tilde{p}(\mathbf{x})}\,.
+\end{equation*}
 
 \end{document}
