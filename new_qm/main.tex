@@ -601,6 +601,17 @@ konkretnych realizacji teorii kwantów
     gdzie \(\oper{H}\) jest specjalnym operatorem samosprzężonym reprezentującym hamiltonian układu,
     tworzonym wedle określonych reguł w danej realizacji teorii kwantów.
     
+    \item \textbf{O kolapsie.} Po pomiarze układu w stanie \(\ket{\Psi}\) zwracającego odpowiedź na
+    pytanie \(\oper{P}\) stan układu zostaje natychmiastowo zredukowany do
+    \begin{equation*}
+        \ket{\Psi} \to \frac{\oper{P}\ket{\Psi}}{\sqrt{\bra{\Psi}\oper{P}\ket{\Psi}}}
+    \end{equation*}
+    jeśli pomiar dał odpowiedź pozytywną albo do
+    \begin{equation*}
+        \ket{\Psi} \to \frac{(\oper{1}-\oper{P})\ket{\Psi}}{\sqrt{1 - \bra{\Psi}\oper{P}\ket{\Psi}}}
+    \end{equation*}
+    w przeciwnym przypadku.
+
     \item \textbf{O układach złożonych.} Przestrzeń Hilberta \(\mathscr{H}\) układu złożonego ma
     strukturę iloczynu tensorowego przestrzeni Hilberta układów prostych wchodzących w jego skład
     \(\mathscr{H}=\mathscr{H}_1\otimes\mathscr{H}_2\otimes\ldots\otimes\mathscr{H}_n\) .
@@ -643,6 +654,11 @@ która dla operatorów spełniających \textit{kanoniczną relację komutacyjną
 \begin{equation*}
     \sigma_A\sigma_B \geq \frac{\hbar}{2}\quad.
 \end{equation*}
+Zauważmy jednakże, iż w rozważanych przez nas \(n\)--wymiarowych przestrzeniach Hilberta nie istnieją operatory spełniające kanoniczną relację komutacyjną. Istotnie biorąc ślad z powyższego wyrażenia mamy
+\begin{equation*}
+    0 = \Tr \oper{AB} - \Tr\oper{BA} = \im n\hbar \neq 0\,.
+\end{equation*}
+
 
 \subsubsection*{Twierdzenie Ehrenfesta}
 
