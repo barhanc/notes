@@ -339,16 +339,9 @@ gdzie \(\{\phi_i\}\) jest dowolną ortonormalną bazą przestrzeni \(\mathscr{H}
 
 \begin{theorem} Podstawowe własności śladu.
 \begin{itemize}
-    \item Operacja wzięcia śladu operatora jest liniowa tj. 
-    \begin{equation*}
-        \Trace(\alpha\oper{A} + \beta\oper{B}) = \alpha\Trace(\oper{A}) + \beta\Trace(\oper{B})\,.
-    \end{equation*}
-
-    \item Dla dowolnych operatorów \(\oper{A}\), \(\oper{B}\), \(\oper{C}\) zachodzi
-    \begin{equation*}
-        \Trace{\oper{ABC}} = \Trace{\oper{BCA}} = \Trace{\oper{CAB}}\,.
-    \end{equation*}
-
+    \item \(\Trace(\alpha\oper{A} + \beta\oper{B}) = \alpha\Trace(\oper{A}) +
+    \beta\Trace(\oper{B})\)
+    \item \(\Trace{\oper{ABC}} = \Trace{\oper{BCA}} = \Trace{\oper{CAB}}\)
     \item \(\Trace{\oper{A}} = \left(\Trace{\oper{A}^\dagger}\right)^*\)
     \item \(\det{\e^{\oper{A}}} = \e^{\Trace{\oper{A}}}\)
 \end{itemize}  
@@ -654,7 +647,9 @@ która dla operatorów spełniających \textit{kanoniczną relację komutacyjną
 \begin{equation*}
     \sigma_A\sigma_B \geq \frac{\hbar}{2}\quad.
 \end{equation*}
-Zauważmy jednakże, iż w rozważanych przez nas \(n\)--wymiarowych przestrzeniach Hilberta nie istnieją operatory spełniające kanoniczną relację komutacyjną. Istotnie biorąc ślad z powyższego wyrażenia mamy
+Zauważmy jednakże, iż w rozważanych przez nas \(n\)--wymiarowych przestrzeniach Hilberta nie
+istnieją operatory spełniające kanoniczną relację komutacyjną. Istotnie biorąc ślad z powyższego
+wyrażenia mamy
 \begin{equation*}
     0 = \Tr \oper{AB} - \Tr\oper{BA} = \im n\hbar \neq 0\,.
 \end{equation*}
@@ -728,49 +723,35 @@ Przydatne jest zdefiniowanie \textit{wektora macierzy Pauliego} \(\boldsymbol{\s
 \end{equation*}
 dzięki któremu możemy łatwo zapisać sumę przeskalowanych macierzy Pauliego jako
 \(\mathbf{c}\cdot\boldsymbol{\sigma}\), gdzie \(\mathbf{c}\in\mathbb{C}^3\) jest pewnym wektorem o
-elementach zespolonych. Wybrane własności macierzy Pauliego:
+elementach zespolonych.
 
-\begin{itemize}
-    
-    \item \(\det\oper{X} = \det\oper{Y} = \det\oper{Z} = -1\)
-
-    \item \(\Tr\oper{X} = \Tr\oper{Y} = \Tr\oper{Z} = 0\)
-
-    \item \(\oper{X}^2 = \oper{Y}^2 = \oper{Z}^2 = \oper{1}\)
-
-    \item Iloczyny macierzy Pauliego spełniają związki
-    \begin{equation*}
-        \begin{split}
-            &\oper{X}\oper{Y} = \im\oper{Z} = -\oper{Y}\oper{X} \\
-            &\oper{Y}\oper{Z} = \im\oper{X} = -\oper{Z}\oper{Y} \\
-            &\oper{Z}\oper{X} = \im\oper{Y} = -\oper{X}\oper{Z}
-        \end{split}\quad.
-    \end{equation*}
-
-    \item Komutatory i antykomutatory macierzy Pauliego wynoszą
-    \begin{equation*}
-        \begin{split}
-            [\oper{X},\oper{Y}] = 2\im\oper{Z}\,,\quad \{\oper{X}, \oper{Y}\} = \oper{\mathsf{0}}\\
-            [\oper{Y},\oper{Z}] = 2\im\oper{X}\,,\quad \{\oper{Y}, \oper{Z}\} = \oper{\mathsf{0}}\\
-            [\oper{Z},\oper{X}] = 2\im\oper{Y}\,,\quad \{\oper{Z}, \oper{X}\} = \oper{\mathsf{0}}\\
-        \end{split}\quad.
-    \end{equation*}
-
-    \item Iloczyn \((\mathbf{a}\cdot\boldsymbol{\sigma})\cdot(\mathbf{b}\cdot\boldsymbol{\sigma})\)
-    dla \(\mathbf{a} = (a_x,a_y,a_z)\), \(\mathbf{b}=(b_x,b_y,b_z)\) wynosi
-    \begin{equation*}
-        \begin{split}
-            (\mathbf{a}\cdot\boldsymbol{\sigma})\cdot(\mathbf{b}\cdot\boldsymbol{\sigma}) &= (a_x\oper{X} + a_y\oper{Y} + a_z\oper{Z})(b_x\oper{X} + b_y\oper{Y} + b_z\oper{Z})\\
-            &= (\mathbf{a}\cdot\mathbf{b})\oper{1} + \im(\mathbf{a}\times\mathbf{b})\cdot\boldsymbol{\sigma}\,.
-        \end{split}
-    \end{equation*}
-
-    \item Wielkość \(\exp(\im\mathbf{a}\cdot\boldsymbol{\sigma})\) wynosi
-    \begin{equation*}
-            \exp(\im\mathbf{a}\cdot\boldsymbol{\sigma}) = \oper{1} \cos{|\mathbf{a}|} + \im\left(\frac{\mathbf{a}}{|\mathbf{a}|}\cdot\boldsymbol{\sigma}\right)\sin{|\mathbf{a}|}\,.
-    \end{equation*}
-
-\end{itemize}
+\renewcommand{\arraystretch}{2}
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{|ccc|}
+    \hline
+    \multicolumn{1}{|c|}{\(\oper{XY} = \im\oper{Z} = -\oper{YX}\)}            &
+    \multicolumn{1}{c|}{\([\oper{X},\oper{Y}] = 2\im\oper{Z}\)}          & \(\{\oper{X}, \oper{Y}\}
+    = \oper{\mathsf{0}}\)      \\ \hline
+    \multicolumn{1}{|c|}{\(\oper{YZ} = \im\oper{X} = -\oper{ZY}\)}            &
+    \multicolumn{1}{c|}{\([\oper{Y},\oper{Z}] = 2\im\oper{X}\)}          & \(\{\oper{Y}, \oper{Z}\}
+    = \oper{\mathsf{0}}\)      \\ \hline
+    \multicolumn{1}{|c|}{\(\oper{ZX} = \im\oper{Y} = -\oper{XZ}\)}            &
+    \multicolumn{1}{c|}{\([\oper{Z},\oper{X}] = 2\im\oper{Y}\)}          & \(\{\oper{Z}, \oper{X}\}
+    = \oper{\mathsf{0}}\)      \\ \hline
+    \multicolumn{1}{|c|}{\(\oper{X}^2 = \oper{Y}^2 = \oper{Z}^2 = \oper{1}\)} &
+    \multicolumn{1}{c|}{\(\Tr\oper{X} = \Tr\oper{Y} = \Tr\oper{Z} = 0\)} & \(\det\oper{X} =
+    \det\oper{Y} = \det\oper{Z} = -1\) \\ \hline
+    \multicolumn{3}{|c|}{\(\e^{\im\mathbf{a}\cdot\oper{\sigma}} = \oper{1}\cos|\mathbf{a}| + \im
+    \mathbf{\hat{a}}\cdot\oper{\sigma}\sin|\mathbf{a}|\)}
+    \\ \hline
+    \multicolumn{3}{|c|}{\((\mathbf{a}\cdot\oper{\sigma})\cdot(\mathbf{b}\cdot\oper{\sigma}) =
+    (\mathbf{a}\cdot\mathbf{b})\oper{1} + \im(\mathbf{a}\times\mathbf{b})\cdot\oper{\sigma}\)}
+    \\ \hline
+    \end{tabular}
+    \caption{Wybrane własności macierzy Pauliego}
+\end{table}
+\renewcommand{\arraystretch}{1}
 
 Zauważmy, że dowolny operator samosprzężony \(\oper{A}\) w rozpatrywanej przestrzeni \(\mathscr{H}\)
 ma postać
@@ -986,16 +967,12 @@ sprawdzić, iż rozwiązaniem powyższego układu równań jest
 \begin{equation*}
     \begin{cases}
         \alpha(t) = \left(c_1 \e^{+\im\Omega t} + c_2 \e^{-\im \Omega t}\right) n \e^{+\im\omega t / 2}\\
-        \beta(t)  = \left(c_1 m_+\e^{+\im\Omega t} + c_2 m_-\e^{-\im\Omega t}\right)\e^{-\im\omega t / 2} 
+        \beta(t)  = \left[c_1 (\Omega - \delta)\e^{+\im\Omega t} - c_2 (\Omega + \delta)\e^{-\im\Omega t}\right]\omega_0^{-1}\e^{-\im\omega t / 2} 
     \end{cases}\quad,
 \end{equation*}
 gdzie
 \begin{equation*}
-    m_\pm = \pm\sqrt{n^2 + \left(1 - \frac{\omega}{2\omega_0}\right)^2} - \left(1 - \frac{\omega}{2\omega_0}\right)
-\end{equation*}
-oraz
-\begin{equation*}
-    \Omega = \sqrt{n^2\omega_0^2 + \left(\omega_0 - \frac{\omega}{2}\right)^2}\,.
+    \delta = \omega_0 - \frac{\omega}{2}\,,\quad \Omega = \sqrt{n^2\omega_0^2 + \delta^2}\,.
 \end{equation*}
 Zdefiniowaną wielkość \(\Omega\) nazywamy \textit{częstością Rabiego}. Załóżmy, iż w chwili
 początkowej \(\alpha = 0\) i \(\beta = 1\), wówczas
