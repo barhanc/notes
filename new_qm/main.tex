@@ -538,12 +538,11 @@ konkretnych realizacji teorii kwantów
     \oper{P}\), natomiast dwa pytania elementarne reprezentowane przez \(\oper{P}_1\) i
     \(\oper{P}_2\) można połączyć spójnikiem
     \begin{itemize}
-        \item ,,I''; otrzymując pytanie reprezentowane przez \(\oper{P}_1\oper{P}_2\), przy czym z
-        oczywistych względów musi zachodzić \([\oper{P}_1, \oper{P}_2] = \oper{\mathsf{0}}\)
+        \item ,,I''; otrzymując pytanie reprezentowane przez \(\oper{P}_1\oper{P}_2\), przy czym
+        musi zachodzić \([\oper{P}_1, \oper{P}_2] = \oper{\mathsf{0}}\).
 
         \item ,,LUB''; otrzymując pytanie reprezentowane przez \(\oper{P}_1 + \oper{P}_2\), przy
-        czym musi zachodzić \(\oper{P}_1\oper{P}_2 = \oper{\mathsf{0}}\) (istotnie wówczas
-        \((\oper{P}_1 + \oper{P}_2)^2 = \oper{P}_1 + \oper{P}_2 \)).
+        czym musi zachodzić \(\oper{P}_1\oper{P}_2 = \oper{\mathsf{0}}\).
 
     \end{itemize}
 
@@ -559,6 +558,12 @@ konkretnych realizacji teorii kwantów
     \begin{equation*}
         p = \bra{\Psi}\oper{P}\ket{\Psi}\,.
     \end{equation*}
+    Zauważmy, że z samosprzężoności operatora \(\oper{P}\) mamy \(p = p^*\), więc \(p
+    \in\mathbb{R}\), natomiast z nierówności Cauchy'ego--Schwarza mamy
+    \begin{equation*}
+        \braket{\Psi}\braket{\oper{P}\Psi} = 1 \cdot \bra{\Psi}\oper{P}\ket{\Psi} = p \geq |\bra{\Psi}\oper{P}\ket{\Psi}|^2 = p^2\,,
+    \end{equation*}
+    skąd \(p(p-1) \leq 0\), co implikuje \(p \in [0;1]\) zgodnie z aksjomatami prawdopodobieństwa.
 
     \item \textbf{O wielkościach fizycznych.} Każda wielkość fizyczna \(A\) występująca w danej
     teorii kwantowej jest reprezentowana przez samosprzężony operator liniowy \(\oper{A}\) i
@@ -566,10 +571,6 @@ konkretnych realizacji teorii kwantów
     \(\oper{P}_A(\lambda)\). Operator rzutowy \(\oper{P}_A(\lambda)\) reprezentuje pytanie:
     \begin{quote}
         czy wielkość fizyczna \(A\) ma wartość nie większą od \(\lambda\)?
-    \end{quote}
-    natomiast operator rzutowy \(\oper{1}-\oper{P}_A(\lambda)\): 
-    \begin{quote}
-        czy wielkość fizyczna \(A\) ma wartość większą od \(\lambda\)?
     \end{quote}
     Na mocy postulatu drugiego możemy skonstruować pytanie:
     \begin{quote}
@@ -580,10 +581,13 @@ konkretnych realizacji teorii kwantów
         \left[\oper{1} - \oper{P}_A(\lambda_1)\right]\oper{P}_A(\lambda_2) =
         \oper{P}_A(\lambda_2)-\oper{P}_A(\lambda_1)\,.
     \end{equation*}
-    Wartość oczekiwaną funkcji \(f\) wielkości \(A\) dla układu reprezentowanego przez \(\Psi\)
-    obliczamy jako
+    Wartość oczekiwaną funkcji \(f\) wielkości \(A\) dla zespołu statystycznego układów
+    przygotowanych w stanie \(\Psi\) obliczamy jako
     \begin{equation*}
-        \langle f(A) \rangle = \bra{\Psi}f(\oper{A})\ket{\Psi}\,.
+        \begin{split}
+            \expval{f(A)} &= \int\limits_{-\infty}^{+\infty} f(\lambda) \dv{p(\lambda)}{\lambda} \dd{\lambda} = \int\limits_{-\infty}^{+\infty} f(\lambda) \dv{\bra{\Psi}\oper{P}_A(\lambda)\ket{\Psi}}{\lambda} \dd{\lambda} \\
+            &= \bra{\Psi}\int\limits_{-\infty}^{+\infty} f(\lambda) \dd{\oper{P}_A(\lambda)}\ket{\Psi} = \bra{\Psi}f(\oper{A})\ket{\Psi}\,.
+        \end{split}
     \end{equation*}
 
     \item \textbf{O ewolucji układu w czasie.} Stan układu \(\ket{\Psi}\) ewoluuje zgodnie z
@@ -592,8 +596,18 @@ konkretnych realizacji teorii kwantów
         \oper{H}\ket{\Psi} = \im\hbar\partial_t\ket{\Psi}\,,
     \end{equation*}
     gdzie \(\oper{H}\) jest specjalnym operatorem samosprzężonym reprezentującym hamiltonian układu,
-    tworzonym wedle określonych reguł w danej realizacji teorii kwantów.
-    
+    tworzonym wedle określonych reguł w danej realizacji teorii kwantów. Równoważnie możemy
+    powiedzieć, iż istnieje operator unitarny \(\oper{U}(t;t_0)\) taki, że
+    \begin{equation*}
+        \ket{\Psi(t)} = \oper{U}(t;t_0)\ket{\Psi(t_0)}\,.
+    \end{equation*}
+    Istotnie pokażemy, iż ewolucja zgodna z równaniem Schr\"{o}dingera jest unitarna
+    \begin{equation*}
+        \dv{\braket{\Psi}}{t} = \braket{\dot{\Psi}}{\Psi} + \braket{\Psi}{\dot{\Psi}} = -\frac{1}{\im\hbar}\bra{\oper{H}\Psi}\ket{\Psi} + \frac{1}{\im\hbar}\bra{\Psi}\ket{\oper{H}\Psi} = 0\,,
+    \end{equation*}
+    gdzie w ostatniej linijce skorzystaliśmy z samosprzężoności \(\oper{H}\). Powyższy wynik nazywa
+    się również zasadą zachowania prawdopodobieństwa.
+
     \item \textbf{O kolapsie.} Po pomiarze układu w stanie \(\ket{\Psi}\) zwracającego odpowiedź na
     pytanie \(\oper{P}\) stan układu zostaje natychmiastowo zredukowany do
     \begin{equation*}
@@ -607,7 +621,7 @@ konkretnych realizacji teorii kwantów
 
     \item \textbf{O układach złożonych.} Przestrzeń Hilberta \(\mathscr{H}\) układu złożonego ma
     strukturę iloczynu tensorowego przestrzeni Hilberta układów prostych wchodzących w jego skład
-    \(\mathscr{H}=\mathscr{H}_1\otimes\mathscr{H}_2\otimes\ldots\otimes\mathscr{H}_n\) .
+    \(\mathscr{H}=\mathscr{H}_1\otimes\mathscr{H}_2\otimes\ldots\otimes\mathscr{H}_n\).
 
 \end{enumerate}
 
@@ -743,11 +757,10 @@ elementach zespolonych.
     \multicolumn{1}{c|}{\(\Tr\oper{X} = \Tr\oper{Y} = \Tr\oper{Z} = 0\)} & \(\det\oper{X} =
     \det\oper{Y} = \det\oper{Z} = -1\) \\ \hline
     \multicolumn{3}{|c|}{\(\e^{\im\mathbf{a}\cdot\oper{\sigma}} = \oper{1}\cos|\mathbf{a}| + \im
-    \mathbf{\hat{a}}\cdot\oper{\sigma}\sin|\mathbf{a}|\)}
-    \\ \hline
+    \mathbf{\hat{a}}\cdot\oper{\sigma}\sin|\mathbf{a}|\)} \\ \hline
     \multicolumn{3}{|c|}{\((\mathbf{a}\cdot\oper{\sigma})\cdot(\mathbf{b}\cdot\oper{\sigma}) =
-    (\mathbf{a}\cdot\mathbf{b})\oper{1} + \im(\mathbf{a}\times\mathbf{b})\cdot\oper{\sigma}\)}
-    \\ \hline
+    (\mathbf{a}\cdot\mathbf{b})\oper{1} + \im(\mathbf{a}\times\mathbf{b})\cdot\oper{\sigma}\)} \\
+    \hline
     \end{tabular}
     \caption{Wybrane własności macierzy Pauliego}
 \end{table}
