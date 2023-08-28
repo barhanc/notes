@@ -7,14 +7,12 @@
 % * Composite systems: entanglement, density operator, partial trace, no-cloning theorem,
 %   decoherence, Bell's theory
 %
-% * later (after extensively studying composite systems, entanglement, Bell's theory) begin
-%   description of quantum registers, gates, idea of computation using those devices (Deutsch,
+% * description of quantum registers, gates, idea of computation using those devices (Deutsch,
 %   Grover, QFTrans, Shor), applications to number theory, connection with Church-Turing hypothesis.
 %   Examples
 %
-% * possible physical realizations of quantum computing (gates + adiabatic/topological(?)), I'll
-%   probably focus on Josephson junctions and charge qubits as they seem most elegant (maybe qdots
-%   as well)
+% * possible physical realizations of quantum computing, probably focus on Josephson junctions and
+%   charge qubits as they seem most elegant (maybe qdots as well)
 %
 % * A short overview of classical and quantum information theory (I don't want to go very deep there
 %   at the moment): Shannon/Von Neumann entropy, channels, quantum information transfer/cryptography
@@ -1035,14 +1033,18 @@ prawdziwe, gdy długość fali jest znacznie większa od rozmiarów próbki. W t
 laserową, a iloczyn \(\mu B_\text{rf}\) przechodzi na iloczyn elektrycznego momentu dipolowego atomu
 i amplitudy pola elektrycznego fali elektromagnetycznej \(p E_0\).
 
+\subsection{Korelacje kwantowe}
+
 \section{Obliczenia kwantowe}
 
 \subsubsection*{Algorytm RSA}
 
 Bob wybiera dwie liczby pierwsze \(p,q\in\mathbb{P}\), oblicza liczbę \(N = pq\) oraz wybiera liczbę
-\(c \perp \phi(N) = (p-1)(q-1)\), gdzie \(\phi\) to funkcja Eulera. Następnie oblicza odwrotność
-liczby \(c\) modulo \(\phi(N)\), tj. liczbę \(d\) taką, że \(cd \equiv_{\phi(N)} 1\). Istnienie
-liczby \(d\) zapewnia twierdzenie Eulera, istotnie wynika z niego, iż \(d\) można obliczyć jako
+\(c \perp \phi(N) = (p-1)(q-1)\), gdzie \(\phi\) to funkcja Eulera (liczbę \(c\) nazywamy
+\textit{kluczem publicznym}). Następnie oblicza odwrotność liczby \(c\) modulo \(\phi(N)\), tj.
+liczbę \(d\) taką, że \(cd \equiv_{\phi(N)} 1\) (liczbę \(d\) nazywamy \textit{kluczem prywatnym}).
+Istnienie liczby \(d\) zapewnia twierdzenie Eulera, istotnie wynika z niego, iż \(d\) można obliczyć
+jako (przy czym nie jest to efektywne i zwykle używa się rozszerzonego algorytmu Euklidesa)
 \begin{equation*}
     c^{\phi(\phi(N))} \equiv_{\phi(N)} c\cdot c^{\phi(\phi(N))-1} \equiv_{\phi(N)} 1  \implies d \equiv_{\phi(N)} c^{\phi(\phi(N))-1}\,.
 \end{equation*}
@@ -1070,6 +1072,14 @@ powyższego mamy więc
 Jeśli \(a \perp p\) to z MTF mamy \(a^{p-1} \equiv_p 1\), zatem \(a^{cd} \equiv_p a(1)^l \equiv_p
 a\), w przeciwnym wypadku mamy natomiast \(p | a\), zatem \(a^{cd} \equiv_p 0 \equiv_p a\), co
 kończy dowód.
+
+Trudność w odszyfrowaniu wiadomości znając jedynie zaszyfrowaną wiadomość \(b\), liczbę \(N\) i
+klucz publiczny \(c\) wynika z faktu, iż aby wyznaczyć klucz prywatny \(d\) musimy wyznaczyć funkcję
+Eulera \(\phi(N)\) (aby obliczyć odwrotność liczby \(c\) modulo \(\phi(N)\)), której efektywne
+wyznaczenie wymaga faktoryzacji liczby \(N\) na czynniki pierwsze. Rozkład liczby na czynniki
+pierwsze jest z kolei powszechnie uznawany za problem bardzo trudny obliczeniowo (przynajmniej na
+klasycznym komputerze nie jest znany algorytm rozwiązujący ten problem w czasie wielomianowym
+względem liczby bitów faktoryzowanej liczby).
 
 
 \section{Informacja kwantowa}
