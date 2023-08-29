@@ -3,7 +3,7 @@
 
 % TODO
 
-% * Composite systems made of 2-state systems (2 x 2 & later n x 2 or maybe n x 2 immediately(?))
+% * Composite systems made of 2-state systems
 % * Composite systems: entanglement, density operator, partial trace, no-cloning theorem,
 %   decoherence, Bell's theory
 %
@@ -161,23 +161,32 @@ jeden wektor \(u \in V\) taki, że
         \oper{A} \otimes \oper{B} &= \mqty[a_{11} & \cdots & a_{1m} \\ \vdots & \ddots & \vdots \\ a_{n1} & \cdots & a_{nm}] \otimes \mqty[b_{11} & \cdots & b_{1m'} \\ \vdots & \ddots & \vdots \\ b_{n'1} & \cdots & b_{n'm'}] = \mqty[a_{11}\oper{B} & \cdots & a_{1m}\oper{B} \\ \vdots & \ddots & \vdots \\ a_{n1}\oper{B} & \cdots & a_{nm}\oper{B}]
     \end{split}
 \end{equation*}
+Iloczyn Kroneckera dowolnych macierzy \(\oper{A},\oper{B},\oper{C},\oper{D}\) spełnia
+\begin{itemize}
+    \item Jeśli istnieją iloczyny \(\oper{AC}, \oper{BD}\) to
+    \((\oper{A}\otimes\oper{B})(\oper{C}\otimes\oper{D}) = (\oper{AC})\otimes(\oper{BD})\).
+    \item Jeśli macierze \(\oper{A},\oper{B}\) są odwracalne to
+    \((\oper{A}\otimes\oper{B})^{-1}=\oper{A}^{-1}\otimes\oper{B}^{-1}\)
+    \item \((\oper{A}\otimes\oper{B})^\dagger = \oper{A}^\dagger \otimes \oper{B}^\dagger\)
+    \item \(\oper{A}\otimes(\oper{B}+\oper{C}) = \oper{A}\otimes\oper{B}+\oper{A}\otimes\oper{C}\)
+    \item \((\oper{A}+\oper{B})\otimes\oper{C} = \oper{A}\otimes\oper{C}+\oper{B}\otimes\oper{C}\)
+\end{itemize}
 \end{definition}
 
 \begin{definition}
 \textit{Iloczynem tensorowym} przestrzeni Hilberta \(\mathscr{H}_1\) i \(\mathscr{H}_2\) o bazach
-ortonoromalnych odpowiednio \(\{\phi_i^{(1)}\}\) i \(\{\phi_j^{(2)}\}\) nazywamy przestrzeń Hilberta
+ortonoromalnych odpowiednio \(\{\phi_i^{(1)}\}\) i \(\{\phi_i^{(2)}\}\) nazywamy przestrzeń Hilberta
 \(\mathscr{H} = \mathscr{H}_1 \otimes \mathscr{H}_2\) taką, że:
 \begin{itemize}
     
     \item Jej bazą ortonormalną jest zbiór \(\{\phi_i^{(1)} \otimes \phi_j^{(2)}\}\).
 
-    \item Iloczyn wewnętrzny w przestrzeni \(\mathscr{H}_1 \otimes \mathscr{H}_2\) jest zdefiniowany
-    jako
+    \item Iloczyn wewnętrzny wektorów bazowych w przestrzeni \(\mathscr{H}_1 \otimes \mathscr{H}_2\)
+    jest zdefiniowany jako
     \begin{equation*}
-        \braket{\chi_1 \otimes \chi_2}{\psi_1 \otimes \psi_2} := \braket{\chi_1}{\psi_1}_1 \cdot \braket{\chi_2}{\psi_2}_2\,,
+        \braket{\phi_i^{(1)} \otimes \phi_j^{(2)}}{\phi_k^{(1)} \otimes \phi_l^{(2)}} := \braket{\phi_i^{(1)}}{\phi_k^{(1)}}_1 \cdot \braket{\phi_j^{(2)}}{\phi_l^{(2)}}_2 = \delta_{ik}\delta_{jl}\,,
     \end{equation*}
-    gdzie \(\chi_i,\psi_i \in \mathscr{H}_i\) to pewne wektory, a \(\braket{\cdot}_i\) to iloczyn
-    wewnętrzny w \(\mathscr{H}_i\).
+    gdzie \(\braket{\cdot}_i\) to iloczyn wewnętrzny w \(\mathscr{H}_i\).
 \end{itemize}
 \end{definition}
 
@@ -563,6 +572,9 @@ konkretnych realizacji teorii kwantów
     \end{equation*}
     skąd \(p(p-1) \leq 0\), co implikuje \(p \in [0;1]\) zgodnie z aksjomatami prawdopodobieństwa.
 
+    Operator jednostkowy \(\oper{1}\) reprezentuje pytanie, na które odpowiedź jest zawsze
+    pozytywna. Jest to więc w istocie pytaniem o istnienie układu.
+
     \item \textbf{O wielkościach fizycznych.} Każda wielkość fizyczna \(A\) występująca w danej
     teorii kwantowej jest reprezentowana przez samosprzężony operator liniowy \(\oper{A}\) i
     stowarzyszoną z nim na mocy twierdzenia spektralnego rodzinę operatorów rzutowych
@@ -576,7 +588,7 @@ konkretnych realizacji teorii kwantów
     \end{quote}
     reprezentowane przez operator 
     \begin{equation*}
-        \left[\oper{1} - \oper{P}_A(\lambda_1)\right]\oper{P}_A(\lambda_2) =
+        \oper{P}_A(\lambda_1;\lambda_2) = \left[\oper{1} - \oper{P}_A(\lambda_1)\right]\oper{P}_A(\lambda_2) =
         \oper{P}_A(\lambda_2)-\oper{P}_A(\lambda_1)\,.
     \end{equation*}
     Wartość oczekiwaną funkcji \(f\) wielkości \(A\) dla zespołu statystycznego układów
@@ -610,9 +622,8 @@ konkretnych realizacji teorii kwantów
     zwrócił wartość z przedziału \((\lambda_1;\lambda_2]\) stan układu zostaje natychmiastowo
     zredukowany do
     \begin{equation*}
-        \ket{\Psi} \to \frac{\oper{P}\ket{\Psi}}{\sqrt{\bra{\Psi}\oper{P}\ket{\Psi}}}\,,
+        \ket{\Psi} \to \frac{\oper{P}_A(\lambda_1;\lambda_2)\ket{\Psi}}{\sqrt{\bra{\Psi}\oper{P}_A(\lambda_1;\lambda_2)\ket{\Psi}}}\,.
     \end{equation*}
-    gdzie \(\oper{P} = \oper{P}_A(\lambda_2) - \oper{P}_A(\lambda_1)\).
 
     \item \textbf{O układach złożonych.} Przestrzeń Hilberta \(\mathscr{H}\) układu złożonego ma
     strukturę iloczynu tensorowego przestrzeni Hilberta układów prostych wchodzących w jego skład
@@ -1035,6 +1046,139 @@ i amplitudy pola elektrycznego fali elektromagnetycznej \(p E_0\).
 
 \subsection{Korelacje kwantowe}
 
+Wydawałoby się, że przejście od układów jednoqbitowych (dwupoziomowych) to układów złożonych
+dwuqbitowych nie wniesie wiele nowości. Tymczasem jak się przekonamy struktura z dwoma qbitami jest
+wyjątkowo bogata.
+
+\subsubsection{Stany dwuqbitowe}
+
+Rozważmy dwa układy dwupoziomowe \(A\), \(B\), których modelem matematycznym są przestrzenie
+Hilberta \(\mathscr{H}_A = \{\ket{0_A},\ket{1_A}\}\), \(\mathscr{H}_B = \{\ket{0_B},\ket{1_B}\}\)
+(zauważmy, iż w przypadku przestrzeni skończenie wymiarowych podanie wektorów bazy ortonormalnej w
+jakiej pracujemy w pełni charakteryzuje przestrzeń Hilberta nad \(\mathbb{C}\)). Ogólne stany
+układów \(A\) i \(B\) mają więc postać
+\begin{equation*}
+    \ket{\Psi_A} = \psi^{(A)}_0\ket{0_A} + \psi^{(A)}_1\ket{1_A}\,,\quad \ket{\Psi_B} = \psi^{(B)}_0\ket{0_B} + \psi^{(B)}_1\ket{1_B}\,,
+\end{equation*}
+gdzie oczywiście \(|\psi^{(A)}_0|^2 + |\psi^{(A)}_1|^2 = 1 = |\psi^{(B)}_0|^2 + |\psi^{(B)}_1|^2\).
+Zgodnie z postulatem o układach złożonych układ złożony z podukładów \(A\), \(B\) jest opisany
+przestrzenią Hilberta \(\mathscr{H}_{AB} = \mathscr{H}_A\otimes\mathscr{H}_B\). Ogólny stan układu
+złożonego ma zatem postać
+\begin{equation*}
+    \begin{split}
+        \ket{\Psi_{AB}} &= \psi_{00}\ket{0_A}\otimes\ket{0_B}+\psi_{01}\ket{0_A}\otimes\ket{1_B}+\psi_{10}\ket{1_A}\otimes\ket{0_B}+\psi_{11}\ket{1_A}\otimes\ket{1_B}\\
+        &= \psi_{00}\mqty[1 \\ 0 \\ 0 \\ 0] + \psi_{01}\mqty[0 \\ 1 \\ 0 \\ 0] + \psi_{10}\mqty[0 \\ 0 \\ 1 \\ 0] + \psi_{11}\mqty[0 \\ 0 \\ 0 \\ 1]\\
+        &= \psi_{00}\ket{0_A0_B} + \psi_{01}\ket{0_A1_B} + \psi_{10}\ket{1_A0_B} + \psi_{11}\ket{1_A1_B}\,.
+    \end{split}
+\end{equation*}
+Jaką informację zawiera wektor stanu układu złożonego? Jeśli istnieje faktoryzacja \(\ket{\Psi_{AB}}
+= \ket{\Psi_A} \otimes \ket{\Psi_B}\) to wówczas wektor stanu układu złożonego mówi, iż \(A\)
+znajduje się w stanie \(\ket{\Psi_A}\), a \(B\) w stanie \(\ket{\Psi_B}\). Zauważmy jednak, iż w
+ogólności taka faktoryzacja nie musi być możliwa. Istotnie jeśli \(\ket{\Psi_{AB}} = \ket{\Psi_A}
+\otimes \ket{\Psi_B}\) to
+\begin{equation*}
+    \begin{split}
+        &\ket{\Psi_{AB}} = \mqty[\psi_0^{(A)} \\ \psi_1^{(A)}]\otimes\mqty[\psi_0^{(B)} \\ \psi_1^{(B)}] \\
+        &= \psi_0^{(A)}\psi_0^{(B)}\ket{0_A0_B} + \psi_0^{(A)}\psi_1^{(B)}\ket{0_A1_B} + \psi_1^{(A)}\psi_0^{(B)}\ket{1_A0_B} + \psi_1^{(A)}\psi_1^{(B)}\ket{1_A1_B}\,,
+    \end{split}
+\end{equation*}
+czyli współczynniki \(\psi_{q_Aq_B}\) muszą spełniać
+\begin{equation*}
+    \psi_{00}\psi_{11} = \psi_{01}\psi_{10}\,,
+\end{equation*}
+przy czym jest to warunek konieczny i wystarczający. Stany \(\Psi_{AB}\), dla których powyższy
+warunek nie zachodzi nazywamy \textit{stanami splątanymi}. W ogólności więc współczynniki
+\(\psi_{q_Aq_B}\) są amplitudami prawdopodobieństw znalezienia układu \(A\) w stanie \(q_A\) i
+układu \(B\) w stanie \(q_B\) (zauważmy, iż w przypadku \(N\) qbitów potrzebujemy \(2^N\)
+współczynników \(\psi_{q_1q_2\ldots q_N}\), gdyż możliwych konfiguracji, których amplitudy
+prawdopodobieństwa musimy określić jest właśnie \(2^N\)).
+
+\subsubsection*{Operatory}
+
+W ogólności operatory liniowe w przestrzeni \(\mathscr{H}_{AB}\) są zespolonymi macierzami \(4\times
+4\). Jednakże interesować nas będą głównie operatory liniowe postaci
+\begin{equation*}
+    \oper{M} = \oper{M}_A \otimes \oper{M}_B = \mqty[a & b \\ c & d] \otimes \mqty[e & f\\ g & h] = \mqty[ae & af & be & bf \\ ag & ah & bg & bh \\ ce & cf & de & df \\ cg & ch & dg & dh]\,,
+\end{equation*}
+gdzie \(\oper{M}_A\), \(\oper{M}_B\) są operatorami liniowymi w przestrzeniach \(\mathscr{H}_A,
+\mathscr{H}_B\). Nietrudno zauważyć, iż jeśli \(\oper{M}_A\), \(\oper{M}_B\) są samosprzężone to
+\(\oper{M}_A \otimes \oper{M}_B\) również jest samosprzężony. Dodatkowo jeśli \(\oper{P}_A\),
+\(\oper{P}_B\) są operatorami rzutowymi to \(\oper{P}_A \otimes \oper{P}_B\) również jest operatorem
+rzutowym tylko że w przestrzeni \(\mathscr{H}\). Istotnie dla dowolnych operatorów \((\oper{P}_A
+\otimes \oper{P}_B)^2 = \oper{P}_A^2 \otimes \oper{P}_B^2\), więc dla operatorów rzutowych mamy
+\((\oper{P}_A \otimes \oper{P}_B)^2 = \oper{P}_A \otimes \oper{P}_B\) i wiemy, że \(\oper{P}_A
+\otimes \oper{P}_B\) jest samosprzężony. Można również pokazać, iż jeśli \(\oper{U}_A, \oper{U}_B\)
+są unitarne to \(\oper{U}_A \otimes \oper{U}_B\) również jest unitarny. Istotnie dla dowolnych
+operatorów \((\oper{U}_A \otimes \oper{U}_B)^\dagger = \oper{U}_A^\dagger\otimes\oper{U}_B^\dagger\)
+i \((\oper{U}_A \otimes \oper{U}_B)^{-1} = \oper{U}_A^{-1}\otimes\oper{U}_B^{-1}\), więc dla
+operatorów unitarnych \((\oper{U}_A \otimes \oper{U}_B)^\dagger = (\oper{U}_A \otimes
+\oper{U}_B)^{-1}\).
+
+Niech \(M\) będzie pewną wielkością fizyczną określającą układ \(A\) reprezentowaną w przestrzeni
+\(\mathscr{H}_A\) przez \(\oper{M}\). W przestrzeni \(\mathscr{H}_{AB}\) ta wielkość jest
+reprezentowana przez \(\oper{M}\otimes\oper{1}_B\). Jeśli \(\oper{P}_M(\lambda_1 ; \lambda_2)\) jest
+operatorem rzutowym reprezentującym w przestrzeni \(\mathscr{H}_A\) pytanie o wartość wielkości
+\(M\), to w przestrzeni \(\mathscr{H}_{AB}\) (tj. jeśli \(A\) jest częścią większego układu \(AB\))
+pytanie to reprezentuje operator \(\oper{P}_M(\lambda_1;\lambda_2)\otimes\oper{1}_B\).
+
+\subsubsection{Operator gęstości}
+
+Jak wspomnieliśmy ogólny stan układu złożonego \(\Psi_{AB}\) nie ma postaci
+\(\ket{\Psi_A}\otimes\ket{\Psi_B}\) i wówczas nazywamy go stanem splątanym. Podstawową cechą układu
+splątanego jest fakt, iż jeśli \(\ket{\Psi_{AB}}\) jest stanem splątanym to dla dowolnej wielkości
+fizycznej \(M\) określającej podukład \(A\) nie istnieje stan \(\ket{\Psi_A}\), dla którego
+\begin{equation*}
+    p = \mel{\Psi_{AB}}{\oper{P}\otimes\oper{1}_B}{\Psi_{AB}} = \mel{\Psi_A}{\oper{P}}{\Psi_A}\,.
+\end{equation*}
+Istotnie zakładając \(\ket{\Psi_A} = \psi_0\ket{0_A} + \psi_1\ket{1_A}\)
+\begin{equation*}
+    \mel{\Psi_A}{\oper{P}}{\Psi_A} = \sum_{i,j} \psi_i^*\psi_j \mel{i_A}{\oper{P}}{j_A} = \Tr(\oper{P}\dyad{\Psi_A})
+\end{equation*}
+oraz
+\begin{equation*}
+    \begin{split}
+        &\mel{\Psi_{AB}}{\oper{P}\otimes\oper{1}_B}{\Psi_{AB}} = \bra{\Psi_{AB}}\oper{P}\otimes\oper{1}_B\sum_{k,l}\psi_{kl}\ket{k_Al_B} \\
+        &= \bra{\Psi_{AB}}\sum_{k,l}\psi_{k,l}\oper{P}\ket{k_A}\otimes\ket{l_B} = \sum_{i,j}\psi_{ij}^*\bra{i_Aj_B}\sum_{k,l}\psi_{k,l}\oper{P}\ket{k_A}\otimes\ket{l_B} \\
+        &= \sum_{i,j,k,l}\psi_{ij}^*\psi_{kl}\bra{i_Aj_B}\left(\oper{P}\ket{k_A}\otimes\ket{l_B}\right) = \sum_{i,j,k,l}\psi_{ij}^*\psi_{kl}\mel{i_A}{\oper{P}}{k_A}\otimes \braket{j_B}{l_B} \\
+        &= \sum_{i,j,k,l}\psi_{ij}^*\psi_{kl}\delta_{jl} \mel{i_A}{\oper{P}}{k_A} = \sum_{i,j,k} \psi_{ij}^*\psi_{kj} \mel{i_A}{\oper{P}}{k_A}\,.
+    \end{split}
+\end{equation*}
+Zauważmy, iż definiując \(\rho_{ki} = \sum_{j} \psi_{kj}\psi_{ij}^*\) możemy zapisać
+\begin{equation*}
+    \mel{\Psi_{AB}}{\oper{P}\otimes\oper{1}_B}{\Psi_{AB}} = \sum_{i,k}\rho_{ki}\mel{i_A}{\oper{P}}{k_A} = \Trace(\oper{P}\oper{\rho})\,,
+\end{equation*}
+gdzie jawnie
+\begin{equation*}
+    \oper{\rho} = \mqty[|\psi_{00}|^2 + |\psi_{01}|^2 & \psi_{00}\psi_{10}^* + \psi_{01}\psi_{11}^*\\ \psi_{10}\psi_{00}^* + \psi_{11}\psi_{01}^* & |\psi_{10}|^2 + |\psi_{11}|^2]
+\end{equation*}
+Operator \(\oper{\rho}\) nazywamy \textit{operatorem gęstości}. Zauważmy, że operator gęstości jest
+operatorem samosprzężonym \(\oper{\rho}^\dagger = \oper{\rho}\), nieujemnie określonym (wystarczy
+zauważyć, ż \(\mel{\Phi}{\oper{\rho}}{\Phi} = |\phi_0\psi_{00} + \phi_1\psi_{10}|^2 +
+|\phi_0\psi_{01}+\phi_1\psi_{11}|^2 \geq 0\)), o śladzie równym jedności \(\Trace\oper{\rho} = 1\).
+
+Jednocześnie
+\begin{equation*}
+    \dyad{\Psi_A} = \mqty[|\psi_0|^2 & \psi_0^*\psi_1 \\ \psi_0\psi_1^* & |\psi_1|^2]\,.
+\end{equation*}
+więc z operatora gęstości można wyciągnąć stan \(\ket{\Psi_A}\) iff
+\begin{equation*}
+    (|\psi_{00}|^2 + |\psi_{01}|^2)(|\psi_{10}|^2 + |\psi_{11}|^2) = (\psi_{10}\psi_{00}^* + \psi_{11}\psi_{01}^*)(\psi_{00}\psi_{10}^* + \psi_{01}\psi_{11}^*)
+\end{equation*}
+skąd
+\begin{equation*}
+    |\psi_{01}\psi_{10} - \psi_{00}\psi_{11}|^2 = 0\,,
+\end{equation*}
+skąd \(\psi_{01}\psi_{10} = \psi_{00}\psi_{11}\), czyli gdy stan \(\Psi_{AB}\) nie jest stanem
+splątanym. W ogólności jednak jeśli \(A\) jest podukładem układu złożonego \(AB\) to informacja o
+nim (w sensie prawdopodobieństw wyników pomiarów wielkości fizycznych) nie jest opisywana przez
+wektor stanu tylko przez macierz gęstości \(\oper{\rho}\), a prawdopodobieństwa i wartości
+oczekiwane są dane przez ślady
+\begin{equation*}
+    p = \Trace(\oper{P}_M(\lambda_1;\lambda_2)\oper{\rho})\,,\quad \expval{M} = \Trace(\oper{M}\oper{\rho})\,.
+\end{equation*}
+
+
+
 \section{Obliczenia kwantowe}
 
 \subsubsection*{Algorytm RSA}
@@ -1069,7 +1213,7 @@ powyższego mamy więc
 \begin{equation*}
     a^{cd} \equiv_p a(a^{p-1})^l\,.
 \end{equation*}
-Jeśli \(a \perp p\) to z MTF mamy \(a^{p-1} \equiv_p 1\), zatem \(a^{cd} \equiv_p a(1)^l \equiv_p
+Jeśli \(a \perp p\) to z MTF mamy \(a^{p-1} \equiv_p 1\), zatem \(a^{cd} \equiv_p a\cdot1^l \equiv_p
 a\), w przeciwnym wypadku mamy natomiast \(p | a\), zatem \(a^{cd} \equiv_p 0 \equiv_p a\), co
 kończy dowód.
 
