@@ -1176,7 +1176,47 @@ oczekiwane są dane przez ślady
 \begin{equation*}
     p = \Trace(\oper{P}_M(\lambda_1;\lambda_2)\oper{\rho})\,,\quad \expval{M} = \Trace(\oper{M}\oper{\rho})\,.
 \end{equation*}
+Mówimy wtedy, iż układ \(A\) jest w \textit{stanie mieszanym}. Jeżeli z kolei układ można opisać
+poprzez wektor stanu to mówimy, iż jest on w \textit{stanie czystym}. Powyższa postać
+\(\oper{\rho}\) została wypisana w bazie \(\{\ket{0_A}, \ket{1_A}\}\). Zauważmy jednak, iż istnieje
+baza \(\{\ket{\downarrow_A}, \ket{\uparrow_A}\}\), w której
+\begin{equation*}
+    \oper{\rho} = p_0\dyad{\downarrow_A} + (1-p_0)\dyad{\uparrow_A}
+\end{equation*}
+gdzie \(p_0\in\mathbb{R}\), tak że układ \(A\) jest efektywnie w niekoherentnej mieszaninie stanów
+\(\ket{\downarrow_A}\) i \(\ket{\uparrow_A}\) z prawdopodobieństwami odpowiednio \(p_0\) i
+\(1-p_0\). Dla tzw. \textit{stanów Bella} (inaczej \textit{stanów maksymalnie splątanych})
+\begin{equation*}
+    \frac{1}{\sqrt{2}}\left(\ket{i_Aj_B} + \e^{\im\alpha}\ket{(1-i)_A(1-j)_B}\right)
+\end{equation*}
+mamy \(\oper{\rho} = \frac{1}{2}\oper{1}\).
 
+Równanie ewolucji operatora gęstości (tzw. \textit{równanie Von Neumanna}) można wyprowadzić
+rozważając równanie ewolucji prawdopodobieństw. Istotnie zakładając, iż hamiltonian układu złożonego
+ma postać \(\oper{H}\otimes\oper{1}_B\) mamy
+\begin{equation*}
+    \begin{split}
+        \dv{p}{t} &= \mel{\dot{\Psi}_{AB}}{\oper{P}}{\Psi_{AB}} + \mel{\Psi_{AB}}{\oper{P}}{\dot{\Psi}_{AB}} = \frac{1}{\im\hbar} \mel{\Psi_{AB}}{[\oper{P}, \oper{H}]\otimes\oper{1}_B}{\Psi_{AB}}\\
+        &= \Trace\left(\frac{1}{\im\hbar}[\oper{P}, \oper{H}]\oper{\rho}\right) = \Trace\left(\frac{1}{\im\hbar}\oper{P}[\oper{H}, \oper{\rho}]\right)\,,
+    \end{split}
+\end{equation*}
+gdzie skorzystaliśmy z liniowości i niezmienniczości śladu względem cyklicznych przestawień.
+Jednocześnie z drugiej strony \(\dot{p} = \Trace(\oper{P}\dot{\oper{\rho}})\), zatem
+\begin{equation*}
+    \im\hbar\pdv{\oper{\rho}}{t} = [\oper{H}, \oper{\rho}]\,.
+\end{equation*}
+Równoważnie jeśli \(\ket{\Psi_{AB}(t)} = \oper{U}\ket{\Psi_{AB}(t_0)}\) to
+\begin{equation*}
+    p(t) = \Trace(\oper{P}\rho(t)) = \mel{\Psi_{AB}}{\oper{U}^\dagger\oper{P}\oper{U}}{\Psi_{AB}} = \Trace(\oper{U}^\dagger\oper{P}\oper{U}\oper{\rho})= \Trace(\oper{P}\oper{U}\oper{\rho}\oper{U}^\dagger)\,,
+\end{equation*}
+skąd
+\begin{equation*}
+    \oper{\rho}(t) = \oper{U}\oper{\rho}(t_0)\oper{U}^\dagger\,.
+\end{equation*}
+
+\subsection{Kula Blocha}
+
+\subsection{Twierdzenie o zakazie klonowania}
 
 
 \section{Obliczenia kwantowe}
