@@ -1196,8 +1196,8 @@ rozważając równanie ewolucji prawdopodobieństw. Istotnie zakładając, iż h
 ma postać \(\oper{H}\otimes\oper{1}_B\) mamy
 \begin{equation*}
     \begin{split}
-        \dv{p}{t} &= \mel{\dot{\Psi}_{AB}}{\oper{P}}{\Psi_{AB}} + \mel{\Psi_{AB}}{\oper{P}}{\dot{\Psi}_{AB}} = \frac{1}{\im\hbar} \mel{\Psi_{AB}}{[\oper{P}, \oper{H}]\otimes\oper{1}_B}{\Psi_{AB}}\\
-        &= \Trace\left(\frac{1}{\im\hbar}[\oper{P}, \oper{H}]\oper{\rho}\right) = \Trace\left(\frac{1}{\im\hbar}\oper{P}[\oper{H}, \oper{\rho}]\right)\,,
+        \dv{p}{t} &= \mel{\dot{\Psi}_{AB}}{\oper{P}\otimes\oper{1}_B}{\Psi_{AB}} + \mel{\Psi_{AB}}{\oper{P}\otimes\oper{1}_A}{\dot{\Psi}_{AB}} \\
+        & = \frac{1}{\im\hbar} \mel{\Psi_{AB}}{[\oper{P}, \oper{H}]\otimes\oper{1}_B}{\Psi_{AB}} = \Trace\left(\frac{1}{\im\hbar}[\oper{P}, \oper{H}]\oper{\rho}\right) = \Trace\left(\frac{1}{\im\hbar}\oper{P}[\oper{H}, \oper{\rho}]\right)\,,
     \end{split}
 \end{equation*}
 gdzie skorzystaliśmy z liniowości i niezmienniczości śladu względem cyklicznych przestawień.
@@ -1205,18 +1205,21 @@ Jednocześnie z drugiej strony \(\dot{p} = \Trace(\oper{P}\dot{\oper{\rho}})\), 
 \begin{equation*}
     \im\hbar\pdv{\oper{\rho}}{t} = [\oper{H}, \oper{\rho}]\,.
 \end{equation*}
-Równoważnie jeśli \(\ket{\Psi_{AB}(t)} = \oper{U}\ket{\Psi_{AB}(t_0)}\) to
+Równoważnie jeśli \(\ket{\Psi_{AB}(t)} = \oper{U}\otimes\oper{1}_B\ket{\Psi_{AB}(t_0)}\) to
 \begin{equation*}
-    p(t) = \Trace(\oper{P}\rho(t)) = \mel{\Psi_{AB}}{\oper{U}^\dagger\oper{P}\oper{U}}{\Psi_{AB}} = \Trace(\oper{U}^\dagger\oper{P}\oper{U}\oper{\rho})= \Trace(\oper{P}\oper{U}\oper{\rho}\oper{U}^\dagger)\,,
+    \begin{split}
+        p(t) &= \Trace(\oper{P}\oper{\rho}(t)) = \mel{\Psi_{AB}}{(\oper{U}^\dagger\otimes\oper{1}_B)(\oper{P}\otimes\oper{1}_B)(\oper{U}\otimes\oper{1}_B)}{\Psi_{AB}} \\
+        &= \mel{\Psi_{AB}}{\oper{U}^\dagger\oper{PU}\otimes\oper{1}_B}{\Psi_{AB}} =\Trace(\oper{U}^\dagger\oper{P}\oper{U}\oper{\rho})= \Trace(\oper{P}\oper{U}\oper{\rho}\oper{U}^\dagger)\,,
+    \end{split}
 \end{equation*}
 skąd
 \begin{equation*}
     \oper{\rho}(t) = \oper{U}\oper{\rho}(t_0)\oper{U}^\dagger\,.
 \end{equation*}
 
-\subsection{Kula Blocha}
+\subsubsection{Kula Blocha}
 
-\subsection{Twierdzenie o zakazie klonowania}
+\subsubsection{Twierdzenie o zakazie klonowania}
 
 
 \section{Obliczenia kwantowe}
