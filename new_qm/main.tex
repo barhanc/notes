@@ -1151,11 +1151,19 @@ gdzie jawnie
 \begin{equation*}
     \oper{\rho} = \mqty[|\psi_{00}|^2 + |\psi_{01}|^2 & \psi_{00}\psi_{10}^* + \psi_{01}\psi_{11}^*\\ \psi_{10}\psi_{00}^* + \psi_{11}\psi_{01}^* & |\psi_{10}|^2 + |\psi_{11}|^2]
 \end{equation*}
+co można zapisać również jako
+\begin{equation*}
+    \oper{\rho} = \Trace_B(\dyad{\Psi_{AB}})\,,
+\end{equation*}
+gdzie \(\Trace_B\) oznacza tzw. \textit{ślad częściowy} względem układu \(B\), taki że element
+\(ij\) macierzy jest dany przez
+\begin{equation*}
+    \rho_{ij} = \mel{i_A}{\oper{\rho}}{j_A} = \sum_k \bra{i_Ak_B}\dyad{\Psi_{AB}}\ket{j_Ak_B}\,.
+\end{equation*}
 Operator \(\oper{\rho}\) nazywamy \textit{operatorem gęstości}. Zauważmy, że operator gęstości jest
 operatorem samosprzężonym \(\oper{\rho}^\dagger = \oper{\rho}\), nieujemnie określonym (wystarczy
-zauważyć, ż \(\mel{\Phi}{\oper{\rho}}{\Phi} = |\phi_0\psi_{00} + \phi_1\psi_{10}|^2 +
+zauważyć, że \(\mel{\Phi}{\oper{\rho}}{\Phi} = |\phi_0\psi_{00} + \phi_1\psi_{10}|^2 +
 |\phi_0\psi_{01}+\phi_1\psi_{11}|^2 \geq 0\)), o śladzie równym jedności \(\Trace\oper{\rho} = 1\).
-
 Jednocześnie
 \begin{equation*}
     \dyad{\Psi_A} = \mqty[|\psi_0|^2 & \psi_0^*\psi_1 \\ \psi_0\psi_1^* & |\psi_1|^2]\,.
@@ -1185,13 +1193,25 @@ baza \(\{\ket{\downarrow_A}, \ket{\uparrow_A}\}\), w której
 \end{equation*}
 gdzie \(p_0\in\mathbb{R}\), tak że układ \(A\) jest efektywnie w niekoherentnej mieszaninie stanów
 \(\ket{\downarrow_A}\) i \(\ket{\uparrow_A}\) z prawdopodobieństwami odpowiednio \(p_0\) i
-\(1-p_0\). Dla tzw. \textit{stanów Bella} (inaczej \textit{stanów maksymalnie splątanych})
+\(1-p_0\). W szczególności zauważmy, czym fundamentalnie różni się stan mieszany powyższej postaci
+od stanu czystego \(\ket{\Psi_A} = \sqrt{p_0}\ket{\downarrow_A} + \sqrt{1-p_0}\ket{\uparrow_A}\). W
+przypadku stanu czystego prawdopodobieństwo odpowiedzi na \(\oper{P}\) zawiera człony
+interferencyjne
 \begin{equation*}
-    \frac{1}{\sqrt{2}}\left(\ket{i_Aj_B} + \e^{\im\alpha}\ket{(1-i)_A(1-j)_B}\right)
+    p = p_0\mel{\downarrow_A}{\oper{P}}{\downarrow_A} + (1-p_0)\mel{\uparrow_A}{\oper{P}}{\uparrow_A} + \sqrt{p_0(1-p_0)}(\mel{\uparrow_A}{\oper{P}}{\downarrow_A} + \mel{\downarrow_A}{\oper{P}}{\uparrow_A})
 \end{equation*}
-mamy \(\oper{\rho} = \frac{1}{2}\oper{1}\).
+natomiast dla stanu mieszanego mamy
+\begin{equation*}
+    p = \Trace(\oper{P}\oper{\rho}) = p_0\mel{\downarrow_A}{\oper{P}}{\downarrow_A} + (1-p_0)\mel{\uparrow_A}{\oper{P}}{\uparrow_A}\,,
+\end{equation*}
+czyli tak naprawdę klasyczny wzór na prawdopodobieństwo całkowite. Ze zdiagonalizowanej postaci
+operatora gęstości widać również, iż warunkiem wystarczającym aby operator \(\oper{\rho}\) opisywał
+stan czysty jest \(\oper{\rho}^2 = \oper{\rho}\), czyli aby macierz gęstości była idempotentna
+(oczywiście jest to również warunek konieczny).
 
-Równanie ewolucji operatora gęstości (tzw. \textit{równanie Von Neumanna}) można wyprowadzić
+\subsubsection*{Ewolucja operatora gęstości}
+
+Równanie ewolucji operatora gęstości (tzw. \textit{równanie von Neumanna}) można wyprowadzić
 rozważając równanie ewolucji prawdopodobieństw. Istotnie zakładając, iż hamiltonian układu złożonego
 ma postać \(\oper{H}\otimes\oper{1}_B\) mamy
 \begin{equation*}
@@ -1219,7 +1239,133 @@ skąd
 
 \subsubsection{Kula Blocha}
 
+Jak każdy operator samosprzężony w przestrzeni qbitów również operator gęstości można rozłożyć na
+macierze Pauliego
+\begin{equation*}
+    \oper{\rho} = s_0\oper{1} + \mathbf{s}\cdot\oper{\sigma} = \mqty[s_0 + s_z & s_x - \im s_y\\ s_x + \im s_y & s_0 - s_z]\,.
+\end{equation*}
+Ponieważ macierz gęstości ma ślad jednostkowy, więc \(s_0 = 1/2\). Dodatkowo ponieważ jest
+nieujemnie określona, więc
+\begin{equation*}
+    \forall \Phi \in \mathscr{H}: \mel{\Phi}{\oper{\rho}}{\Phi} \geq 0 \implies \forall \lambda_i, \oper{\rho}\ket{\Phi} = \lambda_i\ket{\Phi} : \lambda_i \geq 0\,, 
+\end{equation*}
+czyli wartości własne muszą być nieujemne. Jednocześnie wartości te wyznaczone są jako pierwiastki
+wielomianu
+\begin{equation*}
+    \det(\oper{\rho} - \lambda\oper{1}) = \lambda^2 - \lambda + \frac{1}{4} - |\mathbf{s}|^2\,.
+\end{equation*}
+Aby wielomian \(Ax^2 + Bx + C\) miał oba pierwiastki nieujemne musimy mieć \(-B/A \geq 0\) i \(C/A
+\geq 0\), skąd \(|\mathbf{s}|^2 \leq \frac{1}{4}\). Operator gęstości możemy zatem zapisać jako
+\begin{equation*}
+    \oper{\rho} = \frac{1}{2}(\oper{1} + \mathbf{s}\cdot\oper{\sigma})\,,
+\end{equation*}
+gdzie \(|\mathbf{s}|^2 \leq 1\). Możemy go zatem reprezentować geometrycznie jako punkt wewnątrz
+kuli jednostkowej w kartezjańskim układzie współrzędnych, którą nazywamy \textit{kulą Blocha}.
+Zauważmy, iż jeśli \(\oper{\rho}\) przedstawia stan czysty to zachodzi \(s_x^2 + s_y^2 = 1 -
+s_z^2\), czyli stany czyste są reprezentowane przez punkty na sferze Blocha, a stany mieszane jako
+punkty wewnątrz kuli Blocha. 
+
+Stan mieszany, dla którego \(\mathbf{s} = \mathbf{0}\) tj. \(\oper{\rho} = \frac{1}{2}\oper{1}\)
+nazywamy \textit{stanem maksymalnie splątanym} lub \textit{stanem Bella}. Nietrudno zauważyć, iż
+wszystkie stany Bella mają postać
+\begin{equation*}
+    \frac{1}{\sqrt{2}}\left(\ket{i_Aj_B} + \e^{\im\alpha}\ket{(1-i)_A(1-j)_B}\right)\,.
+\end{equation*}
+
+Zauważmy, iż jeśli układ złożony ewoluuje zgodnie z przekształceniem unitarnym będącym iloczynem
+tensorowym \(\oper{U}\otimes\oper{1}_B\) to \(\oper{\rho}(t) =
+\oper{U}\oper{\rho}(t_0)\oper{U}^\dagger\) i w przestrzeni \(\mathbf{s}\) tej ewolucji odpowiada
+obrót dany wzorami wyprowadzonymi dla sfery Blocha (w szczególności więc długość wektora
+\(\mathbf{s}\) nie zmienia się, choć niekoniecznie wynosi 1).
+
+
+\subsubsection{Fizyczna realizacja stanu splątanego}
+
+Rozpocznijmy od prostej obserwacji, iż jeśli początkowo układ złożony \(AB\) nie jest w stanie
+splątanym tj. \(\ket{\Psi_{AB}(t_0)} = \ket{\Psi_A(t_0)} \otimes \ket{\Psi_B(t_0)}\) i ewolucja
+unitarna układu złożonego ma postać iloczynu tensorowego \(\oper{U}_A\otimes\oper{U}_B\) to
+\begin{equation*}
+    \ket{\Psi_{AB}(t)} = \oper{U}_A\ket{\Psi_A(t_0)} \otimes \oper{U}_B\ket{\Psi_B(t_0)} = \ket{\Psi_A(t)} \otimes \ket{\Psi_B(t)}\,,
+\end{equation*}
+więc układ pozostaje niesplątany. W celu utworzenia stanu splątanego z początkowego stanu
+niesplątanego hamiltonian układu złożonego musi zawierać człony opisujące oddziaływanie między
+podukładami \(A\) i \(B\). Jako przykład rozpatrzymy magnetyczne oddziaływanie dwóch spinów 1/2
+opisane hamiltonianem
+\begin{equation*}
+    \oper{H}_{AB} = \frac{\hbar\omega}{2}\oper{\sigma}_A \otimes \oper{\sigma}_B = \frac{\hbar\omega}{2}\mqty[1 & 0 & 0 & 0 \\ 0 & -1 & 2 & 0 \\ 0 & 2 & -1 & 0 \\ 0 & 0 & 0 & 1]\,.
+\end{equation*}
+Wartości własne \(\oper{H}_{AB}\) wynoszą \(\hbar\omega/2\) i \(-3\hbar\omega/2\), a odpowiadające
+im wektory własne
+\begin{equation*}
+    \begin{split}
+        a \ket{00} + b \ket{01} + b \ket{10} + c\ket{11}\,,\quad d \ket{01} - d \ket{10}
+    \end{split}
+\end{equation*}
+dla \(a,b,c,d\in\mathbb{C}\). Rozwiązanie ma zatem postać
+\begin{equation*}
+    \ket{\Psi_{AB}(t)} = \e^{-\im\omega t/2}\left(a \ket{00} + b \ket{01} + b \ket{10} + c\ket{11}\right) + \e^{3\im\omega t/2}d\left(\ket{01} - \ket{10}\right)\,.
+\end{equation*}
+Dla \(t=0\) mamy
+\begin{equation*}
+    \ket{\Psi_{AB}(0)} = a\ket{00} + (b+d)\ket{01} + (b-d)\ket{10} + c\ket{11}\,.
+\end{equation*}
+Załóżmy, iż początkowo stan jest niesplątany i \(\ket{\Psi_{AB}(0)} = \ket{10}\) tj. \(a=c=0\) i \(b
+= -d = 1/2\), wówczas
+\begin{equation*}
+    \begin{split}
+        \ket{\Psi_{AB}(t)} &= \frac{1}{2}\e^{-\im\omega t/2}\left(\e^{-\im\omega t}(\ket{01} + \ket{10}) - \e^{\im\omega t}(\ket{01} - \ket{10})\right) \\
+        &= \e^{\im\omega t/2}\left[\cos(\omega t)\ket{10} - \im\sin(\omega t)\ket{01}\right]\,.
+    \end{split}
+\end{equation*}
+Po czasie \(t = \pi/4\omega\) otrzymujemy więc stan maksymalnie splątany
+\begin{equation*}
+    \frac{1}{\sqrt{2}}\left(\ket{10} - \im\ket{01}\right)\,.
+\end{equation*}
+Trudności przy fizycznej implementacji powyższego schematu wynikają z faktu, iż opisane
+oddziaływanie jest najczęściej oddziaływaniem wewnętrznym układu, dla którego nie możemy kontrolować
+czasu oddziaływania \(t\) jak w przypadku MRJ.
+
+\subsubsection*{Operator SWAP}
+
+Zauważmy, iż dla operatora \(\oper{\sigma}_A \otimes \oper{\sigma}_B\) zachodzi
+\begin{equation*}
+    \oper{\sigma}_A \otimes \oper{\sigma}_B\left[(\alpha + \beta)\ket{01} + (\alpha - \beta)\ket{10}\right] = (\alpha - 3\beta)\ket{01} + (\alpha + 3\beta)\ket{10}\,,
+\end{equation*}
+skąd w szczególności dla \(\alpha = \beta = 1\)
+\begin{equation*}
+   2 \oper{\sigma}_A \otimes \oper{\sigma}_B \ket{01} = -2 \ket{01} + 4 \ket{10}
+\end{equation*}
+a dla \(\alpha = -\beta = 1\)
+\begin{equation*}
+    2 \oper{\sigma}_A \otimes \oper{\sigma}_B \ket{10} = 4 \ket{01} - 2 \ket{10}\,.
+\end{equation*}
+Z powyższego możemy zdefiniować tzw. operator SWAP postaci
+\begin{equation*}
+    \oper{U}_\text{SWAP} = \frac{1}{2}\left(\oper{1} + \oper{\sigma}_A \otimes \oper{\sigma}_B \right) = \mqty[1 & 0 & 0 & 0\\ 0 & 0 & 1 & 0 \\ 0 & 1 & 0 & 0 \\ 0 & 0 & 0 & 1]
+\end{equation*}
+dla którego \(\oper{U}_\text{SWAP}\ket{i_Aj_B} = \ket{j_Ai_B}\). Operator ten permutuje qbity \(A\)
+i \(B\). Nietrudno dodatkowo zauważyć, iż \(\oper{U}_\text{SWAP}\) jest operatorem samosprzężonym i
+unitarnym.
+
 \subsubsection{Twierdzenie o zakazie klonowania}
+
+Uniwersalnym procesem klonującym stan kwantowy \(\ket{\chi}\in\mathscr{H}\) na stan
+\(\ket{\Phi}\in\mathscr{H}\) nazwiemy proces, dla którego istnieje operator unitarny \(\oper{U}\)
+działający w przestrzeni \(\mathscr{H}\otimes\mathscr{H}\) taki, że
+\begin{equation*}
+    \oper{U}(\ket{\chi}\otimes\ket{\Phi}) = \ket{\chi}\otimes\ket{\chi}
+\end{equation*}
+dla dowolnego stanu \(\ket{\chi}\). Udowodnimy, iż taki proces nie istnieje. Istotnie załóżmy nie
+wprost, iż taki proces istnieje. Wówczas dla dowolnych wektorów \(\ket{\chi_1}, \ket{\chi_2}\) mamy
+\begin{equation*}
+    \oper{U}(\ket{\chi_1}\otimes\ket{\Phi}) = \ket{\chi_1}\otimes\ket{\chi_1}\,,\quad \oper{U}(\ket{\chi_2}\otimes\ket{\Phi}) = \ket{\chi_2}\otimes\ket{\chi_2}\,,
+\end{equation*}
+ale zauważmy, że
+\begin{equation*}
+     \braket{\chi_1}{\chi_2}^2 = \braket{\chi_1\chi_1}{\chi_2\chi_2} = \mel{\chi_1\Phi}{\oper{U}^\dagger\oper{U}}{\chi_2\Phi} = \braket{\chi_1\Phi}{\chi_2\Phi} = \braket{\chi_1}{\chi_2}\,,
+\end{equation*}
+skąd \(\braket{\chi_1}{\chi_2}\) jest równy 0 lub 1, czyli \(\chi_1, \chi_2\) nie mogą być dowolne,
+a zatem otrzymaliśmy sprzeczność.
 
 \subsubsection{Dekoherencja}
 
