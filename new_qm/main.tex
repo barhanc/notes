@@ -1020,7 +1020,7 @@ i przyjmuje wartość maksymalną, gdy spełniony jest \textit{warunek rezonansu
     \hbar\omega = 2\mu B_0\,.
 \end{equation*}
 
-Zauważmy, iż opisane zjawisko stanowi podstawę do manipulacji qbitami. Istotnie w stanie rezonansu
+Zauważmy, iż opisane zjawisko stanowi podstawę do manipulacji qubitami. Istotnie w stanie rezonansu
 wektor stanu ewoluuje zgodnie z
 \begin{equation*}
     \ket{\Psi(t)} = \alpha(t)\ket{0} + \beta(t)\ket{1} = \im\sin(\Omega t)\e^{+\im\omega_0 t}\ket{0} + \cos(\Omega t)\e^{-\im\omega_0 t}\ket{1}
@@ -1046,7 +1046,7 @@ i amplitudy pola elektrycznego fali elektromagnetycznej \(p E_0\).
 
 \subsection{Korelacje kwantowe}
 
-\subsubsection{Stany dwuqbitowe}
+\subsubsection{Stany dwuqubtiowe}
 
 Rozważmy dwa układy dwupoziomowe \(A\), \(B\), których modelem matematycznym są przestrzenie
 Hilberta \(\mathscr{H}_A = \{\ket{0_A},\ket{1_A}\}\), \(\mathscr{H}_B = \{\ket{0_B},\ket{1_B}\}\)
@@ -1085,7 +1085,7 @@ czyli współczynniki \(\psi_{q_Aq_B}\) muszą spełniać
 przy czym jest to warunek konieczny i wystarczający. Stany \(\Psi_{AB}\), dla których powyższy
 warunek nie zachodzi nazywamy \textit{stanami splątanymi}. W ogólności więc współczynniki
 \(\psi_{q_Aq_B}\) są amplitudami prawdopodobieństw znalezienia układu \(A\) w stanie \(q_A\) i
-układu \(B\) w stanie \(q_B\) (zauważmy, iż w przypadku \(N\) qbitów potrzebujemy \(2^N\)
+układu \(B\) w stanie \(q_B\) (zauważmy, iż w przypadku \(N\) qubtiów potrzebujemy \(2^N\)
 współczynników \(\psi_{q_1q_2\ldots q_N}\), gdyż możliwych konfiguracji, których amplitudy
 prawdopodobieństwa musimy określić jest właśnie \(2^N\)).
 
@@ -1128,12 +1128,12 @@ pytanie to reprezentuje operator \(\oper{P}_M(\lambda_1;\lambda_2)\otimes\oper{1
 
 \subsubsection{Operator gęstości}
 
-Jak zauważyliśmy na przykładzie układów dwuqbitowych stan układu złożonego \(\Psi_{AB}\) jest stanem
-splątanym, w którym amplitudy prawdopodobieństw przy wektorach bazowych \(\ket{i_Aj_B}\) są
-dowolnymi liczbami zespolonymi \(\psi_{ij}\) spełniającymi warunek unormowania. Podstawową cechą
-układu splątanego jest fakt, iż jeśli \(\ket{\Psi_{AB}}\) jest stanem splątanym to dla dowolnej
-wielkości fizycznej \(M\) określającej podukład \(A\) nie istnieje stan \(\ket{\Psi_A}\), dla
-którego
+Jak zauważyliśmy na przykładzie układów dwuqubtiowych stan układu złożonego \(\Psi_{AB}\) jest w
+ogólności stanem splątanym, w którym amplitudy prawdopodobieństw przy wektorach bazowych
+\(\ket{i_Aj_B}\) są dowolnymi liczbami zespolonymi \(\psi_{ij}\) spełniającymi warunek unormowania.
+Podstawową cechą układu splątanego jest fakt, iż jeśli \(\ket{\Psi_{AB}}\) jest stanem splątanym to
+dla dowolnej wielkości fizycznej \(M\) określającej podukład \(A\) nie istnieje stan
+\(\ket{\Psi_A}\), dla którego
 \begin{equation*}
     p = \mel{\Psi_{AB}}{\oper{P}\otimes\oper{1}_B}{\Psi_{AB}} = \mel{\Psi_A}{\oper{P}}{\Psi_A}\,.
 \end{equation*}
@@ -1239,7 +1239,7 @@ skąd
 
 \subsubsection{Kula Blocha}
 
-Jak każdy operator samosprzężony w przestrzeni qbitów również operator gęstości można rozłożyć na
+Jak każdy operator samosprzężony w przestrzeni qubtiów również operator gęstości można rozłożyć na
 macierze Pauliego
 \begin{equation*}
     \oper{\rho} = s_0\oper{1} + \mathbf{s}\cdot\oper{\sigma} = \mqty[s_0 + s_z & s_x - \im s_y\\ s_x + \im s_y & s_0 - s_z]\,.
@@ -1339,7 +1339,7 @@ Z powyższego możemy zdefiniować tzw. operator SWAP postaci
 \begin{equation*}
     \oper{U}_\text{SWAP} = \frac{1}{2}\left(\oper{1} + \oper{\sigma}_A \otimes \oper{\sigma}_B \right) = \mqty[1 & 0 & 0 & 0\\ 0 & 0 & 1 & 0 \\ 0 & 1 & 0 & 0 \\ 0 & 0 & 0 & 1]
 \end{equation*}
-dla którego \(\oper{U}_\text{SWAP}\ket{i_Aj_B} = \ket{j_Ai_B}\). Operator ten permutuje qbity \(A\)
+dla którego \(\oper{U}_\text{SWAP}\ket{i_Aj_B} = \ket{j_Ai_B}\). Operator ten permutuje qubtiy \(A\)
 i \(B\). Nietrudno dodatkowo zauważyć, iż \(\oper{U}_\text{SWAP}\) jest operatorem samosprzężonym i
 unitarnym.
 
@@ -1370,16 +1370,161 @@ kwantowy na skutek oddziaływania z otoczeniem. Innymi słowy jest to proces, po
 są człony pozadiagonalne macierzy gęstości podukładu, co skutkuje odzyskaniem klasycznych wzorów na
 dodawanie prawdopodobieństw.
 
-
-
-
-
-
-
-
-
-
-
+Rozważymy prosty model sprzężenia układu z otoczeniem, w którym występuje zjawisko dekoherencji. W
+modelu tym mamy układ dwupoziomowy \(A\) (qubit) i foton \(F\), który jest na nim rozpraszany.
+Zakładamy, iż rozproszony foton może być modelowany układem trójpoziomowym \(\{\ket{0}, \ket{1},
+\ket{2}\}\), a oddziaływanie między układami jest opisane operatorem unitarnym\footnote{Jest tutaj
+jedna subtelna kwestia; zauważmy, iż działanie operatora \(\oper{U}\) zdefiniowaliśmy jedynie na
+podprzestrzeni rozpiętej przez \(\{\ket{00}, \ket{10}\}\), a nie na całej przestrzeni
+\(\mathscr{H}_{AF}\). Skąd możemy mieć pewność, iż istnieje odwzorowanie unitarne działające na
+całej przestrzeni takie, że jego działanie na podprzestrzeni jest takie jak zdefiniowane? Zauważmy
+najpierw, iż zdefiniowany \(\oper{U}\) jest izometrią w podprzestrzeni tj. dla dowolnych wektorów
+\(\Psi, \Phi\) należących do niej zachodzi \(\braket{\oper{U}\Psi}{\oper{U}\Phi} =
+\braket{\Psi}{\Phi}\) (\(\oper{U}\) nie jest unitarny w tej podprzestrzeni, zauważmy bowiem iż jest
+reprezentowany przez macierz prostokątną \(4 \times 2\)). Można jednak pokazać, iż dowolna izometria
+w podprzestrzeni \(\mathscr{V} \subset \mathscr{H}\) \(\oper{V}:\mathscr{V}\mapsto\mathscr{H}\)
+posiada unitarne rozszerzenie \(\oper{U}:\mathscr{H}\mapsto\mathscr{H}\) tj. istnieje operator
+unitarny \(\oper{U}\) zdefiniowany na całej przestrzeni \(\mathscr{H}\) taki, że \(\forall
+\Phi\in\mathscr{V}: \oper{U}\Phi = \oper{V}\Phi\).\\ Istotnie niech \(\{\ket{v}\}\cup\{\ket{u}\}\)
+będzie bazą ortonormalną \(\mathscr{H}\), gdzie \(\{\ket{v}\}\) jest bazą ortonormalną
+podprzestrzeni \(\mathscr{V}\) i zakładamy \(\dim\mathscr{V}, \dim\mathscr{H} < \infty\). Ponieważ
+\(\oper{V}\) jest izometrią, więc obrazem bazy ortonormalnej podprzestrzeni \(\mathscr{V}\) będzie
+pewien zbiór ortonormalny \(\{\ket{v'}\}\) o liczności \(\dim\mathscr{V} < \infty\). Zbiór ten
+możemy rozszerzyć do bazy przestrzeni \(\mathscr{H}\) dodając do niego pewne wektory \(\ket{u'}\).
+Jeśli teraz zdefiniujemy odwzorowanie \(\oper{U}:\mathscr{H}\mapsto\mathscr{H}\) jako
+\(\oper{U}\ket{v} = \oper{V}\ket{v} = \ket{v'}, \oper{U}\ket{u} = \ket{u'}\) to skonstruowaliśmy
+izometrię w przestrzeni \(\mathscr{H}\), ale każda izometria reprezentowana przez macierz kwadratową
+jest unitarna (gdyż jeśli dla macierzy kwadratowej \(\oper{A}\) istnieje macierz \(\oper{B}\) taka,
+że \(\oper{BA} = \oper{1}\) to \(\oper{A}\) jest odwracalna). W przykładzie nie interesują nas
+wartości tego odwzorowania dla pozostałych wektorów bazowych (poza wektorami bazowymi
+podprzestrzeni) gdyż stany te w tym modelu są nierealizowalne fizycznie.}
+\begin{equation*}
+    \oper{U}\ket{00} = \sqrt{1-p}\ket{00} + \sqrt{p}\ket{01}\,,\quad \oper{U}\ket{10} = \sqrt{1-p}\ket{10} + \sqrt{p}\ket{12}\,,
+\end{equation*}
+gdzie zakładamy, iż amplitudy prawdopodobieństwa rozproszenia fotonu są niezależne od stanu układu
+\(A\), ale końcowy stan fotonu zależy od stanu qubitu. Możemy sobie wyobrazić, iż qubitem jest
+kwantowe lusterko, które może być pod kątem \(+\pi/4\) lub \(-\pi/4\) w stosunku do toru fotonu,
+który może nie trafić w lusterko (tj. pozostać w stanie podstawowym \(\ket{0}\)), odbić się w górę
+(\(\ket{1}\)) lub w dół (\(\ket{2}\)), przy czym amplituda prawdopodobieństwa trafienia lub nie w
+lusterko jest niezależna od jego ustawienia. Załóżmy, iż początkowo qubit jest w stanie czystym
+\begin{equation*}
+    \ket{\Psi_{AF}} = (\alpha\ket{0} + \beta\ket{1}) \otimes \ket{0}\,.
+\end{equation*}
+Początkowo macierz gęstości układu \(A\) ma zatem postać
+\begin{equation*}
+    \oper{\rho} = \mqty[|\alpha|^2 & \alpha\beta^* \\ \alpha^*\beta & |\beta|^2] = \mqty[\rho_{00} & \rho_{01} \\ \rho_{10} & \rho_{11}]\,.
+\end{equation*}
+Po rozproszeniu fotonu natomiast stan układu złożonego ewoluuje do
+\begin{equation*}
+    \oper{U}\ket{\Psi_{AF}} = \alpha\sqrt{1-p}\ket{00} + \alpha\sqrt{p}\ket{01} + \beta\sqrt{1-p}\ket{10} + \beta\sqrt{p}\ket{12}\,,
+\end{equation*}
+skąd macierz gęstości ma postać
+\begin{equation*}
+    \oper{\rho}' = \mqty[\rho_{00} & (1-p)\rho_{01} \\ (1-p)\rho_{10} & \rho_{11}]\,.
+\end{equation*}
+Jeśli \(p = 1 - \epsilon\) to macierz jest prawie diagonalna. Zauważmy jednak, iż w tym modelu
+dekoherencja jest jedynie pozorna gdyż stan pełnego układu \(AF\) jest oczywiście stanem czystym i
+jeśli tylko potrafimy mierzyć wielkości związane z rozproszonym fotonem to mamy pełną informację o
+układzie. W realistycznym przypadku otoczenie ma tak wiele stopni swobody, iż jest nie możliwe
+abyśmy mieli nad nimi pełną kontrolę i efektywnie wielkości związane z otoczeniem są
+nieobserwowalne. Możemy ulepszyć nasz model jeśli założymy, iż nasz qubit rozprasza nie pojedynczy
+foton a wiele (\(N\)) fotonów jeden po drugim. W stanie początkowym wszystkie fotony są w stanie
+podstawowym tj.
+\begin{equation*}
+    \ket{\Psi_{AE}} = (\alpha\ket{0_A} + \beta\ket{1_A}) \otimes \ket*{\underbrace{0\ldots0}_N}\,.
+\end{equation*}
+Aby odtworzyć ewolucję dla przypadku pojedynczego fotonu zdefiniujmy ciąg operatorów unitarnych
+\(\oper{U}_n = \oper{V}_n \otimes \oper{1}_{N-n}\), gdzie
+\begin{equation*}
+    \begin{split}
+        &\oper{V}_n\ket{0_Ai_1\ldots i_{n-1}0} = \sqrt{1-p}\ket{0_Ai_1\ldots i_{n-1}0} + \sqrt{p}\ket{0_Ai_1\ldots i_{n-1}1}\\
+        &\oper{V}_n\ket{1_Aj_1\ldots j_{n-1}0} = \sqrt{1-p}\ket{1_Aj_1\ldots j_{n-1}0} + \sqrt{p}\ket{1_Aj_1\ldots j_{n-1}2}
+    \end{split}
+\end{equation*}
+dla \(n \geq 1\) i dowolnych \(i_1,\ldots,i_{n-1} \in \{0,1\}\), \(j_1,\ldots,j_{n-1} \in \{0,2\}\).
+Ponownie operator izometryczny \(\oper{V}_n\) zdefiniowaliśmy jedynie na \(2^n\)--wymiarowej
+podprzestrzeni ale posiada on unitarne rozszerzenie do przestrzeni \(2\cdot 3^n\)--wymiarowej.
+Operator \(\oper{V}_n\) jest operatorem opisującym rozproszenie \(n\)--tego w kolejności fotonu na
+qubicie. Niech 
+\begin{equation*}
+    \ket{\Psi_n} = \oper{U}_n\ldots\oper{U}_1\ket{\Psi_{AE}}\,.
+\end{equation*}
+Niech \(\{0,1\}^n, \{0,2\}^n\) oznaczają zbiory wszystkich słów binarnych długości \(n\) nad
+alfabetem odpowiednio \(\{0,1\}\) oraz \(\{0,2\}\). Dla słowa \(\mathfrak{a} \in \{0,1\}^n\)
+(\(\mathfrak{b} \in \{0,2\}^n\)) przez \(\kappa(\mathfrak{a})\) oznaczmy liczbę niezerowych miejsc w
+tym słowie. Wówczas
+\begin{equation*}
+    \begin{split}
+        \ket{\Psi_n} &= \Bigg[\alpha\sum_{\mathfrak{a}\in\{0,1\}^n}\left(\sqrt{1-p}\right)^{n-\kappa(\mathfrak{a})}\left(\sqrt{p}\right)^{\kappa(\mathfrak{a})}\ket{0_A\mathfrak{a}} \\
+        &+ \beta\sum_{\mathfrak{b}\in\{0,2\}^n}\left(\sqrt{1-p}\right)^{n-\kappa(\mathfrak{b})}\left(\sqrt{p}\right)^{\kappa(\mathfrak{b})}\ket{1_A\mathfrak{b}} \Bigg] \otimes \ket*{\underbrace{0\ldots 0}_{N-n}}\,.
+    \end{split}
+\end{equation*}
+Istotnie dowodząc indukcyjnie; dla \(n=1\) mamy
+\begin{equation*}
+    \ket{\Psi_1} = \left[\alpha\sqrt{1-p}\ket{0_A0} + \alpha\sqrt{p}\ket{0_A1} + \beta\sqrt{1-p}\ket{1_A0} + \beta\sqrt{p}\ket{1_A2}\right]\otimes \ket*{\underbrace{0\ldots 0}_{N-1}}
+\end{equation*}
+co jest oczywiście równe \(\oper{U}_1\ket{\Psi_{AE}}\), następnie zakładając, że wzór jest słuszny
+dla \(\ket{\Psi_n}\) mamy
+\begin{equation*}
+    \begin{split}
+        \ket{\Psi_{n+1}} &= \oper{U}_{n+1}\ket{\Psi_n} = \Bigg[\alpha\sum_{\mathfrak{a}\in\{0,1\}^n}\left(\sqrt{1-p}\right)^{n-\kappa(\mathfrak{a})}\left(\sqrt{p}\right)^{\kappa(\mathfrak{a})}\oper{U}_{n+1}\ket{0_A\mathfrak{a}0} \\
+        &+ \beta\sum_{\mathfrak{b}\in\{0,2\}^n}\left(\sqrt{1-p}\right)^{n-\kappa(\mathfrak{b})}\left(\sqrt{p}\right)^{\kappa(\mathfrak{b})}\oper{U}_{n+1}\ket{1_A\mathfrak{b}0} \Bigg] \otimes \ket*{\underbrace{0\ldots 0}_{N-(n+1)}}\,,
+    \end{split}
+\end{equation*}
+skąd współczynnik przy \(\alpha\) ma postać (dla uproszczenia zapisu oznaczymy \(r=\sqrt{1-p},
+s=\sqrt{p}\))
+\begin{equation*}
+    \begin{split}
+        \sum_{\mathfrak{a}\in\{0,1\}^n}r^{n+1-\kappa(\mathfrak{a})}s^{\kappa(\mathfrak{a})}\ket{0_A\mathfrak{a}0} + \sum_{\mathfrak{a}\in\{0,1\}^n}r^{n-\kappa(\mathfrak{a})}s^{\kappa(\mathfrak{a}) + 1}\ket{0_A\mathfrak{a}1}\,,
+    \end{split}
+\end{equation*}
+a przy \(\beta\)
+\begin{equation*}
+    \begin{split}
+        \sum_{\mathfrak{b}\in\{0,2\}^n}r^{n+1-\kappa(\mathfrak{b})}s^{\kappa(\mathfrak{b})}\ket{1_A\mathfrak{b}0} + \sum_{\mathfrak{b}\in\{0,2\}^n}r^{n-\kappa(\mathfrak{b})}s^{\kappa(\mathfrak{b}) + 1}\ket{1_A\mathfrak{b}2}\,.
+    \end{split}
+\end{equation*}
+Zauważmy jednak, iż \(\kappa(\mathfrak{a}) = \kappa(\mathfrak{a}0) = \kappa(\mathfrak{a}1) - 1\),
+zatem możemy zapisać
+\begin{equation*}
+    \begin{split}
+        &\sum_{\mathfrak{a}\in\{0,1\}^n}r^{n+1-\kappa(\mathfrak{a})}s^{\kappa(\mathfrak{a})}\ket{0_A\mathfrak{a}0} + \sum_{\mathfrak{a}\in\{0,1\}^n}r^{n-\kappa(\mathfrak{a})}s^{\kappa(\mathfrak{a}) + 1}\ket{0_A\mathfrak{a}1} \\
+        &=\sum_{\mathfrak{a}0\in\{0,1\}^{n+1}}r^{n+1-\kappa(\mathfrak{a}0)}s^{\kappa(\mathfrak{a}0)}\ket{0_A\mathfrak{a}0} + \sum_{\mathfrak{a}1\in\{0,1\}^{n+1}}r^{n + 1-\kappa(\mathfrak{a}1)}s^{\kappa(\mathfrak{a}1)}\ket{0_A\mathfrak{a}1} \\
+        &=\sum_{\mathfrak{a} \in \{0,1\}^{n+1}}r^{n+1-\kappa(\mathfrak{a})}s^{\kappa(\mathfrak{a})}\ket{0_A\mathfrak{a}}
+    \end{split}
+\end{equation*}
+i analogicznie dla współczynnika przy \(\beta\), zatem
+\begin{equation*}
+    \begin{split}
+        \ket{\Psi_{n+1}} &= \Bigg[\alpha\sum_{\mathfrak{a}\in\{0,1\}^{n+1}}\left(\sqrt{1-p}\right)^{n+1-\kappa(\mathfrak{a})}\left(\sqrt{p}\right)^{\kappa(\mathfrak{a})}\ket{0_A\mathfrak{a}} \\
+        &+ \beta\sum_{\mathfrak{b}\in\{0,2\}^{n+1}}\left(\sqrt{1-p}\right)^{n+1-\kappa(\mathfrak{b})}\left(\sqrt{p}\right)^{\kappa(\mathfrak{b})}\ket{1_A\mathfrak{b}} \Bigg] \otimes \ket*{\underbrace{0\ldots 0}_{N-(n+1)}}\,,
+    \end{split}
+\end{equation*}
+więc z zasady indukcji matematycznej zaproponowany wzór jest poprawny dla dowolnych \(n \geq 1\).
+Możemy więc nareszcie obliczyć macierz gęstości układu \(A\) po rozproszeniu \(N\) fotonów. Mamy
+\begin{equation*}
+    \begin{split}
+        \rho_{00}' &= \sum_{\mathfrak{c} \in \{0,1,2\}^N} |\braket{0_A\mathfrak{c}}{\Psi_N}|^2 = |\alpha|^2\sum_{\mathfrak{a} \in \{0,1\}^N}(1-p)^{N-\kappa(\mathfrak{a})}p^{\kappa(\mathfrak{a})} \\
+        &= |\alpha|^2\sum_{k=0}^N {N \choose k} (1-p)^{N-k}p^k = |\alpha|^2(1-p+p)^N = |\alpha|^2 = \rho_{00}
+    \end{split}
+\end{equation*}
+analogicznie \(\rho_{11}' = \rho_{11}\), natomiast dla elementów pozadiagonalnych mamy
+\begin{equation*}
+    \begin{split}
+        \rho_{01}' &= \rho_{10}'^* = \sum_{\mathfrak{c} \in \{0,1,2\}^N} \braket{0_A\mathfrak{c}}{\Psi_N}\braket{\Psi_N}{1_A\mathfrak{c}} \\
+        &= \braket*{0_A\underbrace{0\ldots0}_N}{\Psi_N}\braket*{\Psi_N}{1_A\underbrace{0\ldots0}_N} = \alpha\beta^*(1-p)^N = \rho_{01}(1-p)^N\,,
+    \end{split}
+\end{equation*}
+czyli
+\begin{equation*}
+    \oper{\rho}' = \mqty[\rho_{00} & \rho_{01}(1-p)^N \\ \rho_{10}(1-p)^N & \rho_{11}]\,.
+\end{equation*}
+Widzimy zatem, iż nawet jeśli \(p\) nie jest bliskie 1 to dla bardzo dużej liczby \(N\), na przykład
+rzędu \(10^{23}\), elementy pozadiagonalne się praktycznie zerują i nie mamy jak odzyskać tej
+informacji, gdyż jest rozłożona na \(\sim 10^{23}\) stopni swobody. Zakładając, że liczba rozproszonych fotonów na jednostkę czasu wynosi \(\Gamma\) możemy oszacować czas dekoherencji tj. czas po którym \((1-p)^{\Gamma t} \leq \epsilon\)
+\begin{equation*}
+    \tau = \frac{1}{\Gamma}\frac{\log\epsilon}{\log(1-p)} \sim \frac{1}{\Gamma}\,.
+\end{equation*}
 
 \section{Obliczenia kwantowe}
 
