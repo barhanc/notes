@@ -1,16 +1,15 @@
 \documentclass{myclass}
 \usepackage[polish]{babel}
 
-% TODO
+\usetikzlibrary{quantikz}
 
-% * Bell's theory
+% TODO
 %
 % * description of quantum registers, gates, idea of computation using those devices (Deutsch,
-%   Grover, QFTrans, Shor), applications to number theory, connection with Church-Turing hypothesis.
-%   Examples
+%   Grover, QFT, Shor), applications to number theory, connection with Church-Turing hypothesis
 %
 % * possible physical realizations of quantum computing, probably focus on Josephson junctions and
-%   charge qubits as they seem most elegant (maybe qdots as well)
+%   charge qubits as they seem most elegant
 %
 % * A short overview of classical and quantum information theory (I don't want to go very deep there
 %   at the moment): Shannon/Von Neumann entropy, channels, quantum information transfer/cryptography
@@ -18,10 +17,9 @@
 %
 %
 %
-
-\title{Podstawy teorii kwantów}
-\author{Bartosz Hanc}
+%
 % My notes regarding abstract foundations of quantum theory and introduction to quantum computing
+\author{Bartosz Hanc}
 
 \begin{document}
 \tableofcontents
@@ -1519,12 +1517,192 @@ czyli
 \end{equation*}
 Widzimy zatem, iż nawet jeśli \(p\) nie jest bliskie 1 to dla bardzo dużej liczby \(N\), na przykład
 rzędu \(10^{23}\), elementy pozadiagonalne się praktycznie zerują i nie mamy jak odzyskać tej
-informacji, gdyż jest rozłożona na \(\sim 10^{23}\) stopni swobody. Zakładając, że liczba rozproszonych fotonów na jednostkę czasu wynosi \(\Gamma\) możemy oszacować czas dekoherencji tj. czas po którym \((1-p)^{\Gamma t} \leq \epsilon\)
+informacji, gdyż jest rozłożona na \(\sim 10^{23}\) stopni swobody. Zakładając, że liczba
+rozproszonych fotonów na jednostkę czasu wynosi \(\Gamma\) możemy oszacować czas dekoherencji tj.
+czas po którym \((1-p)^{\Gamma t} \leq \epsilon\)
 \begin{equation*}
     \tau = \frac{1}{\Gamma}\frac{\log\epsilon}{\log(1-p)} \sim \frac{1}{\Gamma}\,.
 \end{equation*}
 
+
+
+
+
 \section{Obliczenia kwantowe}
+
+Niech \(\mathscr{H} = \{\ket{0}, \ket{1}\}\) będzie przestrzenią Hilberta opisującą pojedynczy
+qubit. Podstawowym obiektem zainteresowania w kontekście obliczeń kwantowych jest przestrzeń
+Hilberta \(\mathscr{H}^{\otimes n} = \underbrace{\mathscr{H}\otimes\ldots\otimes\mathscr{H}}_n\),
+której baza ortonormalna ma postać \(\{\ket{\mathfrak{a}}\mid \mathfrak{a}\in\{0,1\}^n\}\).
+Oczywiście każde słowo binarne długości \(n\) możemy utożsamić z liczbą naturalną z przedziału
+\(k\in \{0,1,\ldots,2^n-1\}\), więc bazę ortonormalną przestrzeni \(\mathscr{H}^{\otimes n}\)
+będziemy zapisywać również jako \(\{\ket{k} \mid k \in \{0,1,\ldots,2^n-1\}\}\). Bazę tą nazywamy
+\textit{bazą obliczeniową}.
+
+Na Rysunku \ref{fig:quant-scheme} przedstawiono ogólny schemat obliczeń kwantowych. Najpierw w
+chwili \(t_0\) inicjalizujemy \(n\) qubitów (np. poprzez pomiar powodujący kolaps), następnie qubity
+ewoluują zgodnie z pewnym odwzorowaniem unitarnym \(\oper{U}(t;t_0)\), a następnie aby odczytać
+wynik dokonujemy pomiaru na (pod)układzie qubitów. Zauważmy, iż ponieważ wymagamy aby ewolucja była
+unitarna, więc obliczenia kwantowe są z konieczności obliczeniami odwracalnymi tj. z uzyskanego
+wyniku (stanu końcowego \(\ket{\Psi(t)}\)) możemy odtworzyć dane (stan początkowy
+\(\ket{\Psi(t_0)}\)) poprzez zastosowanie operatora unitarnego \(\oper{U}^{-1}\).
+
+\begin{figure}[ht]
+    \centering
+    \begin{quantikz}
+        \lstick[6]{input}&\lstick{$\ket{0}$}&\gate[6]{\oper{U}(t;t_0)} &
+        \meter{}\rstick[3]{output}\\
+        &\lstick{$\ket{0}$}&& \meter{}\\
+        &\lstick{$\ket{0}$}&& \meter{}\\
+        &\lstick{$\ket{0}$}&& &\\
+        &\lstick{$\ket{0}$}&& &\\
+        &\lstick{$\ket{0}$}&& &
+    \end{quantikz}
+    \label{fig:quant-scheme}
+    \caption{Ogólny schemat obliczeń kwantowych}
+\end{figure}
+
+Odwracalność obliczeń kwantowych jest zasadniczo różna od klasycznych obwodów logicznych, które w
+ogólności nie są odwracalne. Wiemy chociażby, iż bramki \(\gatesym{NAND}\) wystarczą do konstrukcji
+dowolnych obwodów logicznych tj. funkcji \(f:\{0,1\}^n \mapsto \{0,1\}^m\), ale bramka
+\(\gatesym{NAND}\) jest jawnie nieodwracalna, gdyż mamy
+\begin{equation*}
+    \gatesym{NAND}(x,y) = 1 \oplus xy\,,
+\end{equation*}
+gdzie \(\oplus\) oznacza dodawania modulo 2, więc np. \(\gatesym{NAND}(0,0) = \gatesym{NAND}(0,1) =
+1\), zatem z wyniku działania tej bramki nie możemy odtworzyć danych wejściowych. Istnieją jednak
+klasyczne odwracalne bramki logiczne postaci odwzorowań \(\{0,1\}^n\mapsto\{0,1\}^n\). Przedstawimy
+dwie z nich, gdyż znajdują one zastosowanie również w obwodach kwantowych. Bramka \(\gatesym{cNOT}\)
+(z ang. \textit{controlled NOT}) działa w następujący sposób
+\begin{equation*}
+    \gatesym{cNOT}(x,y) = (x, x\oplus y)\,,
+\end{equation*}
+bit \(x\) jest zatem \textit{bitem kontrolnym}; jeśli \(x=0\) to kopiujemy \(y\), natomiast jeśli
+\(x=1\) to \(y \mapsto \gatesym{NOT}(y)\). Drugą bramką jest bramka Toffoli działająca w następujący
+sposób
+\begin{equation*}
+    \gatesym{Toff}(x,y,z) = (x,y,z\oplus xy)\,.
+\end{equation*}
+Zauważmy, iż jeśli \(z=1\) to bramka ta w sposób odwracalny realizuje operację \(\gatesym{NAND}\). Z
+tego względu bramka Toffoli jest uniwersalna i można za jej pomocą zrealizować dowolną funkcję
+boolowską (zakładając oczywiście odpowiednią liczbę bitów pomocniczych -- takich jak \(z\)).
+
+
+\subsection{Kwantowe bramki logiczne}
+
+Kwantową bramką logiczną działającą na \(n\) qubitach nazywamy dowolny operator unitarny
+\(\oper{U}\) działający w przestrzeni \(\mathscr{H}^{\otimes n}\) reprezentowany przez macierz
+wymiaru \(2^n\times2^n\). Będą nas interesować jednak głównie bramki jedno-- i dwuqubitowe ze
+względu na następujące twierdzenie.
+\begin{theorem}
+    Każde przekształcenie unitarne w \(\mathscr{H}^{\otimes n}\) może być zapisane jako złożenie
+    przekształceń jednoqubitowych i bramek cNOT. Dodatkowo każde przekształcenie jednoqubitowe jest
+    złożeniem bramek obrotów wokół X, Y, Z i bramki przesunięcia fazowego. Zbiór bramek
+    \(\{\gatesym{cNOT}, \gatesym{R}_x, \gatesym{R}_y, \gatesym{R}_z, \gatesym{P}\}\) jest więc
+    uniwersalny.
+\end{theorem}
+
+Poniżej podajemy listę najczęstszych bramek jedno-- i dwuqubitowych (bramki będziemy oznaczać
+czcionką prostą, niewytłuszczoną choć są to oczywiście operatory). Niektóre z nich pojawiły się
+wcześniej jako operatory. Diagramy bramek zamieszczono na Rysunku \ref{fig:gates}.
+
+\begin{figure}[h!]
+    \centering
+    \begin{quantikz}
+        & \ctrl{1} & \qw \\
+        & \targ{} & \qw 
+    \end{quantikz}
+    \begin{quantikz}
+        & \ctrl{1} & \qw \\
+        & \ctrl{1} & \qw \\
+        & \targ{}  & \qw \\
+    \end{quantikz}
+    \begin{quantikz}
+        & \ctrl{1} & \qw \\
+        & \gate{U} & \qw 
+    \end{quantikz}
+    \begin{quantikz}
+        & \swap{1} & \qw \\
+        & \targX{} & \qw 
+    \end{quantikz}
+    \begin{quantikz}
+        & \phase{\phi} & \qw
+    \end{quantikz}
+    \begin{quantikz}
+        & \gate{\cdot} & \qw
+    \end{quantikz}
+    \label{fig:gates}
+    \caption{Diagramy odpowiednio bramek cNOT, Toff, cU, SWAP, \(\gatesym{P}(\phi)\) i pozostałych}
+\end{figure}
+
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{clc}
+    \cline{1-1} \cline{3-3} \multicolumn{1}{|c|}{\textbf{Pauli X}} & \multicolumn{1}{l|}{} &
+    \multicolumn{1}{c|}{\textbf{Rotation X}} \\ \cline{1-1} \cline{3-3}
+    \multicolumn{1}{|c|}{\(\gatesym{X}=\mqty[0&1\\1&0]\)} & \multicolumn{1}{l|}{} &
+    \multicolumn{1}{c|}{\(\gatesym{R}_x(\theta)=\mqty[\cos(\theta/2) & -\im\sin(\theta/2)\\
+    -\im\sin(\theta/2) & \cos(\theta/2)]\)} \\ \cline{1-1} \cline{3-3}
+    \multicolumn{1}{l}{}
+    &                       & \multicolumn{1}{l}{} \\ \cline{1-1} \cline{3-3}
+    \multicolumn{1}{|c|}{\textbf{Pauli Y}} & \multicolumn{1}{l|}{} &
+    \multicolumn{1}{c|}{\textbf{Rotation Y}} \\ \cline{1-1} \cline{3-3}
+    \multicolumn{1}{|c|}{\(\gatesym{Y}=\mqty[0&-\im\\+\im&0]\)} & \multicolumn{1}{l|}{} &
+    \multicolumn{1}{c|}{\(\gatesym{R}_y(\theta)=\mqty[\cos(\theta/2) & -\sin(\theta/2)\\
+    +\sin(\theta/2) & \cos(\theta/2)]\)}       \\ \cline{1-1} \cline{3-3} & & \\ \cline{1-1}
+    \cline{3-3} \multicolumn{1}{|c|}{\textbf{Pauli Z}} & \multicolumn{1}{l|}{} &
+    \multicolumn{1}{c|}{\textbf{Rotation Z}} \\ \cline{1-1} \cline{3-3}
+    \multicolumn{1}{|c|}{\(\gatesym{Z}=\mqty[+1&0\\0&-1]\)} & \multicolumn{1}{l|}{} &
+    \multicolumn{1}{c|}{\(\gatesym{R}_z(\theta)=\mqty[\exp(-\im\theta/2) & 0\\0 &
+    \exp(+\im\theta/2)]\)}                            \\ \cline{1-1} \cline{3-3}
+    \multicolumn{1}{l}{}
+    &                       & \multicolumn{1}{l}{} \\ \cline{1-1} \cline{3-3}
+    \multicolumn{1}{|c|}{\textbf{Hadamard}} & \multicolumn{1}{l|}{} &
+    \multicolumn{1}{c|}{\textbf{Phase shift}} \\ \cline{1-1} \cline{3-3}
+    \multicolumn{1}{|c|}{\(\gatesym{H}=\frac{1}{\sqrt{2}}\mqty[1 & 1\\ 1 & -1]\)} &
+    \multicolumn{1}{l|}{} & \multicolumn{1}{c|}{\(\gatesym{P}(\phi) = \mqty[1 &
+    0\\0&\e^{\im\phi}]\)} \\ \cline{1-1} \cline{3-3} \multicolumn{1}{l}{} &                       &
+    \multicolumn{1}{l}{} \\ \cline{1-1} \cline{3-3} \multicolumn{1}{|c|}{\textbf{cNOT}} &
+    \multicolumn{1}{l|}{} & \multicolumn{1}{c|}{\textbf{cZ}} \\ \cline{1-1} \cline{3-3}
+    \multicolumn{1}{|c|}{\(\gatesym{cNOT} = \mqty[1 & 0 & 0 & 0\\ 0 & 1 & 0 & 0\\ 0 & 0 & 0 & 1 \\ 0
+    & 0 & 1 & 0]\)}    & \multicolumn{1}{l|}{} & \multicolumn{1}{c|}{\(\gatesym{cZ} = \mqty[1 & 0 &
+    0 & 0\\ 0 & 1 & 0 & 0\\ 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & -1]\)}                  \\ \cline{1-1}
+    \cline{3-3} \multicolumn{1}{l}{} &                       & \multicolumn{1}{l}{} \\ \cline{1-1}
+    \cline{3-3} \multicolumn{1}{|c|}{\textbf{cU}} & \multicolumn{1}{l|}{} &
+    \multicolumn{1}{c|}{\textbf{SWAP}} \\ \cline{1-1} \cline{3-3}
+    \multicolumn{1}{|c|}{\(\gatesym{cU} = \mqty[\oper{1} & 0 \\ 0 & \oper{U}]\)} &
+    \multicolumn{1}{l|}{} & \multicolumn{1}{c|}{\(\gatesym{SWAP} = \mqty[1 & 0 & 0 & 0\\ 0 & 0 & 1 &
+    0\\ 0 & 1 & 0 & 0 \\ 0 & 0 & 0 & 1]\)}                 \\ \cline{1-1} \cline{3-3}
+    \multicolumn{1}{l}{} &                       & \multicolumn{1}{l}{} \\ \cline{1-1}
+    \multicolumn{1}{|c|}{\textbf{Toffoli}} &                       & \textbf{} \\ \cline{1-1}
+    \multicolumn{1}{|c|}{\(\gatesym{Toff} = \mqty[\oper{1}_6 & \mathbf{0} \\
+    \mathbf{0}^\top & \mqty{0 & 1\\ 1 & 0}]\)} &                       & \\ \cline{1-1}
+    \end{tabular}
+\end{table}
+
+Łatwo sprawdzić, iż wszystkie zdefiniowane bramki są przekształceniami unitarnymi. W szczególności
+zauważmy, iż bramki cNOT i Toff permutują wektory bazy ortonormalnej i działają dokładnie w taki
+sposób jak klasyczne odpowiedniki tj.
+\begin{equation*}
+    \gatesym{cNOT}\ket{xy} = \ket{x(x\oplus y)}\,,\quad \gatesym{Toff}\ket{xyz} = \ket{xy(z\oplus xy)}\,.
+\end{equation*}
+Ponieważ wszystkie funkcje boolowskie można wyrazić przez klasyczne bramki Toffoli, więc dowolną
+taką funkcję możemy obliczyć w modelu obliczeń kwantowych zasadniczo za pomocą takiej samej liczby
+bramek.
+
+
+\newpage
+\subsection{Algorytmy kwantowe}
+
+\subsubsection{Algorytm Deutscha}
+
+\subsubsection{Algorytm Grovera}
+
+\subsubsection{Algorytm Shora}
+
+
+
+
 
 \subsubsection*{Algorytm RSA}
 

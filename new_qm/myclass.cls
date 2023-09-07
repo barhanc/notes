@@ -38,7 +38,8 @@
             mathrsfs, physics, wasysym, xcolor}
 
 % Additional packages and commands depending on project:
-\usepackage{lipsum, enumitem}
+\usepackage{lipsum, enumitem, tikz, quantikz}
 
 \newcommand{\oper}[1]{\boldsymbol{\mathsf{#1}}}
+\newcommand{\gatesym}[1]{\text{#1}}
 % \newcommand{\oper}[1]{\hat{#1}}
