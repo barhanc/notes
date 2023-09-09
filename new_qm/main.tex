@@ -5,15 +5,14 @@
 
 % TODO
 %
-% * description of quantum registers, gates, idea of computation using those devices (Deutsch,
-%   Grover, QFT, Shor), applications to number theory, connection with Church-Turing hypothesis
+% * idea of computation using those devices (QFT, Shor), applications to number theory
 %
-% * possible physical realizations of quantum computing, probably focus on Josephson junctions and
-%   charge qubits as they seem most elegant
+% * [ possible physical realizations of quantum computing, probably focus on Josephson junctions and
+%   charge qubits as they seem most elegant ]
 %
 % * A short overview of classical and quantum information theory (I don't want to go very deep there
 %   at the moment): Shannon/Von Neumann entropy, channels, quantum information transfer/cryptography
-%   ------
+%   ------------ 
 %
 %
 %
@@ -22,7 +21,9 @@
 \author{Bartosz Hanc}
 
 \begin{document}
+
 \tableofcontents
+
 \section{Abstrakcyjna teoria kwantów}
 
 \subsection{Elementy teorii przestrzeni Hilberta}
@@ -1525,9 +1526,6 @@ czas po którym \((1-p)^{\Gamma t} \leq \epsilon\)
 \end{equation*}
 
 
-
-
-
 \section{Obliczenia kwantowe}
 
 Niech \(\mathscr{H} = \{\ket{0}, \ket{1}\}\) będzie przestrzenią Hilberta opisującą pojedynczy
@@ -1688,21 +1686,24 @@ sposób jak klasyczne odpowiedniki tj.
 \end{equation*}
 Ponieważ wszystkie funkcje boolowskie można wyrazić przez klasyczne bramki Toffoli, więc dowolną
 taką funkcję możemy obliczyć w modelu obliczeń kwantowych zasadniczo za pomocą takiej samej liczby
-bramek.
+bramek. Zauważmy jednak, iż w przypadku modelu obliczeń kwantowych wejściem bramki może być dowolna
+superpozycja wektorów z bazy obliczeniowej; na wyjściu otrzymamy zatem superpozycję wszystkich
+wartości funkcji. Oczywiście dokonując na końcu pomiaru otrzymamy tylko jedną z wartości, więc w
+taki sposób nie uzyskamy oczywistej przewagi nad modelem klasycznym. Okazuje się jednak iż ów
+\textit{paralelizm kwantowy} można wykorzystać w sposób dający nawet wykładniczą przewagę nad
+algorytmami klasycznymi.
 
-
-\newpage
 \subsection{Algorytmy kwantowe}
 
-\subsubsection{Algorytm Deutscha}
+TODO
 
-\subsubsection{Algorytm Grovera}
+\subsubsection{Kwantowa Transformata Fouriera}
+
+TODO
 
 \subsubsection{Algorytm Shora}
 
-
-
-
+TODO
 
 \subsubsection*{Algorytm RSA}
 
@@ -1751,7 +1752,7 @@ względem liczby bitów faktoryzowanej liczby).
 
 \section{Informacja kwantowa}
 
-\subsubsection*{Bazy dopełniające}
+\subsection{Bazy dopełniające}
 \begin{definition}
     Niech \(\{\phi_i\}\), \(\{\theta_i\}\)  będą dwiema bazami ortonormalnymi \(N\)--wymiarowej
     przestrzeni Hilberta \(\mathscr{H}\). Bazy te nazwiemy \textit{dopełniającymi} iff
@@ -1781,10 +1782,15 @@ gdzie ostatnia równość wynika z faktu, iż \(m-n\in\mathbb{Z}\), zatem \(e^{2
 Załóżmy, że mamy zespół układów kwantowych przygotowanych w stanie \(\ket{\theta_k}\), gdzie
 \(\theta_k\) jest (określonym) jednym z wektorów bazowych ortonormalnej bazy \(\{\theta_i\}\), ale
 nie wiemy o jaki stan chodzi. Jeśli dokonamy pomiaru używając bazy \(\{\theta_i\}\) to w 100\%
-przypadków otrzymamy wynik \(\ket{\theta_k}\) -- uzyskamy więc maksymalną ,,informację'' o układzie.
+przypadków otrzymamy wynik \(\ket{\theta_k}\) -- uzyskamy więc maksymalną informację o układzie.
 Jeśli natomiast pomiaru dokonamy w bazie dopełniającej \(\{\phi_i\}\) to otrzymamy wszystkie możliwe
-wyniki \(\{\phi_i\}\), każdy z prawdopodobieństwem \(1/N\) -- uzyskamy więc minimalną ,,informację''
-o układzie.
+wyniki \(\{\phi_i\}\), każdy z prawdopodobieństwem \(1/N\) -- uzyskamy więc minimalną informację o
+układzie.
+
+
+\subsection{Entropia Shannona i von Neumanna}
+
+TODO
 
 
 
