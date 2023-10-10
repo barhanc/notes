@@ -372,6 +372,10 @@ obserwacji \(\mathbf{x}\)
 \begin{equation*}
     p(\mathbf{x} \mid D) = \int\limits_\Theta p(\mathbf{x} \mid \theta) p(\theta \mid D) \dd{\theta}\,.
 \end{equation*}
+Znając rozkład a posteriori estymowanego parametru \(\theta\) możemy nie tylko wyznaczyć estymaty punktowe, wartości oczekiwane i przedziały wiarygodności, ale również znaleźć estymator Bayesa (z ang. \textit{Bayes estimator}), który minimalizuje wartość oczekiwaną pewnej funkcji kosztu (z ang. \textit{loss/cost function}) \(L(\theta, \hat{\theta})\) po wszystkich estymatorach \(\hat{\theta}\)
+\begin{equation*}
+    \theta_\text{Bayes} = \arg\min_{\hat{\theta}} \int\limits_{\Theta} L(\theta, \hat{\theta}) p(\theta \mid D) \dd{\theta}\,.
+\end{equation*}
 
 \subsubsection{Modele Gaussowskie}
 
