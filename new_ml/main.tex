@@ -360,9 +360,9 @@ wiarygodnością (likelihood), a \(\pi(\theta)\) -- rozkładem a priori (priorem
 
 Całe wnioskowanie Bayesowskie opiera się na wyznaczeniu rozkładu a posteriori, który wyraża całą
 naszą wiedzę o estymowanym parametrze \(\theta\). Na podstawie tego rozkładu możemy wyznaczyć
-estymatę punktową MAP, jak również niepewność związaną z wyznaczeniem tej estymaty np. poprzez
-wyznaczenie przedziału wiarygodności \(C_{1-\alpha}(\theta \mid D) = [\theta_l ; \theta_u]\)
-takiego, że
+estymatę punktową MAP maksymalizującą gęstość prawdopodobieństwa a posteriori, jak również
+niepewność związaną z wyznaczeniem tej estymaty np. poprzez wyznaczenie przedziału wiarygodności
+\(C_{1-\alpha}(\theta \mid D) = [\theta_l ; \theta_u]\) takiego, że
 \begin{equation*}
     P(\theta \in [\theta_l ; \theta_u] \mid D) = 1 - \alpha\,,
 \end{equation*}
@@ -372,9 +372,24 @@ obserwacji \(\mathbf{x}\)
 \begin{equation*}
     p(\mathbf{x} \mid D) = \int\limits_\Theta p(\mathbf{x} \mid \theta) p(\theta \mid D) \dd{\theta}\,.
 \end{equation*}
-Znając rozkład a posteriori estymowanego parametru \(\theta\) możemy nie tylko wyznaczyć estymaty punktowe, wartości oczekiwane i przedziały wiarygodności, ale również znaleźć estymator Bayesa (z ang. \textit{Bayes estimator}), który minimalizuje wartość oczekiwaną pewnej funkcji kosztu (z ang. \textit{loss/cost function}) \(L(\theta, \hat{\theta})\) po wszystkich estymatorach \(\hat{\theta}\)
+Znając rozkład a posteriori estymowanego parametru \(\theta\) możemy nie tylko wyznaczyć estymaty
+punktowe, wartości oczekiwane i przedziały wiarygodności, ale również znaleźć estymator Bayesa (z
+ang. \textit{Bayes estimator}), który minimalizuje wartość oczekiwaną pewnej funkcji kosztu (z ang.
+\textit{loss/cost function}) \(L(\theta, \hat{\theta})\) po wszystkich estymatorach \(\hat{\theta}\)
 \begin{equation*}
     \theta_\text{Bayes} = \arg\min_{\hat{\theta}} \int\limits_{\Theta} L(\theta, \hat{\theta}) p(\theta \mid D) \dd{\theta}\,.
+\end{equation*}
+Całkę w powyższym wzorze nazywa się również funkcją ryzyka (z ang. \textit{risk function}) \(R(\hat{\theta})\), która określa oczekiwaną stratę spowodowaną wykorzystaniem danego estymatora parametru \(\theta\). W przypadku gdy funkcja kosztu ma postać błędu kwadratowego (L2)
+\begin{equation*}
+    L(\theta,\hat{\theta}) = (\theta - \hat{\theta})^2
+\end{equation*}
+funkcję ryzyka możemy zapisać jako
+\begin{equation*}
+    \begin{split}
+        R(\hat{\theta}) &= \int\limits_\Theta \theta^2 p(\theta \mid D) \dd{\theta} - 2 \hat{\theta}\int\limits_\Theta \theta p(\theta \mid D) \dd{\theta} + \hat{\theta}^2 \\
+        &= \text{Var}[\theta \mid D] + \mathbb{E}[\theta \mid D]^2 - 2 \hat{\theta}\mathbb{E}[\theta \mid D] + \hat{\theta}^2\\
+        &= \text{Var}[\theta \mid D] + \left(\mathbb{E}[\theta \mid D] - \hat{\theta}\right)^2\,.
+    \end{split}
 \end{equation*}
 
 \subsubsection{Modele Gaussowskie}
@@ -1105,11 +1120,15 @@ prawdopodobnych wynikach
 \begin{equation*}
     H = -\log_2\frac{1}{2} = 1\,.
 \end{equation*}
-Przekonamy się teraz, iż tak zdefiniowana miara niepewności ma szereg własności, których spodziewalibyśmy się dla sensownej miary niepewności. Zauważmy wpierw, iż \(H(p_1,\ldots,p_n) = 0\) iff dokładnie jedno zdarzenie \(A_k \in A\) jest pewne, a pozostałe niemożliwe. Zauważmy dodatkowo, iż z nierówności Jensena mamy dla funkcji wypukłej \(\phi(x) = x \lg x\)
+Przekonamy się teraz, iż tak zdefiniowana miara niepewności ma szereg własności, których
+spodziewalibyśmy się dla sensownej miary niepewności. Zauważmy wpierw, iż \(H(p_1,\ldots,p_n) = 0\)
+iff dokładnie jedno zdarzenie \(A_k \in A\) jest pewne, a pozostałe niemożliwe. Zauważmy dodatkowo,
+iż z nierówności Jensena mamy dla funkcji wypukłej \(\phi(x) = x \lg x\)
 \begin{equation*}
     \phi\left(\sum_{i=1}^n \lambda_i x_i\right) \leq \sum_{i=1}^n \lambda_i \phi(x_i)\,,
 \end{equation*}
-dla dowolnych \(x_1,\ldots,x_n \in \mathbb{R}\) i \(\lambda_1,\ldots,\lambda_n \in [0;1]\), \(\sum_i \lambda_i = 1\), skąd
+dla dowolnych \(x_1,\ldots,x_n \in \mathbb{R}\) i \(\lambda_1,\ldots,\lambda_n \in [0;1]\), \(\sum_i
+\lambda_i = 1\), skąd
 \begin{equation*}
     \frac{1}{n}\lg\frac{1}{n} \leq \frac{1}{n}\sum_{i=1}^n p_i \lg p_i = - \frac{1}{n}H(p_1,\ldots,p_n)\,,
 \end{equation*}
@@ -1117,13 +1136,16 @@ czyli
 \begin{equation*}
     H(p_1,\ldots,p_n) \leq - \lg\frac{1}{n} = H(1/n,1/n,\ldots,1/n)\,,
 \end{equation*}
-czyli niepewność zawarta w danym schemacie skończonym jest mniejsza lub równa od niepewności zawartej w analogicznym schemacie, w którym wszystkie wyniki są jednakowo prawdopodobne.
+czyli niepewność zawarta w danym schemacie skończonym jest mniejsza lub równa od niepewności
+zawartej w analogicznym schemacie, w którym wszystkie wyniki są jednakowo prawdopodobne.
 
 Załóżmy teraz, że mamy dwa niezależne schematy skończone
 \begin{equation*}
     A = \mqty(A_1 & A_2 & \cdots & A_n \\ p_1 & p_2 & \cdots & p_n)\,,\quad B = \mqty(B_1 & B_2 & \cdots & B_m \\ q_1 & q_2 & \cdots & q_m)
 \end{equation*}
-takie, że dla każdej pary zdarzeń \(A_i, B_j\) prawdopodobieństwo wystąpienia zdarzenia \(A_iB_j\) wynosi \(p_iq_j\). Zbiór zdarzeń \(A_iB_j\) z prawdopodobieństwami \(r_{ij} = p_i q_j\) reprezentuje nowy schemat skończony \(AB\). Wówczas
+takie, że dla każdej pary zdarzeń \(A_i, B_j\) prawdopodobieństwo wystąpienia zdarzenia \(A_iB_j\)
+wynosi \(p_iq_j\). Zbiór zdarzeń \(A_iB_j\) z prawdopodobieństwami \(r_{ij} = p_i q_j\) reprezentuje
+nowy schemat skończony \(AB\). Wówczas
 \begin{equation*}
     \begin{split}
         -H(AB) &= \sum_{i=1}^n\sum_{j=1}^m r_{ij}\lg r_{ij} = \sum_{i=1}^n\sum_{j=1}^m p_iq_j\left(\lg p_i + \lg q_j\right) \\
@@ -1134,15 +1156,22 @@ skąd
 \begin{equation*}
     H(AB) = H(A) + H(B)\,.
 \end{equation*}
-Rozważmy teraz przypadek gdy schematy \(A\), \(B\) są zależne. Przez \(q_{ij}\) oznaczmy prawdopodobieństwo zajścia zdarzenia \(B_j\) pod warunkiem zdarzenia \(A_i\) tj. \(q_{ij} = p(B_j\mid A_i)\). Schemat \(AB\) jest teraz opisany prawdopodobieństwami \(r_{ij} = p_i q_{ij}\) zatem
+Rozważmy teraz przypadek gdy schematy \(A\), \(B\) są zależne. Przez \(q_{ij}\) oznaczmy
+prawdopodobieństwo zajścia zdarzenia \(B_j\) pod warunkiem zdarzenia \(A_i\) tj. \(q_{ij} =
+p(B_j\mid A_i)\). Schemat \(AB\) jest teraz opisany prawdopodobieństwami \(r_{ij} = p_i q_{ij}\)
+zatem
 \begin{equation*}
     -H(AB) = \sum_{i=1}^n\sum_{j=1}^m p_i q_{ij} \left(\lg p_i + \lg q_{ij}\right) = - H(A) + \sum_{i=1}^n p_i \sum_{j=1}^m q_{ij} \lg q_{ij}
 \end{equation*}
-gdyż \(\sum_j q_{ij} = 1\) (prawdopodobieństwo zajścia dowolnego zdarzenia z B pod warunkiem wystąpienia zdarzenia \(A_i\) wynosi 1), natomiast wielkość \(-\sum_{j=1}^m q_{ij} \lg q_{ij}\) jest warunkową entropią schematu \(B\) pod warunkiem zajścia zdarzenia \(A_i\), co oznaczymy jako \(H(B\mid A=A_i)\)
+gdyż \(\sum_j q_{ij} = 1\) (prawdopodobieństwo zajścia dowolnego zdarzenia z B pod warunkiem
+wystąpienia zdarzenia \(A_i\) wynosi 1), natomiast wielkość \(-\sum_{j=1}^m q_{ij} \lg q_{ij}\) jest
+warunkową entropią schematu \(B\) pod warunkiem zajścia zdarzenia \(A_i\), co oznaczymy jako
+\(H(B\mid A=A_i)\)
 \begin{equation*}
     H(AB) = H(A) + \sum_{i=1}^n p_i H(B\mid A=A_i)\,.
 \end{equation*}
-Ostatni człon jest w takim razie wartością oczekiwaną wielkości \(H(B)\) w schemacie \(A\), co oznaczymy jako \(H(B \mid A)\). Mamy w takim razie
+Ostatni człon jest w takim razie wartością oczekiwaną wielkości \(H(B)\) w schemacie \(A\), co
+oznaczymy jako \(H(B \mid A)\). Mamy w takim razie
 \begin{equation*}
     H(AB) = H(A) + H(B \mid A)\,.
 \end{equation*}
