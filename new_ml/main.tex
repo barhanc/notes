@@ -8,8 +8,9 @@
 \tableofcontents
 \newpage
 
+\section{Rachunek prawdopodobieństwa}
 
-\subsubsection{Definicja przestrzeni probabilistycznej}
+\subsection{Definicja przestrzeni probabilistycznej}
 
 Rozkładem prawdopodobieństwa \(P\) w pewnym zbiorze zdarzeń elementarnych \(\Omega \neq \emptyset\)
 nazywamy odwzorowanie
@@ -30,7 +31,7 @@ Trójkę \((\Omega, \Sigma, P)\) nazywamy przestrzenią probabilistyczną. Z pow
 wynikają znane własności prawdopodobieństwa tj. \(P(A') = 1 - P(A)\) oraz \(P(A \cup B) = P(A) +
 P(B) - P(A , B)\). 
 
-\subsubsection{Prawdopodobieństwo warunkowe}
+\subsection{Prawdopodobieństwo warunkowe}
 
 Definiujemy również prawdopodobieństwo warunkowe zdarzenia \(A\) pod warunkiem zdarzenia \(B\) o
 dodatnim prawdopodobieństwie 
@@ -49,7 +50,7 @@ Z definicji prawdopodobieństwa warunkowego trywialnie udowodnić twierdzenie Ba
     P(A \mid B) = \frac{P(B \mid A) P(A)}{P(B)}\,.
 \end{equation*}
 
-\subsubsection{Zmienne losowe}
+\subsection{Zmienne losowe}
 
 W uczeniu maszynowym będą interesować nas zmienne o wartościach w \(\mathbb{R}^n\). Zmienne takie
 nazywamy zmiennymi losowymi wielowymiarowymi i definiujemy jako odwzorowania
@@ -95,7 +96,7 @@ charakterystycznej (indykatorowej) zbioru \(A \subset \mathbb{R}^n\) \(f(\mathbf
 Heaviside'a \(f(\mathbf{x}) = \theta(t_1 - x_1)\cdots\theta(t_n - x_n)\) mamy
 \(\mathbb{E}[f(\mathbf{x})] = F(t_1,\ldots, t_n)\).
 
-\subsubsection{Rozkłady brzegowe}
+\subsection{Rozkłady brzegowe}
 
 Niech \(X = (X_1, \ldots, X_n)\) będzie \(n\)--wymiarową zmienną losową o dystrybuancie
 \(F(\mathbf{x})\). Rozkład brzegowy względem \(k\) zmiennych \(X_{\sigma(1)},\ldots,X_{\sigma(k)}\)
@@ -104,7 +105,7 @@ definiujemy jako rozkład wyznaczony przez dystrybuantę
     F_{X_{\sigma(1)},\ldots,X_{\sigma(k)}} (x_{\sigma(1)},\ldots,x_{\sigma(k)}) := \lim_{x_{\sigma(k+1)}\to\infty,\ldots,x_{\sigma(n)}\to\infty} F(x_1,\ldots,x_n)\,.
 \end{equation*}
 
-\subsubsection{Zmienne losowe niezależne}
+\subsection{Zmienne losowe niezależne}
 Niech \(X = (X_1, \ldots, X_k)\) będzie \(n\)--wymiarową zmienną losową o rozkładzie wyznaczonym
 przez dystrybuantę \(F(\mathbf{x})\). Powiemy, iż zmienne losowe \(n_1,\ldots,n_k\) -- wymiarowych
 (\(n_1 + \ldots + n_k = n\)) \(X_1, \ldots, X_k\) są niezależne iff dla dowolnych
@@ -113,7 +114,7 @@ przez dystrybuantę \(F(\mathbf{x})\). Powiemy, iż zmienne losowe \(n_1,\ldots,
     F(\mathbf{x}_1,\ldots,\mathbf{x}_k) = F_{X_1}(\mathbf{x}_1)\cdot\ldots\cdot F_{X_k}(\mathbf{x}_k)\,.
 \end{equation*}
 
-\subsubsection{Rozkłady warunkowe}
+\subsection{Rozkłady warunkowe}
 
 W ogólnym przypadku zmiennej losowej \(n\) -- wymiarowej \(Z = (Z_1, \ldots, Z_n)\) o ciągłym
 rozkładzie \(p(\mathbf{z})\) jeśli wydzielimy zmienne \(k\) i \(n-k\) -- wymiarowe \(X =
@@ -124,7 +125,7 @@ prawdopodobieństwa
     p(\mathbf{x} \mid \mathbf{y}) := \frac{p(\mathbf{z})}{p_Y(\mathbf{y})} = \frac{p(\mathbf{x},\mathbf{y})}{p_Y(\mathbf{y})}\,.
 \end{equation*}
 
-\subsubsection{Transformacja zmiennych wielowymiarowych}
+\subsection{Transformacja zmiennych wielowymiarowych}
 
 Niech \(X = (X_1, \ldots, X_n)\) będzie zmienną losową wielowymiarową o rozkładzie ciągłym o
 gęstości \(p_X(\mathbf{x})\). Rozważmy bijekcję \((X_1, \ldots, X_n) \mapsto (Y_1, \ldots, Y_n)\).
@@ -138,7 +139,7 @@ skąd
     p_Y(y_1,\ldots,y_n) = \left|\frac{\partial(x_1,\ldots,x_n)}{\partial(y_1,\ldots,y_n)}\right|p_X(x_1(\mathbf{y}),\ldots,x_n(\mathbf{y}))\,.
 \end{equation*}
 
-\subsubsection{Macierz kowariancji}
+\subsection{Macierz kowariancji}
 
 Macierz kowariancji funkcji \(f(\mathbf{x})\) zmiennej losowej \(X\) definiujemy jako
 \begin{equation*}
@@ -157,7 +158,7 @@ gdzie \(z = \mathbf{v}^\top (\mathbf{x} - \boldsymbol{\mu}) \in \mathbb{R}\). Je
 X_n\) są niezależne i \(f\) jest funkcją identycznościową to \(\oper{\Sigma}\) jest macierzą
 diagonalną.
 
-\subsubsection{Wielowymiarowy rozkład normalny}
+\subsection{Wielowymiarowy rozkład normalny}
 
 Jeśli zmienna wielowymiarowa \(X = (X_1, \ldots, X_n)\) ma wielowymiarowy rozkład normalny (z ang.
 \textit{Multivariate Normal distribution -- MVN}) z wartością oczekiwaną \(\boldsymbol{\mu}\) i
@@ -198,7 +199,7 @@ Można wykazać, iż jeśli \(X \sim \mathcal{N}(\boldsymbol{\mu}, \oper{\Sigma}
 \(\oper{\Sigma}\) o niezdegenerowanym widmie to wszystkie rozkłady brzegowe i warunkowe \(X\) są
 rozkładami normalnymi.
 
-\subsubsection{Zbieżność w rachunku prawdopodobieństwa}
+\subsection{Zbieżność w rachunku prawdopodobieństwa}
 
 W rachunku prawdopodobieństwa definiujemy trzy zasadnicze rodzaje zbieżności ciągu zmiennych
 losowych \((X_n)\). 
@@ -229,7 +230,124 @@ Pomiędzy tak zdefiniowanymi rodzajami zbieżności zachodzą następujące impl
     z prawdopodobieństwem 1
 \end{enumerate}
 
-\subsubsection{Wnioskowanie statystyczne}
+\section{Elementarz teorii informacji}
+
+\subsection{Definicja i własności entropii}
+
+Mając dany skończony zbiór zdarzeń elementarnych \(\{A_1,\ldots,A_n\}\) taki, że wynikiem
+eksperymentu losowego może być dokładnie jedno z nich oraz prawdopodobieństwa \(p_1,\ldots,p_n\),
+\(\sum_{i}p_i = 1\) każdego z nich powiemy, iż
+\begin{equation*}
+    A := \mqty(A_1 & A_2 & \cdots & A_n \\ p_1 & p_2 & \cdots & p_n)
+\end{equation*} 
+jest \textit{schematem skończonym} (z ang. \textit{finite scheme}). Przykładowo rzut sprawiedliwą,
+sześcienną kostką do gry jest opisany przez schemat
+\begin{equation*}
+    \mqty(A_1 & A_2 & A_3 & A_4 & A_5 & A_6 \\ 1/6 & 1/6 & 1/6 & 1/6 & 1/6 & 1/6) \,.
+\end{equation*} 
+Zauważmy, że każdy schemat skończony opisuje pewną \textit{niepewność} dotyczącą doświadczenia
+losowego. Przykładowo jest oczywiste, iż dla schematów
+\begin{equation*}
+    \mqty(A_1 & A_2 \\ 0.99 & 0.01)\,,\quad \mqty(A_1 & A_2 \\ 0.5 & 0.5)
+\end{equation*}
+pierwszy z nich opisuje znacznie mniejszą niepewność od drugiego, gdyż prawie z pewnością wynikiem
+eksperymentu losowego będzie \(A_1\). Wprowadzimy teraz wielkość, która w sensowny sposób mierzy
+ilość niepewności w danym schemacie skończonym. Wielkością taką jest \textit{entropia Shannona}
+zdefiniowana dla schematu
+\begin{equation*}
+    A = \mqty(A_1 & A_2 & \cdots & A_n \\ p_1 & p_2 & \cdots & p_n)
+\end{equation*}
+jako
+\begin{equation*}
+    H(A) = H(p_1,p_2,\ldots,p_n) := -\sum_{i=1}^n p_i\lg p_i\,,
+\end{equation*}
+gdzie możemy wybrać dowolną ustaloną podstawę logarytmu oraz stwierdzamy, iż jeśli \(p_k = 0\) to
+\(p_k \lg p_k = 0\). Jeśli jako podstawę wybierzemy liczbę 2 to entropię mierzymy w \textit{bitach}
+tj. 1 bit jest to ilość niepewności zawarta w schemacie skończonym o  dwóch jednakowo
+prawdopodobnych wynikach
+\begin{equation*}
+    H = -\log_2\frac{1}{2} = 1\,.
+\end{equation*}
+Przekonamy się teraz, iż tak zdefiniowana miara niepewności ma szereg własności, których
+spodziewalibyśmy się dla sensownej miary niepewności. Zauważmy wpierw, iż \(H(p_1,\ldots,p_n) = 0\)
+iff dokładnie jedno zdarzenie \(A_k \in A\) jest pewne, a pozostałe niemożliwe. Zauważmy dodatkowo,
+iż z nierówności Jensena mamy dla funkcji wypukłej \(\phi(x) = x \lg x\)
+\begin{equation*}
+    \phi\left(\sum_{i=1}^n \lambda_i x_i\right) \leq \sum_{i=1}^n \lambda_i \phi(x_i)\,,
+\end{equation*}
+dla dowolnych \(x_1,\ldots,x_n \in \mathbb{R}\) i \(\lambda_1,\ldots,\lambda_n \in [0;1]\), \(\sum_i
+\lambda_i = 1\), skąd
+\begin{equation*}
+    \frac{1}{n}\lg\frac{1}{n} \leq \frac{1}{n}\sum_{i=1}^n p_i \lg p_i = - \frac{1}{n}H(p_1,\ldots,p_n)\,,
+\end{equation*}
+czyli
+\begin{equation*}
+    H(p_1,\ldots,p_n) \leq - \lg\frac{1}{n} = H(1/n,1/n,\ldots,1/n)\,,
+\end{equation*}
+czyli niepewność zawarta w danym schemacie skończonym jest mniejsza lub równa od niepewności
+zawartej w analogicznym schemacie, w którym wszystkie wyniki są jednakowo prawdopodobne.
+
+Załóżmy teraz, że mamy dwa niezależne schematy skończone
+\begin{equation*}
+    A = \mqty(A_1 & A_2 & \cdots & A_n \\ p_1 & p_2 & \cdots & p_n)\,,\quad B = \mqty(B_1 & B_2 & \cdots & B_m \\ q_1 & q_2 & \cdots & q_m)
+\end{equation*}
+takie, że dla każdej pary zdarzeń \(A_i, B_j\) prawdopodobieństwo wystąpienia zdarzenia \(A_iB_j\)
+wynosi \(p_iq_j\). Zbiór zdarzeń \(A_iB_j\) z prawdopodobieństwami \(r_{ij} = p_i q_j\) reprezentuje
+nowy schemat skończony \(AB\). Wówczas
+\begin{equation*}
+    \begin{split}
+        -H(AB) &= \sum_{i=1}^n\sum_{j=1}^m r_{ij}\lg r_{ij} = \sum_{i=1}^n\sum_{j=1}^m p_iq_j\left(\lg p_i + \lg q_j\right) \\
+        &= \sum_{i=1}^n p_i\lg p_i + \sum_{j=1}^m q_j \lg q_j = -H(A) - H(B)\,,  
+    \end{split}
+\end{equation*}
+skąd
+\begin{equation*}
+    H(AB) = H(A) + H(B)\,.
+\end{equation*}
+Rozważmy teraz przypadek gdy schematy \(A\), \(B\) są zależne. Przez \(q_{ij}\) oznaczmy
+prawdopodobieństwo zajścia zdarzenia \(B_j\) pod warunkiem zdarzenia \(A_i\) tj. \(q_{ij} =
+p(B_j\mid A_i)\). Schemat \(AB\) jest teraz opisany prawdopodobieństwami \(r_{ij} = p_i q_{ij}\)
+zatem
+\begin{equation*}
+    -H(AB) = \sum_{i=1}^n\sum_{j=1}^m p_i q_{ij} \left(\lg p_i + \lg q_{ij}\right) = - H(A) + \sum_{i=1}^n p_i \sum_{j=1}^m q_{ij} \lg q_{ij}
+\end{equation*}
+gdyż \(\sum_j q_{ij} = 1\) (prawdopodobieństwo zajścia dowolnego zdarzenia z B pod warunkiem
+wystąpienia zdarzenia \(A_i\) wynosi 1), natomiast wielkość \(-\sum_{j=1}^m q_{ij} \lg q_{ij}\) jest
+warunkową entropią schematu \(B\) pod warunkiem zajścia zdarzenia \(A_i\), co oznaczymy jako
+\(H(B\mid A=A_i)\)
+\begin{equation*}
+    H(AB) = H(A) + \sum_{i=1}^n p_i H(B\mid A=A_i)\,.
+\end{equation*}
+Ostatni człon jest w takim razie wartością oczekiwaną wielkości \(H(B)\) w schemacie \(A\), co
+oznaczymy jako \(H(B \mid A)\). Mamy w takim razie
+\begin{equation*}
+    H(AB) = H(A) + H(B \mid A)\,.
+\end{equation*}
+Z nierówności Jensena można dodatkowo pokazać, że zachodzi \(H(B\mid A) \leq H(B)\).
+
+\subsection{Entropia względna}
+Dla dwóch ciągłych rozkładów prawdopodobieństwa \(p(\mathbf{x})\), \(q(\mathbf{x})\) definiujemy ich
+entropię względną (nazywaną również \textit{Kullback-Leibler (KL) divergence}) jako
+\begin{equation*}
+    \mathbb{KL}(p , q) = \int\limits_{\mathbb{R}^n} p(\mathbf{x})\log\frac{p(\mathbf{x})}{q(\mathbf{x})} \dd[n]{\mathbf{x}}\,,
+\end{equation*}
+która określa podobieństwo między dwoma rozkładami prawdopodobieństwa tj. dla ustalonego rozkładu
+\(p\) dla wszystkich \(q\) zachodzi \(\mathbb{KL}(p,q) \geq 0\), przy czym równość zachodzi iff \(p
+= q\) (ponownie nierówność Jensena).
+
+Rozważmy teraz rozkład łączny \(p(\mathbf{x}, \mathbf{y})\). Jeśli zmienne losowe \(\mathbf{x},
+\mathbf{y}\) są niezależne to \(p(\mathbf{x}, \mathbf{y}) = p(\mathbf{x}) p(\mathbf{y})\). Jeśli
+zmienne nie są niezależne to możemy określić stopień ich zależności właśnie poprzez entropię
+względną między rozkładem łącznym \(p(\mathbf{x}, \mathbf{y})\), a rozkładem faktoryzowanym
+\(p(\mathbf{x})p(\mathbf{y})\). Wielkość taką nazywamy informacją wzajemną (z ang/ \textit{mutual
+information})
+\begin{equation*}
+    \mathbb{I}(\mathbf{x} , \mathbf{y}) = \mathbb{KL}(p(\mathbf{x}, \mathbf{y}), p(\mathbf{x})p(\mathbf{y})) = \int\limits_{\mathbb{R}^{2n}} p(\mathbf{x}, \mathbf{y})\log\left\{\frac{p(\mathbf{x}, \mathbf{y})}{p(\mathbf{x})p(\mathbf{y})}\right\} \dd[n]{\mathbf{x}} \dd[n]{\mathbf{y}}\,.
+\end{equation*}
+
+\section{Statystyka}
+
+\subsection{Wnioskowanie statystyczne}
 
 Modelem statystycznym nazwiemy parę \((\chi, \mathcal{P})\), gdzie \(\mathcal{P}\) jest rodziną
 rozkładów prawdopodobieństwa w zbiorze \(\chi\), przy czym będziemy zakładać \(\chi = \mathbb{R}^n\)
@@ -260,7 +378,7 @@ Wariancja statystyki średniej wynosi z kolei
     \end{split}
 \end{equation*}
 
-\subsubsection{Silne prawo wielkich liczb}
+\subsection{Silne prawo wielkich liczb}
 
 Niech \((X_n)\) będzie ciągiem zmiennych losowych i.i.d. z pewnego rozkładu \(X \sim \mathcal{D}\).
 Przez \((\overline{X}_n)\) oznaczmy ciąg średnich częściowych tj.
@@ -278,7 +396,7 @@ możemy je przybliżać średnią z dużej liczby próbek losowych, a dokładno�
 jedynie od liczby próbek i wariancji \(X\). Jeśli \(X\) jest zmienną wielowymiarową to dokładność
 przybliżenia nie zależy wprost od liczby wymiarów i unikamy tzw. \textit{curse of dimensionality}.
 
-\subsubsection{Centralne Twierdzenie Graniczne}
+\subsection{Centralne Twierdzenie Graniczne}
 
 Niech \((X_n)\) będzie ciągiem \(k\)--wymiarowych zmiennych losowych i.i.d. z dowolnego rozkładu \(X
 \sim \mathcal{D}\) o wartości oczekiwanej \(\boldsymbol{\mu} = \mathbb{E}[\mathbf{x}]\) i
@@ -293,7 +411,7 @@ rozkładu \(X\sim\mathcal{D}\) dla odpowiednio dużych \(n\) średnią z próbek
 zmienną losową o rozkładzie normalnym \(\mathcal{N}(\boldsymbol{\mu}, n^{-1/2}\oper{\Sigma})\).
 
 
-\subsubsection{Estymatory punktowe MLE i MAP}
+\subsection{Estymatory punktowe MLE i MAP}
 
 Rozważamy model statystyczny \(\mathcal{P} = \left\{p(\mathbf{x} \mid \theta) \mid \theta \in
 \Theta\right\}\). Estymatorem parametru \(\theta\) nazwiemy statystykę
@@ -346,7 +464,9 @@ Zauważmy przy tym iż liczba \(Z\) nie jest nam potrzebna, gdyż wystarczy zmak
     \theta_\text{MAP} = \arg\max_{\theta \in \Theta} p(D \mid \theta)\pi(\theta)\,.
 \end{equation*}
 
-\subsubsection{Wnioskowanie Bayesowskie}
+\section{Probabilistyczne uczenie maszynowe}
+
+\subsection{Wnioskowanie Bayesowskie}
 
 Zajmiemy się teraz wnioskowaniem opartym na twierdzeniu Bayesa. Rozpatrujemy model statystyczny
 \(\mathcal{P} = \left\{p(\mathbf{x} \mid \theta) \mid \theta \in \Theta\right\}\). Załóżmy, iż mamy
@@ -379,7 +499,9 @@ ang. \textit{Bayes estimator}), który minimalizuje wartość oczekiwaną pewnej
 \begin{equation*}
     \theta_\text{Bayes} = \arg\min_{\hat{\theta}} \int\limits_{\Theta} L(\theta, \hat{\theta}) p(\theta \mid D) \dd{\theta}\,.
 \end{equation*}
-Całkę w powyższym wzorze nazywa się również funkcją ryzyka (z ang. \textit{risk function}) \(R(\hat{\theta})\), która określa oczekiwaną stratę spowodowaną wykorzystaniem danego estymatora parametru \(\theta\). W przypadku gdy funkcja kosztu ma postać błędu kwadratowego (L2)
+Całkę w powyższym wzorze nazywa się również funkcją ryzyka (z ang. \textit{risk function})
+\(R(\hat{\theta})\), która określa oczekiwaną stratę spowodowaną wykorzystaniem danego estymatora
+parametru \(\theta\). W przypadku gdy funkcja kosztu ma postać błędu kwadratowego (L2)
 \begin{equation*}
     L(\theta,\hat{\theta}) = (\theta - \hat{\theta})^2
 \end{equation*}
@@ -392,7 +514,43 @@ funkcję ryzyka możemy zapisać jako
     \end{split}
 \end{equation*}
 
-\subsubsection{Modele Gaussowskie}
+\subsection{Bayesowski wybór modeli}
+
+Załóżmy, iż mamy rodzinę \(\mathcal{M}\) modeli statystycznych (może to być zbiór dyskretny lub
+zbiór modeli indeksowanych ciągłym, wielowymiarowym parametrem \(\boldsymbol{\lambda}\)). Naszym
+zadaniem jest wybór najbardziej prawdopodobnego modelu dla danych \(D\). Możemy na to zadanie
+patrzeć jako zadanie z teorii decyzji: dla danej funkcji kosztu \(L(M, M^*)\) i rozkładu a
+posteriori nad modelami \(p(M \mid D)\) chcemy wybrać model, który minimalizuje ryzyko
+\(\mathbb{E}[L(M,M^*)]\). Jeśli jako koszt wybierzemy tzw. \textit{0--1 loss} tj.
+\begin{equation*}
+    L(M, M^*) = \begin{cases}
+        0&\,, \text{jeśli \(M = M^*\)} \\
+        1&\,, \text{w.p.p.}
+    \end{cases}
+\end{equation*}
+to
+\begin{equation*}
+    \mathbb{E}[L(M, M^*)] = 1 - p(M^* \mid D)
+\end{equation*}
+i wybieramy model \(M\) o największym prawdopodobieństwie (estymata MAP). Pozostaje tylko
+wyznaczenie \(p(M \mid D)\)
+\begin{equation*}
+    p(M \mid D) = \frac{p(D \mid M)\pi(M)}{\sum_{M\in\mathcal{M}} p(D \mid M)\pi(M)}\,.
+\end{equation*}
+Jeśli jako prior przyjmiemy rozkład jednostajny \(\pi(M) = |\mathcal{M}|^{-1}\) to estymata MAP
+sprowadza się do MLE czyli szukamy modelu
+\begin{equation*}
+    M^* = \arg\max_{M\in\mathcal{M}} p(D \mid M)\,.
+\end{equation*}
+Jeśli przez \(\theta_M\) oznaczymy parametry modelu \(M\) to 
+\begin{equation*}
+    p(D \mid M) = \int\limits_{\Theta_M} p(D \mid \theta_M) \pi(\theta_M) \dd{\theta}_M\,.
+\end{equation*}
+Powyższą wielkość nazywamy wiarygodnością brzegową (z ang. \textit{marginal likelihood}) lub
+\textit{model evidence}.
+
+
+\subsection{Modele Gaussowskie}
 
 Jak już wspomnieliśmy w przypadku gdy zmienna losowa ma wielowymiarowy rozkład normalny
 \(\mathcal{N}(\boldsymbol{\mu}, \oper{\Sigma})\) wszystkie rozkłady brzegowe i warunkowe są również
@@ -417,7 +575,7 @@ gdzie
     \end{split}\quad.
 \end{equation*}
 
-\subsubsection{Liniowe modele Gaussowskie}
+\subsection{Liniowe modele Gaussowskie}
 
 Powyższe własności rozkładów łącznych pozwalają jawnie wnioskować w tzw. liniowych modelach
 Gaussowskich (z ang. \textit{Linear Gaussian Models}). Załóżmy, iż nasze obserwacje są modelowane
@@ -482,7 +640,7 @@ Taki sam wynik można by uzyskać rozpatrując łączny rozkład a posteriori dl
     \end{split}\,.
 \end{equation*}
 
-\subsubsection{Regresja liniowa}
+\subsection{Regresja liniowa}
 
 Załóżmy, iż modelujemy obserwacje postaci \((y,\mathbf{x})\) gdzie \(y\) to skalar zwany zmienną
 objaśnianą, którego wartość obserwujemy, a \(\mathbf{x}\) to wektor zmiennych objaśniających, który
@@ -593,7 +751,7 @@ Powyżej skorzystaliśmy ze znanego faktu, iż dla jednowymiarowej zmiennej loso
     y \mid \mathbf{y} \sim \mathcal{N}(\mathbf{x}^\top\boldsymbol{\mu}_m, \sigma^2 + \mathbf{x}^\top\oper{\Sigma}_m\mathbf{x})\,.
 \end{equation*}
 
-\subsubsection{Regularyzacja}
+\subsection{Regularyzacja}
 
 Regularyzacją nazywamy proces polegający na wprowadzeniu ad hoc do zagadnienia optymalizacji
 dodatkowych członów tak, aby rozwiązanie było ,,regularne'' (prostsze, nieosobliwe, jednoznaczne
@@ -626,7 +784,7 @@ do funkcji kosztu dodamy człon regularyzujący dla zwykłej normy euklidesowej.
 minimalizacji funkcji kosztu będącej formą kwadratową z dodanym członem regularyzującym nazywamy
 również regresją grzbietową.
 
-\subsubsection{Procesy Gaussowskie}
+\subsection{Procesy Gaussowskie}
 
 Jak już wspomnieliśmy macierz kowariancji \(n\)--wymiarowej zmiennej losowej \(\mathbf{x}\) o
 wartości oczekiwanej \(\boldsymbol{\mu}\) jest zdefiniowana jako
@@ -757,7 +915,7 @@ określona. Wówczas rozkład predykcyjny ma parametry
     \end{split}\quad.
 \end{equation*}
 
-\subsubsection{Wieloklasowa regresja logistyczna}
+\subsection{Wieloklasowa regresja logistyczna}
 
 Załóżmy, iż modelujemy obserwacje postaci \((t,\mathbf{x})\), gdzie \(t \in
 \{\tau_1,\tau_2,\ldots,\tau_s\}\) to etykieta określająca przynależność do jednej z \(s\) klas, a
@@ -814,7 +972,7 @@ analitycznej, dlatego wykorzystamy numeryczny algorytm optymalizacji zwany spadk
 gradientu.
 
 \linesep
-\subsubsection{Metoda spadku wzdłuż gradientu}
+\subsubsection{*Metoda spadku wzdłuż gradientu}
 Algorytm spadku wzdłuż gradientu (z ang. \textit{gradient descent}) dla funkcji \(f(\mathbf{x}_1,
 \ldots, \mathbf{x}_m)\) ma postać
 \begin{enumerate}
@@ -882,7 +1040,7 @@ z tego, iż stała ucząca musi być zależna od liczby przykładów. Możemy na
 \(\epsilon \leftarrow m^{-1}\epsilon\) i wówczas minimalizujemy tak naprawdę średni koszt \(\ell^* /
 m\).
 
-\subsubsection{Wnioskowanie metodami Monte Carlo}
+\subsection{Wnioskowanie metodami Monte Carlo}
 
 Całe wnioskowanie Bayesowskie opiera się na wyznaczaniu rozkładów a posteriori, które wyrażają naszą
 wiedzę o estymowanym parametrze. Do tej pory rozważaliśmy modele Bayesowskie dla których prior i
@@ -1084,97 +1242,8 @@ korelację po okresie przejściowym i przyspieszyć zbieżność. Standardowo wy
 z tej klasy są algorytmy HMC (\textit{Hamiltonian Monte Carlo}) oraz NUTS (\textit{No U-Turn
 Sampler}). 
 
-\subsubsection{Elementarz teorii informacji}
 
-Mając dany skończony zbiór zdarzeń elementarnych \(\{A_1,\ldots,A_n\}\) taki, że wynikiem
-eksperymentu losowego może być dokładnie jedno z nich oraz prawdopodobieństwa \(p_1,\ldots,p_n\),
-\(\sum_{i}p_i = 1\) każdego z nich powiemy, iż
-\begin{equation*}
-    A := \mqty(A_1 & A_2 & \cdots & A_n \\ p_1 & p_2 & \cdots & p_n)
-\end{equation*} 
-jest \textit{schematem skończonym} (z ang. \textit{finite scheme}). Przykładowo rzut sprawiedliwą,
-sześcienną kostką do gry jest opisany przez schemat
-\begin{equation*}
-    \mqty(A_1 & A_2 & A_3 & A_4 & A_5 & A_6 \\ 1/6 & 1/6 & 1/6 & 1/6 & 1/6 & 1/6) \,.
-\end{equation*} 
-Zauważmy, że każdy schemat skończony opisuje pewną \textit{niepewność} dotyczącą doświadczenia
-losowego. Przykładowo jest oczywiste, iż dla schematów
-\begin{equation*}
-    \mqty(A_1 & A_2 \\ 0.99 & 0.01)\,,\quad \mqty(A_1 & A_2 \\ 0.5 & 0.5)
-\end{equation*}
-pierwszy z nich opisuje znacznie mniejszą niepewność od drugiego, gdyż prawie z pewnością wynikiem
-eksperymentu losowego będzie \(A_1\). Wprowadzimy teraz wielkość, która w sensowny sposób mierzy
-ilość niepewności w danym schemacie skończonym. Wielkością taką jest \textit{entropia Shannona}
-zdefiniowana dla schematu
-\begin{equation*}
-    A = \mqty(A_1 & A_2 & \cdots & A_n \\ p_1 & p_2 & \cdots & p_n)
-\end{equation*}
-jako
-\begin{equation*}
-    H(A) = H(p_1,p_2,\ldots,p_n) := -\sum_{i=1}^n p_i\lg p_i\,,
-\end{equation*}
-gdzie możemy wybrać dowolną ustaloną podstawę logarytmu oraz stwierdzamy, iż jeśli \(p_k = 0\) to
-\(p_k \lg p_k = 0\). Jeśli jako podstawę wybierzemy liczbę 2 to entropię mierzymy w \textit{bitach}
-tj. 1 bit jest to ilość niepewności zawarta w schemacie skończonym o  dwóch jednakowo
-prawdopodobnych wynikach
-\begin{equation*}
-    H = -\log_2\frac{1}{2} = 1\,.
-\end{equation*}
-Przekonamy się teraz, iż tak zdefiniowana miara niepewności ma szereg własności, których
-spodziewalibyśmy się dla sensownej miary niepewności. Zauważmy wpierw, iż \(H(p_1,\ldots,p_n) = 0\)
-iff dokładnie jedno zdarzenie \(A_k \in A\) jest pewne, a pozostałe niemożliwe. Zauważmy dodatkowo,
-iż z nierówności Jensena mamy dla funkcji wypukłej \(\phi(x) = x \lg x\)
-\begin{equation*}
-    \phi\left(\sum_{i=1}^n \lambda_i x_i\right) \leq \sum_{i=1}^n \lambda_i \phi(x_i)\,,
-\end{equation*}
-dla dowolnych \(x_1,\ldots,x_n \in \mathbb{R}\) i \(\lambda_1,\ldots,\lambda_n \in [0;1]\), \(\sum_i
-\lambda_i = 1\), skąd
-\begin{equation*}
-    \frac{1}{n}\lg\frac{1}{n} \leq \frac{1}{n}\sum_{i=1}^n p_i \lg p_i = - \frac{1}{n}H(p_1,\ldots,p_n)\,,
-\end{equation*}
-czyli
-\begin{equation*}
-    H(p_1,\ldots,p_n) \leq - \lg\frac{1}{n} = H(1/n,1/n,\ldots,1/n)\,,
-\end{equation*}
-czyli niepewność zawarta w danym schemacie skończonym jest mniejsza lub równa od niepewności
-zawartej w analogicznym schemacie, w którym wszystkie wyniki są jednakowo prawdopodobne.
 
-Załóżmy teraz, że mamy dwa niezależne schematy skończone
-\begin{equation*}
-    A = \mqty(A_1 & A_2 & \cdots & A_n \\ p_1 & p_2 & \cdots & p_n)\,,\quad B = \mqty(B_1 & B_2 & \cdots & B_m \\ q_1 & q_2 & \cdots & q_m)
-\end{equation*}
-takie, że dla każdej pary zdarzeń \(A_i, B_j\) prawdopodobieństwo wystąpienia zdarzenia \(A_iB_j\)
-wynosi \(p_iq_j\). Zbiór zdarzeń \(A_iB_j\) z prawdopodobieństwami \(r_{ij} = p_i q_j\) reprezentuje
-nowy schemat skończony \(AB\). Wówczas
-\begin{equation*}
-    \begin{split}
-        -H(AB) &= \sum_{i=1}^n\sum_{j=1}^m r_{ij}\lg r_{ij} = \sum_{i=1}^n\sum_{j=1}^m p_iq_j\left(\lg p_i + \lg q_j\right) \\
-        &= \sum_{i=1}^n p_i\lg p_i + \sum_{j=1}^m q_j \lg q_j = -H(A) - H(B)\,,  
-    \end{split}
-\end{equation*}
-skąd
-\begin{equation*}
-    H(AB) = H(A) + H(B)\,.
-\end{equation*}
-Rozważmy teraz przypadek gdy schematy \(A\), \(B\) są zależne. Przez \(q_{ij}\) oznaczmy
-prawdopodobieństwo zajścia zdarzenia \(B_j\) pod warunkiem zdarzenia \(A_i\) tj. \(q_{ij} =
-p(B_j\mid A_i)\). Schemat \(AB\) jest teraz opisany prawdopodobieństwami \(r_{ij} = p_i q_{ij}\)
-zatem
-\begin{equation*}
-    -H(AB) = \sum_{i=1}^n\sum_{j=1}^m p_i q_{ij} \left(\lg p_i + \lg q_{ij}\right) = - H(A) + \sum_{i=1}^n p_i \sum_{j=1}^m q_{ij} \lg q_{ij}
-\end{equation*}
-gdyż \(\sum_j q_{ij} = 1\) (prawdopodobieństwo zajścia dowolnego zdarzenia z B pod warunkiem
-wystąpienia zdarzenia \(A_i\) wynosi 1), natomiast wielkość \(-\sum_{j=1}^m q_{ij} \lg q_{ij}\) jest
-warunkową entropią schematu \(B\) pod warunkiem zajścia zdarzenia \(A_i\), co oznaczymy jako
-\(H(B\mid A=A_i)\)
-\begin{equation*}
-    H(AB) = H(A) + \sum_{i=1}^n p_i H(B\mid A=A_i)\,.
-\end{equation*}
-Ostatni człon jest w takim razie wartością oczekiwaną wielkości \(H(B)\) w schemacie \(A\), co
-oznaczymy jako \(H(B \mid A)\). Mamy w takim razie
-\begin{equation*}
-    H(AB) = H(A) + H(B \mid A)\,.
-\end{equation*}
-Z nierówności Jensena można dodatkowo pokazać, że zachodzi \(H(B\mid A) \leq H(B)\).
+\section{Sieci neuronowe}
 
 \end{document}
