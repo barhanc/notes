@@ -4,6 +4,10 @@
 \title{Statystyczne uczenie maszynowe}
 \author{Bartosz Hanc}
 
+\tikzset{%
+  every neuron/.style={ circle, draw, minimum size=1cm }, neuron missing/.style={ draw=none,
+    scale=4, text height=0.333cm, execute at begin node=\color{black}$\vdots$ }, }
+
 \begin{document}
 \tableofcontents
 \newpage
@@ -971,10 +975,7 @@ Niestety dla tak zdefiniowanej funkcji kosztu nie można znaleźć wzoru na mini
 analitycznej, dlatego wykorzystamy numeryczny algorytm optymalizacji zwany spadkiem wzdłuż
 gradientu.
 
-\linesep
-\subsubsection{*Metoda spadku wzdłuż gradientu}
-Algorytm spadku wzdłuż gradientu (z ang. \textit{gradient descent}) dla funkcji \(f(\mathbf{x}_1,
-\ldots, \mathbf{x}_m)\) ma postać
+\begin{tcolorbox}[title=Algorytm spadku wzdłuż gradientu]
 \begin{enumerate}
     \item Wybierz parametry początkowe \(\mathbf{x}_1^{(0)}, \ldots, \mathbf{x}_m^{(0)}\)
     \item Powtarzaj
@@ -988,6 +989,8 @@ Algorytm spadku wzdłuż gradientu (z ang. \textit{gradient descent}) dla funkcj
     gdzie \(\epsilon_1,\ldots,\epsilon_m\) to hiper-parametry zwane stałymi uczącymi (z ang.
     \textit{learning rate}).
 \end{enumerate}
+\end{tcolorbox}
+
 Zakładając \(\epsilon_1 = \ldots = \epsilon_m = \epsilon\) i wprowadzając
 \begin{equation*}
     \oper{X} := \mqty[\mathbf{x}_1^\top \\ \vdots \\ \mathbf{x}_m^\top]\,,\quad \pdv{f}{\oper{X}} := \mqty[\pdv{f}{\mathbf{x}_1}^\top \\ \vdots \\ \pdv{f}{\mathbf{x}_m}^\top]
@@ -996,7 +999,6 @@ możemy zapisać powyższe równania w kompaktowej formie
 \begin{equation*}
     \oper{X}^{(t+1)} = \oper{X}^{(t)} - \epsilon \pdv{f}{\oper{X}}\bigg|_{\oper{X}^{(t)}}\,.
 \end{equation*}
-\linesep
 
 Aby zminimalizować numerycznie funkcję kosztu \(\ell^*\) stosując metodę spadku wzdłuż gradientu
 musimy obliczyć pochodne funkcji kosztu po parametrach \(\mathbf{w}_j\)
@@ -1245,5 +1247,243 @@ Sampler}).
 
 
 \section{Sieci neuronowe}
+
+Podstawowym elementem każdej sieci neuronowej jest pojedynczy neuron, który możemy traktować jako
+odwzorowanie postaci \(z: \mathbb{R}^n \mapsto \mathbb{R}\) będące złożeniem pewnego odwzorowania
+nieliniowego \(f:\mathbb{R} \mapsto \mathbb{R}\) z odwzorowaniem afinicznym \(a: \mathbb{R}^n
+\mapsto \mathbb{R}\), \(a(\mathbf{x}) = \mathbf{w}^\top\mathbf{x} + b\) tj.
+\begin{equation*}
+    z(\mathbf{x}) = (f \circ a)(\mathbf{x}) = f\left(\mathbf{w}^\top\mathbf{x} + b\right)\,.
+\end{equation*}
+W praktyce wszystkie neurony sieci używają tej samej nieliniowej funkcji \(f\) zwanej funkcją
+aktywacji (z ang. \textit{activation function}) i najczęściej są to funkcje ReLU, GELU lub funkcje
+sigmoidalne:
+\begin{equation*}
+    \begin{split}
+        &\text{ReLU}(x) := \max(0, x)\,,\\
+        &\text{GELU}(x) := x\Phi(x)\,,
+    \end{split}
+\end{equation*}
+gdzie \(\Phi(x)\) to dystrybuanta standardowego rozkładu normalnego. Pojedyncze neurony są następnie
+łączone w sieci w określony sposób tworząc daną architekturę sieci neuronowej.
+
+\subsection{Architektura MLP}
+
+Opis sieci neuronowych zaczniemy od architektury MLP (z ang. \textit{Multilayer Perceptron}). Sieć
+MLP składa się z równoległych warstw neuronów, przy czym połączenia występują tylko między neuronami
+w sąsiednich warstwach i nie ma połączeń między neuronami w obrębie jednej warstwy. Pierwszą warstwę
+sieci nazywamy warstwą wejściową (z ang. \textit{input layer}), ostatnią -- warstwą wyjściową (z
+ang. \textit{output layer}), a pozostałe nazywamy warstwami ukrytymi (z ang. \textit{hidden
+layers}).
+
+\begin{figure}
+\centering
+\begin{tikzpicture}[x=1.5cm, y=1.5cm, >=stealth]
+
+    \foreach \m/\l [count=\y] in {1,2,3,4} \node [every neuron/.try, neuron \m/.try] (input-\m) at
+        (0,2.5-\y) {$x_\m$};
+    
+    \foreach \m [count=\y] in {1,2} \node [every neuron/.try, neuron \m/.try ] (hidden-\m) at
+        (2,2-\y*1.25) {$z^{(1)}_\m$};
+    
+    \foreach \m [count=\y] in {1,2} \node [every neuron/.try, neuron \m/.try ] (output-\m) at
+        (4,2-\y*1.25) {$\theta_\m$};
+        
+    \foreach \l [count=\i] in {1,n} \node [above] at (hidden-\i.north) {};
+        
+    \foreach \i in {1,...,4} \foreach \j in {1,...,2} \draw [->] (input-\i) -- (hidden-\j);
+    
+    \foreach \i in {1,...,2} \foreach \j in {1,...,2} \draw [->] (hidden-\i) -- (output-\j);
+    
+    \foreach \l [count=\x from 0] in {Input, Hidden, Ouput} \node [align=center, above] at (\x*2,2)
+        {\l \\ layer};
+    
+    \end{tikzpicture}
+\end{figure}
+
+Zauważmy, iż opisane wcześniej modele regresji liniowej i wieloklasowej regresji logistycznej są
+przykładamy najprostszych sieci MLP bez żadnych warstw ukrytych. Ich graficzne reprezentacje jako
+sieci MLP zamieszczono na Rysunku \ref{fig:simple-mlp1} i \ref{fig:simple-mlp2}. Zauważmy, iż
+wyjściem sieci są parametry docelowego rozkładu prawdopodobieństwa nad obserwacjami tj. odpowiednio
+wartość oczekiwana \(\mu\) w przypadku regresji liniowej i prawdopodobieństwa \(\pi_i\) każdej z
+klas rozkładu kategorialnego w przypadku regresji logistycznej. W przypadku regresji liniowej
+funkcja aktywacji neuronu w warstwie wyjściowej to po prostu funkcja identycznosciowa, natomiast w
+przypadku regresji logistycznej jest to funkcja soft-max.
+
+Przejdźmy teraz do matematycznego opisu architektury MLP. Dla danej funkcji
+\(f:\mathbb{R}\mapsto\mathbb{R}\) przez zapis \(\mathbf{f}(\mathbf{x})\) dla \(\mathbf{x} \in
+\mathbb{R}^n\) będziemy rozumieli macierz kolumnową
+\begin{equation*}
+    \mathbf{f}(\mathbf{x}) = \mqty[f(x_1) \\ \vdots \\ f(x_n)]\,.
+\end{equation*}
+Dodatkowo zdefiniujmy dodatkowo odwzorowanie \(\mathbf{a}: \mathbb{R}^n \mapsto \mathbb{R}^m\) jako
+\begin{equation*}
+    \mathbf{a}(\mathbf{x}) = \mqty[\mathbf{w}_1^{\top} \\ \vdots \\ \mathbf{w}_m^{\top}]\mathbf{x} + \mathbf{b} = \oper{W}\mathbf{x} + \mathbf{b}\,,
+\end{equation*}
+gdzie \(\oper{W} \in \mathbb{M}_{m\times n}(\mathbb{R}), \mathbf{b} \in \mathbb{R}^m\).
+
+\begin{figure}[ht]
+    \centering
+    \begin{subfigure}[b]{0.8\textwidth}
+        \centering
+        \begin{tikzpicture}[x=1.5cm, y=1.5cm, >=stealth]
+
+            \foreach \m/\l [count=\y] in {1,2,3,4} \node [every neuron/.try, neuron \m/.try]
+                (input-\m) at (0,2.5-\y) {$x_\m$};
+            
+            \foreach \m [count=\y] in {1} \node [every neuron/.try, neuron \m/.try ] (output-\m) at
+                (2,2-\y*2) {$\mu$};
+                        
+            \foreach \i in {1,...,4} \foreach \j in {1} \draw [->] (input-\i) -- (output-\j);
+                
+        \end{tikzpicture}
+        \caption{Graficzna reprezentacja regresji liniowej jako najprostszej sieci MLP}
+        \label{fig:simple-mlp1}
+    \end{subfigure}
+    \hfil
+    \begin{subfigure}[b]{0.8\textwidth}
+        \centering
+        \begin{tikzpicture}[x=1.5cm, y=1.5cm, >=stealth]
+
+            \foreach \m/\l [count=\y] in {1,2,3,4} \node [every neuron/.try, neuron \m/.try]
+                (input-\m) at (0,2.5-\y) {$x_\m$};
+            
+            
+            \foreach \m [count=\y] in {1,2,3} \node [every neuron/.try, neuron \m/.try ] (output-\m)
+                at (2,2-\y) {$\pi_\m$};
+            
+                        
+            \foreach \i in {1,...,4} \foreach \j in {1,...,3} \draw [->] (input-\i) -- (output-\j);
+                        
+        \end{tikzpicture}
+        \caption{Graficzna reprezentacja wieloklasowej regresji logistycznej jako najprostszej sieci MLP}
+        \label{fig:simple-mlp2}
+    \end{subfigure}
+    
+\end{figure}
+
+Oznaczmy przez \(n_0, n_1, \ldots, n_{s-1}, n_s\) liczby neuronów w kolejnych warstwach, natomiast
+przez \(g\) funkcję aktywacji warstwy wyjściowej. Wyjście sieci MLP jest zatem opisane przez
+następujące złożenie funkcji
+\begin{equation*}
+    \begin{split}
+        &\boldsymbol{\theta}(\mathbf{x}; \oper{W}_1, \ldots,\oper{W}_s, \mathbf{b}_1, \ldots, \mathbf{b}_s)\\
+        &= \left(\mathbf{g}\circ\mathbf{a}_s\circ \mathbf{f}_{s-1}\circ\mathbf{a}_{s-1}\circ\ldots\circ \mathbf{f}_1\circ\mathbf{a}_1\right)(\mathbf{x})\,,
+    \end{split}
+\end{equation*}
+gdzie 
+\begin{equation*}
+    \mathbf{a}_k(\mathbf{x}) = \oper{W}_k\mathbf{x} + \mathbf{b}_k\,,
+\end{equation*}
+przy czym \(\oper{W}_k \in \mathbb{M}_{n_k \times n_{k-1}}(\mathbb{R})\) oraz
+\(\mathbf{f}_k:\mathbb{R}^{n_k} \mapsto \mathbb{R}^{n_k}\). Chcemy zatem wnioskować o parametrach
+\(\oper{W}_1, \ldots,\oper{W}_s, \mathbf{b}_1, \ldots, \mathbf{b}_s\) zakładając, iż rozkład
+warunkowy nad obserwacjami dla wektora zmiennych objaśniających \(\mathbf {x}\) ma postać 
+\begin{equation*}
+    y \mid \oper{W}_1, \ldots,\oper{W}_s, \mathbf{b}_1, \ldots, \mathbf{b}_s \sim \mathcal{D}(\boldsymbol{\theta}(\mathbf{x}))\,.
+\end{equation*}
+dla pewnej rodziny rozkładów prawdopodobieństwa \(\mathcal{D}\). 
+
+\subsubsection{Wsteczna propagacja błędu}
+
+Rozpatrzymy najpierw znajdowanie estymaty punktowej MLE dla sieci MLP. Załóżmy, iż mamy dane
+obserwacje iid \(D = \{(y_1, \mathbf{x}_1), \ldots, (y_m, \mathbf{x}_m)\}\). Wiarygodność ma postać
+\begin{equation*}
+p(D \mid \oper{W}_1, \ldots,\oper{W}_s, \mathbf{b}_1, \ldots, \mathbf{b}_s ) = \prod_{i=1}^m p(y_i \mid \oper{W}_1, \ldots,\oper{W}_s, \mathbf{b}_1, \ldots, \mathbf{b}_s)
+\end{equation*}
+skąd funkcja kosztu (zanegowana logarytmiczna funkcja wiarygodności)
+\begin{equation*}
+    \ell(D \mid \oper{W}_1, \ldots,\oper{W}_s, \mathbf{b}_1, \ldots, \mathbf{b}_s) = -\sum_{i=1}^m \log p(y_i \mid \oper{W}_1, \ldots,\oper{W}_s, \mathbf{b}_1, \ldots, \mathbf{b}_s)\,.
+\end{equation*}
+Zauważmy więc, iż dla dowolnego modelu statystycznego funkcja ta ma postać sumy po wszystkich
+przykładach w zbiorze uczącym \(D\)
+\begin{equation*}
+    \ell(D \mid \oper{W}_1, \ldots,\oper{W}_s, \mathbf{b}_1, \ldots, \mathbf{b}_s) = \sum_{i=1}^m \ell(y_i \mid \oper{W}_1, \ldots,\oper{W}_s, \mathbf{b}_1, \ldots, \mathbf{b}_s)\,.
+\end{equation*}
+Do znalezienia estymaty MLE parametrów sieci neuronowej musimy zminimalizować powyższą funkcję, a
+zatem potrzebny nam jest algorytm efektywnego obliczania pochodnych \(\ell(y_i \mid \ldots)\) po
+parametrach \(\oper{W}_k, \mathbf{b}_k\). Zauważmy, że zachodzi
+\begin{equation*}
+    \pdv{\ell}{\oper{W}_k} = \pdv{\ell}{\mathbf{g}}\pdv{\mathbf{g}}{\mathbf{a}_s}\pdv{\mathbf{a}_s}{\mathbf{f}_{s-1}}\pdv{\mathbf{f}_{s-1}}{\mathbf{a}_{s-1}}\ldots \pdv{\mathbf{a}_k}{\oper{W}_k}
+\end{equation*}
+jednakże
+\begin{equation*}
+    \pdv{\mathbf{f}_k}{\mathbf{a}_k} = \mqty[f'([\mathbf{a}_k]_1) & 0 & \ldots & 0 \\ 0 & f'([\mathbf{a}_k]_2) & \ldots & 0 \\ \vdots & \vdots & \ddots & \vdots \\ 0 & 0 & \ldots & f'([\mathbf{a}_k]_{n_k})] = \diag(\mathbf{f}'_k(\mathbf{a}_k))
+\end{equation*}
+oraz
+\begin{equation*}
+    \pdv{\mathbf{a}_k}{\mathbf{f}_{k-1}} = \oper{W}_k\,,\quad \pdv{\mathbf{a}_k}{\oper{W}_k} = \mqty[\mathbf{f}_{k-1} & 0 & \ldots & 0 \\ 0 & \mathbf{f}_{k-1} & \ldots & 0 \\ \vdots & \vdots & \ddots & \vdots \\ 0 & 0 & \ldots & \mathbf{f}_{k-1}]
+\end{equation*}
+zatem
+\begin{equation*}
+    \pdv{\ell}{\oper{W}_k} = \mathbf{f}_{k-1} \underbrace{\left[\pdv{\ell}{\mathbf{g}}\pdv{\mathbf{g}}{\mathbf{a}_s}\cdot \oper{W}_s\cdot\diag(\mathbf{f}'_{s-1}(\mathbf{a}_{s-1}))\cdots \oper{W}_{k+1}\cdot \diag(\mathbf{f}'_{k}(\mathbf{a}_k))\right]}_{\boldsymbol{\delta}_k}\,.
+\end{equation*}
+Zauważmy, że możemy obliczać \(\boldsymbol{\delta}_k\) rekurencyjnie jako
+\begin{equation*}
+    \boldsymbol{\delta}_{k-1} = \boldsymbol{\delta}_{k}\cdot \oper{W}_k\cdot\diag(\mathbf{f}'_{k-1}(\mathbf{a}_{k-1}))\,,\quad \boldsymbol{\delta}_s = \pdv{\ell}{\mathbf{g}}\pdv{\mathbf{g}}{\mathbf{a}_s}\,.
+\end{equation*}
+W przypadku wyrazu wolnego (\textit{bias}) mamy natomiast analogicznie
+\begin{equation*}
+    \pdv{\ell}{\mathbf{b}_k} = \pdv{\ell}{\mathbf{g}}\pdv{\mathbf{g}}{\mathbf{a}_s}\pdv{\mathbf{a}_s}{\mathbf{f}_{s-1}}\pdv{\mathbf{f}_{s-1}}{\mathbf{a}_{s-1}}\ldots \pdv{\mathbf{a}_k}{\mathbf{b}_k}
+\end{equation*}
+ponieważ jednak
+\begin{equation*}
+    \pdv{\mathbf{a}_k}{\mathbf{b}_k} = \oper{I}\,,
+\end{equation*}
+więc
+\begin{equation*}
+    \pdv{\ell}{\mathbf{b}_k} = \boldsymbol{\delta}_k\,.
+\end{equation*}
+Możemy zatem zapisać algorytm obliczania pochodnych funkcji kosztu po parametrach sieci neuronowej
+zwany algorytmem wstecznej propagacji błędu (z ang. \textit{error backpropagation})
+
+\begin{tcolorbox}[title=Algorytm wstecznej propagacji błędu]
+\begin{enumerate}
+\item Dla przykładu \((y_i, \mathbf{x}_i)\) dokonaj propagacji naprzód sieci MLP i zapamiętaj
+wartości funkcji \(\mathbf{a}_1, \mathbf{a}_2, \ldots, \mathbf{a}_s\) i funkcji aktywacji
+\(\mathbf{f}_1,\mathbf{f}_2,\ldots,\mathbf{f}_{s-1},\mathbf{g}\).
+
+\item Wyznacz rekurencyjnie i zapamiętaj wartości \(\boldsymbol{\delta}_k\) korzystając ze wstecznej
+propagacji
+\begin{equation*}
+    \boldsymbol{\delta}_{k-1} = \boldsymbol{\delta}_{k}\cdot \oper{W}_k\cdot\diag(\mathbf{f}'_{k-1}(\mathbf{a}_{k-1}))\,,\quad \boldsymbol{\delta}_s = \pdv{\ell}{\mathbf{g}}\pdv{\mathbf{g}}{\mathbf{a}_s}\,.
+\end{equation*}
+
+\item Wyznacz odpowiednie pochodne korzystając z
+\begin{equation*}
+    \pdv{\ell}{\oper{W}_k} = \mathbf{f}_{k-1}\boldsymbol{\delta}_k\,,\quad \pdv{\ell}{\mathbf{b}_k} = \boldsymbol{\delta}_k\,.
+\end{equation*}
+\end{enumerate}
+\end{tcolorbox}
+
+Powyższy algorytm wyznacza pochodną funkcji kosztu dla pojedynczego przykładu. Jeśli używamy serii
+przykładów \(D\) (tzw. \textit{batch}) to oczywiście zachodzi
+\begin{equation*}
+    \begin{split}
+        &\pdv{\ell(D\mid \oper{W}_1, \ldots,\oper{W}_s, \mathbf{b}_1, \ldots, \mathbf{b}_s)}{\oper{W}_k} = \sum_{i=1}^m \pdv{\ell(y_i\mid \oper{W}_1, \ldots,\oper{W}_s, \mathbf{b}_1, \ldots, \mathbf{b}_s)}{\oper{W}_k}\,,\\
+        &\pdv{\ell(D\mid \oper{W}_1, \ldots,\oper{W}_s, \mathbf{b}_1, \ldots, \mathbf{b}_s)}{\mathbf{b}_k} = \sum_{i=1}^m \pdv{\ell(y_i\mid \oper{W}_1, \ldots,\oper{W}_s, \mathbf{b}_1, \ldots, \mathbf{b}_s)}{\mathbf{b}_k}\,,
+    \end{split}
+\end{equation*}
+więc powyższy algorytm wykonujemy dla każdego przykładu i dodajemy wyniki. Problemy regresji
+liniowej i logistycznej na sieci MLP różnią się jedynie funkcją aktywacji \(g\) warstwy wyjściowej i
+używaną funkcją kosztu. W przypadku regresji liniowej mamy
+\begin{equation*}
+    g(x) = x\,,\quad \ell(y_i \mid \oper{W}_1, \ldots,\oper{W}_s, \mathbf{b}_1, \ldots, \mathbf{b}_s ) = \frac{1}{2}(y_i - g)^2\,,
+\end{equation*}
+skąd
+\begin{equation*}
+    \delta_s = g - y_i\,.
+\end{equation*}
+Natomiast w przypadku regresji logistycznej mamy
+\begin{equation*}
+    \begin{split}
+        &\mathbf{g}(\mathbf{x}) = \frac{1}{\sum_{i=1}^n \e^{x_i}}\mqty[\e^{x_1} \\ \vdots \\ \e^{x_n}]\,,\\
+        &\ell(y_i \mid \oper{W}_1, \ldots,\oper{W}_s, \mathbf{b}_1, \ldots, \mathbf{b}_s) = -\sum_{j=1}^c \delta(y_i, \tau_j) \log [\mathbf{g}]_j\,,
+    \end{split}
+\end{equation*}
+skąd
+\begin{equation*}
+    \boldsymbol{\delta}_s = \mqty[\frac{\delta(y_i, \tau_1)}{[\mathbf{g}]_1} & \cdots & \frac{\delta(y_i, \tau_c)}{[\mathbf{g}]_c}] \mqty[[\mathbf{g}]_i[\mathbf{g}]_j - \delta_{ij}[\mathbf{g}]_j ]_{c\times c} = \mathbf{g}^\top - \mqty[\delta(y_i, \tau_1), \ldots, \delta(y_i, \tau_c)]\,.
+\end{equation*}
 
 \end{document}

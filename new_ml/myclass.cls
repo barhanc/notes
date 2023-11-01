@@ -38,7 +38,8 @@
             mathrsfs, physics, wasysym, xcolor}
 
 % Additional packages and commands depending on project:
-\usepackage{lipsum, enumitem}
+\usepackage{lipsum, enumitem, tikz, caption, subcaption, tcolorbox}
 
 \newcommand{\oper}[1]{\boldsymbol{\mathsf{#1}}}
+\newcommand{\diag}[0]{\text{diag}}
 % \newcommand{\oper}[1]{\hat{#1}}
