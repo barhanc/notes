@@ -4,12 +4,6 @@
 %**** Article One column ****
 \LoadClass{article}
 
-%**** Article Two column ****
-%\LoadClass[twocolumn]{article}
-%\RequirePackage[a4paper, total={7in, 9in}]{geometry}
-%\setlength{\columnseprule}{0pt}
-%\setlength{\columnsep}{1.5cm}
-
 % Custom symbols
 \newcommand{\e}{\mathrm{e}}
 \newcommand{\im}{\mathrm{i}}

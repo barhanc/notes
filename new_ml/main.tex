@@ -758,14 +758,14 @@ Powyżej skorzystaliśmy ze znanego faktu, iż dla jednowymiarowej zmiennej loso
 \subsection{Regularyzacja}
 
 Regularyzacją nazywamy proces polegający na wprowadzeniu ad hoc do zagadnienia optymalizacji
-dodatkowych członów tak, aby rozwiązanie było ,,regularne'' (prostsze, nieosobliwe, jednoznaczne
+dodatkowych członów tak, aby rozwiązanie było regularne (prostsze, nieosobliwe, jednoznaczne
 ...). W przypadku funkcji kosztu \(\ell\) najczęściej dodajemy człon penalizujący rozwiązania o
 dużej normie estymowanego parametru postaci
 \begin{equation*}
     \gamma\norm{\theta}
 \end{equation*}
 dla pewnej normy \(\norm{\cdot}\) i hiper-parametru \(\gamma\) określającego siłę regularyzacji. W
-kontekście Bayesowskim regularyzację można również rozumieć jako pewną niechęć (,,tłumienie'',
+kontekście Bayesowskim regularyzację można również rozumieć jako pewną niechęć ("tłumienie",
 zachowawczość) modelu do zmiany rozkładu a priori estymowanego parametru po pojawieniu się kolejnych
 obserwacji.
 
@@ -870,7 +870,7 @@ dowolnego zbioru \(X = \{\mathbf{x}_1, \ldots, \mathbf{x}_m\} \subset \mathbb{R}
 \begin{equation*}
     \mqty[f_{\mathbf{x}_1} \\ \vdots \\ f_{\mathbf{x}_m}] \sim \mathcal{N}(\boldsymbol{\mu}_X, \oper{\Sigma}_{X})\,.
 \end{equation*}
-Zauważmy, iż process Gaussowski możemy jednoznacznie zdefiniować podając ,,przepisy'' na parametry
+Zauważmy, iż process Gaussowski możemy jednoznacznie zdefiniować podając przepisy na parametry
 \(\boldsymbol{\mu}_X\) i \(\oper{\Sigma}_X\) dla dowolnego zbioru \(X\). W praktyce często
 przyjmujemy \(\boldsymbol{\mu}_X = \mathbf{0}\), natomiast przepisem na macierz kowariancji może być
 zdefiniowana wyżej funkcja kowariancji \(k(X,X)\) tj.
@@ -1366,10 +1366,7 @@ Oznaczmy przez \(n_0, n_1, \ldots, n_{s-1}, n_s\) liczby neuronów w kolejnych w
 przez \(g\) funkcję aktywacji warstwy wyjściowej. Wyjście sieci MLP jest zatem opisane przez
 następujące złożenie funkcji
 \begin{equation*}
-    \begin{split}
-        &\boldsymbol{\theta}(\mathbf{x}; \oper{W}_1, \ldots,\oper{W}_s, \mathbf{b}_1, \ldots, \mathbf{b}_s)\\
-        &= \left(\mathbf{g}\circ\mathbf{a}_s\circ \mathbf{f}_{s-1}\circ\mathbf{a}_{s-1}\circ\ldots\circ \mathbf{f}_1\circ\mathbf{a}_1\right)(\mathbf{x})\,,
-    \end{split}
+    \boldsymbol{\theta}(\mathbf{x}; \oper{W}_1, \ldots,\oper{W}_s, \mathbf{b}_1, \ldots, \mathbf{b}_s) = \left(\mathbf{g}\circ\mathbf{a}_s\circ \mathbf{f}_{s-1}\circ\mathbf{a}_{s-1}\circ\ldots\circ \mathbf{f}_1\circ\mathbf{a}_1\right)(\mathbf{x})\,,
 \end{equation*}
 gdzie 
 \begin{equation*}
@@ -1386,8 +1383,9 @@ dla pewnej rodziny rozkładów prawdopodobieństwa \(\mathcal{D}\).
 
 \subsubsection{Wsteczna propagacja błędu}
 
-Rozpatrzymy najpierw znajdowanie estymaty punktowej MLE dla sieci MLP. Załóżmy, iż mamy dane
-obserwacje iid \(D = \{(y_1, \mathbf{x}_1), \ldots, (y_m, \mathbf{x}_m)\}\). Wiarygodność ma postać
+Zajmiemy się najpierw problemem znalezienia estymaty punktowej MLE dla parametrów sieci MLP.
+Załóżmy, iż mamy dane obserwacje iid \(D = \{(y_1, \mathbf{x}_1), \ldots, (y_m, \mathbf{x}_m)\}\).
+Wiarygodność ma postać
 \begin{equation*}
 p(D \mid \oper{W}_1, \ldots,\oper{W}_s, \mathbf{b}_1, \ldots, \mathbf{b}_s ) = \prod_{i=1}^m p(y_i \mid \oper{W}_1, \ldots,\oper{W}_s, \mathbf{b}_1, \ldots, \mathbf{b}_s)
 \end{equation*}
@@ -1412,7 +1410,7 @@ jednakże
 \end{equation*}
 oraz
 \begin{equation*}
-    \pdv{\mathbf{a}_k}{\mathbf{f}_{k-1}} = \oper{W}_k\,,\quad \pdv{\mathbf{a}_k}{\oper{W}_k} = \mqty[\mathbf{f}_{k-1} & 0 & \ldots & 0 \\ 0 & \mathbf{f}_{k-1} & \ldots & 0 \\ \vdots & \vdots & \ddots & \vdots \\ 0 & 0 & \ldots & \mathbf{f}_{k-1}]
+    \pdv{\mathbf{a}_k}{\mathbf{f}_{k-1}} = \oper{W}_k\,,\quad \pdv{\mathbf{a}_k}{\oper{W}_k} = \mqty[\mathbf{f}_{k-1} & \mathbf{0} & \ldots & \mathbf{0} \\ \mathbf{0} & \mathbf{f}_{k-1} & \ldots & \mathbf{0} \\ \vdots & \vdots & \ddots & \vdots \\ \mathbf{0} & \mathbf{0} & \ldots & \mathbf{f}_{k-1}]
 \end{equation*}
 zatem
 \begin{equation*}
@@ -1453,6 +1451,7 @@ propagacji
 \begin{equation*}
     \pdv{\ell}{\oper{W}_k} = \mathbf{f}_{k-1}\boldsymbol{\delta}_k\,,\quad \pdv{\ell}{\mathbf{b}_k} = \boldsymbol{\delta}_k\,.
 \end{equation*}
+W powyższym wzorze \(\mathbf{f}_0 = \mathbf{x}_i\).
 \end{enumerate}
 \end{tcolorbox}
 
@@ -1483,7 +1482,85 @@ Natomiast w przypadku regresji logistycznej mamy
 \end{equation*}
 skąd
 \begin{equation*}
-    \boldsymbol{\delta}_s = \mqty[\frac{\delta(y_i, \tau_1)}{[\mathbf{g}]_1} & \cdots & \frac{\delta(y_i, \tau_c)}{[\mathbf{g}]_c}] \mqty[[\mathbf{g}]_i[\mathbf{g}]_j - \delta_{ij}[\mathbf{g}]_j ]_{c\times c} = \mathbf{g}^\top - \mqty[\delta(y_i, \tau_1), \ldots, \delta(y_i, \tau_c)]\,.
+    \boldsymbol{\delta}_s = \mqty[\frac{\delta(y_i, \tau_1)}{[\mathbf{g}]_1} & \cdots & \frac{\delta(y_i, \tau_c)}{[\mathbf{g}]_c}] \mqty[[\mathbf{g}]_i[\mathbf{g}]_j - \delta_{ij}[\mathbf{g}]_j ]_{c\times c} = \mathbf{g}^\top - \mqty[\delta(y_i, \tau_1) \ldots \delta(y_i, \tau_c)]\,.
 \end{equation*}
+Mając algorytm efektywnego obliczania pochodnych funkcji kosztu, funkcję minimalizujemy korzystając
+z algorytmu spadku wzdłuż gradientu. Istnieją trzy podstawowe algorytmy spadku wzdłuż gradientu:
+seryjny spadek wzdłuż gradientu (z ang. \textit{Batch Gradient Descent (BGD)}), stochastyczny spadek
+wzdłuż gradientu (z ang. \textit{Stochastic Gradient Descent (SGD)}) oraz mini-seryjny spadek wzdłuż
+gradientu (z ang. \textit{Mini-Batch Gradient Descent (mBGD)})
+
+\begin{tcolorbox}[title=Algorytm BGD]
+\begin{enumerate}
+    \item Wybierz początkowe wartości parametrów \(\oper{W}_1, \ldots,\oper{W}_s, \mathbf{b}_1,
+    \ldots, \mathbf{b}_s\).
+    
+    \item Powtarzaj przez \(N\) epok:
+    \begin{enumerate}
+        \item Oblicz pochodne funkcji kosztu \(\ell\) zsumowane po wszystkich przykładach z batcha
+        \(D\) korzystając z algorytmu wstecznej propagacji błędu.
+
+        \item Zaktualizuj wartości parametrów zgodnie z:
+        \begin{equation*}
+            \begin{split}
+                &\oper{W}_k = \oper{W}_k - \frac{\epsilon}{|D|}\pdv{\ell}{\oper{W}_k}\\
+                &\mathbf{b}_k = \mathbf{b}_k - \frac{\epsilon}{|D|}\pdv{\ell}{\mathbf{b}_k}\\
+            \end{split}
+        \end{equation*}
+    \end{enumerate}
+\end{enumerate}
+\end{tcolorbox}
+
+\begin{tcolorbox}[title=Algorytm SGD]
+\begin{enumerate}
+    \item Wybierz początkowe wartości parametrów \(\oper{W}_1, \ldots,\oper{W}_s, \mathbf{b}_1,
+    \ldots, \mathbf{b}_s\).
+    
+    \item Powtarzaj przez \(N\) epok: \\
+    Dla każdego przykładu \((y_i, \mathbf{x}_i) \in D\):
+    \begin{enumerate}
+        \item Oblicz pochodne funkcji kosztu \(\ell\) dla przykładu \((y_i, \mathbf{x}_i)\)
+        korzystając z algorytmu wstecznej propagacji błędu.
+
+        \item Zaktualizuj wartości parametrów zgodnie z:
+        \begin{equation*}
+            \begin{split}
+                &\oper{W}_k = \oper{W}_k - \frac{\epsilon}{|D|}\pdv{\ell}{\oper{W}_k}\\
+                &\mathbf{b}_k = \mathbf{b}_k - \frac{\epsilon}{|D|}\pdv{\ell}{\mathbf{b}_k}\\
+            \end{split}
+        \end{equation*}
+    \end{enumerate}
+
+\end{enumerate}
+\end{tcolorbox}
+
+\begin{tcolorbox}[title=Algorytm mBGD]
+\begin{enumerate}
+    \item Wybierz początkowe wartości parametrów \(\oper{W}_1, \ldots,\oper{W}_s, \mathbf{b}_1,
+    \ldots, \mathbf{b}_s\).
+
+    \item Podziel dane treningowe w \(D\) na \(K\) rozłącznych mini-batchy \(D_1, \ldots, D_K\)
+    jednakowej wielkości.
+    
+    \item Powtarzaj przez \(N\) epok: \\
+    Dla każdego mini-batcha \(D_i\):
+    \begin{enumerate}
+        \item Oblicz pochodne funkcji kosztu \(\ell\) zsumowane po wszystkich przykładach z
+        mini-batcha \(D_i\) korzystając z algorytmu wstecznej propagacji błędu.
+
+        \item Zaktualizuj wartości parametrów zgodnie z:
+        \begin{equation*}
+            \begin{split}
+                &\oper{W}_k = \oper{W}_k - \frac{\epsilon}{|D|}\pdv{\ell}{\oper{W}_k}\\
+                &\mathbf{b}_k = \mathbf{b}_k - \frac{\epsilon}{|D|}\pdv{\ell}{\mathbf{b}_k}\\
+            \end{split}
+        \end{equation*}
+    \end{enumerate}
+\end{enumerate}
+\end{tcolorbox}
+
+
+
+\subsubsection{Regularyzacja w sieciach neuronowych}
 
 \end{document}
