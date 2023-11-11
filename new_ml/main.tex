@@ -758,9 +758,9 @@ Powyżej skorzystaliśmy ze znanego faktu, iż dla jednowymiarowej zmiennej loso
 \subsection{Regularyzacja}
 
 Regularyzacją nazywamy proces polegający na wprowadzeniu ad hoc do zagadnienia optymalizacji
-dodatkowych członów tak, aby rozwiązanie było regularne (prostsze, nieosobliwe, jednoznaczne
-...). W przypadku funkcji kosztu \(\ell\) najczęściej dodajemy człon penalizujący rozwiązania o
-dużej normie estymowanego parametru postaci
+dodatkowych członów tak, aby rozwiązanie było regularne (prostsze, nieosobliwe, jednoznaczne ...). W
+przypadku funkcji kosztu \(\ell\) najczęściej dodajemy człon penalizujący rozwiązania o dużej normie
+estymowanego parametru postaci
 \begin{equation*}
     \gamma\norm{\theta}
 \end{equation*}
@@ -1485,10 +1485,12 @@ skąd
     \boldsymbol{\delta}_s = \mqty[\frac{\delta(y_i, \tau_1)}{[\mathbf{g}]_1} & \cdots & \frac{\delta(y_i, \tau_c)}{[\mathbf{g}]_c}] \mqty[[\mathbf{g}]_i[\mathbf{g}]_j - \delta_{ij}[\mathbf{g}]_j ]_{c\times c} = \mathbf{g}^\top - \mqty[\delta(y_i, \tau_1) \ldots \delta(y_i, \tau_c)]\,.
 \end{equation*}
 Mając algorytm efektywnego obliczania pochodnych funkcji kosztu, funkcję minimalizujemy korzystając
-z algorytmu spadku wzdłuż gradientu. Istnieją trzy podstawowe algorytmy spadku wzdłuż gradientu:
-seryjny spadek wzdłuż gradientu (z ang. \textit{Batch Gradient Descent (BGD)}), stochastyczny spadek
-wzdłuż gradientu (z ang. \textit{Stochastic Gradient Descent (SGD)}) oraz mini-seryjny spadek wzdłuż
-gradientu (z ang. \textit{Mini-Batch Gradient Descent (mBGD)})
+z algorytmu spadku wzdłuż gradientu. W przypadku sieci neuronowych funkcja kosztu nie jest funkcją
+ściśle wypukłą, więc algorytm spadku wzdłuż gradientu nie znajdzie globalnego minimum; możemy liczyć
+jedynie na znalezienie minimum lokalnego. Istnieją trzy podstawowe algorytmy spadku wzdłuż
+gradientu: seryjny spadek wzdłuż gradientu (z ang. \textit{Batch Gradient Descent (BGD)}),
+stochastyczny spadek wzdłuż gradientu (z ang. \textit{Stochastic Gradient Descent (SGD)}) oraz
+mini-seryjny spadek wzdłuż gradientu (z ang. \textit{Mini-Batch Gradient Descent (mBGD)})
 
 \begin{tcolorbox}[title=Algorytm BGD]
 \begin{enumerate}
@@ -1562,5 +1564,44 @@ gradientu (z ang. \textit{Mini-Batch Gradient Descent (mBGD)})
 
 
 \subsubsection{Regularyzacja w sieciach neuronowych}
+
+\begin{enumerate}
+    \item \textbf{Consistent Gaussian Priors}\\
+    Analogicznie jak w przypadku prostych modeli liniowych jedną z możliwości regularyzacji jest
+    dodanie do funkcji kosztu \(\ell\) czynnika regularyzującego zawierającego kwadraty składowych
+    wektorów wag postaci \(\tr(\oper{W}_k^\top\oper{W}_k)\) przy czym w ogólności przyjmujemy iż
+    mamy \(s\) różnych współczynników \(\lambda_k\) określających siły regularyzacji dla wag
+    łączących poszczególne warstwy. Zregularyzowana funkcja kosztu ma więc w ogólności postać
+    \begin{equation*}
+        \ell^* = \ell + \frac{1}{2}\sum_{k=1}^s\lambda_k \tr(\oper{W}_k^\top\oper{W}_k)\,.
+    \end{equation*}
+    Dzięki takiej postaci funkcja kosztu zachowuje własność niezmienniczości względem skalowania.
+    Istotnie zauważmy, iż w przypadku niezregularyzowanej funkcji kosztu jeśli wektor w warstwie
+    wejściowej pomnożymy przez pewien skalar \(\alpha\) to wyjście sieci pozostanie niezmienione
+    jeśli wagi w pierwszej warstwie ukrytej pomnożymy przez \(\alpha^{-1}\). Analogicznie wyjście
+    nie zmieni się jeśli wektor w warstwie wyjściowej pomnożymy przez \(\beta\), a wagi łączące dwie
+    ostatnie warstwy pomnożymy przez \(\beta^{-1}\). W szczególności możemy wykonać obie te operacje
+    dla jednej sieci i również nie zmienimy wyjścia. Zauważmy jednak, iż gdybyśmy na sztywno
+    założyli, iż współczynniki \(\lambda_1\) i \(\lambda_s\) są takie same to zregularyzowana
+    funkcja nie byłaby niezmiennicza względem takiego skalowania. Dzięki różnym współczynnikom
+    pozostaje niezmiennicza jeśli pomnożymy współczynniki \(\lambda_1, \lambda_s\) odpowiednio przez
+    \(\sqrt{\alpha}\) i \(\sqrt{\beta}\).
+
+    \item \textbf{Early stopping}\\
+    Innym podejściem do regularyzacji sieci neuronowych jest procedura \textit{early stopping}.
+    Polega ona na zatrzymaniu procesu uczenia (optymalizacji funkcji kosztu) w momencie, w którym
+    wartość funkcji kosztu na wydzielonym ze zbioru treningowego zbiorze walidacyjnym zaczyna
+    rosnąć. Unikamy w ten sposób przeuczenia modelu.
+
+    \item \textbf{Niezmienniki}
+    
+\end{enumerate}
+
+\subsection{Mixture Density Networks}
+
+\subsection{Bayesowskie Sieci Neuronowe (BNN)}
+
+\subsection{Sieci konwolucyjne (CNN)}
+
 
 \end{document}
