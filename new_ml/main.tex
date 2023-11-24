@@ -1,7 +1,7 @@
 \documentclass{myclass}
 \usepackage[polish]{babel}
 
-\title{Statystyczne uczenie maszynowe}
+% My notes on ML and related concepts
 \author{Bartosz Hanc}
 
 \tikzset{%
@@ -118,6 +118,32 @@ przez dystrybuantę \(F(\mathbf{x})\). Powiemy, iż zmienne losowe \(n_1,\ldots,
     F(\mathbf{x}_1,\ldots,\mathbf{x}_k) = F_{X_1}(\mathbf{x}_1)\cdot\ldots\cdot F_{X_k}(\mathbf{x}_k)\,.
 \end{equation*}
 
+\subsection{Funkcja tworząca momenty}
+
+Funkcją tworzącą momenty (z ang. \textit{moment generating function}) nazywamy funkcję określoną
+wzorem
+\begin{equation*}
+    M_X(t) := \mathbb{E}\left[\e^{t X}\right]
+\end{equation*}
+dla zmiennej losowej rzeczywistej \(X: \Sigma \mapsto \mathbb{R}\). Powyższa wielkość jest określona
+zawsze tylko dla \(t=0\). Dla innych \(t\), \(M_X(t)\) może w ogólności nie istnieć. MGF używamy,
+aby łatwiej obliczać momenty różnych rzędów. Istotnie jeśli \(M_X(t)\) istnieje w pewnym otoczeniu
+\(t=0\) to
+\begin{equation*}
+    \mathbb{E}[X^k] = \dv[k]{M_X}{t}\Big|_{t=0}\,.
+\end{equation*}
+Jednocześnie łatwo pokazać, że zachodzi \(M_X(at) = M_{aX}(t)\) oraz \(M_{X+b}(t) = M_X(t)\e^{tb}\).
+
+\subsection{Funkcja charakterystyczna}
+
+Funkcję charakterystyczną rozkładu o gęstości \(p(x)\) definiujemy jako
+\begin{equation*}
+    \varphi_X(x) = \mathbb{E}\left[\e^{\im t x}\right] = \int\limits_{-\infty}^{+\infty} p(x)\e^{\im tx} \dd{x}\,.
+\end{equation*}
+Widzimy, iż jest to zatem transformata Fouriera funkcji gęstości. Funkcja charakterystyczna koduje
+pełną informację o rozkładzie i możemy wyciągną z niej funkcję gęstości przez zastosowanie odwrotnej
+transformacji Fouriera.
+
 \subsection{Rozkłady warunkowe}
 
 W ogólnym przypadku zmiennej losowej \(n\) -- wymiarowej \(Z = (Z_1, \ldots, Z_n)\) o ciągłym
@@ -233,6 +259,84 @@ Pomiędzy tak zdefiniowanymi rodzajami zbieżności zachodzą następujące impl
     \item \(X_n \to X\) stochastycznie \(\implies\) istnieje podciąg \((X_{n_k})\) zbieżny do \(X\)
     z prawdopodobieństwem 1
 \end{enumerate}
+
+\subsection{Rozkłady prawdopodobieństwa}
+\subsubsection{Rozkład Bernoulliego}
+Jeśli zmienna losowa ma wartości w zbiorze \(\{x_1, x_2\}\) oraz \(P(X = x_1) = p\) i \(P(X = x_2) =
+1 - p\) (dla \(0\leq p \leq 1\)) to mówimy, że \(X \sim \text{Ber}(p)\) (zmienna \(X\) ma rozkład
+Bernoulliego z parametrem \(p\)).
+
+\subsubsection{Rozkład dwumianowy}
+Próbą Bernoulliego nazywamy doświadczenie losowe, którego wynik \(X \sim \text{Ber}(p)\). Schematem
+dwumianowym nazywamy \(n\)--krotne powtórzenie próby Bernoulliego przy założeniu, iż poszczególne
+próby są niezależne. Jeśli \(S\) będzie zmienną losową o wartościach w \(\mathbb{N} \cup \{0\}\),
+która opisuje liczbę sukcesów w schemacie dwumianowym długości \(n\). Wówczas
+\begin{equation*}
+    P(S = k) = {n \choose k} p^k (1 - p)^{n-k}
+\end{equation*}
+i mówimy, że \(S \sim \text{Bin}(n, p)\) (zmienna \(S\) ma rozkład dwumianowy z parametrami \(n,
+p\)).
+
+\subsubsection{Rozkład geometryczny}
+Rozważamy schemat Bernoulliego o nieskończonej długości. Jeśli \(T\) będzie zmienną losową o
+wartościach w \(\mathbb{N} \cup \{0\}\), która opisuje liczbę prób Bernoulliego z paramterem \(p\)
+do momentu uzyskania pierwszego sukcesu to
+\begin{equation*}
+    P(T=k) = (1-p)^{k-1}p
+\end{equation*}
+i mówimy, że \(T \sim \text{Geo}(p)\) (zmienna \(T\) ma rozkład geometryczny z parametrem \(p\)).
+
+\subsubsection{Rozkład Poissona}
+Załóżmy, iż mamy dany skończony przedział czasowy \([0; \tau]\) dla pewnego \(\tau\). Niech zmienna
+losowa \(N\) o wartościach w \(\mathbb{N} \cup \{0\}\) opisuje liczbę wystąpień pewnego zdarzenia w
+tym przedziale, przy czym
+\begin{itemize}
+    \item zdarzenia występują niezależnie od siebie
+    \item intensywność wystąpień jest stała
+\end{itemize}
+to 
+\begin{equation*}
+    P(N = k) = \frac{\e^{-\lambda}\lambda^k}{k!}
+\end{equation*}
+i mówimy, że \(N \sim \text{Pois}(\lambda)\) (zmienna \(N\) ma rozkład Poissona z parametrem
+\(\lambda\)). Zachodzi ponadto \textbf{twierdzenie Poissona}: niech \((S_n)\) będzie ciągiem takim,
+że \(S_n \sim \text{Bin}(n, p_n)\), gdzie ciąg \((p_n)\) jest taki, iż \(\lim_{n \to \infty} np_n =
+\lambda\), wówczas \(\lim_{n\to\infty}P(S_n = k) = \e^\lambda \lambda^k / k!\).
+
+\subsubsection{Rozkład jednostajny}
+Jeśli zmienna losowa \(X\) o wartościach rzeczywistych ma gęstość prawdopodobieństwa daną przez
+\begin{equation*}
+    p(x) = \begin{cases}
+        \frac{1}{b - a}\,,\quad &x \in [a;b]\\
+        0\,, &x \notin [a;b]
+    \end{cases}
+\end{equation*}
+to mówimy \(X \sim \mathcal{U}(a,b)\) (zmienna \(X\) ma rozkład jednostajny na odcinku \([a;b]\)).
+
+\subsubsection{Rozkład wykładniczy}
+Jeśli zmienna losowa \(T\) o wartościach rzeczywistych opisuje prawdopodobieństwo uzyskania
+pierwszego zdarzenia po czasie \(x\) modelowanego przez rozkład \(\text{Pois}(\lambda)\) to
+\begin{equation*}
+    p(x) = \begin{cases}
+        \lambda \e^{-\lambda x}\,, &x \geq 0\\
+        0\,, &x < 0 
+    \end{cases}
+\end{equation*}
+i mówimy \(T \sim \text{Exp}(\lambda)\) (zmienna \(T\) ma rozkład wykładniczy z parametrem
+\(\lambda\)).
+
+\subsubsection{Rozkład gamma}
+Mówimy, że zmienna \(X\) o wartościach rzeczywistych ma rozkład gamma z parametrami \(p, a > 0\) tj.
+\(X \sim \Gamma(p, a)\) iff gęstość prawdopodobieństwa ma postać
+\begin{equation*}
+    p(x) = \begin{cases}
+        \frac{a^p}{\Gamma(p)}x^{p-1}\e^{-ax}\,, &x > 0\\
+        0\,, &x \leq 0
+    \end{cases}\quad,
+\end{equation*}
+gdzie \(\Gamma\) to funkcja Eulera. Parametr \(p\) nazywamy parametrem kształtu, a \(a\) --
+parametrem intensywności. Szczególnym przypadkiem rozkładu gamma jest rozkład \(\chi^2\)
+zdefiniowany jako rozkład \(\chi^2(n) := \Gamma(n/2, 1/2)\).
 
 \section{Elementarz teorii informacji}
 
@@ -380,6 +484,18 @@ Wariancja statystyki średniej wynosi z kolei
         &= \int\cdots\int\frac{1}{n^2}\left(\sum_{i=1}^n X_i^2 + \underbrace{\sum_{i\neq j}X_iX_j}_{n(n-1)}\right) p(X_1)\cdots p(X_n)\dd{X_1}\ldots\dd{X_n} - \mathbb{E}[X]^2\\
         &= \frac{1}{n}\mathbb{E}[X^2] + \frac{n(n-1)}{n^2}\mathbb{E}[X]^2 - \mathbb{E}[X]^2 = \frac{1}{n}\left[\mathbb{E}[X^2] - \mathbb{E}[X]^2\right] = \frac{1}{n}\text{Var}[X]\,.
     \end{split}
+\end{equation*}
+
+\subsection{Twierdzenie Gliwenki--Cantelliego}
+Dystrybuantą empiryczną nazywa się funkcję
+\begin{equation*}
+    \hat{F}(x) = \frac{1}{N}\#\left\{i \in \{1,\ldots,N\} \mid x_i \leq x \right\}\,,
+\end{equation*}
+gdzie \(\{x_1,\ldots,x_N\}\) jest realizacją prostej próby losowej. Twierdzenie
+Gliwenki--Cantelliego stwierdza, iż jeśli \(F(x)\) jest dystrybuantą pewnego rozkładu
+prawdopodobieństwa to
+\begin{equation*}
+    \sup_{x\in\mathbb{R}} |\hat{F}_n(x) - F(x)| \to 0\,,\text{przy \(n\to\infty\).}
 \end{equation*}
 
 \subsection{Silne prawo wielkich liczb}
@@ -1561,8 +1677,6 @@ mini-seryjny spadek wzdłuż gradientu (z ang. \textit{Mini-Batch Gradient Desce
 \end{enumerate}
 \end{tcolorbox}
 
-
-
 \subsubsection{Regularyzacja w sieciach neuronowych}
 
 \begin{enumerate}
@@ -1593,15 +1707,39 @@ mini-seryjny spadek wzdłuż gradientu (z ang. \textit{Mini-Batch Gradient Desce
     wartość funkcji kosztu na wydzielonym ze zbioru treningowego zbiorze walidacyjnym zaczyna
     rosnąć. Unikamy w ten sposób przeuczenia modelu.
 
-    \item \textbf{Niezmienniki}
+    \item \textbf{Niezmienniki}\\
+    W wielu zastosowaniach uczenia maszynowego wiemy, że predykcje modelu powinny być niezmienione
+    jeśli dane wejściowe poddamy pewnej transformacji np. w problemie rozpoznawania ręcznie pisanych
+    cyfr odpowiedź nie powinna zależeć od miejsca na obrazku, w którym znajduje się cyfra
+    (niezmienniczość translacyjna) oraz od skali, w której została napisana (niezmienniczość
+    skalowania). Istnieje kilka możliwych rozwiązań pozwalających uwzględnić te cechy
+    \begin{enumerate}
+        \item Jeśli znamy przekształcenia względem których predykcje powinny pozostawać niezmienione
+        możemy rozszerzyć nasz zbiór treningowy o przykłady z początkowego zbioru poddane tym
+        przekształceniom.
+
+        \item Możemy dokonać preprocessingu danych w taki sposób aby wyekstrahować te cechy, które
+        są niezmiennicze względem danych przekształceń (\textit{feature extraction}).
+
+        \item Możemy w końcu wbudować tę niezmienniczość w strukturę samej sieci neuronowej.
+        Przykładem takim są omawiane dalej Konwolucyjne Sieci Neuronowe, których struktura jest
+        skonstruowana w taki sposób, aby wyciągać pewne cechy przestrzenne z obrazów.
+    \end{enumerate}
     
 \end{enumerate}
-
-\subsection{Mixture Density Networks}
 
 \subsection{Bayesowskie Sieci Neuronowe (BNN)}
 
 \subsection{Sieci konwolucyjne (CNN)}
 
+\subsection{Sieci rekurencyjne (RNN)}
+
+\subsection{Transformery}
+
+\subsection{Modele generatywne (RBM, GAN, Diffusion)}
+
+\section{Uczenie ze wzmocnieniem}
+
+\section{Teoria optymalnego sterowania}
 
 \end{document}
