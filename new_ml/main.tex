@@ -437,11 +437,11 @@ Z nierówności Jensena można dodatkowo pokazać, że zachodzi \(H(B\mid A) \le
 Dla dwóch ciągłych rozkładów prawdopodobieństwa \(p(\mathbf{x})\), \(q(\mathbf{x})\) definiujemy ich
 entropię względną (nazywaną również \textit{Kullback-Leibler (KL) divergence}) jako
 \begin{equation*}
-    \mathbb{KL}(p , q) = \int\limits_{\mathbb{R}^n} p(\mathbf{x})\log\frac{p(\mathbf{x})}{q(\mathbf{x})} \dd[n]{\mathbf{x}}\,,
+    \mathbb{D}_\text{KL}(p , q) = \int\limits_{\mathbb{R}^n} p(\mathbf{x})\log\frac{p(\mathbf{x})}{q(\mathbf{x})} \dd[n]{\mathbf{x}}\,,
 \end{equation*}
 która określa podobieństwo między dwoma rozkładami prawdopodobieństwa tj. dla ustalonego rozkładu
-\(p\) dla wszystkich \(q\) zachodzi \(\mathbb{KL}(p,q) \geq 0\), przy czym równość zachodzi iff \(p
-= q\) (ponownie nierówność Jensena).
+\(p\) dla wszystkich \(q\) zachodzi \(\mathbb{D}_\text{KL}(p,q) \geq 0\), przy czym równość zachodzi
+iff \(p = q\) (ponownie nierówność Jensena).
 
 Rozważmy teraz rozkład łączny \(p(\mathbf{x}, \mathbf{y})\). Jeśli zmienne losowe \(\mathbf{x},
 \mathbf{y}\) są niezależne to \(p(\mathbf{x}, \mathbf{y}) = p(\mathbf{x}) p(\mathbf{y})\). Jeśli
@@ -450,7 +450,7 @@ względną między rozkładem łącznym \(p(\mathbf{x}, \mathbf{y})\), a rozkła
 \(p(\mathbf{x})p(\mathbf{y})\). Wielkość taką nazywamy informacją wzajemną (z ang/ \textit{mutual
 information})
 \begin{equation*}
-    \mathbb{I}(\mathbf{x} , \mathbf{y}) = \mathbb{KL}(p(\mathbf{x}, \mathbf{y}), p(\mathbf{x})p(\mathbf{y})) = \int\limits_{\mathbb{R}^{2n}} p(\mathbf{x}, \mathbf{y})\log\left\{\frac{p(\mathbf{x}, \mathbf{y})}{p(\mathbf{x})p(\mathbf{y})}\right\} \dd[n]{\mathbf{x}} \dd[n]{\mathbf{y}}\,.
+    \mathbb{I}(\mathbf{x} , \mathbf{y}) = \mathbb{D}_\text{KL}(p(\mathbf{x}, \mathbf{y}), p(\mathbf{x})p(\mathbf{y})) = \int\limits_{\mathbb{R}^n\times\mathbb{R}^m} p(\mathbf{x}, \mathbf{y})\log\left\{\frac{p(\mathbf{x}, \mathbf{y})}{p(\mathbf{x})p(\mathbf{y})}\right\} \dd[n]{\mathbf{x}} \dd[m]{\mathbf{y}}\,.
 \end{equation*}
 
 \section{Statystyka}
@@ -669,6 +669,32 @@ Jeśli przez \(\theta_M\) oznaczymy parametry modelu \(M\) to
 Powyższą wielkość nazywamy wiarygodnością brzegową (z ang. \textit{marginal likelihood}) lub
 \textit{model evidence}.
 
+\subsection{Estymator jądrowy gęstości (KDE)}
+
+Załóżmy, że mamy zbiór obserwacji iid \(\{\mathbf{x}_1, \ldots, \mathbf{x}_m\}\) taki, że
+\(\mathbf{x}_i \sim \mathcal{D}\) dla pewnego \(n\)--wymiarowego ciągłego rozkładu
+prawdopodobieństwa \(\mathcal{D}\) z nieznaną gęstością prawdopodobieństwa \(p(\mathbf{x})\). Chcemy
+znaleźć estymator \(\hat{p}(\mathbf{x})\) tej funkcji. Estymatorem jądrowym gęstości funkcji \(p\)
+(z ang. \textit{kernel density estimator}) nazywamy funkcję
+\begin{equation*}
+    \hat{p}(\mathbf{x}) := \frac{1}{mh^n}\sum_{i=1}^m K\left(\frac{\mathbf{x} - \mathbf{x}_i}{h}\right)\,,
+\end{equation*}
+gdzie \(h \in \mathbb{R}\) jest pewnym hiperparametrem zwanym \textit{bandwidth}, a \(K:
+\mathbb{R}^n \mapsto [0; \infty)\) to tzw. funkcja jądrowa będąca parzystą funkcją posiadającą w 0
+maksimum globalne oraz spełniającą warunek unormowania
+\begin{equation*}
+    \int\limits_{\mathbb{R}^n} K(\mathbf{x}) \dd[n]{\mathbf{x}}= 1\,.
+\end{equation*}
+Ze statystycznego punktu widzenia, postać jądra nie ma istotnego znaczenia i wybór funkcji  \(K\)
+może być arbitralny, uwzględniający przede wszystkim pożądane własności otrzymanego estymatora, na
+przykład klasę jego regularności (ciągłość, różniczkowalność itp.). W przypadku jednowymiarowym jako
+funkcję \(K\) przyjmuje się klasyczne postacie gęstości rozkładów probabilistycznych, na przykład
+gęstość rozkładu normalnego. W przypadku wielowymiarowym stosuje się tzw. jądro radialne tj. dla
+jądra jednowymiarowego \(K\) wielowymiarowe jądro radialne definiujemy jako
+\begin{equation*}
+    K(\mathbf{x}) = K(\norm{\mathbf{x}})
+\end{equation*}
+dla pewnej normy (typowo normy euklidesowej) \(\norm{\cdot}\).
 
 \subsection{Modele Gaussowskie}
 
@@ -1725,7 +1751,6 @@ mini-seryjny spadek wzdłuż gradientu (z ang. \textit{Mini-Batch Gradient Desce
         Przykładem takim są omawiane dalej Konwolucyjne Sieci Neuronowe, których struktura jest
         skonstruowana w taki sposób, aby wyciągać pewne cechy przestrzenne z obrazów.
     \end{enumerate}
-    
 \end{enumerate}
 
 
@@ -1734,6 +1759,10 @@ mini-seryjny spadek wzdłuż gradientu (z ang. \textit{Mini-Batch Gradient Desce
 \subsection{Sieci rekurencyjne (RNN)}
 
 \subsection{Bayesowskie Sieci Neuronowe (BNN)}
+
+\subsubsection{Wnioskowanie przybliżone}
+
+
 
 \subsection{Transformery}
 
