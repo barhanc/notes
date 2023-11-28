@@ -2,7 +2,8 @@
 \ProvidesClass{myclass}
 
 %**** Article One column ****
-\LoadClass{article}
+\LoadClass[12pt]{article}
+\RequirePackage[a4paper]{geometry}
 
 %**** Article Two column ****
 %\LoadClass[twocolumn]{article}
