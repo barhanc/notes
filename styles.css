@@ -1,5 +1,10 @@
 ul,
 ol,
 li {
-    font-family: "Lucida Console", monospace;
+    font-family: monospace;
+}
+
+body {
+    text-align: justify;
+    text-justify: inter-word;
 }
