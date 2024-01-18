@@ -4,7 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
     <title>Notes Viewer</title>
     <script>
         MathJax = {
@@ -12,26 +11,80 @@
         };
     </script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+    <style>
+        body {
+            font-family: "Lucida Grande", Verdana, Arial, Sans-Serif;
+            font-size: small;
+            text-align: justify;
+            text-justify: inter-word;
+            width: 60ch;
+            margin: 0 auto;
+        }
+    </style>
+
 </head>
 
 <body>
     <hr>
     <ul>
         <li><a href="./new_ml/main.pdf" target="_blank">pml.pdf</a><br>
-            [PL] basic stuff about Probabilistic Machine Learning / ANNs / Deep RL / Optimal Control including the bare
-            minimum of
-            relevant probability/stats theory</li>
-        <li><a href="./old_classic/main.pdf" target="_blank">cls.pdf</a> <br> [PL] high school
-            notes on the four pillars of classical physics: mechanics, thermodynamics,
-            electrodynamics and optics</li>
-        <li><a href="./old_quant/main.pdf" target="_blank">eqm.pdf</a><br> [PL] Elementary
-            Quantum Mechanics; undergrad stuff based mostly on 1st part of Griffiths. My first
-            contact with QM.</li>
-        <li><a href="./new_qm/main.pdf" target="_blank">fqm.pdf</a><br> [PL] my second contact
-            with QM when I realised that foundations of CM are much clearer than QM and
-            started caring about the latter more.</li>
+            [PL] basic stuff about Probabilistic Machine Learning / ANNs / Deep RL / Optimal Control
+            including the bare minimum of relevant probability/stats theory</li>
+        <li><a href="./old_classic/main.pdf" target="_blank">cls.pdf</a> <br> [PL] high school notes
+            on the four pillars of classical physics: mechanics, thermodynamics, electrodynamics and
+            optics</li>
+        <li><a href="./old_quant/main.pdf" target="_blank">eqm.pdf</a><br> [PL] Elementary Quantum
+            Mechanics; undergrad stuff based mostly on 1st part of Griffiths. My first contact with
+            QM.</li>
+        <li><a href="./new_qm/main.pdf" target="_blank">fqm.pdf</a><br> [PL] my second contact with
+            QM when I realised that foundations of CM are much clearer than QM and started caring about
+            the latter more.</li>
     </ul>
     <hr>
+    <!-- <h3>Method of inversion</h3>
+
+    <p>
+        The so called <i>method of images</i> is a well known technique for solving various boundary
+        value problems in potential theory (electrostatics, steady-state heat equation). The method
+        was first described by William Thomson (Lord Kelvin) who used it to derive, now standard,
+        theorems regarding spherical conductors under the influence of point charges (see the paper
+        "On the mathematical theory of electricity in equilibrium" available <a
+            href="https://archive.org/details/reprintofpaperso00kelv">here</a>). In the same paper Lord
+        Kelvin also introduced another method called <i>method of inversion</i> or
+        <i>electrical inversion</i> which he later used to find a solution to a highly non-trivial
+        problem of determining a charge distribution on a conducting spherical bowl under the
+        influence of a point charge. James Clerk Maxwell in his monumental work "A Treatise on
+        Electricity and Magnetism" commented on this result: <i>"One of the most remarkable
+            illustrations of the power of Sir W. Thomson's method of Electrical Images is furnished by
+            his investigation of the distribution of electricity on a portion of a spherical surface
+            bounded by a small circle. [...] I am not aware that a solution of the problem of the
+            distribution of electricity on a finite portion of any curved surface has been given by any
+            other mathematician."</i>. The purpose of this article is to present the method of
+        electrical inversion and show its application to some interesting problems in
+        electrostatics.
+    </p>
+    We begin by defining geometrical transformation called <i>inversion in a sphere</i>. Let
+    $\Omega=(O, R)$ be a sphere of radius $R$ and centre $O$. We define an <i>inversion with respect
+        to $\Omega$</i> as a mapping which transforms any point $P \neq O$ to a point $P'$ on the ray
+    $OP$ such that
+    $$
+    |OP|\cdot|OP'| = R^2\,.
+    $$
+    Based on this definition one may easily prove the following statements.
+    <ul>
+        <li>
+            The image of any sphere under the inversion is a sphere, except when the sphere passes through the centre of
+            inversion then the image is a plane.
+        </li>
+        <li>
+            The image
+        </li>
+    </ul>
+
+    <p>
+
+    </p> -->
+
 </body>
 
 </html>
