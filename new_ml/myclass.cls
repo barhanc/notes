@@ -37,4 +37,8 @@
 
 \newcommand{\oper}[1]{\boldsymbol{\mathsf{#1}}}
 \newcommand{\diag}[0]{\text{diag}}
+\DeclareFontFamily{U}{wncy}{}
+\DeclareFontShape{U}{wncy}{m}{n}{<->wncyr10}{}
+\DeclareSymbolFont{mcy}{U}{wncy}{m}{n}
+\DeclareMathSymbol{\sh}{\mathord}{mcy}{"78} 
 % \newcommand{\oper}[1]{\hat{#1}}

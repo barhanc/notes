@@ -301,7 +301,10 @@ to
 i mówimy, że \(N \sim \text{Pois}(\lambda)\) (zmienna \(N\) ma rozkład Poissona z parametrem
 \(\lambda\)). Zachodzi ponadto \textbf{twierdzenie Poissona}: niech \((S_n)\) będzie ciągiem takim,
 że \(S_n \sim \text{Bin}(n, p_n)\), gdzie ciąg \((p_n)\) jest taki, iż \(\lim_{n \to \infty} np_n =
-\lambda\), wówczas \(\lim_{n\to\infty}P(S_n = k) = \e^\lambda \lambda^k / k!\).
+\lambda\), wówczas 
+\begin{equation*}
+\lim_{n\to\infty}P(S_n = k) =\frac{\e^\lambda\lambda^k}{k!}\,.
+\end{equation*}
 
 \subsubsection{Rozkład jednostajny}
 Jeśli zmienna losowa \(X\) o wartościach rzeczywistych ma gęstość prawdopodobieństwa daną przez
@@ -334,13 +337,13 @@ Mówimy, że zmienna \(X\) o wartościach rzeczywistych ma rozkład gamma z para
         0\,, &x \leq 0
     \end{cases}\quad,
 \end{equation*}
-gdzie \(\Gamma\) to funkcja Eulera. Parametr \(p\) nazywamy parametrem kształtu, a \(a\) --
+gdzie \(\Gamma\) to funkcja gamma Eulera. Parametr \(p\) nazywamy parametrem kształtu, a \(a\) --
 parametrem intensywności. Szczególnym przypadkiem rozkładu gamma jest rozkład \(\chi^2\)
 zdefiniowany jako rozkład \(\chi^2(n) := \Gamma(n/2, 1/2)\).
 
-\section{Elementarz teorii informacji}
+\subsection{Elementarz teorii informacji}
 
-\subsection{Definicja i własności entropii}
+\subsubsection{Definicja i własności entropii}
 
 Mając dany skończony zbiór zdarzeń elementarnych \(\{A_1,\ldots,A_n\}\) taki, że wynikiem
 eksperymentu losowego może być dokładnie jedno z nich oraz prawdopodobieństwa \(p_1,\ldots,p_n\),
@@ -433,7 +436,7 @@ oznaczymy jako \(H(B \mid A)\). Mamy w takim razie
 \end{equation*}
 Z nierówności Jensena można dodatkowo pokazać, że zachodzi \(H(B\mid A) \leq H(B)\).
 
-\subsection{Entropia względna}
+\subsubsection{Entropia względna}
 Dla dwóch ciągłych rozkładów prawdopodobieństwa \(p(\mathbf{x})\), \(q(\mathbf{x})\) definiujemy ich
 entropię względną (nazywaną również \textit{Kullback-Leibler (KL) divergence}) jako
 \begin{equation*}
@@ -452,8 +455,6 @@ information})
 \begin{equation*}
     \mathbb{I}(\mathbf{x} , \mathbf{y}) = \mathbb{D}_\text{KL}(p(\mathbf{x}, \mathbf{y}), p(\mathbf{x})p(\mathbf{y})) = \int\limits_{\mathbb{R}^n\times\mathbb{R}^m} p(\mathbf{x}, \mathbf{y})\log\left\{\frac{p(\mathbf{x}, \mathbf{y})}{p(\mathbf{x})p(\mathbf{y})}\right\} \dd[n]{\mathbf{x}} \dd[m]{\mathbf{y}}\,.
 \end{equation*}
-
-\section{Statystyka}
 
 \subsection{Wnioskowanie statystyczne}
 
@@ -583,6 +584,9 @@ Zauważmy przy tym iż liczba \(Z\) nie jest nam potrzebna, gdyż wystarczy zmak
 \begin{equation*}
     \theta_\text{MAP} = \arg\max_{\theta \in \Theta} p(D \mid \theta)\pi(\theta)\,.
 \end{equation*}
+
+\linesep
+\newpage
 
 \section{Probabilistyczne uczenie maszynowe}
 
@@ -1386,30 +1390,106 @@ korelację po okresie przejściowym i przyspieszyć zbieżność. Standardowo wy
 z tej klasy są algorytmy HMC (\textit{Hamiltonian Monte Carlo}) oraz NUTS (\textit{No U-Turn
 Sampler}). 
 
-
+\linesep
+\newpage
 
 \section{Sieci neuronowe}
 
-Podstawowym elementem każdej sieci neuronowej jest pojedynczy neuron, który możemy traktować jako
-odwzorowanie postaci \(z: \mathbb{R}^n \mapsto \mathbb{R}\) będące złożeniem pewnego odwzorowania
-nieliniowego \(f:\mathbb{R} \mapsto \mathbb{R}\) z odwzorowaniem afinicznym \(a: \mathbb{R}^n
-\mapsto \mathbb{R}\), \(a(\mathbf{x}) = \mathbf{w}^\top\mathbf{x} + b\) tj.
+\subsection{Tensory}
+
+W przypadku uczenia maszynowego \(k\)-\textit{tensor} będziemy utożsamiali z odwzorowaniem
 \begin{equation*}
-    z(\mathbf{x}) = (f \circ a)(\mathbf{x}) = f\left(\mathbf{w}^\top\mathbf{x} + b\right)\,.
+    X:\mathbb{N}^k\supset I \mapsto \mathbb{K}\,,
 \end{equation*}
-W praktyce wszystkie neurony sieci używają tej samej nieliniowej funkcji \(f\) zwanej funkcją
-aktywacji (z ang. \textit{activation function}) i najczęściej są to funkcje ReLU, GELU lub funkcje
-sigmoidalne:
+gdzie \(\mathbb{K}\) jest pewnym ciałem, a \(I\) jest pewnym spójnym zbiorem wielowskaźników tj.
+zakładamy, iż 
+\begin{equation*}
+    \forall \alpha \in
+    \{1,\ldots, k\} : i_\alpha > 0 \land (i_1,..,i_\alpha,..,i_k) \in I \implies (i_1,..,i_\alpha -
+    1,..,i_k) \in I\,.
+\end{equation*}
+Jest to zatem po prostu wielowymiarowa tablica, której elementy są skalarami. My będziemy zawsze
+przyjmować \(\mathbb{K} = \mathbb{R}\). Miejsce \(\alpha\) wielowskaźnika będziemy nazywali osią.
+Wartość elementu tensora \(X\) pod wielowskaźnikiem \((i_1, \ldots, i_k)\) będziemy oznaczać
+\(X_{i_1,..,i_k}\). Czasami będziemy utożsamiać zapis \(X_{i_1,..,i_k}\) z odwzorowaniem \(X\), a
+nie z jego wartością dla argumentu \((i_1, \ldots, i_k)\), aby podkreślić jakie argumenty przyjmuje.
+Jest to tożsame z częstym w matematyce oznaczaniem funkcji jako \(f(x)\) podczas, gdy funkcją jest
+\(f\), a \(f(x)\) to jej wartość dla argumentu \(x\).\hfill \break
+
+Dla tensora \(X:\mathbb{N}^k\supset I \mapsto \mathbb{R}\) definiujemy tzw. operator kształtu (z
+ang. \textit{shape operator}) \(\sh\)
+\begin{equation*}
+    \sh(X) := (\sh_1(X), \ldots, \sh_k(X))\,,\quad \sh_\alpha(X) := \text{liczba elementów \(X\) wzdłuż osi \(\alpha\).}
+\end{equation*}
+Operator kształtu zwraca wektor liczb naturalnych zawierający uogólnienie liczb kolumn/wierszy dla
+macierzy. W szczególności dla tablicy jednowymiarowej (tj. 1-tensora) \(T\) zawierającej \(n\)
+elementów będziemy stosowali zapis \(\sh(T) = (n,)\).\hfill \break
+
+Zbiór wszystkich tensorów danego kształtu \(\sh=(n_1,\ldots,n_k)\) o elementach rzeczywistych
+będziemy oznaczać przez \(\mathbb{T}_{n_1,..,n_k}(\mathbb{R}) = \mathbb{T}_\sh(\mathbb{R})\). Jeśli
+będzie to oczywiste z kontekstu (u nas zawsze) to pominiemy człon w nawiasach pisząc po prostu
+\(\mathbb{T}_{n_1,..,n_k} = \mathbb{T}_\sh\). Odwzorowanie \(F\) o argumentach i wartościach
+tensorowych zdefiniujemy jako \(F: \mathbb{T}_{\sh_1} \mapsto \mathbb{T}_{\sh_2}\). Wówczas wartość
+tego odwzorowania dla argumentu \(X\) (\(\sh(X) = \sh_1\)) tj. \(F(X)\) jest tensorem (\(\sh(F(X)) =
+\sh_2\)). Ponadto będziemy utożsamiać zapis \((F(X))_{i_1,..,i_k}\) z \(F_{i_1,..,i_k}(X)\).\hfill
+\break
+
+W wyrażeniach zawierających iloczyny postaci 
+\begin{equation*}
+    X_{i_1,..,i_p}Y_{j_1,..,j_q}Z_{k_1,..,k_r}\cdots
+\end{equation*}
+stosujemy (uproszczoną) konwencję sumacyjną Einsteina tj. dla każdego powtórzonego indeksu w takim
+wyrażeniu należy przed wyrażenie postawić znak sumy po tym indeksie (tzw. \textit{indeks
+sumacyjny}), przy czym dla zwiększenia przejrzystości zapisu nie piszemy znaków sumy explicite.
+Oznacza to w szczególności, iż możemy łatwo definiować nowe tensory jako odpowiednie iloczyny np.
+iloczyn macierzy \(A \in \mathbb{T}_{n,m}, B \in \mathbb{T}_{m,l}\) możemy zapisać jako
+\begin{equation*}
+    C_{ik} = A_{ij}B_{jk}\,.
+\end{equation*}
+wyrażenie to definiuje nowy tensor \(C \in \mathbb{T}_{n, l}\), którego elementy są dane poprzez
+sumę iloczynów odpowiednich elementów \(A, B\). Zauważmy jednakże, iż ponieważ nie wykorzystujemy
+wskaźników dolnych i górnych, więc jednakowo poprawnymi wyrażeniami są \(A_{ij}X_i\) oraz
+\(A_{ij}X_j\) chociaż w ogólności \(A_{ij}X_i \neq A_{ij}X_j\). Dodatkowo dla funkcji \(f:
+\mathbb{R} \mapsto \mathbb{R}\) zapis postaci \(Y_{ijk..} = f(X_{ijk..})\) dla dowolnego tensora
+\(X\) definiuje tensor \(Y\), którego wartości są wartościami funkcji \(f\) dla odpowiednich
+wartości tensora \(X\). Dodatkowo jeśli \(f: \mathbb{R} \mapsto \mathbb{R}\), a \(F :
+\mathbb{T}_{\sh_1} \mapsto \mathbb{T}_{\sh_2}\) to przez zapis \(Y = (f \circ F)(X)\) będziemy
+rozumieć 
+\begin{equation*}
+    Y_{ijk..} = f(F_{ijk..}(X))\,.
+\end{equation*}
+
+Ostatnim elementem notacji, który będzie nam potrzebny jest tzw. operator zakresu (z ang.
+\textit{range operator}). Przez zapis 
+\begin{equation*} 
+    X_{\mu_1:\nu_1,..,\mu_k:\nu_k}
+\end{equation*} 
+będziemy rozumieć \(k\)-tensor będący podtensorem \(X\) powstałym przez wybranie odpowiednich
+zakresów \(\mu_\alpha : \nu_\alpha\) osi \(\alpha\). Wartości tego podtensora będziemy oznaczać jako
+\((X_{\mu_1:\nu_1,..,\mu_k:\nu_k})_{i_1,..,i_k}\) Jeśli dla danej osi wybieramy cały zakres to
+będziemy pisali sam znak ,,:''. Jeśli będziemy chcieli wybrać co \(\delta\) element z zakresu od
+\(\mu : \nu\) zaczynając od pierwszego to zapiszemy to jako \(\mu : \nu : \delta\).
+
+\subsection{Neuron}
+
+Podstawowym elementem każdej sieci neuronowej jest pojedynczy neuron, który możemy traktować jako
+odwzorowanie \(y: \mathbb{T}_n \mapsto \mathbb{R}\) będące złożeniem pewnego odwzorowania
+nieliniowego \(\sigma:\mathbb{R} \mapsto \mathbb{R}\) z odwzorowaniem afinicznym
 \begin{equation*}
     \begin{split}
-        &\text{ReLU}(x) := \max(0, x)\,,\\
-        &\text{GELU}(x) := x\Phi(x)\,,
-    \end{split}
+        &y: \mathbb{T}_n \mapsto \mathbb{R}\\
+        &y = \sigma\left(W_i X_i + b\right)
+    \end{split}\quad.
+\end{equation*}
+W praktyce jako funkcji aktywacji \(\sigma\) (\textit{activation function}) najczęściej używamy
+funkcji ReLU, GELU lub funkcji sigmoidalnych:
+\begin{equation*}
+    \text{ReLU}(x) := \max(0, x)\,,\quad \text{GELU}(x) := x\Phi(x)\,,
 \end{equation*}
 gdzie \(\Phi(x)\) to dystrybuanta standardowego rozkładu normalnego. Pojedyncze neurony są następnie
 łączone w sieci w określony sposób tworząc daną architekturę sieci neuronowej.
 
-\subsection{Architektura MLP}
+\subsection{Perceptron wielowarstwowy}
 
 Opis sieci neuronowych zaczniemy od architektury MLP (z ang. \textit{Multilayer Perceptron}). Sieć
 MLP składa się z równoległych warstw neuronów, przy czym połączenia występują tylko między neuronami
@@ -1418,51 +1498,9 @@ sieci nazywamy warstwą wejściową (z ang. \textit{input layer}), ostatnią -- 
 ang. \textit{output layer}), a pozostałe nazywamy warstwami ukrytymi (z ang. \textit{hidden
 layers}).
 
-\begin{figure}
-\centering
-\begin{tikzpicture}[x=1.5cm, y=1.5cm, >=stealth]
-
-    \foreach \m/\l [count=\y] in {1,2,3,4} \node [every neuron/.try, neuron \m/.try] (input-\m) at
-        (0,2.5-\y) {$x_\m$};
-    
-    \foreach \m [count=\y] in {1,2} \node [every neuron/.try, neuron \m/.try ] (hidden-\m) at
-        (2,2-\y*1.25) {$z^{(1)}_\m$};
-    
-    \foreach \m [count=\y] in {1,2} \node [every neuron/.try, neuron \m/.try ] (output-\m) at
-        (4,2-\y*1.25) {$\theta_\m$};
-        
-    \foreach \l [count=\i] in {1,n} \node [above] at (hidden-\i.north) {};
-        
-    \foreach \i in {1,...,4} \foreach \j in {1,...,2} \draw [->] (input-\i) -- (hidden-\j);
-    
-    \foreach \i in {1,...,2} \foreach \j in {1,...,2} \draw [->] (hidden-\i) -- (output-\j);
-    
-    \foreach \l [count=\x from 0] in {Input, Hidden, Ouput} \node [align=center, above] at (\x*2,2)
-        {\l \\ layer};
-    
-    \end{tikzpicture}
-\end{figure}
-
 Zauważmy, iż opisane wcześniej modele regresji liniowej i wieloklasowej regresji logistycznej są
 przykładamy najprostszych sieci MLP bez żadnych warstw ukrytych. Ich graficzne reprezentacje jako
-sieci MLP zamieszczono na Rysunku \ref{fig:simple-mlp1} i \ref{fig:simple-mlp2}. Zauważmy, iż
-wyjściem sieci są parametry docelowego rozkładu prawdopodobieństwa nad obserwacjami tj. odpowiednio
-wartość oczekiwana \(\mu\) w przypadku regresji liniowej i prawdopodobieństwa \(\pi_i\) każdej z
-klas rozkładu kategorialnego w przypadku regresji logistycznej. W przypadku regresji liniowej
-funkcja aktywacji neuronu w warstwie wyjściowej to po prostu funkcja identycznosciowa, natomiast w
-przypadku regresji logistycznej jest to funkcja soft-max.
-
-Przejdźmy teraz do matematycznego opisu architektury MLP. Dla danej funkcji
-\(f:\mathbb{R}\mapsto\mathbb{R}\) przez zapis \(\mathbf{f}(\mathbf{x})\) dla \(\mathbf{x} \in
-\mathbb{R}^n\) będziemy rozumieli macierz kolumnową
-\begin{equation*}
-    \mathbf{f}(\mathbf{x}) = \mqty[f(x_1) \\ \vdots \\ f(x_n)]\,.
-\end{equation*}
-Dodatkowo zdefiniujmy dodatkowo odwzorowanie \(\mathbf{a}: \mathbb{R}^n \mapsto \mathbb{R}^m\) jako
-\begin{equation*}
-    \mathbf{a}(\mathbf{x}) = \mqty[\mathbf{w}_1^{\top} \\ \vdots \\ \mathbf{w}_m^{\top}]\mathbf{x} + \mathbf{b} = \oper{W}\mathbf{x} + \mathbf{b}\,,
-\end{equation*}
-gdzie \(\oper{W} \in \mathbb{M}_{m\times n}(\mathbb{R}), \mathbf{b} \in \mathbb{R}^m\).
+sieci MLP zamieszczono na Rysunku \ref{fig:simple-mlp1} i \ref{fig:simple-mlp2}. 
 
 \begin{figure}[ht]
     \centering
@@ -1504,76 +1542,100 @@ gdzie \(\oper{W} \in \mathbb{M}_{m\times n}(\mathbb{R}), \mathbf{b} \in \mathbb{
     
 \end{figure}
 
-Oznaczmy przez \(n_0, n_1, \ldots, n_{s-1}, n_s\) liczby neuronów w kolejnych warstwach, natomiast
-przez \(g\) funkcję aktywacji warstwy wyjściowej. Wyjście sieci MLP jest zatem opisane przez
-następujące złożenie funkcji
+Zauważmy, iż wyjściem sieci są parametry docelowego rozkładu prawdopodobieństwa nad obserwacjami tj.
+odpowiednio wartość oczekiwana \(\mu\) w przypadku regresji liniowej i prawdopodobieństwa \(\pi_i\)
+każdej z klas rozkładu kategorialnego w przypadku regresji logistycznej. W przypadku regresji
+liniowej funkcja aktywacji neuronu w warstwie wyjściowej to po prostu funkcja identycznosciowa,
+natomiast w przypadku regresji logistycznej jest to funkcja soft-max.
+
+Przejdźmy teraz do matematycznego opisu architektury MLP. Załóżmy, iż sieć składa się z \(H + 2\)
+warstw (\(H\) warstw ukrytych) o liczbach neuronów \(N_{in} = N_0\) (warstwa wejściowa), \(N_1,
+\ldots, N_H\) (warstwy ukryte), \(N_{out} = N_{H+1}\) (warstwa wyjściowa). Jeśli \(X \in
+\mathbb{T}_{N_{h-1}}\) jest wejściem \(h\)-tej warstwy ukrytej to jej wyjście \(Y^h \in
+\mathbb{T}_{N_h}\) jest dane przez
 \begin{equation*}
-    \boldsymbol{\theta}(\mathbf{x}; \oper{W}_1, \ldots,\oper{W}_s, \mathbf{b}_1, \ldots, \mathbf{b}_s) = \left(\mathbf{g}\circ\mathbf{a}_s\circ \mathbf{f}_{s-1}\circ\mathbf{a}_{s-1}\circ\ldots\circ \mathbf{f}_1\circ\mathbf{a}_1\right)(\mathbf{x})\,,
-\end{equation*}
-gdzie 
+    Y_i^h = \sigma\left(W_{ij}^hX_j + B_i^h\right) \Longleftrightarrow Y = \left(\sigma \circ L^h\right)(X)\,,
+\end{equation*} 
+gdzie \(W_{ij}^h\) jest macierzą wag w \(h\)-tej warstwie ukrytej, a \(B_i^h\) jest wektorem
+obciążeń (z ang. \textit{bias}) w tej warstwie (indeks górny nie jest potęgą tylko numeruje
+warstwy). Zdefiniowaliśmy tutaj odwzorowanie
 \begin{equation*}
-    \mathbf{a}_k(\mathbf{x}) = \oper{W}_k\mathbf{x} + \mathbf{b}_k\,,
+    \begin{split}
+        &L^h : \mathbb{T}_{N_{h-1}} \mapsto \mathbb{T}_{N_{h}}\\
+        &L_i^h(X) = W_{ij}^hX_j + B_i^h
+    \end{split}\quad.
 \end{equation*}
-przy czym \(\oper{W}_k \in \mathbb{M}_{n_k \times n_{k-1}}(\mathbb{R})\) oraz
-\(\mathbf{f}_k:\mathbb{R}^{n_k} \mapsto \mathbb{R}^{n_k}\). Chcemy zatem wnioskować o parametrach
-\(\oper{W}_1, \ldots,\oper{W}_s, \mathbf{b}_1, \ldots, \mathbf{b}_s\) zakładając, iż rozkład
-warunkowy nad obserwacjami dla wektora zmiennych objaśniających \(\mathbf {x}\) ma postać 
+Bez straty ogólności zakładamy, iż wyjście warstwy wyjściowej jest po prostu obciążoną kombinacją
+liniową wejść bez żadnej funkcji nieliniowej. Wyjście z sieci MLP jest zatem dane przez następujące
+złożenie
 \begin{equation*}
-    y \mid \oper{W}_1, \ldots,\oper{W}_s, \mathbf{b}_1, \ldots, \mathbf{b}_s \sim \mathcal{D}(\boldsymbol{\theta}(\mathbf{x}))\,.
+    \begin{split}
+        &F: \mathbb{T}_{N_{in}} \mapsto \mathbb{T}_{N_{out}}\\
+        &F(X) = \left(L^{H+1} \circ \sigma \circ L^H \circ \cdots \circ \sigma \circ L^2 \circ \sigma \circ L^1\right)(X)
+    \end{split}\quad.
 \end{equation*}
-dla pewnej rodziny rozkładów prawdopodobieństwa \(\mathcal{D}\). 
+W takiej postaci sieć MLP przetwarza pojedynczo każdy wektor \(X_j\) należący do zbioru danych
+\(\{(Y_i^k, X_j^k) \mid k \in \{1,\ldots,D\}\}\). Możemy jednak rozszerzyć odwzorowanie \(F\) w taki
+sposób, aby sieć przetwarzała od razu tensor \(X_{jk}\) zawierający wszystkie przykłady ze zbioru
+uczącego
+\begin{equation*}
+    \begin{split}
+        &F: \mathbb{T}_{N_{in}, D} \mapsto \mathbb{T}_{N_{out}, D}\\
+        &F(X) = \left(L^{H+1} \circ \sigma \circ L^H \circ \cdots \circ \sigma \circ L^2 \circ \sigma \circ L^1\right)(X)\\
+        &\\
+        &L^h: \mathbb{T}_{N_{h-1}, D} \mapsto \mathbb{T}_{N_{h}, D}\\
+        &L_{ik}^h(X) = W_{ij}^h X_{jk} + B_i^h
+    \end{split}\quad.
+\end{equation*}
+
+Wyjście z sieci neuronowej będziemy wykorzystywać przy tworzeniu modeli statystycznych w taki sam
+sposób jak w modelach płytkich (regresja liniowa, regresja softmax) używaliśmy kombinacji liniowej
+wektora obserwacji z wektorem wag \(\mathbf{w}^\top\mathbf{x}\). Uczenie parametrów \(W_{ij}^h,
+B_i^h\) będzie zatem polegało na znalezieniu ich estymaty punktowej MLE dla danego modelu
+statystycznego. Będziemy zatem minimalizować pewien funkcjonał \(J\) (funkcję kosztu) o postaci
+danej przez zanegowaną logarytmiczną funkcję wiarygodności. Przykładowo dla regresji użyjemy
+funkcjonału kwadratowego
+\begin{equation*}
+    J[F] = \frac{1}{2}\left(F_{ij}(X) - Y_{ij}\right)^2\,,
+\end{equation*}
+gdzie \(D = (Y_{ik}, X_{jk})\) jest zbiorem danych treningowych. Natomiast w przypadku wieloklasowej
+regresji logistycznej jako funkcjonał przyjmiemy entropię krzyżową
+\begin{equation*}
+    J[F] = -T_{ik}\log \Pi_{ik}\,,\quad \Pi_{ik} = \frac{\exp\left\{F_{ik}(X)\right\}}{I_j\exp\left\{F_{jk}(X)\right\}}\,,
+\end{equation*}
+gdzie tensor \(I\) składa się z samych 1, natomiast \(T_{:,k}\) jest wektorem w postaci
+\textit{one-hot encoding} prawidłowej klasy dla wektora zmiennych objaśniających \(X_{:,k}\) ze
+zbioru danych treningowych.
 
 \subsubsection{Wsteczna propagacja błędu}
 
-Zajmiemy się najpierw problemem znalezienia estymaty punktowej MLE dla parametrów sieci MLP.
-Załóżmy, iż mamy dane obserwacje iid \(D = \{(y_1, \mathbf{x}_1), \ldots, (y_m, \mathbf{x}_m)\}\).
-Wiarygodność ma postać
+W przypadku algorytmów minimalizacji takich jak spadek wzdłuż gradientu musimy znać wartości
+pochodnych funkcji kosztu po parametrach modelu. Wyznaczymy teraz te pochodne dla wag w sieci MLP.
+Niech \(Y_{ab}^h = \sigma(L_{ab}^h)\), wówczas \(L_{ab}^h = W_{ac}^hY_{cb}^{h-1} + B_a^h\), przy
+czym zakładamy \(Y^0 = X\). Mamy odpowiednio
 \begin{equation*}
-p(D \mid \oper{W}_1, \ldots,\oper{W}_s, \mathbf{b}_1, \ldots, \mathbf{b}_s ) = \prod_{i=1}^m p(y_i \mid \oper{W}_1, \ldots,\oper{W}_s, \mathbf{b}_1, \ldots, \mathbf{b}_s)
+    \begin{split}
+        &\pdv{L_{ab}^h}{W_{ef}^h} = Y_{cb}^{h-1}\delta_{ae}\delta_{cf} = Y_{fb}^{h-1}\delta_{ae}\\
+        &\pdv{L_{ab}^h}{Y_{ef}^{h-1}} = W_{ac}^h\delta_{ce}\delta_{fb} = W_{ae}^h\delta_{fb}\\
+        &\pdv{Y_{ab}^h}{L_{cd}^{h}} = \sigma'(L_{ab}^h)\delta_{ac}\delta_{bd}
+    \end{split}\quad.
 \end{equation*}
-skąd funkcja kosztu (zanegowana logarytmiczna funkcja wiarygodności)
+Jednocześnie zauważmy, że
 \begin{equation*}
-    \ell(D \mid \oper{W}_1, \ldots,\oper{W}_s, \mathbf{b}_1, \ldots, \mathbf{b}_s) = -\sum_{i=1}^m \log p(y_i \mid \oper{W}_1, \ldots,\oper{W}_s, \mathbf{b}_1, \ldots, \mathbf{b}_s)\,.
+    \pdv{J}{W_{ab}^h} = \left(\pdv{J}{F_{cd}}\pdv{F_{cd}}{L_{ef}^{H+1}}\right)\left(\pdv{L_{ef}^{H+1}}{Y_{ij}^H}\pdv{Y_{ij}^H}{L_{kl}^H}\right)\left(\pdv{L_{kl}^H}{Y_{mn}^{H-1}}\pdv{Y_{mn}^{H-1}}{L_{pq}^{H-1}}\right)\bigg(\cdots\bigg)\pdv{L_{xy}^h}{W_{ab}^h}\,.
 \end{equation*}
-Zauważmy więc, iż dla dowolnego modelu statystycznego funkcja ta ma postać sumy po wszystkich
-przykładach w zbiorze uczącym \(D\)
+Pochodne możemy obliczać zatem iteracyjnie jako
 \begin{equation*}
-    \ell(D \mid \oper{W}_1, \ldots,\oper{W}_s, \mathbf{b}_1, \ldots, \mathbf{b}_s) = \sum_{i=1}^m \ell(y_i \mid \oper{W}_1, \ldots,\oper{W}_s, \mathbf{b}_1, \ldots, \mathbf{b}_s)\,.
+    \pdv{J}{W_{ab}^h} = \Delta^h_{ij}\pdv{L_{ij}^h}{W_{ab}^h} = \Delta^h_{ij}Y_{bj}^{h-1}\delta_{ai} = \boxed{\Delta_{aj}^hY_{bj}^{h-1}}\,,
 \end{equation*}
-Do znalezienia estymaty MLE parametrów sieci neuronowej musimy zminimalizować powyższą funkcję, a
-zatem potrzebny nam jest algorytm efektywnego obliczania pochodnych \(\ell(y_i \mid \ldots)\) po
-parametrach \(\oper{W}_k, \mathbf{b}_k\). Zauważmy, że zachodzi
+gdzie \(\Delta_{ij}^h\) wyznaczamy iteracyjnie jako
 \begin{equation*}
-    \pdv{\ell}{\oper{W}_k} = \pdv{\ell}{\mathbf{g}}\pdv{\mathbf{g}}{\mathbf{a}_s}\pdv{\mathbf{a}_s}{\mathbf{f}_{s-1}}\pdv{\mathbf{f}_{s-1}}{\mathbf{a}_{s-1}}\ldots \pdv{\mathbf{a}_k}{\oper{W}_k}
+    \begin{split}
+        &\Delta^{H+1}_{ij} = \pdv{J}{F_{kl}}\pdv{F_{kl}}{L_{ij}^{H+1}} = \pdv{J}{F_{kl}}\delta_{ik}\delta_{jl} = \boxed{\pdv{J}{F_{ij}}}\\
+        &\Delta^{h}_{ij} = \Delta_{kl}^{h+1}\pdv{L^{h+1}_{kl}}{Y_{mn}^h}\pdv{Y_{mn}^h}{L_{ij}^h} = \Delta_{kl}^{h+1} W^{h+1}_{km}\delta_{ln}\sigma'(L_{mn}^h)\delta_{mi}\delta_{nj} = \boxed{\Delta_{kj}^{h+1}W_{ki}^{h+1}\sigma'(L_{ij}^h)}
+    \end{split}
 \end{equation*}
-jednakże
-\begin{equation*}
-    \pdv{\mathbf{f}_k}{\mathbf{a}_k} = \mqty[f'([\mathbf{a}_k]_1) & 0 & \ldots & 0 \\ 0 & f'([\mathbf{a}_k]_2) & \ldots & 0 \\ \vdots & \vdots & \ddots & \vdots \\ 0 & 0 & \ldots & f'([\mathbf{a}_k]_{n_k})] = \diag(\mathbf{f}'_k(\mathbf{a}_k))
-\end{equation*}
-oraz
-\begin{equation*}
-    \pdv{\mathbf{a}_k}{\mathbf{f}_{k-1}} = \oper{W}_k\,,\quad \pdv{\mathbf{a}_k}{\oper{W}_k} = \mqty[\mathbf{f}_{k-1} & \mathbf{0} & \ldots & \mathbf{0} \\ \mathbf{0} & \mathbf{f}_{k-1} & \ldots & \mathbf{0} \\ \vdots & \vdots & \ddots & \vdots \\ \mathbf{0} & \mathbf{0} & \ldots & \mathbf{f}_{k-1}]
-\end{equation*}
-zatem
-\begin{equation*}
-    \pdv{\ell}{\oper{W}_k} = \mathbf{f}_{k-1} \underbrace{\left[\pdv{\ell}{\mathbf{g}}\pdv{\mathbf{g}}{\mathbf{a}_s}\cdot \oper{W}_s\cdot\diag(\mathbf{f}'_{s-1}(\mathbf{a}_{s-1}))\cdots \oper{W}_{k+1}\cdot \diag(\mathbf{f}'_{k}(\mathbf{a}_k))\right]}_{\boldsymbol{\delta}_k}\,.
-\end{equation*}
-Zauważmy, że możemy obliczać \(\boldsymbol{\delta}_k\) rekurencyjnie jako
-\begin{equation*}
-    \boldsymbol{\delta}_{k-1} = \boldsymbol{\delta}_{k}\cdot \oper{W}_k\cdot\diag(\mathbf{f}'_{k-1}(\mathbf{a}_{k-1}))\,,\quad \boldsymbol{\delta}_s = \pdv{\ell}{\mathbf{g}}\pdv{\mathbf{g}}{\mathbf{a}_s}\,.
-\end{equation*}
-W przypadku wyrazu wolnego (\textit{bias}) mamy natomiast analogicznie
-\begin{equation*}
-    \pdv{\ell}{\mathbf{b}_k} = \pdv{\ell}{\mathbf{g}}\pdv{\mathbf{g}}{\mathbf{a}_s}\pdv{\mathbf{a}_s}{\mathbf{f}_{s-1}}\pdv{\mathbf{f}_{s-1}}{\mathbf{a}_{s-1}}\ldots \pdv{\mathbf{a}_k}{\mathbf{b}_k}
-\end{equation*}
-ponieważ jednak
-\begin{equation*}
-    \pdv{\mathbf{a}_k}{\mathbf{b}_k} = \oper{I}\,,
-\end{equation*}
-więc
-\begin{equation*}
-    \pdv{\ell}{\mathbf{b}_k} = \boldsymbol{\delta}_k\,.
-\end{equation*}
+
 Możemy zatem zapisać algorytm obliczania pochodnych funkcji kosztu po parametrach sieci neuronowej
 zwany algorytmem wstecznej propagacji błędu (z ang. \textit{error backpropagation})
 
@@ -1634,50 +1696,6 @@ gradientu: seryjny spadek wzdłuż gradientu (z ang. \textit{Batch Gradient Desc
 stochastyczny spadek wzdłuż gradientu (z ang. \textit{Stochastic Gradient Descent (SGD)}) oraz
 mini-seryjny spadek wzdłuż gradientu (z ang. \textit{Mini-Batch Gradient Descent (mBGD)})
 
-\begin{tcolorbox}[title=Algorytm BGD]
-\begin{enumerate}
-    \item Wybierz początkowe wartości parametrów \(\oper{W}_1, \ldots,\oper{W}_s, \mathbf{b}_1,
-    \ldots, \mathbf{b}_s\).
-    
-    \item Powtarzaj przez \(N\) epok:
-    \begin{enumerate}
-        \item Oblicz pochodne funkcji kosztu \(\ell\) zsumowane po wszystkich przykładach z batcha
-        \(D\) korzystając z algorytmu wstecznej propagacji błędu.
-
-        \item Zaktualizuj wartości parametrów zgodnie z:
-        \begin{equation*}
-            \begin{split}
-                &\oper{W}_k = \oper{W}_k - \frac{\epsilon}{|D|}\pdv{\ell}{\oper{W}_k}\\
-                &\mathbf{b}_k = \mathbf{b}_k - \frac{\epsilon}{|D|}\pdv{\ell}{\mathbf{b}_k}\\
-            \end{split}
-        \end{equation*}
-    \end{enumerate}
-\end{enumerate}
-\end{tcolorbox}
-
-\begin{tcolorbox}[title=Algorytm SGD]
-\begin{enumerate}
-    \item Wybierz początkowe wartości parametrów \(\oper{W}_1, \ldots,\oper{W}_s, \mathbf{b}_1,
-    \ldots, \mathbf{b}_s\).
-    
-    \item Powtarzaj przez \(N\) epok: \\
-    Dla każdego przykładu \((y_i, \mathbf{x}_i) \in D\):
-    \begin{enumerate}
-        \item Oblicz pochodne funkcji kosztu \(\ell\) dla przykładu \((y_i, \mathbf{x}_i)\)
-        korzystając z algorytmu wstecznej propagacji błędu.
-
-        \item Zaktualizuj wartości parametrów zgodnie z:
-        \begin{equation*}
-            \begin{split}
-                &\oper{W}_k = \oper{W}_k - \frac{\epsilon}{|D|}\pdv{\ell}{\oper{W}_k}\\
-                &\mathbf{b}_k = \mathbf{b}_k - \frac{\epsilon}{|D|}\pdv{\ell}{\mathbf{b}_k}\\
-            \end{split}
-        \end{equation*}
-    \end{enumerate}
-
-\end{enumerate}
-\end{tcolorbox}
-
 \begin{tcolorbox}[title=Algorytm mBGD]
 \begin{enumerate}
     \item Wybierz początkowe wartości parametrów \(\oper{W}_1, \ldots,\oper{W}_s, \mathbf{b}_1,
@@ -1695,8 +1713,8 @@ mini-seryjny spadek wzdłuż gradientu (z ang. \textit{Mini-Batch Gradient Desce
         \item Zaktualizuj wartości parametrów zgodnie z:
         \begin{equation*}
             \begin{split}
-                &\oper{W}_k = \oper{W}_k - \frac{\epsilon}{|D|}\pdv{\ell}{\oper{W}_k}\\
-                &\mathbf{b}_k = \mathbf{b}_k - \frac{\epsilon}{|D|}\pdv{\ell}{\mathbf{b}_k}\\
+                &\oper{W}_k = \oper{W}_k - \frac{\epsilon}{|D_i|}\pdv{\ell}{\oper{W}_k}\\
+                &\mathbf{b}_k = \mathbf{b}_k - \frac{\epsilon}{|D_i|}\pdv{\ell}{\mathbf{b}_k}\\
             \end{split}
         \end{equation*}
     \end{enumerate}
@@ -1706,32 +1724,20 @@ mini-seryjny spadek wzdłuż gradientu (z ang. \textit{Mini-Batch Gradient Desce
 \subsubsection{Regularyzacja w sieciach neuronowych}
 
 \begin{enumerate}
-    \item \textbf{Consistent Gaussian Priors}\\
+    \item \textbf{Czynniki regularyzujące}\\
     Analogicznie jak w przypadku prostych modeli liniowych jedną z możliwości regularyzacji jest
-    dodanie do funkcji kosztu \(\ell\) czynnika regularyzującego zawierającego kwadraty składowych
-    wektorów wag postaci \(\tr(\oper{W}_k^\top\oper{W}_k)\) przy czym w ogólności przyjmujemy iż
-    mamy \(s\) różnych współczynników \(\lambda_k\) określających siły regularyzacji dla wag
-    łączących poszczególne warstwy. Zregularyzowana funkcja kosztu ma więc w ogólności postać
-    \begin{equation*}
-        \ell^* = \ell + \frac{1}{2}\sum_{k=1}^s\lambda_k \tr(\oper{W}_k^\top\oper{W}_k)\,.
-    \end{equation*}
-    Dzięki takiej postaci funkcja kosztu zachowuje własność niezmienniczości względem skalowania.
-    Istotnie zauważmy, iż w przypadku niezregularyzowanej funkcji kosztu jeśli wektor w warstwie
-    wejściowej pomnożymy przez pewien skalar \(\alpha\) to wyjście sieci pozostanie niezmienione
-    jeśli wagi w pierwszej warstwie ukrytej pomnożymy przez \(\alpha^{-1}\). Analogicznie wyjście
-    nie zmieni się jeśli wektor w warstwie wyjściowej pomnożymy przez \(\beta\), a wagi łączące dwie
-    ostatnie warstwy pomnożymy przez \(\beta^{-1}\). W szczególności możemy wykonać obie te operacje
-    dla jednej sieci i również nie zmienimy wyjścia. Zauważmy jednak, iż gdybyśmy na sztywno
-    założyli, iż współczynniki \(\lambda_1\) i \(\lambda_s\) są takie same to zregularyzowana
-    funkcja nie byłaby niezmiennicza względem takiego skalowania. Dzięki różnym współczynnikom
-    pozostaje niezmiennicza jeśli pomnożymy współczynniki \(\lambda_1, \lambda_s\) odpowiednio przez
-    \(\sqrt{\alpha}\) i \(\sqrt{\beta}\).
+    dodanie do funkcji kosztu \(J\) czynnika regularyzującego zawierającego kwadraty składowych
+    wektorów wag postaci przy czym w ogólności przyjmujemy iż mamy \(H+1\) różnych współczynników
+    \(\lambda_h\) określających siły regularyzacji dla wag łączących poszczególne warstwy.
 
     \item \textbf{Early stopping}\\
     Innym podejściem do regularyzacji sieci neuronowych jest procedura \textit{early stopping}.
     Polega ona na zatrzymaniu procesu uczenia (optymalizacji funkcji kosztu) w momencie, w którym
     wartość funkcji kosztu na wydzielonym ze zbioru treningowego zbiorze walidacyjnym zaczyna
-    rosnąć. Unikamy w ten sposób przeuczenia modelu.
+    rosnąć. Unikamy w ten sposób przeuczenia modelu. Takie podejście wymaga jednak dość dużego
+    zbioru danych, z których musimy wydzielić trzy zbiory: zbiór treningowy (na którym uczymy
+    model), zbiór walidacyjny (na którym ewaluujemy model przy procedurze early stoppingu) oraz
+    zbiór testowy (na którym ewalluujemy model po treningu).
 
     \item \textbf{Niezmienniki}\\
     W wielu zastosowaniach uczenia maszynowego wiemy, że predykcje modelu powinny być niezmienione
@@ -1755,7 +1761,7 @@ mini-seryjny spadek wzdłuż gradientu (z ang. \textit{Mini-Batch Gradient Desce
 
 \subsection{Sieci konwolucyjne (CNN)}
 
-\subsection{Transformery}
+\subsection{Mechanizmy atencji}
 
 \subsection{Generatywne modele dyfuzyjne}
 
