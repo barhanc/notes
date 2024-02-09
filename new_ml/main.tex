@@ -1584,9 +1584,10 @@ uczącego
         &F(X) = \left(L^{H+1} \circ \sigma \circ L^H \circ \cdots \circ \sigma \circ L^2 \circ \sigma \circ L^1\right)(X)\\
         &\\
         &L^h: \mathbb{T}_{N_{h-1}, D} \mapsto \mathbb{T}_{N_{h}, D}\\
-        &L_{ik}^h(X) = W_{ij}^h X_{jk} + B_i^h
+        &L_{ik}^h(X) = W_{ij}^h X_{jk} + B_i^h I_k
     \end{split}\quad.
 \end{equation*}
+gdzie \(\text{\reflectbox{$\mathbb{D}$}}_I = \{1\}\).
 
 Wyjście z sieci neuronowej będziemy wykorzystywać przy tworzeniu modeli statystycznych w taki sam
 sposób jak w modelach płytkich (regresja liniowa, regresja softmax) używaliśmy kombinacji liniowej
@@ -1603,15 +1604,14 @@ regresji logistycznej jako funkcjonał przyjmiemy entropię krzyżową
 \begin{equation*}
     J[F] = -T_{ik}\log \Pi_{ik}\,,\quad \Pi_{ik} = \frac{\exp\left\{F_{ik}(X)\right\}}{I_j\exp\left\{F_{jk}(X)\right\}}\,,
 \end{equation*}
-gdzie tensor \(I\) składa się z samych 1, natomiast \(T_{:,k}\) jest wektorem w postaci
-\textit{one-hot encoding} prawidłowej klasy dla wektora zmiennych objaśniających \(X_{:,k}\) ze
-zbioru danych treningowych.
+gdzie \(T_{:,k}\) jest wektorem w postaci \textit{one-hot encoding} prawidłowej klasy dla wektora
+zmiennych objaśniających \(X_{:,k}\) ze zbioru danych treningowych.
 
 \subsubsection{Wsteczna propagacja błędu}
 
 W przypadku algorytmów minimalizacji takich jak spadek wzdłuż gradientu musimy znać wartości
 pochodnych funkcji kosztu po parametrach modelu. Wyznaczymy teraz te pochodne dla wag w sieci MLP.
-Niech \(Y_{ab}^h = \sigma(L_{ab}^h)\), wówczas \(L_{ab}^h = W_{ac}^hY_{cb}^{h-1} + B_a^h\), przy
+Niech \(Y_{ab}^h = \sigma(L_{ab}^h)\), wówczas \(L_{ab}^h = W_{ac}^hY_{cb}^{h-1} + B_a^hI_b\), przy
 czym zakładamy \(Y^0 = X\). Mamy odpowiednio
 \begin{equation*}
     \begin{split}
@@ -1635,88 +1635,62 @@ gdzie \(\Delta_{ij}^h\) wyznaczamy iteracyjnie jako
         &\Delta^{h}_{ij} = \Delta_{kl}^{h+1}\pdv{L^{h+1}_{kl}}{Y_{mn}^h}\pdv{Y_{mn}^h}{L_{ij}^h} = \Delta_{kl}^{h+1} W^{h+1}_{km}\delta_{ln}\sigma'(L_{mn}^h)\delta_{mi}\delta_{nj} = \boxed{\Delta_{kj}^{h+1}W_{ki}^{h+1}\sigma'(L_{ij}^h)}
     \end{split}
 \end{equation*}
+Zauważmy również, iż wzór na pochodną funkcji kosztu \(J\) po parametrach \(B^h_a\) możemy od razu
+zapisać jako
+\begin{equation*}
+    \pdv{J}{B_{a}^h} = \Delta_{aj}^hI_j\,.
+\end{equation*}
 
 Możemy zatem zapisać algorytm obliczania pochodnych funkcji kosztu po parametrach sieci neuronowej
 zwany algorytmem wstecznej propagacji błędu (z ang. \textit{error backpropagation})
 
 \begin{tcolorbox}[title=Algorytm wstecznej propagacji błędu]
-\begin{enumerate}
-\item Dla przykładu \((y_i, \mathbf{x}_i)\) dokonaj propagacji naprzód sieci MLP i zapamiętaj
-wartości funkcji \(\mathbf{a}_1, \mathbf{a}_2, \ldots, \mathbf{a}_s\) i funkcji aktywacji
-\(\mathbf{f}_1,\mathbf{f}_2,\ldots,\mathbf{f}_{s-1},\mathbf{g}\).
+    \begin{enumerate}
+        \item Dla zbioru danych \((Y_{pq}, X_{rq})\) dokonaj propagacji naprzód (z ang
+        \textit{forward propagation}) sieci MLP i zapamiętaj wartości \(Y_{bj}^{h-1}\) oraz
+        \(L_{ij}^h\).
 
-\item Wyznacz rekurencyjnie i zapamiętaj wartości \(\boldsymbol{\delta}_k\) korzystając ze wstecznej
-propagacji
-\begin{equation*}
-    \boldsymbol{\delta}_{k-1} = \boldsymbol{\delta}_{k}\cdot \oper{W}_k\cdot\diag(\mathbf{f}'_{k-1}(\mathbf{a}_{k-1}))\,,\quad \boldsymbol{\delta}_s = \pdv{\ell}{\mathbf{g}}\pdv{\mathbf{g}}{\mathbf{a}_s}\,.
-\end{equation*}
+        \item Wyznacz rekurencyjnie i zapamiętaj wartości \(\Delta_{ij}^h\) korzystając ze wzorów
+        (etap \textit{backpropagation})
+        \begin{equation*}
+            \boxed{\Delta_{ij}^{H+1} = \pdv{J}{F_{ij}}\,,\quad \Delta_{ij}^h = \Delta_{kj}^{h+1}W_{ki}^{h+1}\sigma'(L_{ij}^h)}\,.
+        \end{equation*}
 
-\item Wyznacz odpowiednie pochodne korzystając z
-\begin{equation*}
-    \pdv{\ell}{\oper{W}_k} = \mathbf{f}_{k-1}\boldsymbol{\delta}_k\,,\quad \pdv{\ell}{\mathbf{b}_k} = \boldsymbol{\delta}_k\,.
-\end{equation*}
-W powyższym wzorze \(\mathbf{f}_0 = \mathbf{x}_i\).
-\end{enumerate}
+        \item Wyznacz wartości pochodnych funkcji kosztu po parametrach sieci korzystając z
+        \begin{equation*}
+            \boxed{\pdv{J}{W_{ab}^h} = \Delta_{aj}^h Y_{bj}^{h-1}\,,\quad \pdv{J}{B_a^h} = \Delta_{aj}^hI_j}\,,
+        \end{equation*}
+        pamiętając, iż \(Y^0 = X\).
+    \end{enumerate}
 \end{tcolorbox}
 
-Powyższy algorytm wyznacza pochodną funkcji kosztu dla pojedynczego przykładu. Jeśli używamy serii
-przykładów \(D\) (tzw. \textit{batch}) to oczywiście zachodzi
-\begin{equation*}
-    \begin{split}
-        &\pdv{\ell(D\mid \oper{W}_1, \ldots,\oper{W}_s, \mathbf{b}_1, \ldots, \mathbf{b}_s)}{\oper{W}_k} = \sum_{i=1}^m \pdv{\ell(y_i\mid \oper{W}_1, \ldots,\oper{W}_s, \mathbf{b}_1, \ldots, \mathbf{b}_s)}{\oper{W}_k}\,,\\
-        &\pdv{\ell(D\mid \oper{W}_1, \ldots,\oper{W}_s, \mathbf{b}_1, \ldots, \mathbf{b}_s)}{\mathbf{b}_k} = \sum_{i=1}^m \pdv{\ell(y_i\mid \oper{W}_1, \ldots,\oper{W}_s, \mathbf{b}_1, \ldots, \mathbf{b}_s)}{\mathbf{b}_k}\,,
-    \end{split}
-\end{equation*}
-więc powyższy algorytm wykonujemy dla każdego przykładu i dodajemy wyniki. Problemy regresji
-liniowej i logistycznej na sieci MLP różnią się jedynie funkcją aktywacji \(g\) warstwy wyjściowej i
-używaną funkcją kosztu. W przypadku regresji liniowej mamy
-\begin{equation*}
-    g(x) = x\,,\quad \ell(y_i \mid \oper{W}_1, \ldots,\oper{W}_s, \mathbf{b}_1, \ldots, \mathbf{b}_s ) = \frac{1}{2}(y_i - g)^2\,,
-\end{equation*}
-skąd
-\begin{equation*}
-    \delta_s = g - y_i\,.
-\end{equation*}
-Natomiast w przypadku regresji logistycznej mamy
-\begin{equation*}
-    \begin{split}
-        &\mathbf{g}(\mathbf{x}) = \frac{1}{\sum_{i=1}^n \e^{x_i}}\mqty[\e^{x_1} \\ \vdots \\ \e^{x_n}]\,,\\
-        &\ell(y_i \mid \oper{W}_1, \ldots,\oper{W}_s, \mathbf{b}_1, \ldots, \mathbf{b}_s) = -\sum_{j=1}^c \delta(y_i, \tau_j) \log [\mathbf{g}]_j\,,
-    \end{split}
-\end{equation*}
-skąd
-\begin{equation*}
-    \boldsymbol{\delta}_s = \mqty[\frac{\delta(y_i, \tau_1)}{[\mathbf{g}]_1} & \cdots & \frac{\delta(y_i, \tau_c)}{[\mathbf{g}]_c}] \mqty[[\mathbf{g}]_i[\mathbf{g}]_j - \delta_{ij}[\mathbf{g}]_j ]_{c\times c} = \mathbf{g}^\top - \mqty[\delta(y_i, \tau_1) \ldots \delta(y_i, \tau_c)]\,.
-\end{equation*}
 Mając algorytm efektywnego obliczania pochodnych funkcji kosztu, funkcję minimalizujemy korzystając
 z algorytmu spadku wzdłuż gradientu. W przypadku sieci neuronowych funkcja kosztu nie jest funkcją
 ściśle wypukłą, więc algorytm spadku wzdłuż gradientu nie znajdzie globalnego minimum; możemy liczyć
-jedynie na znalezienie minimum lokalnego. Istnieją trzy podstawowe algorytmy spadku wzdłuż
-gradientu: seryjny spadek wzdłuż gradientu (z ang. \textit{Batch Gradient Descent (BGD)}),
-stochastyczny spadek wzdłuż gradientu (z ang. \textit{Stochastic Gradient Descent (SGD)}) oraz
-mini-seryjny spadek wzdłuż gradientu (z ang. \textit{Mini-Batch Gradient Descent (mBGD)})
+jedynie na znalezienie minimum lokalnego.
 
-\begin{tcolorbox}[title=Algorytm mBGD]
+\begin{tcolorbox}[title=Algorytm BGD]
 \begin{enumerate}
-    \item Wybierz początkowe wartości parametrów \(\oper{W}_1, \ldots,\oper{W}_s, \mathbf{b}_1,
-    \ldots, \mathbf{b}_s\).
+    \item Zainicjuj parametry \(W^h_{ab}, B_a^h\) niewielkimi wartościami losowymi.
 
-    \item Podziel dane treningowe w \(D\) na \(K\) rozłącznych mini-batchy \(D_1, \ldots, D_K\)
-    jednakowej wielkości.
+    \item Podziel dane treningowe na \(K\) rozłącznych mini-batchy \(D_1, \ldots, D_K\) jednakowej
+    wielkości.
     
     \item Powtarzaj przez \(N\) epok: \\
-    Dla każdego mini-batcha \(D_i\):
+    Dla każdego mini-batcha \(D\):
     \begin{enumerate}
-        \item Oblicz pochodne funkcji kosztu \(\ell\) zsumowane po wszystkich przykładach z
-        mini-batcha \(D_i\) korzystając z algorytmu wstecznej propagacji błędu.
+        \item Oblicz pochodne funkcji kosztu \(J\) po parametrach sieci korzystając z algorytmu
+        wstecznej propagacji błędu.
 
         \item Zaktualizuj wartości parametrów zgodnie z:
         \begin{equation*}
+            \boxed{
             \begin{split}
-                &\oper{W}_k = \oper{W}_k - \frac{\epsilon}{|D_i|}\pdv{\ell}{\oper{W}_k}\\
-                &\mathbf{b}_k = \mathbf{b}_k - \frac{\epsilon}{|D_i|}\pdv{\ell}{\mathbf{b}_k}\\
-            \end{split}
+                &W^{h}_{ab} \leftarrow W^{h}_{ab} - \frac{\epsilon}{|D|}\pdv{J}{W_{ab}^h}\\
+                &B_a^h \leftarrow B_a^h - \frac{\epsilon}{|D|}\pdv{J}{B_a^h}
+            \end{split}}\quad,
         \end{equation*}
+        gdzie \(\epsilon\) jest hiperparametrem zwanym stałą uczącą (z ang. \textit{learning rate}).
     \end{enumerate}
 \end{enumerate}
 \end{tcolorbox}
@@ -1765,7 +1739,6 @@ mini-seryjny spadek wzdłuż gradientu (z ang. \textit{Mini-Batch Gradient Desce
 
 \subsection{Generatywne modele dyfuzyjne}
 
-%TODO: Important
 \section{Reinforcement learning i teoria optymalnego sterowania}
 
 \end{document}
