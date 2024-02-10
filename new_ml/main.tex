@@ -1599,7 +1599,7 @@ funkcjonału kwadratowego
 \begin{equation*}
     J[F] = \frac{1}{2}\left(F_{ij}(X) - Y_{ij}\right)^2\,,
 \end{equation*}
-gdzie \(D = (Y_{ik}, X_{jk})\) jest zbiorem danych treningowych. Natomiast w przypadku wieloklasowej
+gdzie \((Y_{ik}, X_{jk})\) jest zbiorem danych treningowych. Natomiast w przypadku wieloklasowej
 regresji logistycznej jako funkcjonał przyjmiemy entropię krzyżową
 \begin{equation*}
     J[F] = -T_{ik}\log \Pi_{ik}\,,\quad \Pi_{ik} = \frac{\exp\left\{F_{ik}(X)\right\}}{I_j\exp\left\{F_{jk}(X)\right\}}\,,
@@ -1663,6 +1663,47 @@ zwany algorytmem wstecznej propagacji błędu (z ang. \textit{error backpropagat
         pamiętając, iż \(Y^0 = X\).
     \end{enumerate}
 \end{tcolorbox}
+
+Obliczmy jeszcze pochodne \(\partial J/\partial F_{ab}\) dla problemów regresji i klasyfikacji. W
+przypadku regresji sprawa jest prosta
+\begin{equation*}
+    \begin{split}
+        &J = \frac{1}{2}\left(F_{ij} - Y_{ij}\right)^2\\
+        &\pdv{J}{F_{ab}} = \left(F_{ij} - Y_{ij}\right)\delta_{ai}\delta_{bj} = F_{ab} - Y_{ab}\,.
+    \end{split}
+\end{equation*}
+W przypadku entropii krzyżowej rachunki są trochę bardziej zawiłe:
+\begin{equation*}
+    \begin{split}
+        &J = -T_{ik}\log\Pi_{ik}\,,\quad \Pi_{ik} = \frac{\exp F_{ik}}{I_j \exp F_{jk}}\,,\\
+        &\pdv{J}{F_{ab}} = \pdv{J}{\Pi_{cd}}\pdv{\Pi_{cd}}{F_{ab}}\,,
+    \end{split}
+\end{equation*}
+dalej
+\begin{equation*}
+    \pdv{J}{\Pi_{cd}} = -\frac{T_{ik}}{\Pi_{ik}}\delta_{ic}\delta_{kd} = - \frac{T_{cd}}{\Pi_{cd}}
+\end{equation*}
+oraz
+\begin{equation*}
+    \begin{split}
+        \pdv{\Pi_{cd}}{F_{ab}} &= \frac{\exp(F_{cd})\delta_{ac}\delta_{bd}I_j\exp(F_{jd}) - \exp(F_{cd})I_j\exp(F_{jd})\delta_{aj}\delta_{bd}}{[I_j \exp(F_{jd})]^2}\\
+        &= \frac{\exp(F_{cd})\delta_{ac}\delta_{bd}}{I_j\exp(F_{jd})} - \frac{\exp(F_{cd})I_a\exp(F_{ad})\delta_{bd}}{[I_j \exp(F_{jd})]^2}\,,
+    \end{split}
+\end{equation*}
+skąd
+\begin{equation*}
+    \begin{split}
+        \pdv{J}{F_{ab}} &= - \frac{T_{cd}}{\Pi_{cd}}\frac{\exp(F_{cd})\delta_{ac}\delta_{bd}}{I_j\exp(F_{jd})} + \frac{T_{cd}}{\Pi_{cd}}\frac{\exp(F_{cd})I_a\exp(F_{ad})\delta_{bd}}{[I_j \exp(F_{jd})]^2} \\
+        &= -\frac{T_{ab}}{\Pi_{ab}}\frac{\exp F_{ab}}{I_j \exp F_{jb}} + \frac{T_{cb}}{\Pi_{cb}}\frac{I_a \exp(F_{cb})\exp(F_{ab})}{[I_j \exp(F_{jb})]^2}\\
+        &= -\frac{T_{ab}}{\Pi_{ab}}\Pi_{ab} + \frac{T_{cb}}{\Pi_{cb}}I_a \Pi_{cb}\Pi_{ab}\\
+        &= - T_{ab}I_{ab} + T_{cb}I_{cb}I_a\Pi_{ab}
+    \end{split}
+\end{equation*}
+ale z definicji \(T\) mamy, iż \(\sum_{c}T_{cb}I_{cb} = I_b\), gdyż dla danego przykładu \(b\)
+dokładne jedna klasa \(c\) jest poprawna
+\begin{equation*}
+    \pdv{J}{F_{ab}} = - T_{ab}I_{ab} + I_aI_b\Pi_{ab} = \Pi_{ab} - T_{ab}\,.
+\end{equation*}
 
 Mając algorytm efektywnego obliczania pochodnych funkcji kosztu, funkcję minimalizujemy korzystając
 z algorytmu spadku wzdłuż gradientu. W przypadku sieci neuronowych funkcja kosztu nie jest funkcją
@@ -1728,8 +1769,8 @@ jedynie na znalezienie minimum lokalnego.
         są niezmiennicze względem danych przekształceń (\textit{feature extraction}).
 
         \item Możemy w końcu wbudować tę niezmienniczość w strukturę samej sieci neuronowej.
-        Przykładem takim są omawiane dalej Konwolucyjne Sieci Neuronowe, których struktura jest
-        skonstruowana w taki sposób, aby wyciągać pewne cechy przestrzenne z obrazów.
+        Przykładem takim są omawiane dalej sieci CNN, których struktura jest skonstruowana w taki
+        sposób, aby wyciągać pewne cechy przestrzenne z obrazów.
     \end{enumerate}
 \end{enumerate}
 
