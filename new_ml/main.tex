@@ -980,14 +980,16 @@ oznaczenie
 \end{equation*}
 Poniżej podajemy kilka przykładów funkcji kowariancji
 \begin{itemize}
-    \item \textit{Gaussian kernel} dla normy \(\norm{\cdot}\) i hiper-parametru \(l\)
+    \item \textit{Gaussian kernel} dla normy \(\norm{\cdot}\) i hiper-parametru \(a,l\) (amplituda i
+    skala długości)
     \begin{equation*}
-        k(\mathbf{x}, \mathbf{y}) = \exp\left\{-\frac{1}{2l^2}\norm{\mathbf{x} - \mathbf{y}}^2\right\}
+        k(\mathbf{x}, \mathbf{y}) = a\exp\left\{-\frac{1}{2l^2}\norm{\mathbf{x} - \mathbf{y}}^2\right\}
     \end{equation*}
     
-    \item \textit{Periodic kernel} dla normy \(\norm{\cdot}\) i hiper-parametrów \(l, p\)
+    \item \textit{Periodic kernel} dla normy \(\norm{\cdot}\) i hiper-parametrów \(a, l, p\)
+    (amplituda, skala długości, okres zmienności)
     \begin{equation*}
-        k(\mathbf{x},\mathbf{y}) = \exp\left\{-\frac{2}{l^2}\sin^2\left(\frac{\pi}{p}\norm{\mathbf{x} - \mathbf{y}}\right)\right\}
+        k(\mathbf{x},\mathbf{y}) = a\exp\left\{-\frac{2}{l^2}\sin^2\left(\frac{\pi}{p}\norm{\mathbf{x} - \mathbf{y}}\right)\right\}
     \end{equation*}
 
     \item \textit{White noise kernel} dla hiper-parametru \(\sigma\)
@@ -995,9 +997,10 @@ Poniżej podajemy kilka przykładów funkcji kowariancji
         k(\mathbf{x},\mathbf{y}) = \sigma^2 \delta_{\mathbf{x},\mathbf{y}}
     \end{equation*}
 
-    \item \textit{Mat\'ern kernel} dla normy \(\norm{\cdot}\) i hiper-parametrów \(l, \nu\)
+    \item \textit{Mat\'ern kernel} dla normy \(\norm{\cdot}\) i hiper-parametrów \(a, l, \nu\)
+    (amplituda, skala długości, regularność)
     \begin{equation*}
-        k(\mathbf{x},\mathbf{y}) = \frac{2^{1-\nu}}{\Gamma(\nu)}\left(\frac{\sqrt{2\nu}}{l}\norm{\mathbf{x} - \mathbf{y}}\right)^\nu K_\nu\left(\frac{\sqrt{2\nu}}{l}\norm{\mathbf{x} - \mathbf{y}}\right)\,,
+        k(\mathbf{x},\mathbf{y}) = a \frac{2^{1-\nu}}{\Gamma(\nu)}\left(\frac{\sqrt{2\nu}}{l}\norm{\mathbf{x} - \mathbf{y}}\right)^\nu K_\nu\left(\frac{\sqrt{2\nu}}{l}\norm{\mathbf{x} - \mathbf{y}}\right)\,,
     \end{equation*}
     gdzie \(\Gamma(x)\) to funkcja gamma Eulera, a \(K_\nu(x)\) to zmodyfikowana funkcja Bessela
     2-go rodzaju rzędu \(\nu\).
@@ -1065,6 +1068,20 @@ określona. Wówczas rozkład predykcyjny ma parametry
     \end{split}\quad.
 \end{equation*}
 
+Pozostaje jeszcze kwestia początkowej estymacji parametrów funkcji jądrowych dla zbioru danych \(D =
+(\mathbf{f}_X, X)\). W łatwy i wydajny sposób możemy znaleźć estymaty MLE tych parametrów. Istotnie
+oznaczmy zbiór parametrów jądra przez \(\theta\), wówczas
+\begin{equation*}
+    D \mid \theta \sim \mathcal{N}(\mathbf{0}, k(X,X; \theta))
+\end{equation*}
+czyli
+\begin{equation*}
+    \ell = -\log p(D \mid \theta) = \frac{1}{2}\log\left[\det (k(X,X;\theta)+\sigma^2\oper{1})\right] + \frac{1}{2}\mathbf{f}_X^\top\left[k(X,X;\theta) + \sigma^2\oper{1}\right]^{-1}\mathbf{f}_X\,.
+\end{equation*}
+Funkcję kosztu \(\ell\) minimalizujemy numerycznie, aby znaleźć estymatę MLE parametrów \(\theta\)
+funkcji jądrowej. Następnie parametry rozkładu predykcyjnego nad wartościami w nowych punktach
+znajdujemy korzystając ze wzorów dwie linijki wyżej.
+
 \subsection{Wieloklasowa regresja logistyczna}
 
 Załóżmy, iż modelujemy obserwacje postaci \((t,\mathbf{x})\), gdzie \(t \in
@@ -1085,6 +1102,16 @@ skąd stała normalizacyjna \(Z(\mathbf{x})\) ma postać
 \begin{equation*}
     Z(\mathbf{x}) = \sum_{j=1}^s \e^{\mathbf{w}_j^\top\mathbf{x}}\,.
 \end{equation*}
+Uwaga, powyższy wzór nie może być stosowany bezpośrednio do obliczeń numerycznych przez
+niestabilność numeryczną (wartość funkcji wykładniczej może być ogromna). W praktyce wartość funkcji
+softmax dla argumentu \(\mathbf{z} = (z_1,\ldots,z_n)\) obliczamy jako
+\begin{equation*}
+    \begin{split}
+        &z'_i := z_i - \max_{j=1,..,n} z_j\\
+        &\text{softmax}(z_i) = \frac{\e^{z_i'}}{\sum_{j=1}^n \e^{z_j'}}\,.
+    \end{split}
+\end{equation*}
+
 Rozkład zmiennej losowej \(t\) jest  w takim razie dyskretnym rozkładem wielopunktowym (z ang.
 \textit{categorical distribution}) postaci
 \begin{equation*}
@@ -1489,7 +1516,7 @@ funkcji ReLU, GELU lub funkcji sigmoidalnych:
 gdzie \(\Phi(x)\) to dystrybuanta standardowego rozkładu normalnego. Pojedyncze neurony są następnie
 łączone w sieci w określony sposób tworząc daną architekturę sieci neuronowej.
 
-\subsection{Perceptron wielowarstwowy}
+\subsection{Sieć MLP}
 
 Opis sieci neuronowych zaczniemy od architektury MLP (z ang. \textit{Multilayer Perceptron}). Sieć
 MLP składa się z równoległych warstw neuronów, przy czym połączenia występują tylko między neuronami
@@ -1545,7 +1572,7 @@ sieci MLP zamieszczono na Rysunku \ref{fig:simple-mlp1} i \ref{fig:simple-mlp2}.
 Zauważmy, iż wyjściem sieci są parametry docelowego rozkładu prawdopodobieństwa nad obserwacjami tj.
 odpowiednio wartość oczekiwana \(\mu\) w przypadku regresji liniowej i prawdopodobieństwa \(\pi_i\)
 każdej z klas rozkładu kategorialnego w przypadku regresji logistycznej. W przypadku regresji
-liniowej funkcja aktywacji neuronu w warstwie wyjściowej to po prostu funkcja identycznosciowa,
+liniowej funkcja aktywacji neuronu w warstwie wyjściowej to po prostu funkcja identycznościowa,
 natomiast w przypadku regresji logistycznej jest to funkcja soft-max.
 
 Przejdźmy teraz do matematycznego opisu architektury MLP. Załóżmy, iż sieć składa się z \(H + 2\)
@@ -1607,7 +1634,7 @@ regresji logistycznej jako funkcjonał przyjmiemy entropię krzyżową
 gdzie \(T_{:,k}\) jest wektorem w postaci \textit{one-hot encoding} prawidłowej klasy dla wektora
 zmiennych objaśniających \(X_{:,k}\) ze zbioru danych treningowych.
 
-\subsubsection{Wsteczna propagacja błędu}
+\subsection{Wsteczna propagacja błędu}
 
 W przypadku algorytmów minimalizacji takich jak spadek wzdłuż gradientu musimy znać wartości
 pochodnych funkcji kosztu po parametrach modelu. Wyznaczymy teraz te pochodne dla wag w sieci MLP.
@@ -1705,6 +1732,10 @@ dokładne jedna klasa \(c\) jest poprawna
     \pdv{J}{F_{ab}} = - T_{ab}I_{ab} + I_aI_b\Pi_{ab} = \Pi_{ab} - T_{ab}\,.
 \end{equation*}
 
+\subsection{Automatyczne różniczkowanie}
+
+\subsection{Metody optymalizacji numerycznej}
+
 Mając algorytm efektywnego obliczania pochodnych funkcji kosztu, funkcję minimalizujemy korzystając
 z algorytmu spadku wzdłuż gradientu. W przypadku sieci neuronowych funkcja kosztu nie jest funkcją
 ściśle wypukłą, więc algorytm spadku wzdłuż gradientu nie znajdzie globalnego minimum; możemy liczyć
@@ -1736,7 +1767,7 @@ jedynie na znalezienie minimum lokalnego.
 \end{enumerate}
 \end{tcolorbox}
 
-\subsubsection{Regularyzacja w sieciach neuronowych}
+\subsection{Regularyzacja i inicjalizacja}
 
 \begin{enumerate}
     \item \textbf{Czynniki regularyzujące}\\
@@ -1752,7 +1783,7 @@ jedynie na znalezienie minimum lokalnego.
     rosnąć. Unikamy w ten sposób przeuczenia modelu. Takie podejście wymaga jednak dość dużego
     zbioru danych, z których musimy wydzielić trzy zbiory: zbiór treningowy (na którym uczymy
     model), zbiór walidacyjny (na którym ewaluujemy model przy procedurze early stoppingu) oraz
-    zbiór testowy (na którym ewalluujemy model po treningu).
+    zbiór testowy (na którym ewaluujemy model po treningu).
 
     \item \textbf{Niezmienniki}\\
     W wielu zastosowaniach uczenia maszynowego wiemy, że predykcje modelu powinny być niezmienione
@@ -1778,7 +1809,7 @@ jedynie na znalezienie minimum lokalnego.
 
 \subsection{Mechanizmy atencji}
 
-\subsection{Generatywne modele dyfuzyjne}
+% ---
 
 \section{Reinforcement learning i teoria optymalnego sterowania}
 
