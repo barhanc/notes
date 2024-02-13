@@ -980,16 +980,16 @@ oznaczenie
 \end{equation*}
 Poniżej podajemy kilka przykładów funkcji kowariancji
 \begin{itemize}
-    \item \textit{Gaussian kernel} dla normy \(\norm{\cdot}\) i hiper-parametru \(a,l\) (amplituda i
-    skala długości)
+    \item \textit{Gaussian kernel} dla normy \(\norm{\cdot}\) i hiper-parametrów \(a,l\) (amplituda
+    i skala długości)
     \begin{equation*}
-        k(\mathbf{x}, \mathbf{y}) = a\exp\left\{-\frac{1}{2l^2}\norm{\mathbf{x} - \mathbf{y}}^2\right\}
+        k(\mathbf{x}, \mathbf{y}) = a^2\exp\left\{-\frac{1}{2l^2}\norm{\mathbf{x} - \mathbf{y}}^2\right\}
     \end{equation*}
     
     \item \textit{Periodic kernel} dla normy \(\norm{\cdot}\) i hiper-parametrów \(a, l, p\)
     (amplituda, skala długości, okres zmienności)
     \begin{equation*}
-        k(\mathbf{x},\mathbf{y}) = a\exp\left\{-\frac{2}{l^2}\sin^2\left(\frac{\pi}{p}\norm{\mathbf{x} - \mathbf{y}}\right)\right\}
+        k(\mathbf{x},\mathbf{y}) = a^2\exp\left\{-\frac{2}{l^2}\sin^2\left(\frac{\pi}{p}\norm{\mathbf{x} - \mathbf{y}}\right)\right\}
     \end{equation*}
 
     \item \textit{White noise kernel} dla hiper-parametru \(\sigma\)
@@ -1000,7 +1000,7 @@ Poniżej podajemy kilka przykładów funkcji kowariancji
     \item \textit{Mat\'ern kernel} dla normy \(\norm{\cdot}\) i hiper-parametrów \(a, l, \nu\)
     (amplituda, skala długości, regularność)
     \begin{equation*}
-        k(\mathbf{x},\mathbf{y}) = a \frac{2^{1-\nu}}{\Gamma(\nu)}\left(\frac{\sqrt{2\nu}}{l}\norm{\mathbf{x} - \mathbf{y}}\right)^\nu K_\nu\left(\frac{\sqrt{2\nu}}{l}\norm{\mathbf{x} - \mathbf{y}}\right)\,,
+        k(\mathbf{x},\mathbf{y}) = a^2 \frac{2^{1-\nu}}{\Gamma(\nu)}\left(\frac{\sqrt{2\nu}}{l}\norm{\mathbf{x} - \mathbf{y}}\right)^\nu K_\nu\left(\frac{\sqrt{2\nu}}{l}\norm{\mathbf{x} - \mathbf{y}}\right)\,,
     \end{equation*}
     gdzie \(\Gamma(x)\) to funkcja gamma Eulera, a \(K_\nu(x)\) to zmodyfikowana funkcja Bessela
     2-go rodzaju rzędu \(\nu\).
@@ -1741,7 +1741,7 @@ z algorytmu spadku wzdłuż gradientu. W przypadku sieci neuronowych funkcja kos
 ściśle wypukłą, więc algorytm spadku wzdłuż gradientu nie znajdzie globalnego minimum; możemy liczyć
 jedynie na znalezienie minimum lokalnego.
 
-\begin{tcolorbox}[title=Algorytm BGD]
+\begin{tcolorbox}[title=Algorytm MBGD]
 \begin{enumerate}
     \item Zainicjuj parametry \(W^h_{ab}, B_a^h\) niewielkimi wartościami losowymi.
 
@@ -1769,40 +1769,76 @@ jedynie na znalezienie minimum lokalnego.
 
 \subsection{Regularyzacja i inicjalizacja}
 
+Sieci neuronowe są bardzo \textit{pojemnymi} modelami, przez co są bardzo podatne na overfitting i
+nie generalizują się dobrze poza zbiór treningowy. Bardzo ważnym elementem budowy sieci neurownowych
+są więc metody regularyzacji. 
+
 \begin{enumerate}
     \item \textbf{Czynniki regularyzujące}\\
     Analogicznie jak w przypadku prostych modeli liniowych jedną z możliwości regularyzacji jest
-    dodanie do funkcji kosztu \(J\) czynnika regularyzującego zawierającego kwadraty składowych
-    wektorów wag postaci przy czym w ogólności przyjmujemy iż mamy \(H+1\) różnych współczynników
-    \(\lambda_h\) określających siły regularyzacji dla wag łączących poszczególne warstwy.
+    dodanie do funkcji kosztu \(J\) czynnika regularyzującego zawierającego odpowiednią sumę norm
+    poszczególnych parametrów sieci
+    \begin{equation*}
+        \begin{split}
+            &J^* = J + \frac{\lambda}{2}\sum_{h=1}^{H+1}\sum_{i,j} \left(W_{ij}^h\right)^2\,,\quad\text{regularyzacja L2}\\
+            &J^* = J + \frac{\lambda}{2}\sum_{h=1}^{H+1}\sum_{i,j} \left|W_{ij}^h\right|\,,\quad\text{regularyzacja L1}
+        \end{split}
+    \end{equation*}
+    Różnica między regularyzacją L2 i L1 jest taka, że norma L2 ,,zachęca” sieć do wybierania małych
+    wag, ale nie dokładnie będących 0, natomiast L1 zmniejsza wagi, ale w szczególności prowadzi do
+    wag wynoszących dokładnie 0. W związku z tym waga L1 przeprowadza selekcję cech - “wyłączy” te,
+    które są mało ważne.
 
     \item \textbf{Early stopping}\\
-    Innym podejściem do regularyzacji sieci neuronowych jest procedura \textit{early stopping}.
-    Polega ona na zatrzymaniu procesu uczenia (optymalizacji funkcji kosztu) w momencie, w którym
-    wartość funkcji kosztu na wydzielonym ze zbioru treningowego zbiorze walidacyjnym zaczyna
-    rosnąć. Unikamy w ten sposób przeuczenia modelu. Takie podejście wymaga jednak dość dużego
-    zbioru danych, z których musimy wydzielić trzy zbiory: zbiór treningowy (na którym uczymy
-    model), zbiór walidacyjny (na którym ewaluujemy model przy procedurze early stoppingu) oraz
-    zbiór testowy (na którym ewaluujemy model po treningu).
+    Innym prostym, lecz efektywnympodejściem do regularyzacji sieci neuronowych jest procedura
+    \textit{early stopping}. Polega ona na zatrzymaniu procesu uczenia (optymalizacji funkcji
+    kosztu) w momencie, w którym wartość funkcji kosztu na wydzielonym ze zbioru treningowego
+    zbiorze walidacyjnym zaczyna rosnąć (lub nie spada przez odpowiednio długi czas). Unikamy w ten
+    sposób przeuczenia modelu. Takie podejście wymaga jednak dość dużego zbioru danych, z których
+    musimy wydzielić trzy zbiory: zbiór treningowy (na którym uczymy model), zbiór walidacyjny (na
+    którym ewaluujemy model przy procedurze early stoppingu) oraz zbiór testowy (na którym
+    ewaluujemy model po treningu). Okres, przez który czekamy na uzyskanie lepszego wyniku, to
+    cierpliwość (z ang. \textit{patience}). Im mniejsze, tym mocniejszy jest ten rodzaj
+    regularyzacji, ale trzeba z tym uważać, bo łatwo jest przesadzić i zbyt szybko przerywać
+    trening. Niektóre implementacje uwzględniają tzw. \textit{grace period}, czyli gwarantowaną
+    minimalną liczbę epok, przez którą będziemy trenować sieć, niezależnie od wybranej cierpliwości.
 
-    \item \textbf{Niezmienniki}\\
-    W wielu zastosowaniach uczenia maszynowego wiemy, że predykcje modelu powinny być niezmienione
-    jeśli dane wejściowe poddamy pewnej transformacji np. w problemie rozpoznawania ręcznie pisanych
-    cyfr odpowiedź nie powinna zależeć od miejsca na obrazku, w którym znajduje się cyfra
-    (niezmienniczość translacyjna) oraz od skali, w której została napisana (niezmienniczość
-    skalowania). Istnieje kilka możliwych rozwiązań pozwalających uwzględnić te cechy
-    \begin{enumerate}
-        \item Jeśli znamy przekształcenia względem których predykcje powinny pozostawać niezmienione
-        możemy rozszerzyć nasz zbiór treningowy o przykłady z początkowego zbioru poddane tym
-        przekształceniom.
+    \item \textbf{Dropout}\\
+    Bardzo popularną i szeroko stosowaną metodą regularyzacji sieci neuronowych jest dropout
+    polegający na tym, iż w procesie treningu ze z góry zadanym prawdopodobieństwem ,,wyłączamy''
+    wyjście neuronu (tj. dla każdej aktualizacji wartości parametrów sieci, w algorytmie wstecznej
+    propagacji błędu mnożymy wyjście \(Y_{ab}^h\) przez tensor \(P_{ab}^h\), którego każdy element
+    może być równy \(0\) z p-stwem \(p\) lub 1 z p-stwem \(1-p\)). Mechanizmu dropoutu używamy tylko
+    w procesie treningu. W przypadku inferencji wyjście neuronu jest z kolei mnożone przez
+    następujący stosunek
+    \begin{equation*}
+        1 - \frac{\# \text{wyłączeń neuronu}}{\# \text{liczba aktualizacji parametrów sieci}}\,.
+    \end{equation*}
+    Typowo usuwa się dość sporo neuronów w warstwach ukrytych, np. 50\%. Dzięki dropoutowi można
+    używać z nim dość dużych stałych uczących oraz współczynników pędu, a także trenować znacznie
+    większe i głębsze sieci. Okazuje się, iż w praktyce takie duże, mocno trenowane sieci z
+    regularyzacją uczą się lepiej niż mniejsze, które by tej regularyzacji nie potrzebowały.
+    
+    \item \textbf{Połączenia rezydualne}\\
+    Sporym problemem w procesie uczenia sieci neuronowych jest fakt, iż funkcja kosztu \(J\) nie
+    jest wypukła, a dodatkowo często nie jest dość regularna tj. pojawiają się tzw. ,,poszarpania''
+    (z ang. \textit{shattered}), które powodują problemy z obliczaniem gradientu. Metodą, która
+    pozawala do pewnego stopnia wyeliminować ten problem jest wprowadzenie w sieci połączeń
+    rezydualnych tj. warstw, których wyjście jest dane przez
+    \begin{equation*}
+        \begin{split}
+            &Y^h: \mathbb{T}_{N, D} \mapsto \mathbb{T}_{N,D}\\
+            &Y^h_{ik}(X) = \sigma\left(W_{ij}^h X_{jk} + B_{i}^h I_k\right) + X_{ik}
+        \end{split}\quad.
+    \end{equation*}
+    Oczywiście wprowadzenie takiej warstwy oznacza, iż liczba neuronów w następnie warstwie musi być
+    taka sama.
 
-        \item Możemy dokonać preprocessingu danych w taki sposób aby wyekstrahować te cechy, które
-        są niezmiennicze względem danych przekształceń (\textit{feature extraction}).
+    \item \textbf{Data augmentation}\\
+    Metoda data augmentation polega na dodaniu do zbioru treningowego replik przykładów z tego
+    zbioru poddanych pewnym transformacjom względem których oczekujemy, iż odpowiedzi sieci będą
+    niezmienne.
 
-        \item Możemy w końcu wbudować tę niezmienniczość w strukturę samej sieci neuronowej.
-        Przykładem takim są omawiane dalej sieci CNN, których struktura jest skonstruowana w taki
-        sposób, aby wyciągać pewne cechy przestrzenne z obrazów.
-    \end{enumerate}
 \end{enumerate}
 
 \subsection{Sieci konwolucyjne (CNN)}
