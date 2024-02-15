@@ -26,8 +26,8 @@ gdzie \(\Sigma\) jest rodziną podzbiorów \(\Omega\) (inaczej rodziną zdarzeń
     \Omega \in \Sigma\,,\quad A \in \Sigma \implies A' \in \Sigma\,,\quad \forall A_1, A_2, \ldots \in \Sigma : \bigcup_{i}
     A_i \in \Sigma\,,
 \end{equation*}
-które spełnia: \(P(\Omega) = 1\) oraz dla dowolnych parami rozłącznych zdarzeń \(A_1, A_2, \ldots
-\in \Sigma\) zachodzi
+które spełnia: \(P(\Omega) = 1\) oraz dla dowolnych parami rozłącznych zdarzeń \(A_1, A_2, \ldots\)
+należących do \(\Sigma\) zachodzi
 \begin{equation*}
     P\left(\bigcup_i A_i\right) = \sum_i P(A_i)\,.
 \end{equation*}
@@ -279,7 +279,7 @@ p\)).
 
 \subsubsection{Rozkład geometryczny}
 Rozważamy schemat Bernoulliego o nieskończonej długości. Jeśli \(T\) będzie zmienną losową o
-wartościach w \(\mathbb{N} \cup \{0\}\), która opisuje liczbę prób Bernoulliego z paramterem \(p\)
+wartościach w \(\mathbb{N} \cup \{0\}\), która opisuje liczbę prób Bernoulliego z parametrem \(p\)
 do momentu uzyskania pierwszego sukcesu to
 \begin{equation*}
     P(T=k) = (1-p)^{k-1}p
@@ -1442,7 +1442,6 @@ Wartość elementu tensora \(X\) pod wielowskaźnikiem \((i_1, \ldots, i_k)\) b�
 nie z jego wartością dla argumentu \((i_1, \ldots, i_k)\), aby podkreślić jakie argumenty przyjmuje.
 Jest to tożsame z częstym w matematyce oznaczaniem funkcji jako \(f(x)\) podczas, gdy funkcją jest
 \(f\), a \(f(x)\) to jej wartość dla argumentu \(x\).\hfill \break
-
 Dla tensora \(X:\mathbb{N}^k\supset I \mapsto \mathbb{R}\) definiujemy tzw. operator kształtu (z
 ang. \textit{shape operator}) \(\sh\)
 \begin{equation*}
@@ -1451,7 +1450,6 @@ ang. \textit{shape operator}) \(\sh\)
 Operator kształtu zwraca wektor liczb naturalnych zawierający uogólnienie liczb kolumn/wierszy dla
 macierzy. W szczególności dla tablicy jednowymiarowej (tj. 1-tensora) \(T\) zawierającej \(n\)
 elementów będziemy stosowali zapis \(\sh(T) = (n,)\).\hfill \break
-
 Zbiór wszystkich tensorów danego kształtu \(\sh=(n_1,\ldots,n_k)\) o elementach rzeczywistych
 będziemy oznaczać przez \(\mathbb{T}_{n_1,..,n_k}(\mathbb{R}) = \mathbb{T}_\sh(\mathbb{R})\). Jeśli
 będzie to oczywiste z kontekstu (u nas zawsze) to pominiemy człon w nawiasach pisząc po prostu
@@ -1460,7 +1458,6 @@ tensorowych zdefiniujemy jako \(F: \mathbb{T}_{\sh_1} \mapsto \mathbb{T}_{\sh_2}
 tego odwzorowania dla argumentu \(X\) (\(\sh(X) = \sh_1\)) tj. \(F(X)\) jest tensorem (\(\sh(F(X)) =
 \sh_2\)). Ponadto będziemy utożsamiać zapis \((F(X))_{i_1,..,i_k}\) z \(F_{i_1,..,i_k}(X)\).\hfill
 \break
-
 W wyrażeniach zawierających iloczyny postaci 
 \begin{equation*}
     X_{i_1,..,i_p}Y_{j_1,..,j_q}Z_{k_1,..,k_r}\cdots
@@ -1770,7 +1767,7 @@ jedynie na znalezienie minimum lokalnego.
 \subsection{Regularyzacja i inicjalizacja}
 
 Sieci neuronowe są bardzo \textit{pojemnymi} modelami, przez co są bardzo podatne na overfitting i
-nie generalizują się dobrze poza zbiór treningowy. Bardzo ważnym elementem budowy sieci neurownowych
+nie generalizują się dobrze poza zbiór treningowy. Bardzo ważnym elementem budowy sieci neuronowych
 są więc metody regularyzacji. 
 
 \begin{enumerate}
@@ -1790,7 +1787,7 @@ są więc metody regularyzacji.
     które są mało ważne.
 
     \item \textbf{Early stopping}\\
-    Innym prostym, lecz efektywnympodejściem do regularyzacji sieci neuronowych jest procedura
+    Innym prostym, lecz efektywnym podejściem do regularyzacji sieci neuronowych jest procedura
     \textit{early stopping}. Polega ona na zatrzymaniu procesu uczenia (optymalizacji funkcji
     kosztu) w momencie, w którym wartość funkcji kosztu na wydzielonym ze zbioru treningowego
     zbiorze walidacyjnym zaczyna rosnąć (lub nie spada przez odpowiednio długi czas). Unikamy w ten
@@ -1808,7 +1805,7 @@ są więc metody regularyzacji.
     polegający na tym, iż w procesie treningu ze z góry zadanym prawdopodobieństwem ,,wyłączamy''
     wyjście neuronu (tj. dla każdej aktualizacji wartości parametrów sieci, w algorytmie wstecznej
     propagacji błędu mnożymy wyjście \(Y_{ab}^h\) przez tensor \(P_{ab}^h\), którego każdy element
-    może być równy \(0\) z p-stwem \(p\) lub 1 z p-stwem \(1-p\)). Mechanizmu dropoutu używamy tylko
+    może być równy \(0\) z p-stwem \(p\) lub 1 z p-stwem \(1-p\)). Mechanizmu dropout używamy tylko
     w procesie treningu. W przypadku inferencji wyjście neuronu jest z kolei mnożone przez
     następujący stosunek
     \begin{equation*}
@@ -1837,7 +1834,7 @@ są więc metody regularyzacji.
     \item \textbf{Data augmentation}\\
     Metoda data augmentation polega na dodaniu do zbioru treningowego replik przykładów z tego
     zbioru poddanych pewnym transformacjom względem których oczekujemy, iż odpowiedzi sieci będą
-    nizemienione.
+    niezmienione.
 
     % TODO: Initialization, Winning Tickets
 
