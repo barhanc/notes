@@ -176,8 +176,9 @@
     </pre>
     Zauważmy, że każde słowo $x \in \Sigma^*$ jest akceptowane przez dokładnie jedną z maszyn $M_L$,
     $M_{L'}$, zatem dla wystarczająco dużej liczby kroków $k$ dokładnie jeden z warunków będzie
-    prawdziwy i maszyna $M$ rozstrzygnie o słowie $x$. W takim razie pokazaliśmy, iż $\forall L
-    \subseteq\Sigma^* : L \in \text{RE}\cap\text{coRE} \implies L \in \text{R}$<br>
+    prawdziwy i maszyna $M$ rozstrzygnie o słowie $x$, przy czym zaakceptuje je iff $x \in L$. W
+    takim razie pokazaliśmy, iż $\forall L \subseteq\Sigma^* : L \in \text{RE}\cap\text{coRE}
+    \implies L \in \text{R}$<br>
     Załóżmy teraz natomiast, iż $L \in \text{R}$, wówczas z definicji istnieje maszyna $M$, która
     rozstrzyga o $L$. Skonstruujemy maszyny $M_L$ i $M_{L'}$ akceptujące odpowiednio języki $L$ i
     $L'$.
@@ -403,7 +404,7 @@
     </pre>
     Zauważmy, iż jeśli $\langle M, x \rangle \in H$ to $L(N) = L \in \mathscr{L}$, czyli $\langle N
     \rangle \in B_\mathscr{L}$. Jeśli natomiast $\langle M, x \rangle \notin H$ to $L(N) = \emptyset
-    \notin \mathscr{L}$ (z założenia), więc $\langle N \rangle \in B_\mathscr{L}$. Pokazaliśmy
+    \notin \mathscr{L}$ (z założenia), więc $\langle N \rangle \notin B_\mathscr{L}$. Pokazaliśmy
     zatem, iż jeśli $\emptyset \notin \mathscr{L}$ i $\mathscr{L} \neq \emptyset$ to $H \leq_m
     B_\mathscr{L}$, a ponieważ $H \notin \text{R}$ to również $B_\mathscr{L} \notin \text{R}$.<br>
 
