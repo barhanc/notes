@@ -176,8 +176,8 @@
     </pre>
     Zauważmy, że każde słowo $x \in \Sigma^*$ jest akceptowane przez dokładnie jedną z maszyn $M_L$,
     $M_{L'}$, zatem dla wystarczająco dużej liczby kroków $k$ dokładnie jeden z warunków będzie
-    prawdziwy i maszyna $M$ rozstrzygnie o słowie $x$. W takim razie pokazaliśmy, iż $\forall x
-    \in\Sigma^* : x \in \text{RE}\cap\text{coRE} \implies x \in \text{RE}$<br>
+    prawdziwy i maszyna $M$ rozstrzygnie o słowie $x$. W takim razie pokazaliśmy, iż $\forall L
+    \subseteq\Sigma^* : L \in \text{RE}\cap\text{coRE} \implies L \in \text{R}$<br>
     Załóżmy teraz natomiast, iż $L \in \text{R}$, wówczas z definicji istnieje maszyna $M$, która
     rozstrzyga o $L$. Skonstruujemy maszyny $M_L$ i $M_{L'}$ akceptujące odpowiednio języki $L$ i
     $L'$.
@@ -194,7 +194,7 @@
     Oczywiście maszyna $M$ kończy działanie dla każdego wejścia $x$ i akceptuje tylko słowa z języka
     $L$. Maszyna $M_L$ akceptuje zatem język $L$, a maszyna $M_{L'}$ nie akceptuje żadnego słowa z
     języka $L$ i akceptuje każde inne słowo, czyli akceptuje język $L'$. W takim razie $\forall
-    x\in\Sigma^*: x\in\text{R} \implies x\in\text{RE} \land x \in\text{coRE} \Longleftrightarrow x
+    L\subseteq\Sigma^*: L\in\text{R} \implies L\in\text{RE} \land L \in\text{coRE} \Longleftrightarrow L
     \in \text{RE}\cap\text{coRE}$. Z powyższego zatem otrzymujemy tezę.
 
     <br><br>
