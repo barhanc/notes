@@ -1735,9 +1735,10 @@ dokładne jedna klasa \(c\) jest poprawna
 \subsection{Metody optymalizacji numerycznej}
 
 Mając algorytm efektywnego obliczania pochodnych funkcji kosztu, funkcję minimalizujemy korzystając
-z algorytmu spadku wzdłuż gradientu. W przypadku sieci neuronowych funkcja kosztu nie jest funkcją
-ściśle wypukłą, więc algorytm spadku wzdłuż gradientu nie znajdzie globalnego minimum; możemy liczyć
-jedynie na znalezienie minimum lokalnego.
+z jednego z algorytmów optymalizacji numerycznej pierwszego rzędu (tj. wykorzystującego jedynie
+pochodne 1-go rzędu). W przypadku sieci neuronowych funkcja kosztu nie jest funkcją ściśle wypukłą,
+więc algorytmy te nie znajdą w ogólności globalnego minimum; możemy liczyć jedynie na znalezienie
+minimum lokalnego.
 
 \begin{tcolorbox}[title=Algorytm MBGD]
 \begin{enumerate}
