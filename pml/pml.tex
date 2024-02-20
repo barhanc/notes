@@ -1486,13 +1486,14 @@ rozumieć
 Ostatnim elementem notacji, który będzie nam potrzebny jest tzw. operator zakresu (z ang.
 \textit{range operator}). Przez zapis 
 \begin{equation*} 
-    X_{\mu_1:\nu_1,..,\mu_k:\nu_k}
+    X_{i_1:n_1:d_1, i_2:n_2:d_2,..,i_k:n_k:d_k}
 \end{equation*} 
-będziemy rozumieć \(k\)-tensor będący podtensorem \(X\) powstałym przez wybranie odpowiednich
-zakresów \(\mu_\alpha : \nu_\alpha\) osi \(\alpha\). Wartości tego podtensora będziemy oznaczać jako
-\((X_{\mu_1:\nu_1,..,\mu_k:\nu_k})_{i_1,..,i_k}\) Jeśli dla danej osi wybieramy cały zakres to
-będziemy pisali sam znak ,,:''. Jeśli będziemy chcieli wybrać co \(\delta\) element z zakresu od
-\(\mu : \nu\) zaczynając od pierwszego to zapiszemy to jako \(\mu : \nu : \delta\).
+będziemy rozumieć \(k\)-tensor będący podtensorem \(X\) powstałym przez wybranie z osi \(\alpha\)
+tensora \(X\) \(n_\alpha\) elementów rozpoczynając od \(i_\alpha\) i biorąc co \(d_\alpha\)-ty
+element. Wartości tego podtensora będziemy oznaczać jako
+\((X_{i_1:n_1:d_1,..,i_k:n_k:d_k})_{j_1,..,j_k}\) Jeśli dla danej osi wybieramy cały zakres to
+będziemy pisali sam znak ,,:''. Jeśli z kolei któryś z \(d_\alpha\) będzie wynosił 1 to będziemy
+pomijać go w zapisie pisząc tylko \(i:n\).
 
 \subsection{Neuron}
 
@@ -1599,9 +1600,9 @@ złożenie
     \end{split}\quad.
 \end{equation*}
 W takiej postaci sieć MLP przetwarza pojedynczo każdy wektor \(X_j\) należący do zbioru danych
-\(\{(Y_i^k, X_j^k) \mid k \in \{1,\ldots,D\}\}\). Możemy jednak rozszerzyć odwzorowanie \(F\) w taki
-sposób, aby sieć przetwarzała od razu tensor \(X_{jk}\) zawierający wszystkie przykłady ze zbioru
-uczącego
+\(\chi = \{(Y_i^k, X_j^k) \mid k \in \{1,\ldots,D\}\}\). Możemy jednak rozszerzyć odwzorowanie \(F\)
+w taki sposób, aby sieć przetwarzała od razu tensor \(X_{jk}\) zawierający wszystkie przykłady ze
+zbioru uczącego
 \begin{equation*}
     \begin{split}
         &F: \mathbb{T}_{N_{in}, D} \mapsto \mathbb{T}_{N_{out}, D}\\
@@ -1839,6 +1840,74 @@ są więc metody regularyzacji.
 \end{enumerate}
 
 \subsection{Sieci CNN}
+
+Sieci konwolucyjne (CNN) to architektura sieci neuronowych przystosowana do przetwarzania danych
+posiadających pewne zależności "przestrzenne", przez co rozumiemy, iż jeśli \(X_{ijk}\) jest
+tensorem wejściowym to zależności występują między wartościami sąsiednimi \(X_{i,j,k},
+X_{i+a,j+b,k+c}\) dla niewielkich \(a,b,c\). Przykładem takich danych są oczywiście obrazy.
+Przetwarzanie takich danych przez sieć MLP byłoby niezwykle nieefektywne, gdyż połączenia każdy z
+każdym oznaczałyby iż przykładowo dla obrazu w skali szarości o rozdzielczości \(512 \times 512\)
+mielibyśmy rzędu \(10^9\) parametrów dla jednej warstwy ukrytej. Dodatkowo sieć MLP szukałaby
+powiązań między odległymi pikselami, pomiędzy którymi takich zależności nie ma. Sieć CNN robi to
+znacznie efektywniej wykorzystując warstwy konwolucyjne. Jeśli \(X_{ijk}\) jest tensorem wejściowym
+do warstwy konwolucyjnej (np. pojedynczym obrazem reprezentowanym przez 3-tensor o kształcie \((512,
+512, 3)\)) to wyjście warstwy \(C_{abc}\) jest opisane przez funkcję (\textbf{uwaga} zakładamy, iż
+indeksy są liczbami naturalnymi \textbf{bez} 0)
+\begin{equation*}
+    \begin{split}
+        &C: \mathbb{T}_{h_{in},w_{in},c_{in}} \mapsto \mathbb{T}_{h_{out},w_{out},c_{out}}\\
+        &C_{abc}(X) = (X_{s(a-1)+1:h:d,s(b-1)+1:w:d,:})_{ijk}W_{ijkc} + B_c I_a I_b\,,    
+    \end{split}
+\end{equation*}
+gdzie \(\sh(W) = (h, w, c_\text{in}, c_\text{out})\) oraz \(c_\text{in} = \sh_3(X)\). Tensor
+\(W_{ijkc}\) dla ustalonego \(c\) nazywany \textit{filtrem konwolucyjnym}, natomiast cały tensor
+\(W\) -- \textit{mapą konwolucyjną} (formalnie nie jest to operacja konwolucji tylko korelacja
+skrośna). Warstwę konwolucyjną charakteryzuje szereg parametrów:
+\begin{itemize}
+    \item liczba kanałów wejściowych \(c_\text{in} = \sh_3(X)\) (oś 3. nazywamy również wymiarem
+    głębi)
+    \item liczba kanałów wyjściowych równa liczbie filtrów \(c_\text{out}\)
+    \item wysokość i szerokość tzw. \textit{pola odbiorczego} \(h \times w\)
+    \item \textit{stride} \(s\), zwykle jednakowy dla wymiaru góra-dół i lewo-prawo chociaż w
+    ogólności możemy przyjąć różne wartości \(s_h, s_w\). Parametr ten określa o ile przesuwamy pole
+    odbiorcze w każdym kroku.
+    \item \textit{dilation} \(d\), ponownie zwykle jednakowy dla obu wymiarów chociaż w ogólności
+    możemy przyjąć różne wartości \(d_h, d_w\)
+\end{itemize}
+Zależność między kształtami wejściowym \((h_\text{in},w_\text{in},c_\text{in})\) i wyjściowym
+\((h_\text{out},w_\text{out},c_\text{out})\) dla dowolnych parametrów \(h,w,s,d,c_\text{out}\) można
+zapisać jako 
+\begin{equation*}
+    h_\text{out} = \left\lfloor \frac{h_\text{in} - d_h(h-1) - 1}{s_h} + 1\right\rfloor\,,\quad w_\text{out} = \left\lfloor \frac{w_\text{in} - d_w(w-1) - 1}{s_w} + 1\right\rfloor\,.
+\end{equation*}
+Do algorytmu wstecznej propagacji błędu potrzebujemy znać pochodne wyjścia warstwy konwolucyjnej po
+parametrach sieci. Oczywiście pochodna po parametrach tej warstwy jest oczywista do obliczenia,
+podamy więc jedynie pochodną elementu podtensora \(X\) po pewnym elemencie tego tensora
+\begin{equation*}
+    \pdv{(X_{a:n:p,b:m:q,c:l:r})_{ijk}}{X_{xyz}} = \delta_{a+(i-1)p,x}\delta_{a+(j-1)q,y}\delta_{c+(k-1)r,z}\,.
+\end{equation*}
+Analogicznie jak w przypadku sieci MLP możemy rozszerzyć definicję funkcji \(C\) definiującej
+warstwę konwolucyjną w taki sposób, aby przetwarzała od razu cały 4-tensor zawierający pojedyncze
+przykłady będące 3-tensorami (np. kolorowe obrazy)
+\begin{equation*}
+    \begin{split}
+        &C: \mathbb{T}_{h_{in}, w_{in}, c_{in}, D} \mapsto \mathbb{T}_{h_{out}, w_{out}, c_{out}, D}\\
+        &C_{abce}(X) = (X_{s(a-1)+1:h:d,s(b-1)+1:w:d,:,:})_{ijke}W_{ijkc} + B_c I_a I_b I_e
+    \end{split}
+\end{equation*}
+W powyższej definicji stosujemy tzw. zapis \textit{batch-last}, tzn. oś (wymiar) związany z różnymi
+przykładami w zbiorze uczącym (\textit{batch dimension}) jest ostatnim wymiarem tensora.
+
+Zauważmy, że dany filtr konwolucyjny (ustalone \(c\)) ma te same wartości (po treningu) niezależnie
+od położenia pola odbiorczego w wolumenie wejściowym. Filtr taki w takim razie wykrywa konkretną
+(ale nie zakodowaną ręcznie tylko wytrenowaną w procesie uczenia sieci) cechę.
+
+Drugim rodzajem warstw typowo wykorzystywanym w sieciach CNN są tzw. \textit{warstwy poolingowe}
+(zbierające). Są to warstwy bezparametrowe, które z pola odbiorczego wyciągają pojedynczą liczbę.
+Najczęściej stosowane są warstwy typu max pooling wyciągające wartość największą lub average
+pooling, które biorą średnią z wartości w polu odbiorczym. Zwykle parametry \(d, s\) dobiera się w
+taki sposób, aby kolejne pola odbiorcze nie zachodziły na siebie, choć nie jest to żadna reguła.
+Warstwy poolingowe nie zmieniają wymiaru głębi, ale pozwalają zredukować wymiar przestrzenny.
 
 \subsection{Mechanizmy atencji}
 
