@@ -1857,7 +1857,7 @@ indeksy są liczbami naturalnymi \textbf{bez} 0)
 \begin{equation*}
     \begin{split}
         &C: \mathbb{T}_{h_{in},w_{in},c_{in}} \mapsto \mathbb{T}_{h_{out},w_{out},c_{out}}\\
-        &C_{abc}(X) = (X_{s(a-1)+1:h:d,s(b-1)+1:w:d,:})_{ijk}W_{ijkc} + B_c I_a I_b\,,    
+        &C_{abc}(X) = (X_{s(a-1)+1:h:d,s(b-1)+1:w:d,:})_{ijk}W_{ijkc} + B_c I_{ab}\,,    
     \end{split}
 \end{equation*}
 gdzie \(\sh(W) = (h, w, c_\text{in}, c_\text{out})\) oraz \(c_\text{in} = \sh_3(X)\). Tensor
@@ -1893,7 +1893,7 @@ przykłady będące 3-tensorami (np. kolorowe obrazy)
 \begin{equation*}
     \begin{split}
         &C: \mathbb{T}_{h_{in}, w_{in}, c_{in}, D} \mapsto \mathbb{T}_{h_{out}, w_{out}, c_{out}, D}\\
-        &C_{abce}(X) = (X_{s(a-1)+1:h:d,s(b-1)+1:w:d,:,:})_{ijke}W_{ijkc} + B_c I_a I_b I_e
+        &C_{abce}(X) = (X_{s(a-1)+1:h:d,s(b-1)+1:w:d,:,:})_{ijke}W_{ijkc} + B_c I_{abe}
     \end{split}
 \end{equation*}
 W powyższej definicji stosujemy tzw. zapis \textit{batch-last}, tzn. oś (wymiar) związany z różnymi
