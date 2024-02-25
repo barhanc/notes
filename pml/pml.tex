@@ -1451,12 +1451,11 @@ Operator kształtu zwraca wektor liczb naturalnych zawierający uogólnienie lic
 macierzy. W szczególności dla tablicy jednowymiarowej (tj. 1-tensora) \(T\) zawierającej \(n\)
 elementów będziemy stosowali zapis \(\sh(T) = (n,)\).\hfill \break
 Zbiór wszystkich tensorów danego kształtu \(\sh=(n_1,\ldots,n_k)\) o elementach rzeczywistych
-będziemy oznaczać przez \(\mathbb{T}_{n_1,..,n_k}(\mathbb{R}) = \mathbb{T}_\sh(\mathbb{R})\). Jeśli
-będzie to oczywiste z kontekstu (u nas zawsze) to pominiemy człon w nawiasach pisząc po prostu
-\(\mathbb{T}_{n_1,..,n_k} = \mathbb{T}_\sh\). Odwzorowanie \(F\) o argumentach i wartościach
-tensorowych zdefiniujemy jako \(F: \mathbb{T}_{\sh_1} \mapsto \mathbb{T}_{\sh_2}\). Wówczas wartość
-tego odwzorowania dla argumentu \(X\) (\(\sh(X) = \sh_1\)) tj. \(F(X)\) jest tensorem (\(\sh(F(X)) =
-\sh_2\)). Ponadto będziemy utożsamiać zapis \((F(X))_{i_1,..,i_k}\) z \(F_{i_1,..,i_k}(X)\).\hfill
+będziemy oznaczać przez \(\mathbb{R}^{n_1\times..\times n_k} \equiv \mathbb{R}^\sh\).
+Odwzorowanie \(F\) o argumentach i wartościach tensorowych zdefiniujemy jako \(F: \mathbb{R}^{\sh_1}
+\mapsto \mathbb{R}^{\sh_2}\). Wówczas wartość tego odwzorowania dla argumentu \(X\) (\(\sh(X) =
+\sh_1\)) tj. \(F(X)\) jest tensorem (\(\sh(F(X)) = \sh_2\)). Ponadto będziemy utożsamiać zapis
+\((F(X))_{i_1,..,i_k}\) z \(F_{i_1,..,i_k}(X)\).\hfill
 \break
 W wyrażeniach zawierających iloczyny postaci 
 \begin{equation*}
@@ -1466,18 +1465,18 @@ stosujemy (uproszczoną) konwencję sumacyjną Einsteina tj. dla każdego powtó
 wyrażeniu należy przed wyrażenie postawić znak sumy po tym indeksie (tzw. \textit{indeks
 sumacyjny}), przy czym dla zwiększenia przejrzystości zapisu nie piszemy znaków sumy explicite.
 Oznacza to w szczególności, iż możemy łatwo definiować nowe tensory jako odpowiednie iloczyny np.
-iloczyn macierzy \(A \in \mathbb{T}_{n,m}, B \in \mathbb{T}_{m,l}\) możemy zapisać jako
+iloczyn macierzy \(A \in \mathbb{R}^{n\times m}, B \in \mathbb{R}^{m\times l}\) możemy zapisać jako
 \begin{equation*}
     C_{ik} = A_{ij}B_{jk}\,.
 \end{equation*}
-wyrażenie to definiuje nowy tensor \(C \in \mathbb{T}_{n, l}\), którego elementy są dane poprzez
-sumę iloczynów odpowiednich elementów \(A, B\). Zauważmy jednakże, iż ponieważ nie wykorzystujemy
-wskaźników dolnych i górnych, więc jednakowo poprawnymi wyrażeniami są \(A_{ij}X_i\) oraz
-\(A_{ij}X_j\) chociaż w ogólności \(A_{ij}X_i \neq A_{ij}X_j\). Dodatkowo dla funkcji \(f:
+wyrażenie to definiuje nowy tensor \(C \in \mathbb{R}^{n \times l}\), którego elementy są dane
+poprzez sumę iloczynów odpowiednich elementów \(A, B\). Zauważmy jednakże, iż ponieważ nie
+wykorzystujemy wskaźników dolnych i górnych, więc jednakowo poprawnymi wyrażeniami są \(A_{ij}X_i\)
+oraz \(A_{ij}X_j\) chociaż w ogólności \(A_{ij}X_i \neq A_{ij}X_j\). Dodatkowo dla funkcji \(f:
 \mathbb{R} \mapsto \mathbb{R}\) zapis postaci \(Y_{ijk..} = f(X_{ijk..})\) dla dowolnego tensora
 \(X\) definiuje tensor \(Y\), którego wartości są wartościami funkcji \(f\) dla odpowiednich
 wartości tensora \(X\). Dodatkowo jeśli \(f: \mathbb{R} \mapsto \mathbb{R}\), a \(F :
-\mathbb{T}_{\sh_1} \mapsto \mathbb{T}_{\sh_2}\) to przez zapis \(Y = (f \circ F)(X)\) będziemy
+\mathbb{R}^{\sh_1} \mapsto \mathbb{R}^{\sh_2}\) to przez zapis \(Y = (f \circ F)(X)\) będziemy
 rozumieć 
 \begin{equation*}
     Y_{ijk..} = f(F_{ijk..}(X))\,.
@@ -1498,11 +1497,11 @@ pomijać go w zapisie pisząc tylko \(i:n\).
 \subsection{Neuron}
 
 Podstawowym elementem każdej sieci neuronowej jest pojedynczy neuron, który możemy traktować jako
-odwzorowanie \(y: \mathbb{T}_n \mapsto \mathbb{R}\) będące złożeniem pewnego odwzorowania
+odwzorowanie \(y: \mathbb{R}^n \mapsto \mathbb{R}\) będące złożeniem pewnego odwzorowania
 nieliniowego \(\sigma:\mathbb{R} \mapsto \mathbb{R}\) z odwzorowaniem afinicznym
 \begin{equation*}
     \begin{split}
-        &y: \mathbb{T}_n \mapsto \mathbb{R}\\
+        &y: \mathbb{R}^n \mapsto \mathbb{R}\\
         &y = \sigma\left(W_i X_i + b\right)
     \end{split}\quad.
 \end{equation*}
@@ -1576,8 +1575,8 @@ natomiast w przypadku regresji logistycznej jest to funkcja soft-max.
 Przejdźmy teraz do matematycznego opisu architektury MLP. Załóżmy, iż sieć składa się z \(H + 2\)
 warstw (\(H\) warstw ukrytych) o liczbach neuronów \(N_{in} = N_0\) (warstwa wejściowa), \(N_1,
 \ldots, N_H\) (warstwy ukryte), \(N_{out} = N_{H+1}\) (warstwa wyjściowa). Jeśli \(X \in
-\mathbb{T}_{N_{h-1}}\) jest wejściem \(h\)-tej warstwy ukrytej to jej wyjście \(Y^h \in
-\mathbb{T}_{N_h}\) jest dane przez
+\mathbb{R}^{N_{h-1}}\) jest wejściem \(h\)-tej warstwy ukrytej to jej wyjście \(Y^h \in
+\mathbb{R}^{N_h}\) jest dane przez
 \begin{equation*}
     Y_i^h = \sigma\left(W_{ij}^hX_j + B_i^h\right) \Longleftrightarrow Y = \left(\sigma \circ L^h\right)(X)\,,
 \end{equation*} 
@@ -1586,7 +1585,7 @@ obciążeń (z ang. \textit{bias}) w tej warstwie (indeks górny nie jest potęg
 warstwy). Zdefiniowaliśmy tutaj odwzorowanie
 \begin{equation*}
     \begin{split}
-        &L^h : \mathbb{T}_{N_{h-1}} \mapsto \mathbb{T}_{N_{h}}\\
+        &L^h : \mathbb{R}^{N_{h-1}} \mapsto \mathbb{R}^{N_{h}}\\
         &L_i^h(X) = W_{ij}^hX_j + B_i^h
     \end{split}\quad.
 \end{equation*}
@@ -1595,7 +1594,7 @@ liniową wejść bez żadnej funkcji nieliniowej. Wyjście z sieci MLP jest zate
 złożenie
 \begin{equation*}
     \begin{split}
-        &F: \mathbb{T}_{N_{in}} \mapsto \mathbb{T}_{N_{out}}\\
+        &F: \mathbb{R}^{N_{in}} \mapsto \mathbb{R}^{N_{out}}\\
         &F(X) = \left(L^{H+1} \circ \sigma \circ L^H \circ \cdots \circ \sigma \circ L^2 \circ \sigma \circ L^1\right)(X)
     \end{split}\quad.
 \end{equation*}
@@ -1605,10 +1604,10 @@ w taki sposób, aby sieć przetwarzała od razu tensor \(X_{jk}\) zawierający w
 zbioru uczącego
 \begin{equation*}
     \begin{split}
-        &F: \mathbb{T}_{N_{in}, D} \mapsto \mathbb{T}_{N_{out}, D}\\
+        &F: \mathbb{R}^{N_{in}\times D} \mapsto \mathbb{R}^{N_{out}\times D}\\
         &F(X) = \left(L^{H+1} \circ \sigma \circ L^H \circ \cdots \circ \sigma \circ L^2 \circ \sigma \circ L^1\right)(X)\\
         &\\
-        &L^h: \mathbb{T}_{N_{h-1}, D} \mapsto \mathbb{T}_{N_{h}, D}\\
+        &L^h: \mathbb{R}^{N_{h-1}\times D} \mapsto \mathbb{R}^{N_{h}\times D}\\
         &L_{ik}^h(X) = W_{ij}^h X_{jk} + B_i^h I_k
     \end{split}\quad.
 \end{equation*}
@@ -1826,7 +1825,7 @@ są więc metody regularyzacji.
     rezydualnych tj. warstw, których wyjście jest dane przez
     \begin{equation*}
         \begin{split}
-            &Y^h: \mathbb{T}_{N, D} \mapsto \mathbb{T}_{N,D}\\
+            &Y^h: \mathbb{R}^{N\times D} \mapsto \mathbb{R}^{N\times D}\\
             &Y^h_{ik}(X) = \sigma\left(W_{ij}^h X_{jk} + B_{i}^h I_k\right) + X_{ik}
         \end{split}\quad.
     \end{equation*}
@@ -1853,11 +1852,11 @@ powiązań między odległymi pikselami, pomiędzy którymi takich zależności 
 znacznie efektywniej wykorzystując warstwy konwolucyjne. Jeśli \(X_{ijk}\) jest tensorem wejściowym
 do warstwy konwolucyjnej (np. pojedynczym obrazem reprezentowanym przez 3-tensor o kształcie \((512,
 512, 3)\)) to wyjście warstwy \(C_{abc}\) jest opisane przez funkcję (\textbf{uwaga} zakładamy, iż
-indeksy są liczbami naturalnymi \textbf{bez} 0)
+indeksy są liczbami naturalnymi \textbf{wliczając} 0)
 \begin{equation*}
     \begin{split}
-        &C: \mathbb{T}_{h_{in},w_{in},c_{in}} \mapsto \mathbb{T}_{h_{out},w_{out},c_{out}}\\
-        &C_{abc}(X) = (X_{s(a-1)+1:h:d,s(b-1)+1:w:d,:})_{ijk}W_{ijkc} + B_c I_{ab}\,,    
+        &C: \mathbb{R}^{h_{in}\times w_{in}\times c_{in}} \mapsto \mathbb{R}^{h_{out}\times w_{out}\times c_{out}}\\
+        &C_{abc}(X) = (X_{sa:h:d,sb:w:d,:})_{ijk}W_{ijkc} + B_c I_{ab}\,,    
     \end{split}
 \end{equation*}
 gdzie \(\sh(W) = (h, w, c_\text{in}, c_\text{out})\) oraz \(c_\text{in} = \sh_3(X)\). Tensor
@@ -1885,15 +1884,15 @@ Do algorytmu wstecznej propagacji błędu potrzebujemy znać pochodne wyjścia w
 parametrach sieci. Oczywiście pochodna po parametrach tej warstwy jest oczywista do obliczenia,
 podamy więc jedynie pochodną elementu podtensora \(X\) po pewnym elemencie tego tensora
 \begin{equation*}
-    \pdv{(X_{a:n:p,b:m:q,c:l:r})_{ijk}}{X_{xyz}} = \delta_{a+(i-1)p,x}\delta_{a+(j-1)q,y}\delta_{c+(k-1)r,z}\,.
+    \pdv{(X_{a:n:p,b:m:q,c:l:r})_{ijk}}{X_{xyz}} = \delta_{a+ip,x}\delta_{b+jq,y}\delta_{c+kr,z}\,.
 \end{equation*}
 Analogicznie jak w przypadku sieci MLP możemy rozszerzyć definicję funkcji \(C\) definiującej
 warstwę konwolucyjną w taki sposób, aby przetwarzała od razu cały 4-tensor zawierający pojedyncze
 przykłady będące 3-tensorami (np. kolorowe obrazy)
 \begin{equation*}
     \begin{split}
-        &C: \mathbb{T}_{h_{in}, w_{in}, c_{in}, D} \mapsto \mathbb{T}_{h_{out}, w_{out}, c_{out}, D}\\
-        &C_{abce}(X) = (X_{s(a-1)+1:h:d,s(b-1)+1:w:d,:,:})_{ijke}W_{ijkc} + B_c I_{abe}
+        &C: \mathbb{R}^{h_{in}\times w_{in}\times c_{in}\times D} \mapsto \mathbb{R}^{h_{out}\times w_{out}\times c_{out}\times D}\\
+        &C_{abce}(X) = (X_{sa:h:d,sb:w:d,:,:})_{ijke}W_{ijkc} + B_c I_{abe}
     \end{split}
 \end{equation*}
 W powyższej definicji stosujemy tzw. zapis \textit{batch-last}, tzn. oś (wymiar) związany z różnymi
@@ -1912,12 +1911,19 @@ Warstwy poolingowe nie zmieniają wymiaru głębi, ale pozwalają zredukować wy
 
 \subsection{Mechanizmy atencji}
 
+
+
 \subsection{Sieci Transformer}
 
+
+
 \subsection{Generatywne modele dyfuzyjne}
+
 
 % ---
 
 \section{Reinforcement learning}
+
+
 
 \end{document}
