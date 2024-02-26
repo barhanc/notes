@@ -1451,10 +1451,10 @@ Operator kształtu zwraca wektor liczb naturalnych zawierający uogólnienie lic
 macierzy. W szczególności dla tablicy jednowymiarowej (tj. 1-tensora) \(T\) zawierającej \(n\)
 elementów będziemy stosowali zapis \(\sh(T) = (n,)\).\hfill \break
 Zbiór wszystkich tensorów danego kształtu \(\sh=(n_1,\ldots,n_k)\) o elementach rzeczywistych
-będziemy oznaczać przez \(\mathbb{R}^{n_1\times..\times n_k} \equiv \mathbb{R}^\sh\).
-Odwzorowanie \(F\) o argumentach i wartościach tensorowych zdefiniujemy jako \(F: \mathbb{R}^{\sh_1}
-\mapsto \mathbb{R}^{\sh_2}\). Wówczas wartość tego odwzorowania dla argumentu \(X\) (\(\sh(X) =
-\sh_1\)) tj. \(F(X)\) jest tensorem (\(\sh(F(X)) = \sh_2\)). Ponadto będziemy utożsamiać zapis
+będziemy oznaczać przez \(\mathbb{R}^{n_1\times..\times n_k} \equiv \mathbb{R}^\sh\). Odwzorowanie
+\(F\) o argumentach i wartościach tensorowych zdefiniujemy jako \(F: \mathbb{R}^{\sh_1} \mapsto
+\mathbb{R}^{\sh_2}\). Wówczas wartość tego odwzorowania dla argumentu \(X\) (\(\sh(X) = \sh_1\)) tj.
+\(F(X)\) jest tensorem (\(\sh(F(X)) = \sh_2\)). Ponadto będziemy utożsamiać zapis
 \((F(X))_{i_1,..,i_k}\) z \(F_{i_1,..,i_k}(X)\).\hfill
 \break
 W wyrażeniach zawierających iloczyny postaci 
@@ -1490,7 +1490,7 @@ Ostatnim elementem notacji, który będzie nam potrzebny jest tzw. operator zakr
 będziemy rozumieć \(k\)-tensor będący podtensorem \(X\) powstałym przez wybranie z osi \(\alpha\)
 tensora \(X\) \(n_\alpha\) elementów rozpoczynając od \(i_\alpha\) i biorąc co \(d_\alpha\)-ty
 element. Wartości tego podtensora będziemy oznaczać jako
-\((X_{i_1:n_1:d_1,..,i_k:n_k:d_k})_{j_1,..,j_k}\) Jeśli dla danej osi wybieramy cały zakres to
+\([X_{i_1:n_1:d_1,..,i_k:n_k:d_k}]_{j_1,..,j_k}\) Jeśli dla danej osi wybieramy cały zakres to
 będziemy pisali sam znak ,,:''. Jeśli z kolei któryś z \(d_\alpha\) będzie wynosił 1 to będziemy
 pomijać go w zapisie pisząc tylko \(i:n\).
 
@@ -1778,14 +1778,14 @@ są więc metody regularyzacji.
     poszczególnych parametrów sieci
     \begin{equation*}
         \begin{split}
-            &J^* = J + \frac{\lambda}{2}\sum_{h=1}^{H+1}\sum_{i,j} \left(W_{ij}^h\right)^2\,,\quad\text{regularyzacja L2}\\
-            &J^* = J + \frac{\lambda}{2}\sum_{h=1}^{H+1}\sum_{i,j} \left|W_{ij}^h\right|\,,\quad\text{regularyzacja L1}
+            &J^* = J + \frac{\lambda}{2}\sum_{h=1}^{H+1}\sum_{i,j} \left(W_{ij}^h\right)^2\,,\quad\text{regularyzacja \(L^2\)}\\
+            &J^* = J + \frac{\lambda}{2}\sum_{h=1}^{H+1}\sum_{i,j} \left|W_{ij}^h\right|\,,\quad\text{regularyzacja \(L^1\)}
         \end{split}
     \end{equation*}
-    Różnica między regularyzacją L2 i L1 jest taka, że norma L2 ,,zachęca” sieć do wybierania małych
-    wag, ale nie dokładnie będących 0, natomiast L1 zmniejsza wagi, ale w szczególności prowadzi do
-    wag wynoszących dokładnie 0. W związku z tym waga L1 przeprowadza selekcję cech - “wyłączy” te,
-    które są mało ważne.
+    Różnica między regularyzacją \(L^2\) i \(L^1\) jest taka, że norma \(L^2\) ,,zachęca” sieć do
+    wybierania małych wag, ale nie dokładnie będących 0, natomiast \(L^1\) zmniejsza wagi, ale w
+    szczególności prowadzi do wag wynoszących dokładnie 0. W związku z tym waga \(L^1\) przeprowadza
+    selekcję cech - “wyłączy” te, które są mało ważne.
 
     \item \textbf{Early stopping}\\
     Innym prostym, lecz efektywnym podejściem do regularyzacji sieci neuronowych jest procedura
@@ -1856,7 +1856,7 @@ indeksy są liczbami naturalnymi \textbf{wliczając} 0)
 \begin{equation*}
     \begin{split}
         &C: \mathbb{R}^{h_{in}\times w_{in}\times c_{in}} \mapsto \mathbb{R}^{h_{out}\times w_{out}\times c_{out}}\\
-        &C_{abc}(X) = (X_{sa:h:d,sb:w:d,:})_{ijk}W_{ijkc} + B_c I_{ab}\,,    
+        &C_{abc}(X) = [X_{sa:h:d,sb:w:d,:}]_{ijk}W_{ijkc} + B_c I_{ab}\,,    
     \end{split}
 \end{equation*}
 gdzie \(\sh(W) = (h, w, c_\text{in}, c_\text{out})\) oraz \(c_\text{in} = \sh_3(X)\). Tensor
@@ -1884,7 +1884,7 @@ Do algorytmu wstecznej propagacji błędu potrzebujemy znać pochodne wyjścia w
 parametrach sieci. Oczywiście pochodna po parametrach tej warstwy jest oczywista do obliczenia,
 podamy więc jedynie pochodną elementu podtensora \(X\) po pewnym elemencie tego tensora
 \begin{equation*}
-    \pdv{(X_{a:n:p,b:m:q,c:l:r})_{ijk}}{X_{xyz}} = \delta_{a+ip,x}\delta_{b+jq,y}\delta_{c+kr,z}\,.
+    \pdv{[X_{a_1:n_1:d_1,..,a_k:n_k:d_k}]_{i_1,..,i_k}}{X_{x_1,..,x_k}} = \prod_{\alpha=1}^k \delta_{a_\alpha + i_\alpha d_\alpha, x_\alpha}\,.
 \end{equation*}
 Analogicznie jak w przypadku sieci MLP możemy rozszerzyć definicję funkcji \(C\) definiującej
 warstwę konwolucyjną w taki sposób, aby przetwarzała od razu cały 4-tensor zawierający pojedyncze
@@ -1892,7 +1892,7 @@ przykłady będące 3-tensorami (np. kolorowe obrazy)
 \begin{equation*}
     \begin{split}
         &C: \mathbb{R}^{h_{in}\times w_{in}\times c_{in}\times D} \mapsto \mathbb{R}^{h_{out}\times w_{out}\times c_{out}\times D}\\
-        &C_{abce}(X) = (X_{sa:h:d,sb:w:d,:,:})_{ijke}W_{ijkc} + B_c I_{abe}
+        &C_{abce}(X) = [X_{sa:h:d,sb:w:d,:,:}]_{ijke}W_{ijkc} + B_c I_{abe}
     \end{split}
 \end{equation*}
 W powyższej definicji stosujemy tzw. zapis \textit{batch-last}, tzn. oś (wymiar) związany z różnymi
