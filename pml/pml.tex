@@ -173,7 +173,7 @@ skąd
 
 Macierz kowariancji funkcji \(f(\mathbf{x})\) zmiennej losowej \(X\) definiujemy jako
 \begin{equation*}
-    \oper{\Sigma}[f(\mathbf{x})] := \mathbb{E}\left[(f(\mathbf{x}) - \boldsymbol{\mu}_f)(f(\mathbf{x}) - \boldsymbol{\mu}_f)^\top\right]\,,
+    \oper{\Sigma}[f(\mathbf{x})] := \mathbb{E}\left[(f(\mathbf{x}) - \boldsymbol{\mu}_f)(f(\mathbf{x}) - \boldsymbol{\mu}_f)^T\right]\,,
 \end{equation*}
 gdzie \(\boldsymbol{\mu}_f = \mathbb{E}[f(\mathbf{x})]\). Elementy diagonalne
 \(\mathsf{\Sigma}_{ii}\) tej macierzy nazywamy wariancjami zmiennych \(X_i\), natomiast elementy
@@ -182,9 +182,9 @@ Oczywiście \(\oper{\Sigma}\) jest macierzą symetryczną. Nadto jeśli \(f\) je
 identycznościową tj. \(f(\mathbf{x}) = \mathbf{x}\) to \(\oper{\Sigma}\) jest macierzą nieujemnie
 określoną, gdyż dla dowolnego \(\mathbf{v} \in \mathbb{R}^n\) mamy
 \begin{equation*}
-    \mathbf{v}^\top \oper{\Sigma} \mathbf{v} = \mathbb{E}[\mathbf{v}^\top (\mathbf{x} - \boldsymbol{\mu})(\mathbf{x} - \boldsymbol{\mu})^\top \mathbf{v}] = \mathbb{E}[z^2] \geq 0\,,
+    \mathbf{v}^T \oper{\Sigma} \mathbf{v} = \mathbb{E}[\mathbf{v}^T (\mathbf{x} - \boldsymbol{\mu})(\mathbf{x} - \boldsymbol{\mu})^T \mathbf{v}] = \mathbb{E}[z^2] \geq 0\,,
 \end{equation*}
-gdzie \(z = \mathbf{v}^\top (\mathbf{x} - \boldsymbol{\mu}) \in \mathbb{R}\). Jeśli \(X_1, \ldots,
+gdzie \(z = \mathbf{v}^T (\mathbf{x} - \boldsymbol{\mu}) \in \mathbb{R}\). Jeśli \(X_1, \ldots,
 X_n\) są niezależne i \(f\) jest funkcją identycznościową to \(\oper{\Sigma}\) jest macierzą
 diagonalną.
 
@@ -195,14 +195,14 @@ Jeśli zmienna wielowymiarowa \(X = (X_1, \ldots, X_n)\) ma wielowymiarowy rozk�
 macierzą kowariancji \(\oper{\Sigma}\), co oznaczamy jako \(X \sim \mathcal{N}(\boldsymbol{\mu},
 \oper{\Sigma})\), to gęstość prawdopodobieństwa jest dana
 \begin{equation*}
-    \phi(\mathbf{x}) = \frac{1}{\sqrt{(2\pi)^n\det\oper{\Sigma}}}\exp\left\{-\frac{1}{2}(\mathbf{x} - \boldsymbol{\mu})^\top\oper{\Sigma}^{-1}(\mathbf{x} - \boldsymbol{\mu})\right\}
+    \phi(\mathbf{x}) = \frac{1}{\sqrt{(2\pi)^n\det\oper{\Sigma}}}\exp\left\{-\frac{1}{2}(\mathbf{x} - \boldsymbol{\mu})^T\oper{\Sigma}^{-1}(\mathbf{x} - \boldsymbol{\mu})\right\}
 \end{equation*}
 Macierz \(\oper{\Lambda} = \oper{\Sigma}^{-1}\) nazywamy macierzą precyzji. Jeśli \(\mathbf{v}_i\)
 są unormowanymi wektorami własnymi macierzy \(\oper{\Sigma}\), a \(\lambda_i\) odpowiadającymi im
 wartościami własnymi i zakładając, iż widmo \(\{\lambda_i\}\) jest niezdegenerowane mamy z
 twierdzenia spektralnego
 \begin{equation*}
-    \oper{\Lambda} = \sum_{i=1}^n\frac{1}{\lambda_i}\mathbf{v}_i\mathbf{v}_i^\top
+    \oper{\Lambda} = \sum_{i=1}^n\frac{1}{\lambda_i}\mathbf{v}_i\mathbf{v}_i^T
 \end{equation*}
 oraz wiemy, iż wektory \(\{\mathbf{v}_i\}\) tworzą bazę ortonormalną przestrzeni \(\mathbb{R}^n\). Z
 powyższego możemy zatem wyrazić wektor \(\mathbf{x} - \boldsymbol{\mu}\) jako kombinację liniową
@@ -222,7 +222,7 @@ Powiemy, iż wielowymiarowa zmienna losowa \(X \sim \mathcal{N}(\boldsymbol{\mu}
 standardowy wielowymiarowy rozkład normalny jeśli \(\boldsymbol{\mu} = \mathbf{0}\) i
 \(\oper{\Sigma} = \oper{1}\). Wówczas
 \begin{equation*}
-    \phi(\mathbf{x}) = \frac{1}{\sqrt{(2\pi)^n}}\exp\left\{-\frac{1}{2}\mathbf{x}^\top\mathbf{x}\right\}\,.
+    \phi(\mathbf{x}) = \frac{1}{\sqrt{(2\pi)^n}}\exp\left\{-\frac{1}{2}\mathbf{x}^T\mathbf{x}\right\}\,.
 \end{equation*}
 
 Można wykazać, iż jeśli \(X \sim \mathcal{N}(\boldsymbol{\mu}, \oper{\Sigma})\) dla
@@ -749,8 +749,8 @@ Wówczas łatwo pokazać, iż rozkład a posteriori jest rozkładem normalnym
 z parametrami
 \begin{equation*}
     \begin{split}
-        &\oper{\Sigma}_{\mathbf{x}|\mathbf{y}} = \left[\oper{\Sigma}_\mathbf{x}^{-1} + \oper{A}^\top\oper{\Sigma}_\mathbf{y}^{-1}\oper{A}\right]^{-1}\\
-        &\boldsymbol{\mu}_{\mathbf{x}|\mathbf{y}} = \oper{\Sigma}_{\mathbf{x}|\mathbf{y}}\left[\oper{A}^\top\oper{\Sigma}_\mathbf{y}^{-1}(\mathbf{y} - \mathbf{b}) + \oper{\Sigma}_\mathbf{x}^{-1}\boldsymbol{\mu}_\mathbf{x}\right]
+        &\oper{\Sigma}_{\mathbf{x}|\mathbf{y}} = \left[\oper{\Sigma}_\mathbf{x}^{-1} + \oper{A}^T\oper{\Sigma}_\mathbf{y}^{-1}\oper{A}\right]^{-1}\\
+        &\boldsymbol{\mu}_{\mathbf{x}|\mathbf{y}} = \oper{\Sigma}_{\mathbf{x}|\mathbf{y}}\left[\oper{A}^T\oper{\Sigma}_\mathbf{y}^{-1}(\mathbf{y} - \mathbf{b}) + \oper{\Sigma}_\mathbf{x}^{-1}\boldsymbol{\mu}_\mathbf{x}\right]
     \end{split}\quad.
 \end{equation*}
 
@@ -761,8 +761,8 @@ estymowanego parametru jest opisany przez prior \(\mathcal{N}(\boldsymbol{\mu}_0
 parametru \(\mathbf{x}\) zgodnie z powyższym wzorem i otrzymujemy rozkład normalny o parametrach
 \begin{equation*}
     \begin{split}
-        &\oper{\Sigma}_1 = \left[\oper{\Sigma}_0^{-1} + \oper{A}^\top\oper{\Sigma}_\mathbf{y}^{-1}\oper{A}\right]^{-1}\\
-        &\boldsymbol{\mu}_1 = \oper{\Sigma}_1\left[\oper{A}^\top\oper{\Sigma}_\mathbf{y}^{-1}(\mathbf{y}_1 - \mathbf{b}) + \oper{\Sigma}_0^{-1}\boldsymbol{\mu}_0\right]
+        &\oper{\Sigma}_1 = \left[\oper{\Sigma}_0^{-1} + \oper{A}^T\oper{\Sigma}_\mathbf{y}^{-1}\oper{A}\right]^{-1}\\
+        &\boldsymbol{\mu}_1 = \oper{\Sigma}_1\left[\oper{A}^T\oper{\Sigma}_\mathbf{y}^{-1}(\mathbf{y}_1 - \mathbf{b}) + \oper{\Sigma}_0^{-1}\boldsymbol{\mu}_0\right]
     \end{split}\quad.
 \end{equation*}
 Po zaobserwowaniu kolejnego \(\mathbf{y}_2\) ponownie wykorzystujemy powyższe wzory ale jako prior
@@ -770,15 +770,15 @@ wykorzystując rozkład w poprzedniej iteracji. W ogólności możemy zapisać w
 \(m+1\) rozkład jako
 \begin{equation*}
     \begin{split}
-        &\oper{\Sigma}_{m+1} = \left[\oper{\Sigma}_m^{-1} + \oper{A}^\top\oper{\Sigma}_\mathbf{y}^{-1}\oper{A}\right]^{-1}\\
-        &\boldsymbol{\mu}_{m+1} = \oper{\Sigma}_{m+1}\left[\oper{A}^\top\oper{\Sigma}_\mathbf{y}^{-1}(\mathbf{y}_{m+1} - \mathbf{b}) + \oper{\Sigma}_m^{-1}\boldsymbol{\mu}_m\right]
+        &\oper{\Sigma}_{m+1} = \left[\oper{\Sigma}_m^{-1} + \oper{A}^T\oper{\Sigma}_\mathbf{y}^{-1}\oper{A}\right]^{-1}\\
+        &\boldsymbol{\mu}_{m+1} = \oper{\Sigma}_{m+1}\left[\oper{A}^T\oper{\Sigma}_\mathbf{y}^{-1}(\mathbf{y}_{m+1} - \mathbf{b}) + \oper{\Sigma}_m^{-1}\boldsymbol{\mu}_m\right]
     \end{split}\quad,
 \end{equation*}
 skąd możemy od razu podać wzór na parametry \(m\)--tego rozkładu
 \begin{equation*}
     \begin{split}
-        &\oper{\Sigma}_{m} = \left[\oper{\Sigma}_0^{-1} + m\oper{A}^\top\oper{\Sigma}_\mathbf{y}^{-1}\oper{A}\right]^{-1}\\
-        &\boldsymbol{\mu}_{m} = \oper{\Sigma}_{m}\left[\oper{A}^\top\oper{\Sigma}_\mathbf{y}^{-1}\left(\sum_{i=1}^{m}\mathbf{y}_{i} - m\mathbf{b}\right) + \oper{\Sigma}_0^{-1}\boldsymbol{\mu}_0\right]
+        &\oper{\Sigma}_{m} = \left[\oper{\Sigma}_0^{-1} + m\oper{A}^T\oper{\Sigma}_\mathbf{y}^{-1}\oper{A}\right]^{-1}\\
+        &\boldsymbol{\mu}_{m} = \oper{\Sigma}_{m}\left[\oper{A}^T\oper{\Sigma}_\mathbf{y}^{-1}\left(\sum_{i=1}^{m}\mathbf{y}_{i} - m\mathbf{b}\right) + \oper{\Sigma}_0^{-1}\boldsymbol{\mu}_0\right]
     \end{split}\quad.
 \end{equation*}
 Taki sam wynik można by uzyskać rozpatrując łączny rozkład a posteriori dla obserwacji \(D =
@@ -786,7 +786,7 @@ Taki sam wynik można by uzyskać rozpatrując łączny rozkład a posteriori dl
 \begin{equation*}
     \begin{split}
         &p(\mathbf{x} \mid D) \cong \pi(\mathbf{x})\prod_{i=1}^m p(\mathbf{y}_i \mid \mathbf{x})\cong \\
-        &\exp\left\{-\frac{1}{2}\left[(\mathbf{x}-\boldsymbol{\mu}_0)^\top\oper{\Sigma}_0^{-1}(\mathbf{x}-\boldsymbol{\mu}_0) + \sum_{i=1}^m(\mathbf{y}_i - \oper{A}\mathbf{x}-\mathbf{b})^\top\oper{\Sigma}_\mathbf{y}^{-1}(\mathbf{y}_i - \oper{A}\mathbf{x}-\mathbf{b})\right]\right\}
+        &\exp\left\{-\frac{1}{2}\left[(\mathbf{x}-\boldsymbol{\mu}_0)^T\oper{\Sigma}_0^{-1}(\mathbf{x}-\boldsymbol{\mu}_0) + \sum_{i=1}^m(\mathbf{y}_i - \oper{A}\mathbf{x}-\mathbf{b})^T\oper{\Sigma}_\mathbf{y}^{-1}(\mathbf{y}_i - \oper{A}\mathbf{x}-\mathbf{b})\right]\right\}
     \end{split}\,.
 \end{equation*}
 
@@ -797,47 +797,50 @@ objaśnianą, którego wartość obserwujemy, a \(\mathbf{x}\) to wektor zmienny
 kontrolujemy tj. zakładamy, iż wektor \(\mathbf{x}\) dla danego pomiaru \(y\) znamy dokładnie.
 Dodatkowo zakładamy, iż \(y\) zależy liniowo od \(\mathbf{x}\) tj.
 \begin{equation*}
-    y = \mathbf{w}^\top\mathbf{x} + \epsilon\,,
+    y = \mathbf{w}^T\mathbf{x} + \epsilon\,,
 \end{equation*}
 gdzie \(\epsilon \sim \mathcal{N}(0, \sigma^2)\) dla znanego \(\sigma\) jest tzw. błędem losowym, a
 \(\mathbf{w}\) jest estymowanym przez nas parametrem. Możemy zatem zapisać
 \begin{equation*}
-    y \mid \mathbf{w} \sim \mathcal{N}(\mathbf{w}^\top\mathbf{x}, \sigma^2)\,.
+    y \mid \mathbf{w} \sim \mathcal{N}(\mathbf{w}^T\mathbf{x}, \sigma^2)\,.
 \end{equation*}
 Powiedzmy, iż zaobserwowaliśmy ciąg obserwacji \(D = (y_1, \ldots, y_m)\) dla zadanych (lub
 dokładnie znanych) przez nas \((\mathbf{x}_1,\ldots,\mathbf{x}_m)\). Wiarygodność ma zatem postać
 \begin{equation*}
-    p(D \mid \mathbf{w}) \cong \prod_{i=1}^m \exp\left\{-\frac{1}{2\sigma^2}\left(y_i - \mathbf{w}^\top\mathbf{x}_i\right)^2\right\}\,.
+    p(D \mid \mathbf{w}) \cong \prod_{i=1}^m \exp\left\{-\frac{1}{2\sigma^2}\left(y_i - \mathbf{w}^T\mathbf{x}_i\right)^2\right\}\,.
 \end{equation*}
 W przypadku regresji liniowej zamiast pełnego wnioskowania Bayesowskiego o parametrze \(\mathbf{w}\)
 często stosuje się prostsze podejście polegające na znalezieniu estymaty punktowej MLE. Zanegowana
 logarytmiczna funkcja wiarygodności ma postać
 \begin{equation*}
-    \ell(D \mid \mathbf{w}) = \frac{1}{2\sigma^2}\sum_{i=1}^m(y_i - \mathbf{w}^\top\mathbf{x}_i)^2 + \text{const.}
+    \ell(D \mid \mathbf{w}) = \frac{1}{2\sigma^2}\sum_{i=1}^m(y_i - \mathbf{w}^T\mathbf{x}_i)^2 + \text{const.}
 \end{equation*}
 Człon stały możemy oczywiście pominąć i zapisać
 \begin{equation*}
-    \ell(D \mid \mathbf{w}) \cong \sum_{i=1}^m(y_i - \mathbf{w}^\top\mathbf{x}_i)^2 = \left(\mathbf{y} - \oper{X}\mathbf{w}\right)^\top\left(\mathbf{y} - \oper{X}\mathbf{w}\right)\,,
+    \ell(D \mid \mathbf{w}) \cong \sum_{i=1}^m(y_i - \mathbf{w}^T\mathbf{x}_i)^2 = \left(\mathbf{y} - \oper{X}\mathbf{w}\right)^T\left(\mathbf{y} - \oper{X}\mathbf{w}\right)\,,
 \end{equation*}
 gdzie
 \begin{equation*}
-    \mathbf{y} = \mqty[y_1 \\ \vdots \\ y_m]\,,\quad \oper{X} = \mqty[\mathbf{x}_1^\top \\ \vdots \\ \mathbf{x}_m^\top]\,.
+    \mathbf{y} = \mqty[y_1 \\ \vdots \\ y_m]\,,\quad \oper{X} = \mqty[\mathbf{x}_1^T \\ \vdots \\ \mathbf{x}_m^T]\,.
 \end{equation*}
 Ponieważ otrzymana funkcja \(\ell\) ma postać formy kwadratowej, więc problem optymalizacyjny
 polegający na znalezieniu minimum \(\ell\) nazywa się metodą najmniejszych kwadratów (z ang.
 \textit{OLS -- Ordinary Least Squares}). Aby wyznaczyć estymatę \(\mathbf{w}_\text{MLE}\) musimy
 rozwiązać równanie
 \begin{equation*}
-    \pdv{\ell}{\mathbf{w}} = \pdv{~}{\mathbf{w}}\left[\mathbf{y}^\top\mathbf{y} + \mathbf{w}^\top\oper{X}^\top\oper{X}\mathbf{w} - 2\mathbf{y}^\top\oper{X}\mathbf{w}\right] = \mathbf{0}\,,
+    \pdv{\ell}{\mathbf{w}} = \pdv{~}{\mathbf{w}}\left[\mathbf{y}^T\mathbf{y} + \mathbf{w}^T\oper{X}^T\oper{X}\mathbf{w} - 2\mathbf{y}^T\oper{X}\mathbf{w}\right] = \mathbf{0}\,,
 \end{equation*}
 skąd
 \begin{equation*}
-    2\oper{X}^\top\oper{X}\mathbf{w} - 2\oper{X}^\top\mathbf{y} = \mathbf{0}\,,
+    2\oper{X}^T\oper{X}\mathbf{w} - 2\oper{X}^T\mathbf{y} = \mathbf{0}\,,
 \end{equation*}
 zatem
 \begin{equation*}
-    \mathbf{w}_\text{MLE} = (\oper{X}^\top\oper{X})^{-1}\oper{X}^\top\mathbf{y}\,.
+    \mathbf{w}_\text{MLE} = (\oper{X}^T\oper{X})^{-1}\oper{X}^T\mathbf{y} = \oper{X}^+\mathbf{y}\,,
 \end{equation*}
+gdzie \(\oper{X}^+\) oznacza tzw. \textit{pseudoodwrotność Moore'a--Penrose'a}, którą można
+efektywnie obliczyć korzystając z rozkładu SVD macierzy \(\oper{X}\).
+
 Pełniejszą informację o parametrze \(\mathbf{w}\) możemy uzyskać rozpatrując rozkład a posteriori
 \(p(\mathbf{w} \mid D)\). Jeśli jako prior przyjmiemy rozkład normalny z pewnymi parametrami
 \(\boldsymbol{\mu}_0, \oper{\Sigma}_0\) to zauważmy, iż otrzymujemy instancję liniowego modelu
@@ -855,8 +858,8 @@ skąd rozkład a posteriori jest rozkładem normalnym
 o parametrach
 \begin{equation*}
     \begin{split}
-        &\oper{\Sigma}_m = \left[\oper{\Sigma}_0^{-1} + \sigma^{-2}\oper{X}^\top\oper{X}\right]^{-1}\\
-        &\boldsymbol{\mu}_m = \oper{\Sigma}_m\left[\sigma^{-2}\oper{X}^\top\mathbf{y} + \oper{\Sigma}_0^{-1}\boldsymbol{\mu}_0\right]    
+        &\oper{\Sigma}_m = \left[\oper{\Sigma}_0^{-1} + \sigma^{-2}\oper{X}^T\oper{X}\right]^{-1}\\
+        &\boldsymbol{\mu}_m = \oper{\Sigma}_m\left[\sigma^{-2}\oper{X}^T\mathbf{y} + \oper{\Sigma}_0^{-1}\boldsymbol{\mu}_0\right]    
     \end{split}\quad.
 \end{equation*}
 W powyższych wzorach nazwy parametrów nie są przykładowe: po zaobserwowaniu 0 przykładów rozkład
@@ -869,8 +872,8 @@ przy iteracyjnym stosowaniu wnioskowania w liniowym modelu Gaussowskim otrzymuje
 o parametrach
 \begin{equation*}
     \begin{split}
-        &\oper{\Sigma}_{m;s} = \left[\oper{\Sigma}_0^{-1} + \frac{s}{\sigma^2}\oper{X}^\top\oper{X}\right]^{-1}\\
-        &\boldsymbol{\mu}_{m;s} = \oper{\Sigma}_{m;s}\left[\sigma^{-2}\oper{X}^\top\sum_{i=1}^s\mathbf{y}_i + \oper{\Sigma}_0^{-1}\boldsymbol{\mu}_0\right]    
+        &\oper{\Sigma}_{m;s} = \left[\oper{\Sigma}_0^{-1} + \frac{s}{\sigma^2}\oper{X}^T\oper{X}\right]^{-1}\\
+        &\boldsymbol{\mu}_{m;s} = \oper{\Sigma}_{m;s}\left[\sigma^{-2}\oper{X}^T\sum_{i=1}^s\mathbf{y}_i + \oper{\Sigma}_0^{-1}\boldsymbol{\mu}_0\right]    
     \end{split}\quad.
 \end{equation*} 
 Rozkład predykcyjny dla nowej obserwacji \(y\) poczynionej w punkcie \(\mathbf{x}\) jest dany przez
@@ -881,7 +884,7 @@ Nietrudno zauważyć, iż będzie to rozkład normalny o parametrach
 \begin{equation*}
     \begin{split}
         \mu_{y|\mathbf{y}} = \mathbb{E}[y\mid\mathbf{y}] &= \int\limits_{\mathbb{R}} y p(y\mid\mathbf{y}) \dd{y} = \int\limits_{\mathbb{R}^n}\dd[n]{\mathbf{w}} p(\mathbf{w}\mid\mathbf{y}) \int\limits_\mathbb{R}\dd{y} yp(y\mid\mathbf{w}) \\
-        &= \int\limits_{\mathbb{R}^n}\dd[n]{\mathbf{w}} p(\mathbf{w}\mid\mathbf{y}) \mathbf{x}^\top\mathbf{w} = \mathbf{x}^\top\boldsymbol{\mu}_m\,.
+        &= \int\limits_{\mathbb{R}^n}\dd[n]{\mathbf{w}} p(\mathbf{w}\mid\mathbf{y}) \mathbf{x}^T\mathbf{w} = \mathbf{x}^T\boldsymbol{\mu}_m\,.
     \end{split}
 \end{equation*}
 oraz
@@ -889,16 +892,16 @@ oraz
     \begin{split}
         \sigma_{y|\mathbf{y}}^2 &= \mathbb{E}\left[(y - \mu_{y|\mathbf{y}} )^2 \mid \mathbf{y}\right] = \int\limits_{\mathbb{R}^n}\dd[n]{\mathbf{w}} p(\mathbf{w}\mid\mathbf{y}) \int\limits_\mathbb{R}\dd{y} (y-\mu_{y|\mathbf{y}})^2p(y\mid\mathbf{w})\\
         &= \int\limits_{\mathbb{R}^n}\dd[n]{\mathbf{w}} p(\mathbf{w}\mid\mathbf{y}) \int\limits_\mathbb{R}\dd{y} \left(y^2 + \mu_{y|\mathbf{y}}^2 - 2\mu_{y|\mathbf{y}}y\right)p(y\mid\mathbf{w})\\
-        &= \int\limits_{\mathbb{R}^n}\dd[n]{\mathbf{w}} p(\mathbf{w}\mid\mathbf{y}) \left(\sigma^2 + (\mathbf{x}^\top\mathbf{w})^2 + \mu_{y|\mathbf{y}}^2 - 2\mu_{y|\mathbf{y}}\mathbf{x}^\top\mathbf{w}\right)\\
-        &=\sigma^2 + \int\limits_{\mathbb{R}^n}\dd[n]{\mathbf{w}} p(\mathbf{w}\mid\mathbf{y}) \left(\mathbf{x}^\top\mathbf{w} - \mathbf{x}^\top\boldsymbol{\mu}_m\right)^2\\
-        &=\sigma^2 + \mathbf{x}^\top \mathbb{E}[(\mathbf{w}-\boldsymbol{\mu}_m)(\mathbf{w}-\boldsymbol{\mu}_m)^\top\mid\mathbf{y}]\mathbf{x} = \sigma^2 +\mathbf{x}^\top\oper{\Sigma}_m\mathbf{x}\,.
+        &= \int\limits_{\mathbb{R}^n}\dd[n]{\mathbf{w}} p(\mathbf{w}\mid\mathbf{y}) \left(\sigma^2 + (\mathbf{x}^T\mathbf{w})^2 + \mu_{y|\mathbf{y}}^2 - 2\mu_{y|\mathbf{y}}\mathbf{x}^T\mathbf{w}\right)\\
+        &=\sigma^2 + \int\limits_{\mathbb{R}^n}\dd[n]{\mathbf{w}} p(\mathbf{w}\mid\mathbf{y}) \left(\mathbf{x}^T\mathbf{w} - \mathbf{x}^T\boldsymbol{\mu}_m\right)^2\\
+        &=\sigma^2 + \mathbf{x}^T \mathbb{E}[(\mathbf{w}-\boldsymbol{\mu}_m)(\mathbf{w}-\boldsymbol{\mu}_m)^T\mid\mathbf{y}]\mathbf{x} = \sigma^2 +\mathbf{x}^T\oper{\Sigma}_m\mathbf{x}\,.
     \end{split}
 \end{equation*}
 Powyżej skorzystaliśmy ze znanego faktu, iż dla jednowymiarowej zmiennej losowej zachodzi \(\sigma^2
 = \mathbb{E}[(X - \mu_X)^2] = \mathbb{E}[X^2] - \mu_X^2\), skąd \(\mathbb{E}[X^2] = \sigma^2 +
 \mu_X^2\). Podsumowując rozkład predykcyjny ma postać
 \begin{equation*}
-    y \mid \mathbf{y} \sim \mathcal{N}(\mathbf{x}^\top\boldsymbol{\mu}_m, \sigma^2 + \mathbf{x}^\top\oper{\Sigma}_m\mathbf{x})\,.
+    y \mid \mathbf{y} \sim \mathcal{N}(\mathbf{x}^T\boldsymbol{\mu}_m, \sigma^2 + \mathbf{x}^T\oper{\Sigma}_m\mathbf{x})\,.
 \end{equation*}
 
 \subsection{Regularyzacja}
@@ -923,23 +926,116 @@ normalny
 to rozkład a posteriori jest rozkładem normalnym o parametrach
 \begin{equation*}
     \begin{split}
-        &\oper{\Sigma}_m = \sigma^2 \left[\gamma\oper{1} + \oper{X}^\top\oper{X}\right]^{-1}\\
-        &\boldsymbol{\mu}_m = \left[\gamma\oper{1} + \oper{X}^\top\oper{X}\right]^{-1}\oper{X}^\top\mathbf{y}
+        &\oper{\Sigma}_m = \sigma^2 \left[\gamma\oper{1} + \oper{X}^T\oper{X}\right]^{-1}\\
+        &\boldsymbol{\mu}_m = \left[\gamma\oper{1} + \oper{X}^T\oper{X}\right]^{-1}\oper{X}^T\mathbf{y}
     \end{split}\quad,
 \end{equation*}
 gdzie \(\gamma = \sigma^2 / \tau^2\) jest hiper-parametrem określającym siłę regularyzacji.
 Zauważmy, że im większa jest wartość \(\gamma\) (mniejsza niepewność związana z rozkładem a priori)
 tym drugi człon w nawiasie staje się mniej istotny. Taki sam wynik możemy uzyskać metodą OLS jeśli
-do funkcji kosztu dodamy człon regularyzujący dla zwykłej normy euklidesowej. Zagadnienie
-minimalizacji funkcji kosztu będącej formą kwadratową z dodanym członem regularyzującym nazywamy
-również regresją grzbietową.
+do funkcji kosztu dodamy człon regularyzujący dla zwykłej normy euklidesowej (norma \(L^2\)) postaci
+\(\gamma\sum_{i=1}^n w_i^2\). Zagadnienie minimalizacji funkcji kosztu będącej formą kwadratową z
+dodanym członem regularyzującym nazywamy również regresją grzbietową (z ang. \textit{ridge
+regression}).
+
+Innym przykładem regularyzacji jest przyjęcie jako priora ma parametry modelu rozkładu Laplace'a
+postaci
+\begin{equation*}
+    p(\mathbf{w}) \cong \prod_{i=1}^n \exp\left(-\frac{|w_i|}{\lambda}\right)
+\end{equation*}
+co powoduje dodanie do funkcji kosztu członu postaci \(\gamma \sum_{i=1}^n |w_i|\) będącego normą
+\(L^1\) wektora wag \(\mathbf{w}\). Takie zagadnienie nazywamy regresją LASSO i w tym przypadku nie
+da się prosto analitycznie znaleźć estymaty punktowej MAP. Zwykle do tego zagadnienia używamy
+algorytmu optymalizacji numerycznej CD (z ang. \textit{coordinate descent}). Można również połączyć
+regularyzacje \(L^1\) i \(L^2\) tj. dodać do funkcji kosztu człon postaci \(\gamma_1
+\norm{\mathbf{w}}_1 + \gamma_2 \norm{\mathbf{w}_2}\) i takie zagadnienie nazywamy regresją
+ElasticNet i również znajdujemy estymatę MAP korzystając z CD.
+
+\subsection{Robust regression}
+
+Jednym z problemów przy modelowaniu zależności \(y(\mathbf{x})\) przez rozkład normalny jest duża
+czułość takiego modelu na wartości odstające (tzw. \textit{outliers}). Wynika to z tego, iż
+wynikający z takiego modelu błąd będący zanegowaną logarytmiczną funkcją wiarygodności jest
+proporcjonalny do kwadratu odległości punktu od prostej regresji. Tzw. metody \textit{robust} to
+zbiór metod odpornych na outliery, które przypisują im mniejszą wagę niż standardowa regresja
+liniowa. Jednym z modeli robust regression jest tzw. regresja LAD (z ang. \textit{Least Absolute
+Deviations}), która modeluje zależność poprzez rozkład Laplace'a, który posiada tzw. ciężkie ogony
+(z ang. \textit{heavy tails}) i dzięki temu przypisuje większe prawdopodobieństwo wartościom
+odstającym niż rozkład normalny
+\begin{equation*}
+    y \mid \mathbf{w} \sim \text{Laplace}(\mathbf{w}^T\mathbf{x}, \lambda)\,,
+\end{equation*}
+gdzie \(\lambda\) jest parametrem skali. Funkcja gęstości prawdopodobieństwa dla rozkładu Laplace'a
+z parametrami \(\mu, \lambda\) ma postać
+\begin{equation*}
+    p(y) = \frac{1}{2\lambda} \exp\left(-\frac{|y - \mu|}{\lambda}\right)\,,
+\end{equation*}
+co przekłada się na funkcję kosztu postaci
+\begin{equation*}
+    \ell(D \mid \mathbf{w}) \cong \sum_{i=1}^m |y_i - \mathbf{w}^T\mathbf{x}_i|
+\end{equation*}
+gdzie założono, iż parametr \(\lambda\) jest ustalony i stały. Bardziej ogólnie można modelować
+zależność \(y(\mathbf{x})\) przez asymetryczny rozkład Laplace'a (z ang. \textit{Asymmetric Laplace
+Distribution})
+\begin{equation*}
+    y \mid \mathbf{w} \sim \text{ALD}(\mathbf{w}^T\mathbf{x}, \lambda, q)
+\end{equation*}
+o gęstości prawdopodobieństwa i dystrybuancie dla parametrów \(\mu, \lambda, q\), gdzie \(0 < q <
+1\)
+\begin{equation*}
+    p(y) = \frac{q(1-q)}{\lambda}\begin{cases}
+    \exp\left(-\frac{q-1}{\lambda}(y - \mu)\right)&\,,\text{\(y \leq \mu\)}\\
+    \exp\left(-\frac{q}{\lambda}(y-\mu)\right)&\,,\text{\(y > \mu\)}
+    \end{cases}
+\end{equation*}
+\begin{equation*}
+    F(y) = \begin{cases}
+        q \exp\left(\frac{1-q}{\lambda}(y-\mu)\right)&\,,\text{\(y \leq \mu\)}\\
+        1 - (1-q)\exp\left(-\frac{q}{\lambda}(y-\mu)\right)&\,,\text{\(y > \mu\)}\\
+    \end{cases}
+\end{equation*}
+Z powyższego widzimy, iż o ile estymata MLE parametrów \(\mathbf{w}\) dla zwykłej regresji liniowej
+jest taka, iż dla dowolnego \(\mathbf{x}\) wielkość \(\mathbf{w}^T\mathbf{x}\) jest wartością
+oczekiwaną rozkłady warunkowego \(y \mid \mathbf{w} \sim \mathcal{N}(\mathbf{w}^T\mathbf{x},
+\sigma^2)\) to w przypadku asymetrycznego rozkładu Laplace'a estymata MLE zwraca \(\mathbf{w}\)
+takie, że \(\mathbf{w}^T\mathbf{x}\) jest kwantylem rzędu \(q\) założonego rozkładu ALD. W
+szczególności więc rozkład Laplace'a zwraca medianę. Powyższa postać gęstości prawdopodobieństwa
+prowadzi do funkcji kosztu postaci
+\begin{equation*}
+    \ell \cong \sum_{i=1}^m \left\{(q-1)(y_i - \mathbf{w}^T\mathbf{x}_i) \theta(\mathbf{w}^T\mathbf{x}_i - y_i) + q (y_i - \mathbf{w}^T\mathbf{x}_i)\theta(y_i - \mathbf{w}^T\mathbf{x}_i)\right\}\,,
+\end{equation*}
+gdzie \(\theta\) oznacza funkcję Heaviside'a. Taki model nazywamy regresją kwantylową (z ang.
+\textit{quantile regression}). Zarówno w przypadku regresji LAD oraz quantile do znalezienia estymat
+MLE korzystamy z programowania liniowego. Istotnie można łatwo sformułować problem minimalizacji
+nieograniczonej wyrażenia \(\sum_{i=1}^m |x_i|\) jako problem programowania liniowego
+\begin{equation*}
+    \begin{split}
+        \text{minimize}   &\quad \sum_{i=1}^m v_i\\
+        \text{subject to} &\quad \forall i : v_i \geq +x_i\\
+                          &\quad \forall i : v_i \geq -x_i\\
+    \end{split}\quad.
+\end{equation*}
+W obu przypadkach do funkcji kosztu możemy dodać człon regularyzujący \(L^1\) (członu \(L^2\) dodać
+nie możemy bo wówczas nie można problemu minimalizacji przedstawić jako problemu programowania
+liniowego).
+
+Ostatnim przykładem robust regression jaki podamy będzie tzw. regresja Hubera, w której
+heurystycznie wprowadzamy funkcję kosztu Hubera (tzw. \textit{Huber loss}) postaci
+\begin{equation*}
+    \ell_\text{Huber}(y_i \mid \mathbf{w}) = \begin{cases}
+        \frac{1}{2}(y_i - \mathbf{w}^T\mathbf{x}_i)^2&\,,\text{jeśli \(|y_i - \mathbf{w}^T\mathbf{x}_i| \leq \epsilon\)}\\
+        -\frac{1}{2}\epsilon^2 + \epsilon|y_i - \mathbf{w}^T\mathbf{x}_i|&\,,\text{w.p.p.}
+    \end{cases}\quad.
+\end{equation*}
+Taka funkcja kosztu jest różniczkowalna oraz wypukła, co umożliwia jest minimalizację korzystając z
+różnych algorytmów optymalizacji numerycznej (np. L-BFGS).
 
 \subsection{Procesy Gaussowskie}
 
 Jak już wspomnieliśmy macierz kowariancji \(n\)--wymiarowej zmiennej losowej \(\mathbf{x}\) o
 wartości oczekiwanej \(\boldsymbol{\mu}\) jest zdefiniowana jako
 \begin{equation*}
-    \oper{\Sigma} = \mathbb{E}\left[(\mathbf{x} - \boldsymbol{\mu})(\mathbf{x} - \boldsymbol{\mu})^\top\right]\,.
+    \oper{\Sigma} = \mathbb{E}\left[(\mathbf{x} - \boldsymbol{\mu})(\mathbf{x} - \boldsymbol{\mu})^T\right]\,.
 \end{equation*}
 Pokazaliśmy również, iż macierz ta jest nieujemnie określona. Dodatkowo pokażemy, iż dla każdej
 nieujemnie określonej macierzy symetrycznej \(\oper{K}\) wymiaru \(n\times n\) istnieje
@@ -947,13 +1043,13 @@ nieujemnie określonej macierzy symetrycznej \(\oper{K}\) wymiaru \(n\times n\) 
 macierzą kowariancji. Istotnie dla każdej nieujemnie określonej macierzy symetrycznej istnieje
 macierz \(\oper{L}\) taka, że
 \begin{equation*}
-    \oper{K} = \oper{L}\oper{L}^\top\,,
+    \oper{K} = \oper{L}\oper{L}^T\,,
 \end{equation*}
 jest to tzw. dekompozycja Choleskiego. Niech \(\mathbf{z} \sim \mathcal{N}(\mathbf{0}, \oper{1})\),
 wówczas zmienna losowa \(\oper{L}\mathbf{z}\) ma rozkład o zerowej wartości oczekiwanej i macierzy
 kowariancji
 \begin{equation*}
-    \mathbb{E}\left[(\oper{L}\mathbf{z})(\oper{L}\mathbf{z})^\top\right] = \mathbb{E}\left[\oper{L}\mathbf{z}\mathbf{z}^\top\oper{L}^\top\right] = \oper{L}\mathbb{E}[\mathbf{z}\mathbf{z}^\top]\oper{L}^\top = \oper{L}\oper{1}\oper{L}^\top = \oper{K}\,.
+    \mathbb{E}\left[(\oper{L}\mathbf{z})(\oper{L}\mathbf{z})^T\right] = \mathbb{E}\left[\oper{L}\mathbf{z}\mathbf{z}^T\oper{L}^T\right] = \oper{L}\mathbb{E}[\mathbf{z}\mathbf{z}^T]\oper{L}^T = \oper{L}\oper{1}\oper{L}^T = \oper{K}\,.
 \end{equation*}
 Powyższe własności wskazują, iż macierze kowariancji można w pewnym sensie utożsamiać z nieujemnie
 określonymi macierzami symetrycznymi.
@@ -1076,7 +1172,7 @@ oznaczmy zbiór parametrów jądra przez \(\theta\), wówczas
 \end{equation*}
 czyli
 \begin{equation*}
-    \ell = -\log p(D \mid \theta) = \frac{1}{2}\log\left[\det (k(X,X;\theta)+\sigma^2\oper{1})\right] + \frac{1}{2}\mathbf{f}_X^\top\left[k(X,X;\theta) + \sigma^2\oper{1}\right]^{-1}\mathbf{f}_X\,.
+    \ell = -\log p(D \mid \theta) = \frac{1}{2}\log\left[\det (k(X,X;\theta)+\sigma^2\oper{1})\right] + \frac{1}{2}\mathbf{f}_X^T\left[k(X,X;\theta) + \sigma^2\oper{1}\right]^{-1}\mathbf{f}_X\,.
 \end{equation*}
 Funkcję kosztu \(\ell\) minimalizujemy numerycznie, aby znaleźć estymatę MLE parametrów \(\theta\)
 funkcji jądrowej. Następnie parametry rozkładu predykcyjnego nad wartościami w nowych punktach
@@ -1091,7 +1187,7 @@ dla których zaobserwowaną klasą jest \(t\). Zakładamy ponadto, iż prawdopod
 do klasy \(\tau_j\) (jednej z \(s\) klas) dla wektora cech \(\mathbf{x}\) ma postać tzw. funkcji
 softmax
 \begin{equation*}
-    \pi_j(\mathbf{x}) = \frac{1}{Z(\mathbf{x})}\e^{\mathbf{w}_j^\top\mathbf{x}}\,,
+    \pi_j(\mathbf{x}) = \frac{1}{Z(\mathbf{x})}\e^{\mathbf{w}_j^T\mathbf{x}}\,,
 \end{equation*}
 gdzie \(\mathbf{w}_j\) są estymowanymi przez nas parametrami. Ze względu na warunek unormowania
 musimy mieć
@@ -1100,7 +1196,7 @@ musimy mieć
 \end{equation*}
 skąd stała normalizacyjna \(Z(\mathbf{x})\) ma postać
 \begin{equation*}
-    Z(\mathbf{x}) = \sum_{j=1}^s \e^{\mathbf{w}_j^\top\mathbf{x}}\,.
+    Z(\mathbf{x}) = \sum_{j=1}^s \e^{\mathbf{w}_j^T\mathbf{x}}\,.
 \end{equation*}
 Uwaga, powyższy wzór nie może być stosowany bezpośrednio do obliczeń numerycznych przez
 niestabilność numeryczną (wartość funkcji wykładniczej może być ogromna). W praktyce wartość funkcji
@@ -1140,8 +1236,8 @@ znalezienia minimum zregularyzowanej funkcji kosztu
 \begin{equation*}
     \begin{split}
         \ell^*(D \mid \mathbf{w}_1,\ldots,\mathbf{w}_s) &= -\log [p(D \mid \mathbf{w}_1,\ldots,\mathbf{w}_s ) \pi(\mathbf{w}_1, \ldots, \mathbf{w}_s)] \\
-        &= - \log \left[\prod_{k=1}^s\e^{-\frac{\gamma}{2}\mathbf{w}_k^\top\mathbf{w}_k}\prod_{i=1}^m \prod_{j=1}^s \pi_j(\mathbf{x}_i)^{\delta(t_i,\tau_j)}\right]\\
-        &= \frac{\gamma}{2}\sum_{j=1}^s \mathbf{w}_j^\top\mathbf{w}_j - \sum_{i=1}^m\sum_{j=1}^s \delta(t_i,\tau_j)\log\pi_j(\mathbf{x}_i)\,.
+        &= - \log \left[\prod_{k=1}^s\e^{-\frac{\gamma}{2}\mathbf{w}_k^T\mathbf{w}_k}\prod_{i=1}^m \prod_{j=1}^s \pi_j(\mathbf{x}_i)^{\delta(t_i,\tau_j)}\right]\\
+        &= \frac{\gamma}{2}\sum_{j=1}^s \mathbf{w}_j^T\mathbf{w}_j - \sum_{i=1}^m\sum_{j=1}^s \delta(t_i,\tau_j)\log\pi_j(\mathbf{x}_i)\,.
     \end{split}
 \end{equation*}
 Niestety dla tak zdefiniowanej funkcji kosztu nie można znaleźć wzoru na minimum w postaci
@@ -1166,7 +1262,7 @@ gradientu.
 
 Zakładając \(\epsilon_1 = \ldots = \epsilon_m = \epsilon\) i wprowadzając
 \begin{equation*}
-    \oper{X} := \mqty[\mathbf{x}_1^\top \\ \vdots \\ \mathbf{x}_m^\top]\,,\quad \pdv{f}{\oper{X}} := \mqty[\pdv{f}{\mathbf{x}_1}^\top \\ \vdots \\ \pdv{f}{\mathbf{x}_m}^\top]
+    \oper{X} := \mqty[\mathbf{x}_1^T \\ \vdots \\ \mathbf{x}_m^T]\,,\quad \pdv{f}{\oper{X}} := \mqty[\pdv{f}{\mathbf{x}_1}^T \\ \vdots \\ \pdv{f}{\mathbf{x}_m}^T]
 \end{equation*}
 możemy zapisać powyższe równania w kompaktowej formie
 \begin{equation*}
@@ -1181,8 +1277,8 @@ musimy obliczyć pochodne funkcji kosztu po parametrach \(\mathbf{w}_j\)
 ale
 \begin{equation*}
     \begin{split}
-        \pdv{~}{\mathbf{w}_k}\log\pi_j(\mathbf{x}_i) &= \frac{1}{\pi_j(\mathbf{x}_i)}\frac{Z(\mathbf{x}_i)\pdv{\e^{\mathbf{x}_i^\top\mathbf{w}_j}}{\mathbf{w}_k} - \e^{\mathbf{x}_i^\top\mathbf{w}_j}\pdv{Z(\mathbf{x}_i)}{\mathbf{w}_k}}{Z^2(\mathbf{x}_i)}\\
-        &= \frac{Z(\mathbf{x}_i)}{\e^{\mathbf{x}_i^\top\mathbf{w}_j}}\frac{Z(\mathbf{x}_i)\mathbf{x}_i\e^{\mathbf{x}_i^\top\mathbf{w}_k}\delta_{jk} - \e^{\mathbf{x}_i^\top\mathbf{w}_j}\e^{\mathbf{x}_i^\top\mathbf{w}_k}\mathbf{x}_i}{Z^2(\mathbf{x}_i)}\\
+        \pdv{~}{\mathbf{w}_k}\log\pi_j(\mathbf{x}_i) &= \frac{1}{\pi_j(\mathbf{x}_i)}\frac{Z(\mathbf{x}_i)\pdv{\e^{\mathbf{x}_i^T\mathbf{w}_j}}{\mathbf{w}_k} - \e^{\mathbf{x}_i^T\mathbf{w}_j}\pdv{Z(\mathbf{x}_i)}{\mathbf{w}_k}}{Z^2(\mathbf{x}_i)}\\
+        &= \frac{Z(\mathbf{x}_i)}{\e^{\mathbf{x}_i^T\mathbf{w}_j}}\frac{Z(\mathbf{x}_i)\mathbf{x}_i\e^{\mathbf{x}_i^T\mathbf{w}_k}\delta_{jk} - \e^{\mathbf{x}_i^T\mathbf{w}_j}\e^{\mathbf{x}_i^T\mathbf{w}_k}\mathbf{x}_i}{Z^2(\mathbf{x}_i)}\\
         &= \mathbf{x}_i\delta_{jk} - \mathbf{x}_i\pi_k(\mathbf{x}_i)
     \end{split}
 \end{equation*}
@@ -1201,14 +1297,14 @@ zatem ostatecznie
 Wprowadzając macierze
 \begin{equation*}
     \begin{split}
-        &\oper{X} = \mqty[\mathbf{x}_1^\top \\ \vdots \\ \mathbf{x}_m^\top]\,,\quad \oper{W} = \mqty[\mathbf{w}_1^\top \\ \vdots \\ \mathbf{w}_s^\top]\,,\\
+        &\oper{X} = \mqty[\mathbf{x}_1^T \\ \vdots \\ \mathbf{x}_m^T]\,,\quad \oper{W} = \mqty[\mathbf{w}_1^T \\ \vdots \\ \mathbf{w}_s^T]\,,\\
         &\oper{S} = \mqty[\pi_1(\mathbf{x}_1) & \cdots & \pi_s(\mathbf{x}_1) \\ \vdots & \ddots & \vdots \\ \pi_1(\mathbf{x}_m) & \cdots & \pi_s(\mathbf{x}_m)]\,,\quad \oper{T} = \mqty[\delta(t_1,\tau_1) & \cdots & \delta(t_1,\tau_s) \\ \vdots & \ddots & \vdots \\ \delta(t_m, \tau_1) & \cdots & \delta(t_m, \tau_s)]
     \end{split}
 \end{equation*}
 możemy w takim razie zapisać zdefiniowaną wyżej macierz pochodnych wymaganych do algorytmu spadku
 wzdłuż gradient w kompaktowej formie jako
 \begin{equation*}
-    \pdv{\ell^*}{\oper{W}} = (\oper{S} - \oper{T})^\top\oper{X}\,.
+    \pdv{\ell^*}{\oper{W}} = (\oper{S} - \oper{T})^T\oper{X}\,.
 \end{equation*}
 Zauważmy, iż zregularyzowana funkcja kosztu rośnie wraz ze wzrostem liczby obserwacji \(m\). Wynika
 z tego, iż stała ucząca musi być zależna od liczby przykładów. Możemy na przykład stwierdzić, iż
@@ -1246,7 +1342,7 @@ regresji liniowej w ujęciu Bayesowskim, ale rozważmy teraz model postaci
     \begin{split}
         \sigma^2 &\sim \mathcal{D}(\lambda)\\
         \mathbf{w} &\sim \mathcal{N}(\boldsymbol{\mu}_0, \oper{\Sigma}_0)\\
-        y \mid \mathbf{w}, \sigma^2 &\sim \mathcal{N}(\mathbf{w}^\top\mathbf{x}, \sigma^2)
+        y \mid \mathbf{w}, \sigma^2 &\sim \mathcal{N}(\mathbf{w}^T\mathbf{x}, \sigma^2)
     \end{split}\quad,
 \end{equation*}
 gdzie \(\lambda, \boldsymbol{\mu}_0, \oper{\Sigma}_0\) są pewnymi hiper-parametrami. Dla takiego
@@ -1416,7 +1512,6 @@ implementuje konkretny sposób generowania (zostawiając resztę struktury) tak,
 korelację po okresie przejściowym i przyspieszyć zbieżność. Standardowo wykorzystywanymi algorytmami
 z tej klasy są algorytmy HMC (\textit{Hamiltonian Monte Carlo}) oraz NUTS (\textit{No U-Turn
 Sampler}). 
-
 \linesep
 \newpage
 
@@ -1615,11 +1710,11 @@ gdzie \(\text{\reflectbox{$\mathbb{D}$}}_I = \{1\}\).
 
 Wyjście z sieci neuronowej będziemy wykorzystywać przy tworzeniu modeli statystycznych w taki sam
 sposób jak w modelach płytkich (regresja liniowa, regresja softmax) używaliśmy kombinacji liniowej
-wektora obserwacji z wektorem wag \(\mathbf{w}^\top\mathbf{x}\). Uczenie parametrów \(W_{ij}^h,
-B_i^h\) będzie zatem polegało na znalezieniu ich estymaty punktowej MLE dla danego modelu
-statystycznego. Będziemy zatem minimalizować pewien funkcjonał \(J\) (funkcję kosztu) o postaci
-danej przez zanegowaną logarytmiczną funkcję wiarygodności. Przykładowo dla regresji użyjemy
-funkcjonału kwadratowego
+wektora obserwacji z wektorem wag \(\mathbf{w}^T\mathbf{x}\). Uczenie parametrów \(W_{ij}^h, B_i^h\)
+będzie zatem polegało na znalezieniu ich estymaty punktowej MLE dla danego modelu statystycznego.
+Będziemy zatem minimalizować pewien funkcjonał \(J\) (funkcję kosztu) o postaci danej przez
+zanegowaną logarytmiczną funkcję wiarygodności. Przykładowo dla regresji użyjemy funkcjonału
+kwadratowego
 \begin{equation*}
     J[F] = \frac{1}{2}\left(F_{ij}(X) - Y_{ij}\right)^2\,,
 \end{equation*}
