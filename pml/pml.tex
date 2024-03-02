@@ -1552,27 +1552,25 @@ będziemy oznaczać przez \(\mathbb{R}^{n_1\times..\times n_k} \equiv \mathbb{R}
 \(F(X)\) jest tensorem (\(\sh(F(X)) = \sh_2\)). Ponadto będziemy utożsamiać zapis
 \((F(X))_{i_1,..,i_k}\) z \(F_{i_1,..,i_k}(X)\).\hfill
 \break
-W wyrażeniach zawierających iloczyny postaci 
+W wyrażeniach przypisania postaci 
 \begin{equation*}
-    X_{i_1,..,i_p}Y_{j_1,..,j_q}Z_{k_1,..,k_r}\cdots
+    Y_{x_1,..,x_s} \leftarrow X_{i_1,..,i_p}Y_{j_1,..,j_q}Z_{k_1,..,k_r}\cdots
 \end{equation*}
-stosujemy (uproszczoną) konwencję sumacyjną Einsteina tj. dla każdego powtórzonego indeksu w takim
-wyrażeniu należy przed wyrażenie postawić znak sumy po tym indeksie (tzw. \textit{indeks
-sumacyjny}), przy czym dla zwiększenia przejrzystości zapisu nie piszemy znaków sumy explicite.
-Oznacza to w szczególności, iż możemy łatwo definiować nowe tensory jako odpowiednie iloczyny np.
-iloczyn macierzy \(A \in \mathbb{R}^{n\times m}, B \in \mathbb{R}^{m\times l}\) możemy zapisać jako
+stosujemy (uproszczoną) konwencję sumacyjną Einsteina tj. dla każdego indeksu po prawej stronie,
+który nie występuje po lewej należy przed całe wyrażenie po prawej stronie postawić znak sumy po tym
+indeksie (tzw. \textit{indeks sumacyjny}), przy czym dla zwiększenia przejrzystości zapisu nie
+piszemy znaków sumy explicite. Oznacza to w szczególności, iż możemy łatwo definiować nowe tensory
+jako odpowiednie iloczyny np. iloczyn macierzy \(A \in \mathbb{R}^{n\times m}, B \in
+\mathbb{R}^{m\times l}\) możemy zapisać jako
 \begin{equation*}
     C_{ik} = A_{ij}B_{jk}\,.
 \end{equation*}
 wyrażenie to definiuje nowy tensor \(C \in \mathbb{R}^{n \times l}\), którego elementy są dane
-poprzez sumę iloczynów odpowiednich elementów \(A, B\). Zauważmy jednakże, iż ponieważ nie
-wykorzystujemy wskaźników dolnych i górnych, więc jednakowo poprawnymi wyrażeniami są \(A_{ij}X_i\)
-oraz \(A_{ij}X_j\) chociaż w ogólności \(A_{ij}X_i \neq A_{ij}X_j\). Dodatkowo dla funkcji \(f:
-\mathbb{R} \mapsto \mathbb{R}\) zapis postaci \(Y_{ijk..} = f(X_{ijk..})\) dla dowolnego tensora
-\(X\) definiuje tensor \(Y\), którego wartości są wartościami funkcji \(f\) dla odpowiednich
-wartości tensora \(X\). Dodatkowo jeśli \(f: \mathbb{R} \mapsto \mathbb{R}\), a \(F :
-\mathbb{R}^{\sh_1} \mapsto \mathbb{R}^{\sh_2}\) to przez zapis \(Y = (f \circ F)(X)\) będziemy
-rozumieć 
+poprzez sumę iloczynów odpowiednich elementów \(A, B\). Dodatkowo dla funkcji \(f: \mathbb{R}
+\mapsto \mathbb{R}\) zapis postaci \(Y_{ijk..} = f(X_{ijk..})\) dla dowolnego tensora \(X\)
+definiuje tensor \(Y\), którego wartości są wartościami funkcji \(f\) dla odpowiednich wartości
+tensora \(X\). Dodatkowo jeśli \(f: \mathbb{R} \mapsto \mathbb{R}\), a \(F : \mathbb{R}^{\sh_1}
+\mapsto \mathbb{R}^{\sh_2}\) to przez zapis \(Y = (f \circ F)(X)\) będziemy rozumieć 
 \begin{equation*}
     Y_{ijk..} = f(F_{ijk..}(X))\,.
 \end{equation*}
@@ -1825,6 +1823,8 @@ dokładne jedna klasa \(c\) jest poprawna
 \end{equation*}
 
 \subsection{Automatyczne różniczkowanie}
+
+
 
 \subsection{Metody optymalizacji numerycznej}
 
