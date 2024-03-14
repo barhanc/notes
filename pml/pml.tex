@@ -1841,65 +1841,97 @@ przekazywane do poprzedników danego wierzchołka. Przykładowo rozpatrzmy funkc
 \end{equation*}
 którą możemy reprezentować jako graf obliczeń.
 
-\begin{figure}[ht]
+\begin{figure}[h!]
     \centering
     \begin{tikzpicture}
         \begin{scope}[every node/.style={circle,thick,draw}]
-            \node (X) at (0,0)  {\(X\)}; \node (W) at (-3,0) {\(W\)}; \node (B) at (-6,0) {\(B\)};
-            \node (I) at (-9,0) {\(I\)};
-
-            \node (Ein1) at (-1.5,2.5) {Ein}; 
-            \node (Ein2) at (-7.5,2.5) {Ein};
-
+            \node (X)     at (0,0)  {\(X\)}; 
+            \node (W) at (-3,0) {\(W\)}; \node (B) at (-6,0)
+            {\(B\)};
+             \node (I)     at (-9,0) {\(I\)}; 
+            \node (Ein1)  at (-1.5,2.5) {Ein}; 
+            \node (Ein2)  at (-7.5,2.5) {Ein}; 
             \node (Add1)  at (-4.5, 5) {Add}; 
-            \node (sigma) at (-4.5, 7.5) {\(\sigma\)};
+            \node (sigma) at (-4.5,
+            7.5) {\(\sigma\)}; 
             \node (Add2)  at (-4.5, 10) {Add}; 
-
-            \node (F)     at (-4.5, 12.5) {\(F\)};
+            \node (Id)    at (-4.5, 12.5){\(F\)};
 
         \end{scope}
         
-        \begin{scope}[>={Stealth[black]}, 
-            every node/.style={rectangle,fill=white}, 
-            every edge/.style={draw=red,very thick}] 
-            \path [->] (X) edge node {$X_{jk}$} (Ein1);
-            \path [->] (W) edge node {$W_{ij}$} (Ein1); 
-            \path [->] (B) edge node {$B_{i}$} (Ein2); 
-            \path [->] (I) edge node {$I_k$} (Ein2);
+        \begin{scope}[>={Stealth[black]}, every node/.style={rectangle,fill=white}, every
+            edge/.style={draw=red,very thick}] \path [->] (X) edge node {$X_{jk}$} (Ein1); \path
+            [->] (W) edge node {$W_{ij}$} (Ein1); \path [->] (B) edge node {$B_{i}$} (Ein2); \path
+            [->] (I) edge node {$I_k$} (Ein2);
 
-            \path [->] (Ein1) edge node {$E^{1}_{ik} := W_{ij}X_{jk}$} (Add1); 
-            \path [->] (Ein2) edge node {$E^{2}_{ik} := B_iI_k$} (Add1);
+            \path [->] (Ein1) edge node {$E^{1}_{ik} \leftarrow W_{ij}X_{jk}$} (Add1); \path [->] (Ein2)
+            edge node {$E^{2}_{ik} \leftarrow B_iI_k$} (Add1);
 
-            \path [->] (Add1) edge node {$A_{ik} := E^{1}_{ik} + E^{2}_{ik} $} (sigma); 
-            \path [->] (sigma) edge node {$Y_{ik} := \sigma(A_{ik})$} (Add2);
-            \path [->] (Ein2) edge[bend left=60] node {$E^{2}_{ik} := B_iI_k$} (Add2);
-            \path [->] (Add2) edge[bend left=80] node {$F_{ik} := E_{ik}^2 + Y_{ik}$} (F);
-
-        \end{scope}
-
-        \begin{scope}[>={Stealth[black]}, 
-            every node/.style={rectangle,fill=white}, 
-            every edge/.style={draw=blue,very thick}] 
-            % \path [<-] (X) edge node {$X_{jk}$} (Ein1);
-            % \path [<-] (W) edge node {$W_{ij}$} (Ein1); 
-            % \path [<-] (B) edge node {$B_{i}$} (Ein2); 
-            % \path [<-] (I) edge node {$I_k$} (Ein2);
-
-            % \path [<-] (Ein1) edge node {$E^{1}_{ik} := W_{ij}X_{jk}$} (Add1); 
-            % \path [<-] (Ein2) edge node {$E^{2}_{ik} := B_iI_k$} (Add1);
-
-            % \path [<-] (Add1) edge node {$A_{ik} := E^{1}_{ik} + E^{2}_{ik} $} (sigma); 
-            % \path [<-] (sigma) edge node {$Y_{ik} := \sigma(A_{ik})$} (Add2);
-            % \path [<-] (Ein2) edge[bend left=60] node {$E^{2}_{ik} := B_iI_k$} (Add2);
-            \path [<-] (Add2) edge[bend right=80] node {$\delta_{pq,rs}$} (F);
+            \path [->] (Add1) edge node {$L^1_{ik} \leftarrow E^{1}_{ik} + E^{2}_{ik} $} (sigma); \path [->]
+            (sigma) edge node {$Y_{ik} \leftarrow \sigma(L^1_{ik})$} (Add2); \path [->] (Ein2) edge[bend
+            left=60] node {$E^{2}_{ik} \leftarrow B_iI_k$} (Add2); \path [->] (Add2) edge node {$L^2_{ik} \leftarrow
+            E_{ik}^2 + Y_{ik}$} (Id);
 
         \end{scope}
     \end{tikzpicture}    
 \end{figure}
 
-Chcemy obliczyć pochodne postaci \(\partial F_{pq} / \partial X_{rs}\), \(\partial F_{pq} / \partial
-W_{rs}\), \(\partial F_{pq} / \partial B_{r}\), \(\partial F_{pq} / \partial I_{r}\), czyli pochodne
-po liściach naszego grafu obliczeń.
+Chcemy obliczyć pochodne postaci \(\partial F_{pq} / \partial X_{ab}\), \(\partial F_{pq} / \partial
+W_{ab}\), \(\partial F_{pq} / \partial B_{a}\), \(\partial F_{pq} / \partial I_{a}\), czyli pochodne
+po liściach naszego grafu obliczeń. W tym celu idąc top-down tj. zaczynając od wierzchołka \(F\)
+przekazujemy ziarno do każdej krawędzi wchodzącej do tego wierzchołka, przy czym ziarno obliczamy
+rekurencyjnie jako iloczyn (w sensie notacji sumacyjnej Einsteina) ziarna w danym wierzchołku i
+pochodnej wyrażenia w tym wierzchołku po wyrażeniu w wierzchołku, z którego wychodzi dana krawędź.
+Dochodząc do liścia inkrementujemy ziarno pamiętane w liściu o przychodzącą wartość. Otrzymana
+wartość ziarna w wierzchołku będzie równa pochodnej funkcji wyjściowej po tym parametrze. Rozpatrzmy
+przykład.
+
+\begin{figure}[h!]
+    \centering
+    \begin{tikzpicture}
+        \begin{scope}[every node/.style={circle,thick,draw}]
+            \node (X)     at (0,-2.5)  {\(X\)}; \node (W) at (-3,0) {\(W\)}; \node (B) at (-6,-2.5)
+            {\(B\)}; \node (I)     at (-12,-2.5) {\(I\)}; \node (Ein1)  at (0,2.5) {Ein}; \node
+            (Ein2)  at (-9,2.5) {Ein}; \node (Add1)  at (-4.5, 5) {Add}; \node (sigma) at (-4.5,
+            7.5) {\(\sigma\)}; \node (Add2)  at (-4.5, 10) {Add}; \node (Id)    at (-4.5, 12.5)
+            {\(F\)};
+
+        \end{scope}
+        
+        \begin{scope}[>={Stealth[black]}, 
+            every node/.style={rectangle,fill=white}, 
+            every edge/.style={draw=blue,very thick}] 
+            \path [<-] (X) edge node {$s_{pqab} \leftarrow s_{pqxy} \pdv{E_{xy}^1}{X_{ab}}$} (Ein1); 
+            \path [<-] (W) edge node {$s_{pqab} \leftarrow s_{pqxy} \pdv{E_{xy}^1}{W_{ab}}$} (Ein1); 
+            \path [<-] (B) edge[bend right=80] node {$s_{pqa} \leftarrow s_{pqtu}\pdv{E_{tu}^2}{B_{a}}$} (Ein2); 
+            \path [<-] (B) edge node {$s_{pqa} \leftarrow s_{pqxy}\pdv{E_{xy}^2}{B_{a}}$} (Ein2); 
+            \path [<-] (I) edge node {$s_{pqa} \leftarrow s_{pqxy}\pdv{E_{xy}^2}{I_{a}}$} (Ein2);
+            \path [<-] (I) edge[bend left=80] node {$s_{pqa} \leftarrow s_{pqtu}\pdv{E_{tu}^2}{I_{a}}$} (Ein2);
+            \path [<-] (Ein1) edge node {$s_{pqxy}\leftarrow s_{pqvw}\pdv{L_{vw}^1}{E_{xy}^1}$} (Add1); 
+            \path [<-] (Ein2) edge node {$s_{pqxy}\leftarrow s_{pqvw}\pdv{L_{vw}^1}{E_{xy}^2}$} (Add1);
+            \path [<-] (Add1) edge node {$s_{pqvw} \leftarrow s_{pqtu}\pdv{Y_{tu}}{L_{vw}^1}$} (sigma); 
+            \path [<-] (sigma) edge node {$s_{pqtu} \leftarrow s_{pqrs} \pdv{L_{rs}^2}{Y_{tu}}$} (Add2); 
+            \path [<-] (Ein2) edge[bend left=60] node {$s_{pqtu} \leftarrow s_{pqrs}\pdv{L_{rs}^2}{E_{tu}^2}$} (Add2); 
+            \path [<-] (Add2) edge node {$s_{pqrs} \leftarrow \pdv{F_{pq}}{L_{rs}^2}$} (Id);
+
+        \end{scope}
+    \end{tikzpicture}    
+\end{figure}
+
+Wartość ziarna w wierzchołku przykładowo \(B\) wynosi
+\begin{equation*}
+    s_{pqa} = s_{pqa}^1 + s_{pqa}^2\,,
+\end{equation*}
+gdzie
+\begin{equation*}
+    \begin{split}
+        &s_{pqa}^1 = \pdv{F_{pq}}{L_{rs}^2}\pdv{L_{rs}^2}{E_{tu}^2}\pdv{E_{tu}^2}{B_{a}}\\
+        &s_{pqa}^2 = \pdv{F_{pq}}{L_{rs}^2}\pdv{L_{rs}^2}{Y_{tu}}\pdv{Y_{tu}}{L_{vw}^1}\pdv{L_{vw}^1}{E_{xy}^2}\pdv{E_{xy}^2}{B_{a}}
+    \end{split}
+\end{equation*}
+widzimy więc, że \(s_{pqa} = \pdv{F_{pq}}{B_a}\) i analogicznie dla ziaren w wierzchołkach \(I, X,
+W\). Oczywiście wyrażenia na pochodne wyrażenia w wierzchołku po poprzednikach musimy obliczyć
+symbolicznie i zaimplementować ręcznie dla wszystkich wykorzystywanych rodzajów wierzchołków
 
 \subsection{Metody optymalizacji numerycznej}
 
