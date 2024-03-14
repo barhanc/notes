@@ -1825,7 +1825,81 @@ dokładne jedna klasa \(c\) jest poprawna
 
 \subsection{Automatyczne różniczkowanie}
 
+Algorytm wstecznej propagacji błędu jest szczególnym przypadkiem automatycnego różniczkowania metodą
+,,wstecz''. Załóżmy, że mamy funkcję tensorową będącą złożeniem pewnych elementarnych funkcji
+tensorowych: dodawanie tensorów, mnożenie tensorów z konwencją sumacyjną (inaczej operacja
+redukcji), operacje element-wise postaci \(Y_{ijk..} = f(X_{ijk..})\) dla
+\(f:\mathbb{R}\mapsto\mathbb{R}\), dla których wiemy jak obliczać (symbolicznie) pochodne. Funkcję
+taką możemy reprezentować jako skierowany graf bez cykli (DAG) zwany grafem obliczeń (z ang.
+\textit{computation graph}). Każdy liść takiego grafu reprezentuje niezależny parametr względem
+którego możemy zróżniczkować wyjściową funkcję. Różniczkowanie (metodą ,,wstecz'' lub inaczej
+top-down) polega na przekazywaniu tzw. \textit{ziarna} (z ang. \textit{seed}), czyli pochodnej
+funkcji wyjściowej po danym wierzchołku grafu. Ziarno jest obliczane zgodnie z regułą łańcuchową i
+przekazywane do poprzedników danego wierzchołka. Przykładowo rozpatrzmy funkcję
+\begin{equation*}
+    F_{ik} = \sigma\left(W_{ij}X_{jk} + B_{i}I_k\right) + B_{i}I_{k}\,,
+\end{equation*}
+którą możemy reprezentować jako graf obliczeń.
 
+\begin{figure}[ht]
+    \centering
+    \begin{tikzpicture}
+        \begin{scope}[every node/.style={circle,thick,draw}]
+            \node (X) at (0,0)  {\(X\)}; \node (W) at (-3,0) {\(W\)}; \node (B) at (-6,0) {\(B\)};
+            \node (I) at (-9,0) {\(I\)};
+
+            \node (Ein1) at (-1.5,2.5) {Ein}; 
+            \node (Ein2) at (-7.5,2.5) {Ein};
+
+            \node (Add1)  at (-4.5, 5) {Add}; 
+            \node (sigma) at (-4.5, 7.5) {\(\sigma\)};
+            \node (Add2)  at (-4.5, 10) {Add}; 
+
+            \node (F)     at (-4.5, 12.5) {\(F\)};
+
+        \end{scope}
+        
+        \begin{scope}[>={Stealth[black]}, 
+            every node/.style={rectangle,fill=white}, 
+            every edge/.style={draw=red,very thick}] 
+            \path [->] (X) edge node {$X_{jk}$} (Ein1);
+            \path [->] (W) edge node {$W_{ij}$} (Ein1); 
+            \path [->] (B) edge node {$B_{i}$} (Ein2); 
+            \path [->] (I) edge node {$I_k$} (Ein2);
+
+            \path [->] (Ein1) edge node {$E^{1}_{ik} := W_{ij}X_{jk}$} (Add1); 
+            \path [->] (Ein2) edge node {$E^{2}_{ik} := B_iI_k$} (Add1);
+
+            \path [->] (Add1) edge node {$A_{ik} := E^{1}_{ik} + E^{2}_{ik} $} (sigma); 
+            \path [->] (sigma) edge node {$Y_{ik} := \sigma(A_{ik})$} (Add2);
+            \path [->] (Ein2) edge[bend left=60] node {$E^{2}_{ik} := B_iI_k$} (Add2);
+            \path [->] (Add2) edge[bend left=80] node {$F_{ik} := E_{ik}^2 + Y_{ik}$} (F);
+
+        \end{scope}
+
+        \begin{scope}[>={Stealth[black]}, 
+            every node/.style={rectangle,fill=white}, 
+            every edge/.style={draw=blue,very thick}] 
+            % \path [<-] (X) edge node {$X_{jk}$} (Ein1);
+            % \path [<-] (W) edge node {$W_{ij}$} (Ein1); 
+            % \path [<-] (B) edge node {$B_{i}$} (Ein2); 
+            % \path [<-] (I) edge node {$I_k$} (Ein2);
+
+            % \path [<-] (Ein1) edge node {$E^{1}_{ik} := W_{ij}X_{jk}$} (Add1); 
+            % \path [<-] (Ein2) edge node {$E^{2}_{ik} := B_iI_k$} (Add1);
+
+            % \path [<-] (Add1) edge node {$A_{ik} := E^{1}_{ik} + E^{2}_{ik} $} (sigma); 
+            % \path [<-] (sigma) edge node {$Y_{ik} := \sigma(A_{ik})$} (Add2);
+            % \path [<-] (Ein2) edge[bend left=60] node {$E^{2}_{ik} := B_iI_k$} (Add2);
+            \path [<-] (Add2) edge[bend right=80] node {$\delta_{pq,rs}$} (F);
+
+        \end{scope}
+    \end{tikzpicture}    
+\end{figure}
+
+Chcemy obliczyć pochodne postaci \(\partial F_{pq} / \partial X_{rs}\), \(\partial F_{pq} / \partial
+W_{rs}\), \(\partial F_{pq} / \partial B_{r}\), \(\partial F_{pq} / \partial I_{r}\), czyli pochodne
+po liściach naszego grafu obliczeń.
 
 \subsection{Metody optymalizacji numerycznej}
 
@@ -2006,20 +2080,8 @@ taki sposób, aby kolejne pola odbiorcze nie zachodziły na siebie, choć nie je
 Warstwy poolingowe nie zmieniają wymiaru głębi, ale pozwalają zredukować wymiar przestrzenny.
 
 \subsection{Mechanizmy atencji}
-
-
-
 \subsection{Sieci Transformer}
-
-
-
 \subsection{Generatywne modele dyfuzyjne}
-
-
-% ---
-
 \section{Reinforcement learning}
-
-
 
 \end{document}

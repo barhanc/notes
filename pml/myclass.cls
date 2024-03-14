@@ -34,6 +34,7 @@
 
 % Additional packages and commands depending on project:
 \usepackage{lipsum, enumitem, tikz, caption, subcaption, tcolorbox}
+\usetikzlibrary{arrows.meta}
 
 \newcommand{\oper}[1]{\boldsymbol{\mathsf{#1}}}
 \newcommand{\diag}[0]{\text{diag}}
