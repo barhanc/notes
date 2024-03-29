@@ -1512,9 +1512,16 @@ implementuje konkretny sposób generowania (zostawiając resztę struktury) tak,
 korelację po okresie przejściowym i przyspieszyć zbieżność. Standardowo wykorzystywanymi algorytmami
 z tej klasy są algorytmy HMC (\textit{Hamiltonian Monte Carlo}) oraz NUTS (\textit{No U-Turn
 Sampler}). 
+
+% ---------------------------------------------------------
+% \subsection{Metody kernelowe}
+% \subsection{Naive Bayes Classifier}
+% \subsection{Predykcja szeregów czasowych}
+% \subsection{Drzewa i lasy decyzyjne. Boosting}
+
+
 \linesep
 \newpage
-
 \section{Sieci neuronowe}
 
 \subsection{Tensory}
@@ -1845,17 +1852,11 @@ którą możemy reprezentować jako graf obliczeń.
     \centering
     \begin{tikzpicture}
         \begin{scope}[every node/.style={circle,thick,draw}]
-            \node (X)     at (0,0)  {\(X\)}; 
-            \node (W) at (-3,0) {\(W\)}; \node (B) at (-6,0)
-            {\(B\)};
-             \node (I)     at (-9,0) {\(I\)}; 
-            \node (Ein1)  at (-1.5,2.5) {Ein}; 
-            \node (Ein2)  at (-7.5,2.5) {Ein}; 
-            \node (Add1)  at (-4.5, 5) {Add}; 
-            \node (sigma) at (-4.5,
-            7.5) {\(\sigma\)}; 
-            \node (Add2)  at (-4.5, 10) {Add}; 
-            \node (Id)    at (-4.5, 12.5){\(F\)};
+            \node (X)     at (0,0)  {\(X\)}; \node (W) at (-3,0) {\(W\)}; \node (B) at (-6,0)
+            {\(B\)}; \node (I)     at (-9,0) {\(I\)}; \node (Ein1)  at (-1.5,2.5) {Ein}; \node
+            (Ein2)  at (-7.5,2.5) {Ein}; \node (Add1)  at (-4.5, 5) {Add}; \node (sigma) at (-4.5,
+            7.5) {\(\sigma\)}; \node (Add2)  at (-4.5, 10) {Add}; \node (Id)    at (-4.5,
+            12.5){\(F\)};
 
         \end{scope}
         
@@ -1864,13 +1865,13 @@ którą możemy reprezentować jako graf obliczeń.
             [->] (W) edge node {$W_{ij}$} (Ein1); \path [->] (B) edge node {$B_{i}$} (Ein2); \path
             [->] (I) edge node {$I_k$} (Ein2);
 
-            \path [->] (Ein1) edge node {$E^{1}_{ik} \leftarrow W_{ij}X_{jk}$} (Add1); \path [->] (Ein2)
-            edge node {$E^{2}_{ik} \leftarrow B_iI_k$} (Add1);
+            \path [->] (Ein1) edge node {$E^{1}_{ik} \leftarrow W_{ij}X_{jk}$} (Add1); \path [->]
+            (Ein2) edge node {$E^{2}_{ik} \leftarrow B_iI_k$} (Add1);
 
-            \path [->] (Add1) edge node {$L^1_{ik} \leftarrow E^{1}_{ik} + E^{2}_{ik} $} (sigma); \path [->]
-            (sigma) edge node {$Y_{ik} \leftarrow \sigma(L^1_{ik})$} (Add2); \path [->] (Ein2) edge[bend
-            left=60] node {$E^{2}_{ik} \leftarrow B_iI_k$} (Add2); \path [->] (Add2) edge node {$L^2_{ik} \leftarrow
-            E_{ik}^2 + Y_{ik}$} (Id);
+            \path [->] (Add1) edge node {$L^1_{ik} \leftarrow E^{1}_{ik} + E^{2}_{ik} $} (sigma);
+            \path [->] (sigma) edge node {$Y_{ik} \leftarrow \sigma(L^1_{ik})$} (Add2); \path [->]
+            (Ein2) edge[bend left=60] node {$E^{2}_{ik} \leftarrow B_iI_k$} (Add2); \path [->]
+            (Add2) edge node {$L^2_{ik} \leftarrow E_{ik}^2 + Y_{ik}$} (Id);
 
         \end{scope}
     \end{tikzpicture}    
@@ -1898,21 +1899,21 @@ przykład.
 
         \end{scope}
         
-        \begin{scope}[>={Stealth[black]}, 
-            every node/.style={rectangle,fill=white}, 
-            every edge/.style={draw=blue,very thick}] 
-            \path [<-] (X) edge node {$s_{pqab} \leftarrow s_{pqxy} \pdv{E_{xy}^1}{X_{ab}}$} (Ein1); 
-            \path [<-] (W) edge node {$s_{pqab} \leftarrow s_{pqxy} \pdv{E_{xy}^1}{W_{ab}}$} (Ein1); 
-            \path [<-] (B) edge[bend right=80] node {$s_{pqa} \leftarrow s_{pqtu}\pdv{E_{tu}^2}{B_{a}}$} (Ein2); 
-            \path [<-] (B) edge node {$s_{pqa} \leftarrow s_{pqxy}\pdv{E_{xy}^2}{B_{a}}$} (Ein2); 
-            \path [<-] (I) edge node {$s_{pqa} \leftarrow s_{pqxy}\pdv{E_{xy}^2}{I_{a}}$} (Ein2);
-            \path [<-] (I) edge[bend left=80] node {$s_{pqa} \leftarrow s_{pqtu}\pdv{E_{tu}^2}{I_{a}}$} (Ein2);
-            \path [<-] (Ein1) edge node {$s_{pqxy}\leftarrow s_{pqvw}\pdv{L_{vw}^1}{E_{xy}^1}$} (Add1); 
-            \path [<-] (Ein2) edge node {$s_{pqxy}\leftarrow s_{pqvw}\pdv{L_{vw}^1}{E_{xy}^2}$} (Add1);
-            \path [<-] (Add1) edge node {$s_{pqvw} \leftarrow s_{pqtu}\pdv{Y_{tu}}{L_{vw}^1}$} (sigma); 
-            \path [<-] (sigma) edge node {$s_{pqtu} \leftarrow s_{pqrs} \pdv{L_{rs}^2}{Y_{tu}}$} (Add2); 
-            \path [<-] (Ein2) edge[bend left=60] node {$s_{pqtu} \leftarrow s_{pqrs}\pdv{L_{rs}^2}{E_{tu}^2}$} (Add2); 
-            \path [<-] (Add2) edge node {$s_{pqrs} \leftarrow \pdv{F_{pq}}{L_{rs}^2}$} (Id);
+        \begin{scope}[>={Stealth[black]}, every node/.style={rectangle,fill=white}, every
+            edge/.style={draw=blue,very thick}] \path [<-] (X) edge node {$s_{pqab} \leftarrow
+            s_{pqxy} \pdv{E_{xy}^1}{X_{ab}}$} (Ein1); \path [<-] (W) edge node {$s_{pqab} \leftarrow
+            s_{pqxy} \pdv{E_{xy}^1}{W_{ab}}$} (Ein1); \path [<-] (B) edge[bend right=80] node
+            {$s_{pqa} \leftarrow s_{pqtu}\pdv{E_{tu}^2}{B_{a}}$} (Ein2); \path [<-] (B) edge node
+            {$s_{pqa} \leftarrow s_{pqxy}\pdv{E_{xy}^2}{B_{a}}$} (Ein2); \path [<-] (I) edge node
+            {$s_{pqa} \leftarrow s_{pqxy}\pdv{E_{xy}^2}{I_{a}}$} (Ein2); \path [<-] (I) edge[bend
+            left=80] node {$s_{pqa} \leftarrow s_{pqtu}\pdv{E_{tu}^2}{I_{a}}$} (Ein2); \path [<-]
+            (Ein1) edge node {$s_{pqxy}\leftarrow s_{pqvw}\pdv{L_{vw}^1}{E_{xy}^1}$} (Add1); \path
+            [<-] (Ein2) edge node {$s_{pqxy}\leftarrow s_{pqvw}\pdv{L_{vw}^1}{E_{xy}^2}$} (Add1);
+            \path [<-] (Add1) edge node {$s_{pqvw} \leftarrow s_{pqtu}\pdv{Y_{tu}}{L_{vw}^1}$}
+            (sigma); \path [<-] (sigma) edge node {$s_{pqtu} \leftarrow s_{pqrs}
+            \pdv{L_{rs}^2}{Y_{tu}}$} (Add2); \path [<-] (Ein2) edge[bend left=60] node {$s_{pqtu}
+            \leftarrow s_{pqrs}\pdv{L_{rs}^2}{E_{tu}^2}$} (Add2); \path [<-] (Add2) edge node
+            {$s_{pqrs} \leftarrow \pdv{F_{pq}}{L_{rs}^2}$} (Id);
 
         \end{scope}
     \end{tikzpicture}    
