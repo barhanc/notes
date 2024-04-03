@@ -1514,10 +1514,63 @@ korelację po okresie przejściowym i przyspieszyć zbieżność. Standardowo wy
 z tej klasy są algorytmy HMC (\textit{Hamiltonian Monte Carlo}) oraz NUTS (\textit{No U-Turn
 Sampler}). 
 
+\subsection{Metody oparte o sąsiedztwo}
+
+Metody oparte o sąsiedztwo to zbiór metod, które wykorzystują najbliższych (w sensie pewnej metryki
+lub półmetryki) sąsiadów (z ang. \textit{nearest neoghbours}) dla danego nowego punktu. Zasadniczą
+ideą tych metod jest iż punkty leżące blisko siebie w pewnej przestrzneni powinny mieć podobne
+własności, czyli taka przestrzeń metryczna powinna być \textit{semantycznie sensowna}.
+
+Jednym z najprostszych algorytmów z tej dziedziny jest \textit{k-nearest neighbours} (kNN) używany
+najczęściej do klasyfikacji, ale możliwe jest również użycie go do regresji. Załóżmy, iż mamy zbiór
+treningowy \(\mathcal{X} = \{(\mathbf{x}_i, t_i)\}_{i=1}^n\), gdzie \(\mathbf{x}\) to wektor cech, a
+\(t\) to prawidłowa klasa. Chcąc przewidzieć klasę dla nowego wektora cech \(\mathbf{x}\) znajdujemy
+\(k\) najbliższych sąsiadów \(\mathbf{x}\) w zbiorze \(\{\mathbf{x}_i\}_{i=1}^n\) względem metryki
+\(d\), zliczamy klasy najbliższych sąsiadów i zwracamy klasę występującą najczęściej lub rozkład
+prawdopodobieńśtwa nad możliwymi klasami jako stosunek liczby punktów z daną klasą do liczby
+sąsiadów \(k\). W przypadku regresji zamiast zwracać klasę występującą najczęściej, zwracamy średnią
+arytmetyczną wartości \(t\) dla \(k\) najbliższych sąsiadów (uwaga! użycie średniej powoduje, iż kNN
+w przypadku regresji potrafi tylko interpolować wartości).
+
+Liczba sąsiadów \(k\) jest hiperparametrem modelu kNN, który silnie wpływa na jakość predykcji.
+Zasadniczo im większa wartość \(k\) tym większy jest bias modelu, natomiast im mniejsza tym większa
+jest variance modelu. kNN jest modelem nieliniowym i potrafi nauczyć się nietrywialnych granic
+decyzyjnych. Ma również dużą pojemność (z ang. \textit{capacity}) w porównaniu do modeli liniowych
+(np. regresji logistycznej).
+
+Standardowo wykorzystywane metryki w kNN to
+\begin{itemize}
+    \item metryka euklidesowa (L2) \(d(\mathbf{x}_i, \mathbf{x}_j) = \sqrt{(\mathbf{x}_i -
+    \mathbf{x}_j)^T(\mathbf{x}_i - \mathbf{x}_j)}\);
+    \item metryka manhattan (L1) \(d(\mathbf{x}_i, \mathbf{x}_j) = \sum_{k=1} |x_i^k - x_j^k|\);
+    \item podobieństwo cosinusowe \(\text{sim}(\mathbf{x}_i, \mathbf{x}_j) =
+    \frac{\mathbf{x}_i^T\mathbf{x}_j}{\norm{\mathbf{x}_i}\norm{\mathbf{x}_j}}\).
+\end{itemize}
+
+Często wykorzystywaną modyfikacją kNN jest tzw. ważenie sąsiadów. Opiera się ono na prostej
+obserwacji, iż nie wszyscy najbliżsi sąsiedzi danego punktu są jednakowo ważni, gdyż w rzadkich
+obszarach przestrzeni sąsiedzi ci mogą być dosyć daleko. Rozwiązaniem jest ważenie sąsiadów
+odwrotnością odległości do nich. Wówczas w przypadku klasyfikacji prawdopodobieństwa obliczamy jako
+stosunek sumy wag danej klasy do sumy wszystkich wag, a w przypadku regresji obliczamy średnią
+ważoną zamiast arytmetycznej.
+
+W vanilla kNN etap treningu polega jedynie na zapamiętaniu zbioru danych i dopiero na etapie
+predykcji znajdowani są najbliżsi sąsiedzi. Takie podejście jest bardzo nieefektywne, złożoność
+obliczeniowa etapu predykcji to \(O(kn)\). W praktyce podczas treningu budowana jest pomocnicza
+struktura danych, która pozwala efektywniej przeszukiwać punkty w celu znalezienia najbliższych
+sąsiadów. Przykładami takich struktur są np. k-d tree, ball tree, quad tree, octree. W przypadku k-d
+tree złożoność treningu (budowy struktury) wynosi \(O(n \log n)\), natomiast wyszukania \(k\)
+sąsiadów \(O(k \log n)\). W przypadku zastosowania kNN do wyszukiwania taka złożoność jest niestety
+nadal za duża w praktyce (chcemy wyszukiwać wśród setek milionów obiektów), dlatego powstały również
+metody aproksymacyjne (z ang. \textit{Approximate Nearest Neighbours}). W algorytmach
+aproksymacyjnych zamiast znajdować dokładnych \(k\) najbliższych sąsiadów znajdujemy \(k\) sąsiadów,
+którzy niekoniecznie muszą być rzeczywiście najbliższymi, potrafimy to jednak zrobić znacznie
+szybciej.
+
 % ---------------------------------------------------------
 % TODO: PUM (after quiz)
 % ---------------------------------------------------------
-% \subsection{SVM}
+% \subsection{Naive Bayes}
 % \subsection{Predykcja szeregów czasowych}
 % ---------------------------------------------------------
 
