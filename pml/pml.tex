@@ -35,24 +35,54 @@ Trójkę \((\Omega, \Sigma, P)\) nazywamy przestrzenią probabilistyczną. Z pow
 wynikają znane własności prawdopodobieństwa tj. \(P(A') = 1 - P(A)\) oraz \(P(A \cup B) = P(A) +
 P(B) - P(A , B)\). 
 
-\subsection{Prawdopodobieństwo warunkowe}
+\subsection{Prawdopodobieństwo warunkowe i niezależność zdarzeń}
 
-Definiujemy również prawdopodobieństwo warunkowe zdarzenia \(A\) pod warunkiem zdarzenia \(B\) o
-dodatnim prawdopodobieństwie 
+Definiujemy prawdopodobieństwo warunkowe zdarzenia \(A\) pod warunkiem zdarzenia \(B\) o dodatnim
+prawdopodobieństwie jako
 \begin{equation*}
     P(A \mid B) := \frac{P(A , B)}{P(B)}\,.
 \end{equation*}
-Na podstawie powyższej definicji definiujemy niezależność zdarzeń \(A\), \(B\) jako własność
-\(P(A,B) = P(A)P(B)\), co dla zdarzenia \(B\) o dodatnim prawdopodobieństwie jest równoważne z \(P(A
-\mid B) = P(A)\). Ponadto jeśli zdarzenia \(A_1, A_2, \ldots \in \Sigma\) są parami rozłączne i
-zachodzi \(\bigcup_i A_i = \Omega\) to dla dowolnego zdarzenia \(B \in \Sigma\) możemy zapisać
+
+Zdarzenia \(A_1,..,A_n\) nazwiemy niezależnymi iff
+\begin{equation*}
+    P(A_1,..,A_n) = P(A_1) \cdot P(A_2) \cdot ... \cdot P(A_n)\,.
+\end{equation*}
+
+Zdarzenia \(A_1,..,A_n\) nazwiemy \textit{warunkowo niezależnymi} względem zdarzenia \(B\) iff
+\begin{equation*}
+    P(A_1,..,A_n \mid B) = P(A_1 \mid B) \cdot ... \cdot P(A_n \mid B)\,.
+\end{equation*}
+
+\subsection{Prawdopodobieństwo całkowite}
+
+Jeśli zdarzenia \(A_1, A_2, \ldots \in \Sigma\) są parami rozłączne tj. \(\forall i \neq j : A_i
+\cap A_j = \emptyset\) i zachodzi \(\bigcup_i A_i = \Omega\) to zbiór zdarzeń \(\{A_i\}\) nazywamy
+\textit{układem zupełnym zdarzeń}.
+
+Jeśli \(\{A_i\}\) jest układem zupełnym zdarzeń to prawdopodobieństwo całkowite dowolnego zdarzenia
+\(B \in \Sigma\) jest dane przez
 \begin{equation*}
     P(B) = \sum_i P(B \mid A_i) P(A_i)\,.
 \end{equation*}
-Z definicji prawdopodobieństwa warunkowego trywialnie udowodnić twierdzenie Bayesa
+
+\subsection{Twierdzenie Bayesa}
+
+Jeśli \(\{A_i\}\) jest układem zupełnym zdarzeń to z definicji prawdopodobieństwa warunkowego zachodzi
 \begin{equation*}
-    P(A \mid B) = \frac{P(B \mid A) P(A)}{P(B)}\,.
+    P(A \mid B) = \frac{P(B \mid A) P(A)}{P(B)} = \frac{P(B \mid A) P(A)}{\sum_{i} P(B \mid A_i) P(A_i)}
 \end{equation*}
+
+\subsection{Reguła wielokrotnego warunkowania}
+
+Dla dowolnych zdarzeń \(A_1,..,A_n \in \Sigma\) zachodzi
+\begin{equation*}
+    \begin{split}
+        &P(A_1,..,A_n) = P(A_n \mid A_{n-1},..,A_2,A_1) \cdot P(A_{n-1},..,A_2,A_1) \\
+        &= P(A_n \mid A_{n-1},..,A_2,A_1) \cdot P(A_{n-1} \mid A_{n-2},..,A_2,A_1) \cdot P(A_{n-2},..,A_2,A_1)\\
+        &= ...\\
+        &= P(A_n \mid A_{n-1},..,A_2,A_1)\cdot P(A_{n-1} \mid A_{n-2},..,A_2,A_1) \cdot ... \cdot P(A_2 \mid A_1) \cdot P(A_1)
+    \end{split}
+\end{equation*} 
 
 \subsection{Zmienne losowe}
 
@@ -1115,7 +1145,7 @@ dowolnego zbioru \(X = \{\mathbf{x}_1, \ldots, \mathbf{x}_m\} \subset \mathbb{R}
 \begin{equation*}
     \mqty[f_{\mathbf{x}_1} \\ \vdots \\ f_{\mathbf{x}_m}] \sim \mathcal{N}(\boldsymbol{\mu}_X, \oper{\Sigma}_{X})\,.
 \end{equation*}
-Zauważmy, iż process Gaussowski możemy jednoznacznie zdefiniować podając przepisy na parametry
+Zauważmy, iż proces Gaussowski możemy jednoznacznie zdefiniować podając przepisy na parametry
 \(\boldsymbol{\mu}_X\) i \(\oper{\Sigma}_X\) dla dowolnego zbioru \(X\). W praktyce często
 przyjmujemy \(\boldsymbol{\mu}_X = \mathbf{0}\), natomiast przepisem na macierz kowariancji może być
 zdefiniowana wyżej funkcja kowariancji \(k(X,X)\) tj.
@@ -1517,17 +1547,17 @@ Sampler}).
 \subsection{Metody oparte o sąsiedztwo}
 
 Metody oparte o sąsiedztwo to zbiór metod, które wykorzystują najbliższych (w sensie pewnej metryki
-lub półmetryki) sąsiadów (z ang. \textit{nearest neoghbours}) dla danego nowego punktu. Zasadniczą
-ideą tych metod jest iż punkty leżące blisko siebie w pewnej przestrzneni powinny mieć podobne
+lub półmetryki) sąsiadów (z ang. \textit{nearest neighbors}) dla danego nowego punktu. Zasadniczą
+ideą tych metod jest iż punkty leżące blisko siebie w pewnej przestrzeni powinny mieć podobne
 własności, czyli taka przestrzeń metryczna powinna być \textit{semantycznie sensowna}.
 
-Jednym z najprostszych algorytmów z tej dziedziny jest \textit{k-nearest neighbours} (kNN) używany
+Jednym z najprostszych algorytmów z tej dziedziny jest \textit{k-nearest neighbors} (kNN) używany
 najczęściej do klasyfikacji, ale możliwe jest również użycie go do regresji. Załóżmy, iż mamy zbiór
 treningowy \(\mathcal{X} = \{(\mathbf{x}_i, t_i)\}_{i=1}^n\), gdzie \(\mathbf{x}\) to wektor cech, a
 \(t\) to prawidłowa klasa. Chcąc przewidzieć klasę dla nowego wektora cech \(\mathbf{x}\) znajdujemy
 \(k\) najbliższych sąsiadów \(\mathbf{x}\) w zbiorze \(\{\mathbf{x}_i\}_{i=1}^n\) względem metryki
 \(d\), zliczamy klasy najbliższych sąsiadów i zwracamy klasę występującą najczęściej lub rozkład
-prawdopodobieńśtwa nad możliwymi klasami jako stosunek liczby punktów z daną klasą do liczby
+prawdopodobieństwa nad możliwymi klasami jako stosunek liczby punktów z daną klasą do liczby
 sąsiadów \(k\). W przypadku regresji zamiast zwracać klasę występującą najczęściej, zwracamy średnią
 arytmetyczną wartości \(t\) dla \(k\) najbliższych sąsiadów (uwaga! użycie średniej powoduje, iż kNN
 w przypadku regresji potrafi tylko interpolować wartości).
@@ -1562,15 +1592,38 @@ sąsiadów. Przykładami takich struktur są np. k-d tree, ball tree, quad tree,
 tree złożoność treningu (budowy struktury) wynosi \(O(n \log n)\), natomiast wyszukania \(k\)
 sąsiadów \(O(k \log n)\). W przypadku zastosowania kNN do wyszukiwania taka złożoność jest niestety
 nadal za duża w praktyce (chcemy wyszukiwać wśród setek milionów obiektów), dlatego powstały również
-metody aproksymacyjne (z ang. \textit{Approximate Nearest Neighbours}). W algorytmach
+metody aproksymacyjne (z ang. \textit{Approximate Nearest Neighbors}). W algorytmach
 aproksymacyjnych zamiast znajdować dokładnych \(k\) najbliższych sąsiadów znajdujemy \(k\) sąsiadów,
 którzy niekoniecznie muszą być rzeczywiście najbliższymi, potrafimy to jednak zrobić znacznie
 szybciej.
 
+\subsection{Naiwny klasyfikator Bayesowski}
+
+Ponownie rozpatrzmy problem klasyfikacji, w którym dla danych zmiennych objaśniających
+\(\mathbf{x}\) mamy przyporządkować jedną z \(k\) klas. Interesuje nas rozkład warunkowy
+\begin{equation*}
+    p(\tau_i \mid \mathbf{x}) = p(\tau_i \mid x_1,.., x_d)\,,
+\end{equation*}
+gdzie \(i = 1,..,k\). Zamiast konstruować parametryczny model statystyczny jak w przypadku regresji
+logistycznej skorzystamy teraz z twierdzenia Bayesa
+\begin{equation*}
+    p(\tau_i \mid x_1, .., x_d) = \frac{p(x_1,..,x_d \mid \tau_i) p(\tau_i)}{p(x_1,..,x_d)}
+\end{equation*}
+wraz z \textit{naiwnym} założeniem, iż cechy \(x_1,..,x_d\) są warunkowo niezależne względem
+\(\tau_i\) tj.
+\begin{equation*}
+    p(\tau_i \mid x_1, .., x_d) = \frac{p(x_1\mid \tau_i)...p(x_d \mid \tau_i) p(\tau_i)}{p(x_1,..,x_d)}\,.
+\end{equation*}
+Dla danych cech \(x_1,..,x_d\)  wybierzemy klasę zgodnie z regułą MAP, czyli klasę, która
+maksymalizuje wypisane wyżej prawdopodobieństwo a posteriori (czyli efektywnie maksymalizuje licznik
+tego wyrażenia)
+\begin{equation*}
+    t(x_1,..,x_d) = \arg\max_{i =1,..,k} p(\tau_i \mid x_1, .., x_d) = \arg\max_{i =1,..,k} p(x_1\mid \tau_i)...p(x_d \mid \tau_i) p(\tau_i)\,.
+\end{equation*}
+
 % ---------------------------------------------------------
 % TODO: PUM (after quiz)
-% ---------------------------------------------------------
-% \subsection{Naive Bayes}
+% --------------------------------------------------------- 
 % \subsection{Predykcja szeregów czasowych}
 % ---------------------------------------------------------
 
@@ -1886,7 +1939,7 @@ dokładne jedna klasa \(c\) jest poprawna
 
 \subsection{Automatyczne różniczkowanie}
 
-Algorytm wstecznej propagacji błędu jest szczególnym przypadkiem automatycnego różniczkowania metodą
+Algorytm wstecznej propagacji błędu jest szczególnym przypadkiem automatycznego różniczkowania metodą
 ,,wstecz''. Załóżmy, że mamy funkcję tensorową będącą złożeniem pewnych elementarnych funkcji
 tensorowych: dodawanie tensorów, mnożenie tensorów z konwencją sumacyjną (inaczej operacja
 redukcji), operacje element-wise postaci \(Y_{ijk..} = f(X_{ijk..})\) dla
@@ -2051,7 +2104,7 @@ są więc metody regularyzacji.
     zbiorze walidacyjnym zaczyna rosnąć (lub nie spada przez odpowiednio długi czas). Unikamy w ten
     sposób przeuczenia modelu. Takie podejście wymaga jednak dość dużego zbioru danych, z których
     musimy wydzielić trzy zbiory: zbiór treningowy (na którym uczymy model), zbiór walidacyjny (na
-    którym ewaluujemy model przy procedurze early stoppingu) oraz zbiór testowy (na którym
+    którym ewaluujemy model przy procedurze early stopingu) oraz zbiór testowy (na którym
     ewaluujemy model po treningu). Okres, przez który czekamy na uzyskanie lepszego wyniku, to
     cierpliwość (z ang. \textit{patience}). Im mniejsze, tym mocniejszy jest ten rodzaj
     regularyzacji, ale trzeba z tym uważać, bo łatwo jest przesadzić i zbyt szybko przerywać
