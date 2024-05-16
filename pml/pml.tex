@@ -620,7 +620,7 @@ Zauważmy przy tym iż liczba \(Z\) nie jest nam potrzebna, gdyż wystarczy zmak
 
 \section{Probabilistyczne uczenie maszynowe}
 
-\subsection{Wnioskowanie Bayesowskie}
+\subsection{Wnioskowanie Bayesowskie}\label{sec:bayesian_inference}
 
 Zajmiemy się teraz wnioskowaniem opartym na twierdzeniu Bayesa. Rozpatrujemy model statystyczny
 \(\mathcal{P} = \left\{p(\mathbf{x} \mid \theta) \mid \theta \in \Theta\right\}\). Załóżmy, iż mamy
@@ -1544,6 +1544,61 @@ korelację po okresie przejściowym i przyspieszyć zbieżność. Standardowo wy
 z tej klasy są algorytmy HMC (\textit{Hamiltonian Monte Carlo}) oraz NUTS (\textit{No U-Turn
 Sampler}). 
 
+\subsection{Metryki do oceny klasyfikacji}
+
+W przypadku regresji ocena jakości modelu sprawdzała się do użycia jednej z metryk RMSE, MAE. W
+przypadku klasyfikacji, a zwłaszcza klasyfikacji silnie niezbalansowanej ocena jakości klasyfikatora
+jest zadaniem trudniejszym. Rozpatrujemy tutaj jedynie  klasyfikatory binarne. Dla danego zestawu
+cech odpowiedź klasyfikatora może być jedną z czterech:
+\begin{itemize}
+    \item \textit{True Positive} -- poprawnie zaklasyfikowaliśmy klasę pozytywną jako pozytywną
+    \item \textit{True Negative} -- poprawnie zaklasyfikowaliśmy klasę negatywną jako negatywną
+    \item \textit{False Positive} -- niepoprawnie zaklasyfikowaliśmy klasę negatywną jako pozytywną
+    \item \textit{False Negative} -- niepoprawnie zaklasyfikowaliśmy klasę pozytywną jako negatywną
+\end{itemize}
+Na podstawie ilości TP, TN, FP i FN na zbiorze testowym możemy wprowadzić następujące podstawowe
+metryki
+\begin{itemize}
+    \item \textit{precision} -- mówi nam o tym jak pewnie klasyfikator znajduje klasę pozytywną
+    \begin{equation*}
+        \text{precision} = \frac{\text{TP}}{\text{TP}+\text{FP}}
+    \end{equation*}
+    \item \textit{recall} -- mówi nam o tym jak dobrze wykrywamy klasę pozytywną
+    \begin{equation*}
+        \text{recall} = \frac{\text{TP}}{\text{TP} + \text{FN}}
+    \end{equation*}
+\end{itemize}
+Zauważmy, że metryki te mają zasadniczy problem, jeśli chcielibyśmy używać tylko jednej z nich:
+klasyfikator, który zawsze zwraca klasę pozytywną ma maksymalny recall, a klasyfikator, który zawsze
+zwraca klasę negatywną ma nieskończony precision. Nie możemy zatem używać tych miar osobno, tj.
+dobry klasyfikator powinien mieć wysokie zarówno precision, jak i recall. Miarą, która łączy
+precision i recall jest F1-score zdefiniowany jako średnia harmoniczna precision i recall
+\begin{equation*}
+    F_1 = \frac{2}{\text{precision}^{-1} + \text{recall}^{-1}}\,.
+\end{equation*}
+Metryka ta przyjmuje wartości od 0 do 1 i im jej wartość większa tym lepszy klasyfikator. Zauważmy
+bowiem, iż aby F1-score był wysoki zarówno precision, jak i recall muszą mieć wartość bliską 1.
+
+Czasami bywa tak, iż każda z czterech możliwości klasyfikatora ma realny koszt (np. przy predykcji,
+czy klient przestanie używać naszych usług) i wtedy powinniśmy używać takiej empirycznej funkcji
+kosztu (patrz: \ref{sec:bayesian_inference}).
+
+W przypadku klasyfikacji niezbalansowanej często na wytrenowanym już klasyfikatorze dokonujemy tzw.
+\textit{threshold tuning}. Normalnie w przypadku klasyfikatora, który zwraca prawdopodobieństwa klas
+wybiera klasę o największym prawdopodobieństwie (czyli w przypadku klasyfikacji binarnej o
+prawdopodobieństwie większym od 0.5), threshold tuning polega na obniżeniu tego progu. Pytanie jak
+wybrać ten próg. Wykorzystujemy do tego celu krzywą ROC (z ang. \textit{Receiver Operating
+Characteristic curve}) czyli wykres parametryczny recall i FPR (\textit{False Positive Rate}, czyli
+recall dla klasy negatywnej) dla różnych progów klasyfikacji i wybieramy próg, dla którego F1-score
+jest maksymalny. Krzywa ROC pozwala dodatkowo wprowadzić jeszcze jedną miarę oceny klasyfikatora,
+która jest niezależna od przyjętego progu, tzw. AUROC (z ang. \textit{Area under ROC}), czyli pole
+powierzchni pod wykresem krzywej ROC. Miara ta przyjmuje wartości z zakresu [0;1] i im jest większa
+tym lepszy mamy klasyfikator. AUROC jest dobrą miarą jakości klasyfikatora (tj. dobrze różnicuje
+modele) jeśli mamy klasyfikację umiarkowanie niezbalansowaną. W przypadku klasyfikacji ekstremalnie
+niezbalansowanej używamy podobnej miary od AUROC zwanej AUPRC (z ang. \textit{Area under
+Precision-Recall Curve}) zdefiniowanej jako pole powierzchni pod wykresem krzywej PRC, czyli krzywej
+parametrycznej precision i recall dla różnych wartości progu klasyfikacji.
+
 \subsection{Metody oparte o sąsiedztwo}
 
 Metody oparte o sąsiedztwo to zbiór metod, które wykorzystują najbliższych (w sensie pewnej metryki
@@ -1621,11 +1676,7 @@ tego wyrażenia)
     t(x_1,..,x_d) = \arg\max_{i =1,..,k} p(\tau_i \mid x_1, .., x_d) = \arg\max_{i =1,..,k} p(x_1\mid \tau_i)...p(x_d \mid \tau_i) p(\tau_i)\,.
 \end{equation*}
 
-% ---------------------------------------------------------
-% \subsection{Predykcja szeregów czasowych}
-% ---------------------------------------------------------
-
-\subsection{Selekcja cech i redukcja wymiarowości}
+\subsection{Selekcja cech}
 
 Zwykle dane w zbiorach wykorzystywanych w uczeniu maszynowym mają dużą wymiarowość (wiele cech). Nas
 jednak najbardziej interesuje tzw. \textit{intrinsic dimensionality}, czyli podprzestrzeń, która
@@ -1633,8 +1684,7 @@ jest realnie ważna dla problemu klasyfikacji lub regresji. Celem selekcji cech 
 tych cech, które są istotne. Typowo obliczamy ważność cech (z ang. \textit{feature importance}) i
 usuwamy te najmniej wartościowe. Takie podejście może pomóc nam usunąć szum z danych i poprawić
 wyniki modeli (jest to szczególne ważne dla modeli, które używają cech wprost np. kNN, Naive Bayes).
-Najczęstszymi podejściami do selekcji cech są tzw. metody \textit{filter}, \textit{embedded} i
-\textit{wrapper}.
+Najczęstszymi podejściami do selekcji cech są tzw. metody \textit{filter} i \textit{embedded}.
 \begin{itemize}
     \item \textbf{Metody \textit{filter}}. Waga cechy jest obliczana na podstawie pewnej ogólnej
     miary jakości cech; są typowo oparte na pewnych statystykach i sprawdzają pojedynczą zmienną
@@ -1653,13 +1703,21 @@ Najczęstszymi podejściami do selekcji cech są tzw. metody \textit{filter}, \t
         zależną i usuwamy te o wartości bezwzględnej bliskiej 0. 
 
         \item \textbf{\textit{Mutual Information}}. Obliczamy informację wzajemną (patrz:
-        \ref{sec:entropy}).
+        \ref{sec:entropy}) i na jej podstawie usuwamy cechy.
     \end{itemize}
 
-    \item \textbf{Metody \textit{embedded}}.
-
-    \item \textbf{Metody \textit{wrapper}}.
+    \item \textbf{Metody \textit{embedded}}. W metodach embedded trenujemy jakiś parametryczny model
+    uczenia maszynowego na naszych danych i wagi tego modelu interpretujemy jako wagi cech w
+    zbiorze. Metody te wymagają dobrych modeli, zauważmy bowiem, że wagi modelu mówią tak naprawdę
+    jak ważna jest dana cecha dla predykcji tego modelu, a nie ogólnie dla zagadnienia. Jako modele
+    można wybrać proste modele liniowe, w których mamy prostą interpretację wag.
 \end{itemize}
+
+
+
+% ---------------------------------------------------------
+% \subsection{Predykcja szeregów czasowych}
+% ---------------------------------------------------------
 
 \linesep
 \newpage
