@@ -466,7 +466,7 @@ oznaczymy jako \(H(B \mid A)\). Mamy w takim razie
 \end{equation*}
 Z nierówności Jensena można dodatkowo pokazać, że zachodzi \(H(B\mid A) \leq H(B)\).
 
-\subsubsection{Entropia względna}
+\subsubsection{Entropia względna}\label{sec:entropy}
 Dla dwóch ciągłych rozkładów prawdopodobieństwa \(p(\mathbf{x})\), \(q(\mathbf{x})\) definiujemy ich
 entropię względną (nazywaną również \textit{Kullback-Leibler (KL) divergence}) jako
 \begin{equation*}
@@ -1622,10 +1622,44 @@ tego wyrażenia)
 \end{equation*}
 
 % ---------------------------------------------------------
-% TODO: PUM (after quiz)
-% --------------------------------------------------------- 
 % \subsection{Predykcja szeregów czasowych}
 % ---------------------------------------------------------
+
+\subsection{Selekcja cech i redukcja wymiarowości}
+
+Zwykle dane w zbiorach wykorzystywanych w uczeniu maszynowym mają dużą wymiarowość (wiele cech). Nas
+jednak najbardziej interesuje tzw. \textit{intrinsic dimensionality}, czyli podprzestrzeń, która
+jest realnie ważna dla problemu klasyfikacji lub regresji. Celem selekcji cech jest właśnie wybór
+tych cech, które są istotne. Typowo obliczamy ważność cech (z ang. \textit{feature importance}) i
+usuwamy te najmniej wartościowe. Takie podejście może pomóc nam usunąć szum z danych i poprawić
+wyniki modeli (jest to szczególne ważne dla modeli, które używają cech wprost np. kNN, Naive Bayes).
+Najczęstszymi podejściami do selekcji cech są tzw. metody \textit{filter}, \textit{embedded} i
+\textit{wrapper}.
+\begin{itemize}
+    \item \textbf{Metody \textit{filter}}. Waga cechy jest obliczana na podstawie pewnej ogólnej
+    miary jakości cech; są typowo oparte na pewnych statystykach i sprawdzają pojedynczą zmienną
+    naraz (tzw. metody \textit{univariate}).
+    \begin{itemize}
+        \item \textbf{\textit{Variance threshold}}. Przeskalowujemy cechy korzystajac z MinMax, aby
+        wszystkie miały ten sam zakres wartości. Obliczamy wariancję każdej cechy. Odrzucamy cechy o
+        bardzo małej wariancji, oznacza to bowiem, iż są praktycznie stałe. Próg typowo jest
+        ustalany na bardzo niski typu 0.01.
+
+        \item \textbf{Korelacja cech}. Obliczamy macierz korelacji i cech, po czym z każdej pary
+        eliminujemy najmocniej skorelowane cechy, poprzez usunięcie tej o niższej wariancji lub tej,
+        która ma średnio większe korelacje z innymi cechami.
+
+        \item \textbf{Korelacja ze zmienną zależną}. Obliczamy korelacje między cechami, a zmienną
+        zależną i usuwamy te o wartości bezwzględnej bliskiej 0. 
+
+        \item \textbf{\textit{Mutual Information}}. Obliczamy informację wzajemną (patrz:
+        \ref{sec:entropy}).
+    \end{itemize}
+
+    \item \textbf{Metody \textit{embedded}}.
+
+    \item \textbf{Metody \textit{wrapper}}.
+\end{itemize}
 
 \linesep
 \newpage
