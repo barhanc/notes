@@ -615,7 +615,6 @@ Zauważmy przy tym iż liczba \(Z\) nie jest nam potrzebna, gdyż wystarczy zmak
     \theta_\text{MAP} = \arg\max_{\theta \in \Theta} p(D \mid \theta)\pi(\theta)\,.
 \end{equation*}
 
-\linesep
 \newpage
 
 \section{Probabilistyczne uczenie maszynowe}
@@ -1341,6 +1340,30 @@ z tego, iż stała ucząca musi być zależna od liczby przykładów. Możemy na
 \(\epsilon \leftarrow m^{-1}\epsilon\) i wówczas minimalizujemy tak naprawdę średni koszt \(\ell^* /
 m\).
 
+\subsection{Naiwny klasyfikator Bayesowski}
+
+Ponownie rozpatrzmy problem klasyfikacji, w którym dla danych zmiennych objaśniających
+\(\mathbf{x}\) mamy przyporządkować jedną z \(k\) klas. Interesuje nas rozkład warunkowy
+\begin{equation*}
+    p(\tau_i \mid \mathbf{x}) = p(\tau_i \mid x_1,.., x_d)\,,
+\end{equation*}
+gdzie \(i = 1,..,k\). Zamiast konstruować parametryczny model statystyczny jak w przypadku regresji
+logistycznej skorzystamy teraz z twierdzenia Bayesa
+\begin{equation*}
+    p(\tau_i \mid x_1, .., x_d) = \frac{p(x_1,..,x_d \mid \tau_i) p(\tau_i)}{p(x_1,..,x_d)}
+\end{equation*}
+wraz z \textit{naiwnym} założeniem, iż cechy \(x_1,..,x_d\) są warunkowo niezależne względem
+\(\tau_i\) tj.
+\begin{equation*}
+    p(\tau_i \mid x_1, .., x_d) = \frac{p(x_1\mid \tau_i)...p(x_d \mid \tau_i) p(\tau_i)}{p(x_1,..,x_d)}\,.
+\end{equation*}
+Dla danych cech \(x_1,..,x_d\)  wybierzemy klasę zgodnie z regułą MAP, czyli klasę, która
+maksymalizuje wypisane wyżej prawdopodobieństwo a posteriori (czyli efektywnie maksymalizuje licznik
+tego wyrażenia)
+\begin{equation*}
+    t(x_1,..,x_d) = \arg\max_{i =1,..,k} p(\tau_i \mid x_1, .., x_d) = \arg\max_{i =1,..,k} p(x_1\mid \tau_i)...p(x_d \mid \tau_i) p(\tau_i)\,.
+\end{equation*}
+
 \subsection{Wnioskowanie metodami Monte Carlo}
 
 Całe wnioskowanie Bayesowskie opiera się na wyznaczaniu rozkładów a posteriori, które wyrażają naszą
@@ -1544,6 +1567,12 @@ korelację po okresie przejściowym i przyspieszyć zbieżność. Standardowo wy
 z tej klasy są algorytmy HMC (\textit{Hamiltonian Monte Carlo}) oraz NUTS (\textit{No U-Turn
 Sampler}). 
 
+
+
+\newpage
+
+\section{Podstawy uczenia maszynowego}
+
 \subsection{Metryki do oceny klasyfikacji}
 
 W przypadku regresji ocena jakości modelu sprawdzała się do użycia jednej z metryk RMSE, MAE. W
@@ -1652,29 +1681,6 @@ aproksymacyjnych zamiast znajdować dokładnych \(k\) najbliższych sąsiadów z
 którzy niekoniecznie muszą być rzeczywiście najbliższymi, potrafimy to jednak zrobić znacznie
 szybciej.
 
-\subsection{Naiwny klasyfikator Bayesowski}
-
-Ponownie rozpatrzmy problem klasyfikacji, w którym dla danych zmiennych objaśniających
-\(\mathbf{x}\) mamy przyporządkować jedną z \(k\) klas. Interesuje nas rozkład warunkowy
-\begin{equation*}
-    p(\tau_i \mid \mathbf{x}) = p(\tau_i \mid x_1,.., x_d)\,,
-\end{equation*}
-gdzie \(i = 1,..,k\). Zamiast konstruować parametryczny model statystyczny jak w przypadku regresji
-logistycznej skorzystamy teraz z twierdzenia Bayesa
-\begin{equation*}
-    p(\tau_i \mid x_1, .., x_d) = \frac{p(x_1,..,x_d \mid \tau_i) p(\tau_i)}{p(x_1,..,x_d)}
-\end{equation*}
-wraz z \textit{naiwnym} założeniem, iż cechy \(x_1,..,x_d\) są warunkowo niezależne względem
-\(\tau_i\) tj.
-\begin{equation*}
-    p(\tau_i \mid x_1, .., x_d) = \frac{p(x_1\mid \tau_i)...p(x_d \mid \tau_i) p(\tau_i)}{p(x_1,..,x_d)}\,.
-\end{equation*}
-Dla danych cech \(x_1,..,x_d\)  wybierzemy klasę zgodnie z regułą MAP, czyli klasę, która
-maksymalizuje wypisane wyżej prawdopodobieństwo a posteriori (czyli efektywnie maksymalizuje licznik
-tego wyrażenia)
-\begin{equation*}
-    t(x_1,..,x_d) = \arg\max_{i =1,..,k} p(\tau_i \mid x_1, .., x_d) = \arg\max_{i =1,..,k} p(x_1\mid \tau_i)...p(x_d \mid \tau_i) p(\tau_i)\,.
-\end{equation*}
 
 \subsection{Selekcja cech}
 
@@ -1713,14 +1719,14 @@ Najczęstszymi podejściami do selekcji cech są tzw. metody \textit{filter} i \
     można wybrać proste modele liniowe, w których mamy prostą interpretację wag.
 \end{itemize}
 
+\subsection{Redukcja wymiarowości}
 
-
-% ---------------------------------------------------------
-% \subsection{Predykcja szeregów czasowych}
-% ---------------------------------------------------------
-
-\linesep
 \newpage
+
+\section{Szeregi czasowe}
+
+\newpage
+
 \section{Sieci neuronowe}
 
 \subsection{Tensory}
