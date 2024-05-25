@@ -1636,19 +1636,21 @@ Jak ocenić, jak dobry jest jakiś zestaw hiperparametrów? Nie możemy sprawdzi
 treningowym - wyniki byłyby zbyt optymistyczne. Nie możemy wykorzystać zbioru testowego - mielibyśmy
 data leakage, bo wybieralibyśmy model explicite pod nasz zbiór testowy. Trzeba zatem osobnego
 zbioru, na którym będziemy na bieżąco sprawdzać jakość modeli dla różnych hiperparametrów. Jest to
-zbiór walidacyjny (validation set). Zbiór taki wycina się ze zbioru treningowego. Dzielimy zatem nasze dane nie na dwie, ale trzy
-części: treningową, walidacyjną i testową. Typowe proporcje to 60-20-20\% lub 80-10-10\%.
+zbiór walidacyjny (validation set). Zbiór taki wycina się ze zbioru treningowego. Dzielimy zatem
+nasze dane nie na dwie, ale trzy części: treningową, walidacyjną i testową. Typowe proporcje to
+60-20-20\% lub 80-10-10\%.
 
 Jednorazowy podział zbioru na części nazywa się split validation lub holdout. Używamy go, gdy mamy
 sporo danych, i 10-20\% zbioru jako dane walidacyjne czy testowe to dość dużo, żeby mieć przyzwoite
 oszacowanie. Zbyt mały zbiór walidacyjny czy testowy da nam mało wiarygodne wyniki - nie da się
 nawet powiedzieć, czy zbyt pesymityczne, czy optymistyczne! W praktyce niestety często mamy mało
 danych. Trzeba zatem jakiejś magicznej metody, która stworzy nam więcej zbiorów walidacyjnych z tej
-samej ilości danych. Taką metodą jest walidacja skrośna (cross-validation, CV). Polega na tym, że dzielimy zbiór na $K$
-równych podzbiorów, tzw. foldów. Każdy podzbiór po kolei staje się zbiorem walidacyjnym, a pozostałe
-łączymy w zbiór treningowy. Trenujemy zatem K modeli dla tego samego zestawu hiperparametrów i każdy testujemy na zbiorze
-walidacyjnym. Mamy K wyników dla zbiorów walidacyjnych, które możemy uśrednić (i ew. obliczyć
-odchylenie standardowe). Takie wyniki są znacznie bardziej wiarygodne.
+samej ilości danych. Taką metodą jest walidacja skrośna (cross-validation, CV). Polega na tym, że
+dzielimy zbiór na $K$ równych podzbiorów, tzw. foldów. Każdy podzbiór po kolei staje się zbiorem
+walidacyjnym, a pozostałe łączymy w zbiór treningowy. Trenujemy zatem \(K\) modeli dla tego samego
+zestawu hiperparametrów i każdy testujemy na zbiorze walidacyjnym. Mamy \(K\) wyników dla zbiorów
+walidacyjnych, które możemy uśrednić (i ew. obliczyć odchylenie standardowe). Takie wyniki są
+znacznie bardziej wiarygodne.
 
 Szczególnym przypadkiem jest Leave-One-Out Cross-Validation (LOOCV), w którym ilość podzbiorów
 (foldów) jest równa ilości rekordów. Czyli w danej chwili tylko 1 przykład jest zbiorem
@@ -1806,9 +1808,17 @@ Najczęstszymi podejściami do selekcji cech są tzw. metody \textit{filter} i \
 
 \subsection{Redukcja wymiarowości}
 
-\newpage
+Ideą redukcji wymiarowości jest rzutowanie cech (z ang. \textit{feature projection}) na nową
+przestrzeń o mniejszej liczbie wymiarów. W przeciwieństwie do selekcji cech, zamiast usuwać cechy
+tworzymy ich kombinacje (liniowe lub nieliniowe) i w taki sposób otrzymujemy podprzestrzeń realnie
+ważną dla problemu. Zaletą takiego podejścia jest to, iż rozważa złożone przekształcenia całej
+przestrzeni cech, ale z tego względu jest mniej interpretowalne od metod selekcji cech.
 
-\section{Szeregi czasowe}
+Najbardziej typowe są liniowe metody redukcji wymiarowości w tym przede wszystkim SVD (z ang.
+\textit{Singular Value Decomposition}) i PCA (z ang. \textit{Principal Components Analysis}). W
+przypadku podejść nieliniowych najpopularniejsze metody to UMAP (z ang. \textit{Uniform Manifold
+Approximation and Projection}) oraz t-SNE (z ang. \textit{t-distributed Stochastic Neighbor
+Embedding}). 
 
 \newpage
 
