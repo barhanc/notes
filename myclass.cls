@@ -5,6 +5,10 @@
 \LoadClass[12pt]{article}
 \RequirePackage[a4paper]{geometry}
 
+%**** Article Two column ****
+% \LoadClass[twocolumn]{article}
+% \RequirePackage[a4paper, total={7in, 9in}]{geometry}
+
 % Custom symbols
 \newcommand{\e}{\mathrm{e}}
 \newcommand{\im}{\mathrm{i}}
