@@ -1,6 +1,6 @@
 # notes
 
-* [[classics.pdf](https://barhanc.github.io/notes/classics/main.pdf)] High school olympiad notes on
-    classical physics: mechanics, thermodynamics, electrodynamics and optics.
+* [[class.pdf](https://barhanc.github.io/notes/classics/main.pdf)] Notes on
+    classical physics for Polish Physics Olympiad training.
 
 * [[deep.pdf](https://barhanc.github.io/notes/pml/pml.pdf)] TBD
