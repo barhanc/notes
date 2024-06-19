@@ -15,7 +15,7 @@
 \RequirePackage[]{hyperref}
 \hypersetup{
     colorlinks=true,
-    linkcolor=black,
+    linkcolor= blue,
     filecolor=blue,      
     urlcolor=blue,
     }
