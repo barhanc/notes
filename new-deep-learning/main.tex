@@ -1,0 +1,1245 @@
+\documentclass{myclass}
+\usepackage[polish]{babel}
+
+\numberwithin{equation}{section}
+
+\begin{document}
+
+\tableofcontents
+\newpage
+
+\section{Wstęp}
+
+Celem tych notatek jest zwięzłe przedstawienie kompletu zagadnień związanych z szeroko pojętym
+uczeniem głębokim jako podejściem do Sztucznej Inteligencji (SI). Zaczynamy od minimalnego zbioru
+wymaganych tematów z zakresu rachunku prawdopodobieństwa i statystyki matematycznej. Następnie
+opisujemy podstawowe metody uczenia maszynowego z probabilistycznego punktu widzenia. W końcu
+przechodzimy do zasadniczej części związanej z uczeniem głębokim i sieciami neuronowymi. W każdej
+części staramy się przedstawiać opisywane tematy w sposób minimalistyczny, skupiając się głównie na
+matematycznej i ideowej, a nie implementacyjnej stronie zagadnień. Liczymy, iż takie podejście
+zapewni odpowiednio głębokie zrozumienie tematu, dzięki któremu dalsze studiowanie całej gamy
+specyficznych technicznych tematów nie sprawi żadnego problemu.
+
+\subsection{Notacja}
+
+W dalszej części tekstu będziemy stosować przedstawioną tutaj pokrótce notację. Wektory, które
+traktujemy jako elementy przestrzeni \(\mathbb{R}^d\) ze standardowo zdefiniowanymi operacjami
+dodawania i mnożenia przez skalar będziemy oznaczali wytłuszczonymi małymi literami np.
+\(\mathbf{x}, \mathbf{w}, \boldsymbol{\phi}\). Wielkość \(\mathbf{x}_i\) z indeksem dolnym będącym
+literą alfabetu łacińskiego będzie oznaczać dany element wektora (w tym przypadku \(i\)--ty element
+\(\mathbf{x}\)). Wielkość \(\mathbf{x}^\mu\) z indeksem górnym będącym literą alfabetu greckiego
+będzie oznaczać pewien (w tym przypadku \(\mu\)--ty) element pewnego zbioru wektorów. Macierze oraz
+wielowymiarowe tablice (zwane również niefortunnie tensorami) będziemy oznaczać wytłuszczonymi
+wielkimi literami np. \(\mathbf{X}, \mathbf{W}, \boldsymbol{\Phi}\). Analogicznie jak w przypadku
+wektorów przez \(\mathbf{X}_{i_1 i_2 \ldots i_k}\) będziemy oznaczać \((i_1,i_2,\ldots,i_k)\)
+element \(k\)--wymiarowej tablicy \(\mathbf{X}\), natomiast \(\mathbf{X}^\mu\) będzie oznaczać
+\(\mu\)--ty element pewnego zbioru tablic.
+
+\subsection{Uczenie nadzorowane}
+
+Uczenie nadzorowane jest jednym z dwóch podstawowych (pomijając tzw. uczenie ze wzmocnieniem)
+paradygmatów w uczeniu maszynowym, którego ogólną ideą jest zdefiniowanie pewnego modelu
+odwzorowującego dane wejściowe na wyjściowe predykcje. Zakładamy w nim, iż mamy dostępny zbiór
+obserwacji w postaci uporządkowanych par \(\mathcal{X} = \{(\mathbf{x}^\mu, t_\mu)\}_{\mu=1}^n\),
+gdzie \(\mathbf{x} \in \mathbb{R}^d\) nazywamy wektorem cech a \(t\) jest prawidłową wartością
+odpowiedzi dla tych cech. Dwa najbardziej podstawowe przypadki zagadnień tego rodzaju to regresja
+oraz klasyfikacja. W przypadku regresji zmienna \(t\) przyjmuje wartości z przedziału liczb
+rzeczywistych. W przypadku klasyfikacji zmienna \(t\) przyjmuje wartości ze skończonego zbioru
+kategorii, przy czym wartości z tego zbioru nie powinny posiadać naturalnej tj. wynikającej z natury
+problemu, relacji porządku; gdy tak nie jest mamy do czynienia z regresją/klasyfikacją porządkową (z
+ang. \textit{ordinal regression/classification}).
+
+W jaki sposób tworzymy wspomniany model odwzorowujący \(\mathbf{x}\) na \(t\)? W dalszych
+paragrafach poznamy różne metody, ale najczęściej (nie wchodząc teraz w modelowanie
+probabilistyczne) modelem jest pewna rodzina funkcji postaci \(\phi(\mathbf{x}; \mathbf{w})\)
+parametryzowana skończoną liczbą parametrów, które możemy łącznie zapisać jako pewien wektor
+\(\mathbf{w} \in \mathbb{R}^m\). Aby znaleźć parametry \(\mathbf{w}\), dzięki którym dla konkretnego
+zagadnienia model będzie zadowalająco odwzorowywał cechy na predykcje (innymi słowy aby nauczyć
+model) wprowadzamy dodatkowo funkcjonał kosztu (z ang. \textit{loss function})
+\(L[\phi(\mathbf{x};\mathbf{w}), t]\), który kwantyfikuje odpowiedzi modelu \(\phi\) w stosunku do
+znanych prawidłowych odpowiedzi \(t\). Trening modelu polega wówczas na znalezieniu parametrów
+\(\mathbf{w}^*\), które minimalizują sumę wartości funkcji kosztu dla przykładów w zbiorze
+treningowym \(\mathcal{X}\)
+\begin{equation}
+    \mathbf{w}^* = \arg\min_{\mathbf{w}} \sum_{\mu=1}^n L[\phi(\mathbf{x}^\mu;\mathbf{w}), t_\mu]\,.
+\end{equation}
+Zauważmy, że takie podejście ma jedną zasadniczą wadę -- istotnie nie interesuje nas tak naprawdę,
+jak model radzi sobie na zbiorze treningowym, tylko jak będzie radził sobie na nowych, niewidzianych
+wcześniej danych. Sytuację, w której model bardzo dobrze modeluje dane w zbiorze treningowym, ale
+słabo radzi sobie na nowych danych nazywamy przeuczeniem lub nadmiernym dopasowaniem (z ang.
+\textit{overfitting}). Sytuację, w której model słabo radzi sobie zarówno na zbiorze treningowym,
+jak i na nowych danych nazywamy niedouczeniem lub niedopasowaniem (z ang. \textit{underfitting}).
+Występowanie overfittingu i underfittingu jest powiązane z pojemnością (z ang. \textit{capacity})
+modelu. Złożony model o dużej pojemności potrafi dopasować się do bardzo skomplikowanych obserwacji,
+ale istnieje ryzyko jego przeuczenia (mówimy wówczas o \textit{high variance}). Dla prostego modelu
+o małej pojemności istnieje z kolei ryzyko, iż nie ma on wystarczająco ekspresywności (mówimy
+wówczas o \textit{high bias}).
+ 
+\subsection{Uczenie nienadzorowane}
+
+W przypadku uczenia nienadzorowanego naszym celem nie jest znalezienie modelu odwzorowującego cechy
+na predykcje. Chcemy raczej zrozumieć wewnętrzną strukturę danych. Modele tego rodzaju znajdują
+zastosowanie w analizie biznesowej, gdzie pozwalają, chociażby na analizę ważności poszczególnych
+wskaźników, czy wizualizację wysoko-wymiarowych danych. Nas będą interesować natomiast szczególnie
+generatywne modele nienadzorowane, za pomocą których modelujemy rozkład prawdopodobieństwa danych,
+czy to wprost poprzez funkcję gęstości prawdopodobieństwa, czy też jedynie jako model, z którego
+możemy próbkować nowe przykłady.
+
+\subsection{Praktyka uczenia maszynowego}
+
+W dalszej części nie będziemy skupiać się na detalach implementacyjnych. W naszej ocenie jednak
+dziedzina uczenia maszynowego jest przede wszystkim \enquote{nauką eksperymentalną} dlatego bardzo
+ważne jest empiryczne sprawdzenie różnych metod przed wybraniem ostatecznego modelu dla danego
+zagadnienia. W tym paragrafie opisujemy standardowe praktyki stosowane przy treningu modeli uczenia
+maszynowego (głównie nadzorowanych operujących na danych tabelarycznych).
+
+\subsubsection{Przygotowanie danych}
+
+Kluczem do uzyskania dobrych wyników przy korzystaniu z algorytmów uczenia maszynowego jest
+odpowiednie przygotowanie danych (z ang. \textit{preprocessing}). Typowo preprocessing składa się z:
+
+\begin{itemize}
+   
+    \item wczytania danych;
+    
+    \item eksploracji danych oraz wstępnego czyszczenia, w szczególności usunięcia jawnych wartości
+    odstających (z ang. \textit{outliers}) oraz cech posiadających zbyt dużo wartości brakujących;
+
+    \item analizy rozkładu zmiennej docelowej oraz ewentualnej transformacji logarytmicznej, która
+    poprawia stabilność numeryczną, gdy przewidywane wartości są dużymi dodatnimi liczbami
+    rzeczywistymi, zmienia dziedzinę zmiennej objaśnianej z \(\mathbb{R}_+\) na \(\mathbb{R}\) oraz
+    dodatkowo jest przykładem transformacji stabilizującej wariancję;
+    
+    \item \textbf{podziału zbioru na część treningową oraz testową};
+
+    \item dokonania skalowania i imputacji brakujących wartości cech (metody \texttt{.fit()}
+    wywołujemy jedynie dla zbioru treningowego);
+
+    \item usunięcia silnie skorelowanych cech;
+
+    \item zakodowania wartości kategorycznych za pomocą tzw. \textit{one--hot encoding} pamiętając o
+    \textit{dummy variable trap} -- jedną z \(k\) kategorii kodujemy za pomocą wektora
+    \textit{one--hot} długości \(n-1\), aby uniknąć zależności liniowej między cechami (opcja
+    \texttt{drop="first"} w \texttt{OneHotEncoder} w scikit-learn);
+
+    \item wykonania feature engineering -- dodania wielomianów cech do naszych danych lub
+    skonstruowania innych cech (np. cech określających miesiąc, dzień itp.);
+
+\end{itemize}
+
+Podział zbioru na część treningową i testową jest najważniejszym etapem preprocessingu. Zbiór
+testowy wydzielamy, aby po wytrenowaniu modelu sprawdzić, jak poradzi on sobie na nowych,
+niewidzianych wcześniej danych. Powinniśmy go traktować jako dane, które będziemy w przyszłości
+dostawać po wdrożeniu modelu do realnego systemu. Takie dane również będziemy musieli przeskalować,
+zakodować itp., ale parametry potrzebne do wykonania tych transformacji możemy wziąć jedynie z
+dostępnego wcześniej zbioru treningowego. Wykorzystanie danych testowych w procesie treningu to
+\textbf{błąd wycieku danych} (z ang. \textit{data leakage}). Skutkuje on niepoprawnym, nadmiernie
+optymistycznym oszacowaniem jakości modelu.
+
+\subsubsection{Tuning hiperparametrów i walidacja skrośna}
+
+Praktycznie wszystkie modele uczenia maszynowego mają hiperparametry, często liczne, które w
+zauważalny sposób wpływają na wyniki, a szczególnie na underfitting i overfitting. Ich wartości
+trzeba dobrać zatem dość dokładnie. Proces doboru hiperparametrów nazywa się tuningiem
+hiperparametrów (z ang. \textit{hyperparameter tuning}).
+
+Istnieje na to wiele sposobów. Większość z nich polega na tym, że trenuje się za każdym razem model
+z nowym zestawem hiperparametrów i wybiera się ten zestaw, który pozwala uzyskać najlepsze wyniki.
+Metody głównie różnią się między sobą sposobem doboru kandydujących zestawów hiperparametrów.
+Najprostsze i najpopularniejsze to:
+\begin{itemize}
+
+    \item pełne przeszukiwanie (z ang. \textit{grid search}) -- definiujemy możliwe wartości dla
+    różnych hiperparametrów, a metoda sprawdza ich wszystkie możliwe kombinacje (czyli siatkę),
+
+    \item losowe przeszukiwanie (z ang. \textit{randomized search}) -- definiujemy możliwe wartości
+    jak w pełnym przeszukiwaniu, ale sprawdzamy tylko ograniczoną liczbę losowo wybranych
+    kombinacji.
+
+\end{itemize}
+
+Jak ocenić, jak dobry jest jakiś zestaw hiperparametrów? Nie możemy sprawdzić tego na zbiorze
+treningowym -- wyniki byłyby zbyt optymistyczne. Nie możemy wykorzystać zbioru testowego --
+mielibyśmy wyciek danych, bo wybieralibyśmy model explicite pod nasz zbiór testowy. Trzeba zatem
+osobnego zbioru, na którym będziemy na bieżąco sprawdzać jakość modeli dla różnych hiperparametrów.
+Jest to zbiór walidacyjny (z ang. \textit{validation set}). Zbiór taki wycina się ze zbioru
+treningowego.
+
+Jednorazowy podział zbioru na części nazywa się \textit{split validation} lub \textit{holdout}.
+Używamy go, gdy mamy sporo danych, i 10-20\% zbioru jako dane walidacyjne czy testowe to dość dużo,
+żeby mieć przyzwoite oszacowanie. Zbyt mały zbiór walidacyjny czy testowy da nam mało wiarygodne
+wyniki -- nie da się nawet powiedzieć, czy zbyt pesymistyczne, czy optymistyczne. W praktyce
+niestety często mamy mało danych. Trzeba zatem jakiejś magicznej metody, która stworzy nam więcej
+zbiorów walidacyjnych z tej samej ilości danych. Taką metodą jest walidacja skrośna (z ang.
+\textit{cross validation}, CV). Polega na tym, że dzielimy zbiór treningowy na \(K\) równych
+podzbiorów, tzw. foldów. Każdy podzbiór po kolei staje się zbiorem walidacyjnym, a pozostałe łączymy
+w zbiór treningowy. Trenujemy zatem \(K\) modeli dla tego samego zestawu hiperparametrów i każdy
+testujemy na zbiorze walidacyjnym. Mamy \(K\) wyników dla zbiorów walidacyjnych, które możemy
+uśrednić (i ewentualnie obliczyć odchylenie standardowe). Takie wyniki są znacznie bardziej
+wiarygodne.
+
+\section{Rachunek prawdopodobieństwa i statystyka matematyczna}
+
+\subsection{Przestrzeń probabilistyczna}
+
+Pojęciem pierwotnym w rachunku prawdopodobieństwa jest pojęcie \textbf{przestrzeni zdarzeń
+elementarnych}, którą oznaczamy \(\Omega\). W przypadku doświadczeń losowych przestrzeń zdarzeń
+elementarnych jest zbiorem wszystkich niepodzielnych wyników obserwacji.
+
+\begin{definition}[Rodziny zdarzeń]
+
+Niech \(\Omega\) będzie przestrzenią zdarzeń elementarnych. Rodziną zdarzeń nazwiemy rodzinę zbiorów
+\(\mathcal{F}\) taką, że
+\begin{enumerate}
+    
+    \item \(\Omega \in \mathcal{F}\).
+    
+    \item Jeśli \(A \in \mathcal{F}\) to \(\Omega \setminus A \in \mathcal{F}\).
+    
+    \item Jeśli \(A_1,A_2,\ldots \in \mathcal{F}\) to \(\bigcup_{i=1}^\infty A_i \in \mathcal{F}\).
+
+\end{enumerate}
+
+Rodzinę zdarzeń \(\mathcal{F}\) nazywamy \(\sigma\)--ciałem zdarzeń losowych.
+
+\end{definition}
+
+\begin{definition}[Zdarzenia losowego]
+    Zdarzeniem losowym nazywamy dowolny zbiór należący do rodziny zdarzeń \(\mathcal{F}\). W
+    szczególności \(\Omega\) nazwiemy zdarzeniem pewnym, a \(\emptyset\) -- zdarzeniem niemożliwym.
+\end{definition}
+
+\begin{definition}[Rozkładu prawdopodobieństwa]
+Niech dana będzie przestrzeń zdarzeń elementarnych \(\Omega\) i rodzina zdarzeń \(\mathcal{F}\).
+Rozkładem prawdopodobieństwa nazwiemy funkcję \(P: \mathcal{F} \mapsto [0;1]\) spełniającą
+\begin{enumerate}
+    
+    \item Dla każdego \(A \in \mathcal{F}\) zachodzi \(P(A) \geq 0\).
+    
+    \item \(P(\Omega) = 1\).
+    
+    \item Dla każdego ciągu zdarzeń parami rozłącznych \(A_1,A_2,\ldots\), \(\forall i \neq j : A_i
+    \cap A_j = \emptyset\) zachodzi
+    \begin{equation*}
+        P\left(\bigcup_{i=1}^\infty A_i\right) = \sum_{i=1}^\infty P(A_i)\,.
+    \end{equation*}
+
+\end{enumerate}
+\end{definition}
+
+\begin{theorem}
+Niech \(P\) będzie rozkładem prawdopodobieństwa w rodzinie zdarzeń \(\mathcal{F}\), wówczas
+
+\begin{enumerate}
+    
+    \item \(P(\emptyset) = 1\).
+    
+    \item (Addytywność) Dla dowolnych zdarzeń \(A_1,\ldots,A_n\) parami rozłącznych zachodzi
+    \begin{equation*}
+        P\left(\bigcup_{i=1}^n A_i\right) = \sum_{i=1}^n P(A_i)\,.
+    \end{equation*}
+
+    \item Dla dowolnego zdarzenia \(A\) zachodzi
+    \begin{equation*}
+        P(A') = 1 - P(A)\,.
+    \end{equation*}
+
+    \item Dla dowolnych zdarzeń \(A, B\) zachodzi
+    \begin{equation*}
+        P(A \cup B) = P(A) + P(B) - P(A \cap B)\,.
+    \end{equation*}
+
+    \item Jeśli \(A \subset B\) to \(P(A) \leq P(B)\).
+
+    \item Dla każdego zdarzenia \(A\) zachodzi \(P(A) \leq 1\).
+
+\end{enumerate}
+\end{theorem}
+
+\begin{definition}[Przestrzeni probabilistycznej]
+Przestrzenią probabilistyczną nazywamy uporządkowaną trójkę \((\Omega, \mathcal{F}, P)\), gdzie
+\(\Omega\) jest przestrzenią zdarzeń elementarnych, \(\mathcal{F}\) -- rodziną zdarzeń określoną na
+\(\Omega\), a \(P\) -- rozkładem prawdopodobieństwa w \(\mathcal{F}\).
+\end{definition}
+
+\subsection{Prawdopodobieństwo warunkowe i niezależność zdarzeń}
+
+\begin{definition}[Prawdopodobieństwa warunkowego]
+Jeśli \(P(B) > 0\) to prawdopodobieństwem \(P(A \mid B)\) zdarzenia \(A\) pod warunkiem zdarzenia
+\(B\) nazywamy iloraz prawdopodobieństw
+
+\begin{equation*}
+    P(A \mid B) := \frac{P(A \cap B)}{ P(B)}\,.
+\end{equation*}
+\end{definition}
+
+Można pokazać, iż prawdopodobieństwo warunkowe jako funkcja zdarzenia \(A\) przy ustalonym zdarzeniu
+\(B\) spełnia wszystkie aksjomaty rozkładu prawdopodobieństwa.
+
+\begin{theorem}[O wielokrotnym warunkowaniu]
+Dla dowolnych zdarzeń \(A_1,\ldots,A_n\) takich, że \(P(A_1,\ldots,A_n) > 0\) zachodzi
+\begin{equation*}
+    \begin{split}
+        &P(A_1,\ldots,A_n) =\\
+        &P(A_n \mid A_{n-1},\ldots,A_1) \ldots P(A_2 \mid A_1) P(A_1)\,,
+    \end{split}
+\end{equation*}
+gdzie dla uproszczenia zapisu używamy \(P(A,B)\) w znaczeniu \(P(A \cap B)\).
+\end{theorem}
+
+\begin{definition}[Niezależności pary zdarzeń]
+Zdarzenia \(A, B\) nazwiemy niezależnymi jeśli
+\begin{equation*}
+    P(A, B) = P(A) P(B)\,.
+\end{equation*}
+\end{definition}
+
+Zauważmy, iż w przypadku \(P(B) > 0\) powyższa definicja jest równoważna bardziej intuicyjnej
+wynikającej z definicji prawdopodobieństwa warunkowego, mianowicie zdarzenia \(A,B\) nazywamy
+niezależnymi jeśli \(P(A \mid B) = P(A)\).
+
+\begin{definition}[Niezależności zdarzeń]
+Zdarzenia \(A_1,\ldots,A_n\) nazwiemy niezależnymi, jeśli dla dowolnych wskaźników
+\(k_1,\ldots,k_s\), gdzie \(1 \leq k_1 < \ldots < k_s \leq n\) zachodzi
+\begin{equation*}
+    P(A_{k_1},\ldots,A_{k_s}) = P(A_{k_1}) \ldots P(A_{k_s})\,.
+\end{equation*}
+\end{definition}
+
+\begin{theorem}[O łącznym prawdopodobieństwie niezależnych zdarzeń]
+Jeśli zdarzenia \(A_1,\ldots,A_n\) są niezależne to
+\begin{equation*}
+    P(A_1,\ldots,A_n) = P(A_1) \ldots P(A_n)\,.
+\end{equation*}
+\end{theorem}
+
+\begin{definition}[Warunkowej niezależności pary zdarzeń]
+Zdarzenia \(A,B\) są warunkowo niezależne względem \(C\) jeśli
+\begin{equation*}
+    P(A,B \mid C) = P(A \mid C) P(B \mid C)\,.
+\end{equation*}
+\end{definition}
+
+\begin{definition}[Warunkowej niezależności zdarzeń]
+Zdarzenia \(A_1,\ldots,A_n\) są warunkowo niezależne względem \(B\) jeśli dla dowolnych wskaźników
+\(k_1,\ldots,k_s\), gdzie \(1 \leq k_1 < \ldots < k_s \leq n\) zachodzi
+\begin{equation*}
+    P(A_{k_1},\ldots,A_{k_s} \mid B) = P(A_{k_1} \mid B) \ldots P(A_{k_s} \mid B)\,.
+\end{equation*}
+\end{definition}
+
+\begin{theorem}
+Jeśli zdarzenia \(A_1,\ldots,A_n\) są warunkowo niezależne względem \(B\) to
+\begin{equation*}
+    P(A_1,\ldots,A_n \mid B) = P(A_1 \mid B) \ldots P(A_n \mid B)\,.
+\end{equation*}
+\end{theorem}
+
+\subsection{Prawdopodobieństwo całkowite i wzór Bayesa}
+
+\begin{definition}[Układu zupełnego zdarzeń]
+Jeśli zdarzenia \(A_1,A_2\ldots,\) są parami rozłączne oraz \(\bigcup_{i=1}^\infty A_i = \Omega\) to
+zbiór zdarzeń \(\{A_i\}\) nazywamy układem zupełnym.
+    
+\end{definition}
+
+\begin{theorem}[O prawdopodobieństwie całkowitym]
+Jeśli zdarzenia \(A_i\) (gdzie \(i\) przebiega przeliczalny zbiór wartości) tworzą układ zupełny
+zdarzeń oraz \(P(A_i) > 0\) dla każdego \(i\), to dla dowolnego zdarzenia \(B\) zachodzi
+\begin{equation*}
+    P(B) = \sum_{i} P(B \mid A_i) P(A_i)\,.
+\end{equation*}
+\end{theorem}
+
+\begin{theorem}[Bayesa]
+Jeśli zdarzenia \(A_i\) spełniają założenia tw. o prawdopodobieństwie całkowitym oraz \(P(B) > 0\),
+to dla każdego zdarzenia \(A_j\) z rozpatrywanego układu zdarzeń zachodzi
+\begin{equation*}
+    P(A_j \mid B) = \frac{P(B \mid A_j) P(A_j)}{P(B)} = \frac{P(B \mid A_j) P(A_j)}{\sum_{i} P(B \mid A_i) P(A_i)}\,.
+\end{equation*}
+Prawdopodobieństwa \(P(A_j)\) nazywamy prawdopodobieństwami \textbf{a priori}, a \(P(A_j \mid
+B)\) -- \textbf{a posteriori}. Prawdopodobieństwo \(P(B \mid A_j)\) nazywamy
+\textbf{wiarygodnością}.   
+\end{theorem}
+
+\subsection{Zmienne losowe}
+
+\begin{definition}[Zmiennej losowej]
+Niech \((\Omega, \mathcal{F}, P)\) będzie przestrzenią probabilistyczną. Niech dany będzie również
+drugi zbiór \(\mathcal{X}\), w którym wyróżniamy \(\sigma\)--ciało \(\mathcal{F}_\mathcal{X}\).
+Zmienną losową \(X\) nazywamy odwzorowanie
+\begin{equation*}
+    X: \Omega \mapsto \mathcal{X}
+\end{equation*}
+takie, że dla każdego \(A \in \mathcal{F}_\mathcal{X}\) zachodzi warunek
+\begin{equation*}
+    \{\omega \in \Omega : X(\omega) \in A \} \in \mathcal{F}\,.
+\end{equation*}
+\end{definition}
+
+W szczególności jeśli \(\mathcal{X} = \mathbb{R}\) to zmienną losową \(X\) nazywamy
+\textbf{zmienną losową rzeczywistą}, natomiast jeśli \(\mathcal{X} = \mathbb{R}^n\) to zmienną
+losową \(\mathbf{X}\) nazywamy \textbf{zmienną losową \(n\)--wymiarową}.
+
+\begin{definition}[Rozkładu prawdopodobieństwa zmiennej losowej]
+Niech \(X: \Omega \mapsto \mathcal{X}\) będzie zmienną losową. Funkcję \(P_X:
+\mathcal{F}_\mathcal{X}\mapsto [0;1]\) określoną jako
+\begin{equation*}
+    P_X(A) = P(\{\omega \in \Omega : X(\omega) \in A\})
+\end{equation*}
+nazywamy rozkładem prawdopodobieństwa zmiennej losowej \(X\).
+\end{definition}
+
+W dalszym ciągu będziemy stosować notację uproszczoną pomijając indeks dolny \(X\) tj.
+\begin{equation*}
+    P(X \in A) := P(\{\omega \in \Omega : X(\omega) \in A\})\,.
+\end{equation*}
+
+Znajomość rozkładu zmiennej losowej \(X\) pozwala badać własności tej zmiennej bez znajomości
+przestrzeni probabilistycznej \((\Omega, \mathcal{F}, P)\), na której owa zmienna jest określona.
+Możemy mianowicie zawsze rozpatrywać tę zmienną jako określoną na przestrzeni probabilistycznej
+\((\mathcal{X}, \mathcal{F}_\mathcal{X}, P_X)\).
+
+\begin{definition}[Dystrybuanty zmiennej losowej rzeczywistej]
+Niech \(X: \Omega \mapsto \mathbb{R}\) będzie zmienną losową rzeczywistą. Dystrybuantą zmiennej
+losowej \(X\) nazywamy funkcję \(F: \mathbb{R} \mapsto [0;1]\) zdefiniowaną jako
+\begin{equation*}
+    F(x) = P(X \leq x)\,.
+\end{equation*}
+\end{definition}
+
+\begin{theorem}[Własności dystrybuanty zmiennej rzeczywistej]
+Niech \(F\) będzie dystrybuantą zmiennej losowej rzeczywistej \(X\), wówczas
+\begin{enumerate}
+    
+    \item Jeśli \(a < b\) to \(F(b) - F(a) = P(X \in (a;b] )\).
+    
+    \item Funkcja \(F\) jest niemalejąca.
+
+    \item \(\lim_{x \to -\infty} F(x) = 0\) oraz \(\lim_{x \to +\infty} F(x) = 1\).
+
+    \item \(F\) jest prawostronnie ciągła.
+
+    \item \(F\) jest ciągła w \(x_0\) wtedy i tylko wtedy, gdy \(P(X = x_0) = 0\).
+
+\end{enumerate}
+\end{theorem}
+
+\begin{definition}[Rozkładu dyskretnego zmiennej losowej rzeczywistej]
+Mówimy, że zmienna losowa rzeczywista \(X\) ma rozkład dyskretny jeśli istnieje skończony lub
+przeliczalny zbiór \(\mathcal{S} \subset \mathbb{R}\) taki, że
+\begin{equation*}
+    P( X \in \mathcal{S} ) = 1\,.
+\end{equation*}
+Dla takiej zmiennej określa się funkcję prawdopodobieństwa (z ang. \textit{probability mass
+function}, pmf)
+\begin{equation*}
+    p(x) = P(X = x)\,,\quad x \in \mathcal{S}\,.
+\end{equation*}
+\end{definition}
+
+Zauważmy, że jeśli zmienna \(X\) ma rozkład dyskretny to zbiór \(\mathcal{S}\) ma postać
+\(\{x_1,\ldots,x_k\}\) dla pewnych \(x_i \in \mathbb{R}\).
+
+\begin{definition}[Rozkładu ciągłego zmiennej losowej rzeczywistej]
+Mówimy, że zmienna losowa rzeczywista \(X\) ma rozkład ciągły jeśli istnieje funkcja \(p: \mathbb{R}
+\mapsto [0; +\infty)\) taka, że dla dowolnego przedziału \((a;b)\) zachodzi
+\begin{equation*}
+    P(X \in (a;b)) = \int\limits_a^b p(x) \dd{x}\,.
+\end{equation*}
+Funkcję \(p\) nazywamy gęstością rozkładu prawdopodobieństwa (z ang. \textit{probability density
+function}, pdf).
+\end{definition}
+
+Jeśli \(X\) jest zmienną losową rzeczywistą o rozkładzie ciągłym to wartość dystrybuanty jest dana
+przez
+\begin{equation}
+    F(x) = \int\limits_{-\infty}^x p(x') \dd{x'}\,.
+\end{equation}
+W szczególności dystrybuanta \(F\) jest ciągła oraz dla każdego \(x\) zachodzi \(P(X = x) = 0\).
+
+\begin{definition}[Wartości oczekiwanej zmiennej losowej rzeczywistej]
+Wartością oczekiwaną zmiennej losowej rzeczywistej \(X\) nazywamy liczbę \(m\) określoną wzorem
+\begin{equation*}
+    m = \int\limits_{-\infty}^{+\infty} x p(x) \dd{x}
+\end{equation*}
+dla rozkładu ciągłego oraz
+\begin{equation*}
+    m = \sum_{x \in \mathcal{S}} x p(x)
+\end{equation*}
+dla rozkładu dyskretnego. Stosujemy dodatkowo oznaczenie \(\mathbb{E}[X] := m\).
+\end{definition}
+
+\begin{definition}[Wariancji zmiennej losowej rzeczywistej]
+Wariancją zmiennej losowej rzeczywistej \(X\) nazywamy liczbę \(\sigma\) określoną wzorem
+\begin{equation*}
+    \sigma^2 = \mathbb{E}[(X - m)^2]\,,
+\end{equation*} 
+gdzie \(m = \mathbb{E}[X]\). Stosujemy dodatkowo oznaczenie \(\mathbb{V}[X] := \sigma^2\).
+\textbf{Odchyleniem standardowym} zmiennej losowej \(X\) nazywamy pierwiastek jej wariancji
+\begin{equation*}
+    \sigma = \sqrt{\mathbb{V}[X]}\,.
+\end{equation*} 
+\end{definition}
+
+\begin{theorem}[Własności wariancji]
+Niech \(X\) będzie zmienną losową rzeczywistą, wówczas
+\begin{enumerate}
+    
+    \item \(\mathbb{V}[X] = \mathbb{E}[X^2] - (\mathbb{E}[X])^2\)\,.
+
+    \item Jeśli zmienna \(X\) ma skończoną wariancję, to dla dowolnych \(a,b \in \mathbb{R}\)
+    zachodzi
+    \begin{equation*}
+        \mathbb{V}[aX + b] = a^2 \mathbb{V}[X]\,.
+    \end{equation*}
+
+    \item \(\mathbb{V}[X] = 0\) wtedy i tylko wtedy, gdy istnieje \(x_0 \in \mathbb{R}\) takie, że
+    \begin{equation*}
+        P(X \neq x_0) = 0\,.
+    \end{equation*}
+
+\end{enumerate}
+\end{theorem}
+
+\begin{definition}[Zmiennej standaryzowanej]
+Zmienną losową o wartości oczekiwanej 0 i wariancji 1 nazywamy zmienną standaryzowaną. Jeśli \(X\)
+jest dowolną zmienną o niezerowej wariancji, to
+\begin{equation*}
+    Z := \frac{X - m}{\sigma}
+\end{equation*}
+jest zmienną standaryzowaną, ponieważ
+\begin{equation*}
+    \mathbb{E}[Z] = \frac{1}{\sigma}\mathbb{E}[X - m] = \frac{1}{\sigma}(m - m) = 0
+\end{equation*}
+oraz
+\begin{equation*}
+    \mathbb{V}[Z] = \frac{1}{\sigma^2} \mathbb{V}[X] = \frac{\sigma^2}{\sigma^2} = 1\,.
+\end{equation*}
+\end{definition}
+
+\begin{theorem}[Nierówność Czebyszewa]
+Jeśli zmienna losowa \(X\) ma skończoną wartość średnią \(m\) i wariancję \(\sigma^2\), to dla
+dowolnego \(\epsilon > 0\) zachodzi
+\begin{equation*}
+    P(|X - m| \geq \epsilon\sigma) \leq \frac{1}{\epsilon^2}\,.
+\end{equation*}
+\end{theorem}
+
+\begin{definition}[Kwantyla]
+Kwantylem rzędu \(p \in (0;1)\) zmiennej losowej o dystrybuancie \(F\) nazywamy dowolną liczbę
+\(q_p\) taką, że
+\begin{equation*}
+    F(q_p^-) \leq p \leq F(q_p)\,.
+\end{equation*}
+Kwantyl rzędu 0.5 nazywamy \textbf{medianą}, kwantyl rzędu 0.25 -- \textbf{dolnym kwartylem},
+a kwantyl rzędu 0.75 -- \textbf{górnym kwartylem}. Jeśli \(X\) ma rozkład ciągły, to kwantylem
+rzędu \(p\) jest dowolne rozwiązanie równania
+\begin{equation*}
+    F(q_p) = p\,.
+\end{equation*}
+\end{definition}
+
+\begin{definition}[Mody]
+Modą zmiennej losowej o rozkładzie dyskretnym nazywa się dowolne maksimum funkcji prawdopodobieństwa
+tego rozkładu.
+
+Modą zmiennej losowej o rozkładzie ciągłym nazywa się dowolne maksimum lokalne gęstości tego
+rozkładu.
+\end{definition}
+
+\subsection{Ważne rozkłady jednowymiarowe}
+
+\begin{definition}[Rozkładu jednopunktowego]
+Jeśli \(X\) jest zmienną losową rzeczywistą o rozkładzie dyskretnym i \(\mathcal{S} = \{x_0\}\), to
+mówimy, że \(X\) ma rozkład jednopunktowy, wówczas
+\begin{equation*}
+    m = x_0,\quad \sigma^2 = 0\,.
+\end{equation*}
+\end{definition}
+
+\begin{definition}[Rozkładu dwupunktowego]
+Jeśli \(X\) jest zmienną losową rzeczywistą o rozkładzie dyskretnym i \(\mathcal{S} = \{x_1, x_2\}\)
+oraz \(p(x_1) = p\), to mówimy, że \(X\) ma rozkład dwupunktowy z parametrem \(p\), wówczas
+\begin{equation*}
+    m = x_1 p + x_2 (1 - p)\,,\quad \sigma^2 = p (1 - p) (x_1 - x_2)^2\,.
+\end{equation*}
+Jeśli \(x_1 = 1\) i \(x_2 = 0\) to taki rozkład dwupunktowy nazywamy \textbf{rozkładem
+zero--jedynkowym} (lub rozkładem Bernoulliego) i oznaczamy jako \(X \sim \mathrm{Ber}(p)\).
+\end{definition}
+
+\begin{definition}[Schematu dwumianowego]
+Rozważmy doświadczenie losowe o dwu możliwych wynikach: sukces osiągamy z prawdopodobieństwem \(p\),
+porażkę z prawdopodobieństwem \(1-p\). Doświadczenie tego rodzaju nazywamy \textbf{próbą
+Bernoulliego}. Doświadczenie takie jest modelowane zmienną losową o rozkładzie dwupunktowym z
+parametrem \(p\). Schematem dwumianowym (lub schematem Bernoulliego) nazywamy doświadczenie
+polegające na \(n\)--krotnym powtórzeniu próby Bernoulliego, przy założeniu, iż poszczególne próby
+są od siebie niezależne.
+\end{definition}
+
+\begin{definition}[Rozkładu dwumianowego]
+Niech \(X\) będzie zmienną losową taką, że \(X\) jest liczbą sukcesów w schemacie dwumianowym
+długości \(n\) z prawdopodobieństwem sukcesu w każdej próbie równym \(p\). Wówczas
+\begin{equation*}
+    P(X = k) = {n \choose k} p^k (1 - p)^{n-k}\,.
+\end{equation*}
+Rozkład prawdopodobieństwa określony powyższym wzorem nazywam się rozkładem dwumianowym o
+parametrach \(n,p\). Jeśli zmienna \(X\) ma rozkład dwumianowy to stosujemy notację \(X \sim
+\mathrm{Bin}(n,p)\). Jeśli \(X \sim \mathrm{Bin}(n,p)\) to
+\begin{equation*}
+    m = np\,,\quad \sigma^2 = np(1-p)\,.
+\end{equation*}
+\end{definition}
+
+\begin{definition}[Rozkładu geometrycznego]
+Mówimy, że zmienna losowa \(X\) ma rozkład geometryczny z parametrem \(p \in (0;1)\), tj. \(X \sim
+\mathrm{Geo}(p)\), jeśli \(\mathcal{S} = \mathbb{N} \setminus \{0\}\), a funkcja prawdopodobieństwa
+ma postać
+\begin{equation*}
+    p(x) = (1-p)^{x-1}p\,.
+\end{equation*}
+Zmienna \(X\) opisuje czas oczekiwania na pierwszy sukces w schemacie dwumianowym o nieskończonej
+długości. Jeśli \(X \sim \mathrm{Geo}(p)\), to
+\begin{equation*}
+    m = p^{-1}\,,\quad \sigma^2 = \frac{1 - p}{p^2}\,.
+\end{equation*}
+\end{definition}
+
+\begin{definition}[Rozkładu Poissona]
+Jeśli zmienna \(X\) o wartościach w \(\mathbb{N}\) opisuje liczbę wystąpień pewnego powtarzalnego
+zdarzenia w przedziale czasowym \([0;t]\), przy czym spełnione są następujące założenia:
+\begin{itemize}
+
+    \item powtórzenia zdarzenia występują niezależnie od siebie;
+    
+    \item \enquote{intensywność} wystąpień \(r\) jest stała;
+
+    \item w danej chwili (rozumianej jako odpowiednio mały przedział) może zajść co najwyżej jedno
+    zdarzenie
+
+\end{itemize}
+
+to zmienna ta ma rozkład Poissona z parametrem \(\lambda = rt\), tj. \(X \sim
+\mathrm{Pos}(\lambda)\). Jeśli \(X \sim \mathrm{Pos}(\lambda)\), to
+\begin{equation*}
+    P(X = k) = \frac{\e^{-\lambda} \lambda^k}{k!}\,.
+\end{equation*}
+Ponadto
+\begin{equation*}
+    m = \lambda\,,\quad \sigma^2 = \lambda\,.
+\end{equation*}
+\end{definition}
+
+\begin{theorem}[Poissona]
+Niech \((X_n)\) będzie ciągiem zmiennych losowych takich, że \(X_n \sim \mathrm{Bin}(n, p_n)\), gdzie
+\((p_n)\) jest ciągiem takim, że
+\begin{equation*}
+    \lim_{n \to \infty} n p_n = \lambda
+\end{equation*}
+dla pewnej liczby \(\lambda > 0\). Wówczas
+\begin{equation*}
+    \lim_{n \to \infty} P(X_n = k) = \frac{\e^{-\lambda} \lambda^k}{k!}\,.
+\end{equation*}
+\end{theorem}
+
+\begin{definition}[Rozkładu jednostajnego]
+Mówimy, że zmienna \(X\) o rozkładzie ciągłym ma rozkład jednostajny na przedziale \([a;b]\) tzn.
+\(X \sim \mathcal{U}(a,b)\) jeśli jej gęstość wyraża się wzorem
+\begin{equation*}
+    p(x) = \begin{cases}
+        \frac{1}{b - a}\,, &x\in[a;b]\\
+        0\,,&x\notin[a;b]
+    \end{cases}\quad.
+\end{equation*}
+Jeśli \(X \sim \mathcal{U}(a,b)\), to
+\begin{equation*}
+    m = \frac{a+b}{2}\,,\quad \sigma^2 = \frac{(b-a)^2}{12}\,.
+\end{equation*}
+\end{definition}
+
+\begin{definition}[Rozkładu wykładniczego]
+Niech \(T\) będzie zmienną modelującą czas oczekiwania na pierwsze zdarzenie w ciągu zdarzeń takim,
+że czas wystąpienia każdego z nich w przedziale \([0;t]\) jest opisany przez zmienną \(X \sim
+\mathrm{Pos}(\lambda t)\). wtedy
+\begin{equation*}
+    P(T > t) = P(X = 0) = \e^{-\lambda t}
+\end{equation*}
+oraz
+\begin{equation*}
+    P(T > 0) = 1\,.
+\end{equation*}
+Mówimy wtedy, że \(T\) ma rozkład wykładniczy z parametrem \(\lambda\), tzn. \(T \sim
+\mathrm{Exp}(\lambda)\). Gęstość rozkładu wykładniczego ma postać
+\begin{equation*}
+    p(t) = \begin{cases}
+        0\,,&t \leq 0\\
+        \lambda \e^{-\lambda t}\,,&t > 0
+    \end{cases}\quad.
+\end{equation*}
+Jeśli \(T \sim \mathrm{Exp}(\lambda)\), to
+\begin{equation*}
+    m = \lambda^{-1}\,,\quad \sigma^2 = \lambda^{-2}\,.
+\end{equation*}
+\end{definition}
+
+\begin{definition}[Rozkładu normalnego]
+Mówimy, że zmienna losowa \(X\) o gęstości \(\phi(x;\mu,\sigma^2)\) ma rozkład normalny z
+parametrami \(\mu \in \mathbb{R} , \sigma^2 \in [0;+\infty)\), tzn. \(X \sim
+\mathcal{N}(\mu,\sigma^2)\), jeśli    
+\begin{equation*}
+    \phi(x; \mu, \sigma^2) = \frac{1}{\sqrt{2 \pi \sigma^2}} \exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right)\,.
+\end{equation*}
+Jeśli \(X \sim \mathcal{N}(\mu,\sigma^2)\), to
+\begin{equation*}
+    m = \mu\,,\quad \mathbb{V}[X] = \sigma^2\,.
+\end{equation*}
+\end{definition}
+
+Jeśli \(X \sim \mathcal{N}(\mu,\sigma^2)\), to
+\begin{equation}
+    \begin{split}        
+        &P(|X - m| > 2\sigma) \approx 0.0455003\,,\\
+        &P(|X - m| > 3\sigma) \approx 0.0026998\,.
+    \end{split}
+\end{equation}
+Obserwacje te nazywamy odpowiednio regułą 5\% oraz regułą \(3\sigma\). Rozkład \(\mathcal{N}(0,1)\)
+nazywamy \textbf{standardowym rozkładem normalnym}. Jeśli \(X \sim \mathcal{N}(\mu,\sigma^2)\),
+to zmienna standaryzowana \(Z = (X - \mu) / \sigma\) ma standardowy rozkład normalny.
+
+
+\subsection{Zmienne losowe wielowymiarowe}
+
+\begin{definition}[Dystrybuanty zmiennej losowej wielowymiarowej]
+Niech \(\mathbf{X}: \Omega \mapsto \mathbb{R}^n\) będzie zmienną losową \(n\)--wymiarową.
+Dystrybuantą zmiennej losowej \(\mathbf{X}\) nazywamy funkcję \(F: \mathbb{R}^n \mapsto [0;1]\)
+zdefiniowaną jako
+\begin{equation*}
+    F(\mathbf{x}) = P(\mathbf{X}_1 \leq \mathbf{x}_1, \ldots, \mathbf{X}_n \leq \mathbf{x}_n)
+\end{equation*}
+\end{definition}
+
+\begin{definition}[Rozkładu dyskretnego zmiennej losowej wielowymiarowej]
+Mówimy, że \(n\)--wymiarowa zmienna losowa \(\mathbf{X}\) ma rozkład dyskretny jeśli istnieje zbiór
+skończony lub przeliczalny \(\mathcal{S} \subset \mathbb{R}^n\) taki, że
+\begin{equation*}
+    P(\mathbf{X} \in \mathcal{S}) = 1\,.
+\end{equation*}
+Dla takiej zmiennej określa się funkcję prawdopodobieństwa (z ang. \textit{probability mass
+function}, pmf)
+\begin{equation*}
+    p(\mathbf{x}) = P(\mathbf{X}_1 = \mathbf{x}_1, \ldots, \mathbf{X}_n = \mathbf{x}_n)\,,\quad \mathbf{x} \in \mathcal{S}\,.
+\end{equation*}
+\end{definition}
+
+Zauważmy, że jeśli zmienna \(\mathbf{X}\) ma rozkład dyskretny to zbiór \(\mathcal{S}\) ma postać
+\(\{\mathbf{x}^1,\ldots,\mathbf{x}^k\}\) dla pewnych \(\mathbf{x}^i \in \mathbb{R}\).
+
+\begin{definition}[Rozkładu ciągłego zmiennej losowej wielowymiarowej]
+Mówimy, że \(n\)--wymiarowa zmienna losowa \(\mathbf{X}\) ma rozkład ciągły jeśli istnieje funkcja
+\(p: \mathbb{R}^n \mapsto [0;+\infty)\) taka, że dla dowolnych przedziałów \((a_i;b_i)\) zachodzi
+\begin{equation*}
+    P(\mathbf{X}_1 \in (a_1;b_1), \ldots, \mathbf{X}_n \in (a_n;b_n)) = \int\limits_{a_1}^{b_1}\ldots\int\limits_{a_n}^{b_n}p(\mathbf{x}) \dd[n]{\mathbf{x}}\,.
+\end{equation*}
+Funkcję \(p\) nazywamy gęstością rozkładu prawdopodobieństwa (z ang. \textit{probability density
+function}, pdf).
+\end{definition}
+
+Zauważmy, że jeśli \(\mathbf{X}\) jest zmienną losową wielowymiarową o rozkładzie ciągłym to wartość
+dystrybuanty jest związana z gęstością rozkładu prawdopodobieństwa poprzez
+\begin{equation}
+    F(\mathbf{x}) = \int\limits_{-\infty}^{\mathbf{x}_1}\ldots\int\limits_{-\infty}^{\mathbf{x}_n} p(\mathbf{x}') \dd[n]{\mathbf{x}'}\,.
+\end{equation}
+
+\begin{definition}[Wartości oczekiwanej zmiennej losowej wielowymiarowej]
+Wartością oczekiwaną zmiennej losowej wielowymiarowej nazywamy \(n\)--elementowy wektor rzeczywisty
+\(\mathbf{m}\), którego elementy są określone wzorem
+\begin{equation*}
+    \mathbf{m} = \int\limits_{\mathbb{R}^n} \mathbf{x} p(\mathbf{x}) \dd[n]{\mathbf{x}}
+\end{equation*}
+dla rozkładu ciągłego oraz
+\begin{equation*}
+    \mathbf{m} = \sum_{\mathbf{x} \in \mathcal{S}} \mathbf{x} p(\mathbf{x})
+\end{equation*}
+dla rozkładu dyskretnego. Stosujemy dodatkowo oznaczenie \(\mathbb{E}[\mathbf{X}] := \mathbf{m}\).
+\end{definition}
+
+\begin{definition}[Rozkładu brzegowego]
+Niech \(\mathbf{X}\) będzie \(n\)--wymiarową zmienną losową. Weźmy dwa zbiory indeksów
+\(\{i_1,\ldots,i_k\} \subset \{1,\ldots,n\}\) i \(\{j_1,\ldots,j_{n-k}\} = \{1,\ldots,n\} \setminus
+\{i_1,\ldots,i_k\}\). \((n-k)\)--wymiarowym rozkładem brzegowym zmiennej \(\mathbf{X}\) (względem
+zmiennych \(j_1,\ldots,j_{n-k}\)) nazywamy rozkład prawdopodobieństwa na przestrzeni
+\(\mathbb{R}^{n-k}\) określony wzorem
+\begin{equation*}
+    \begin{split}
+        &P_{\mathbf{X}_{j_1},\ldots,\mathbf{X}_{j_{n-k}}}(A) \\
+        &= P\left(\mqty[\mathbf{X}_{j_1},\ldots,\mathbf{X}_{j_{n-k}}] \in A\right)\\
+        &= P\left(\mqty[\mathbf{X}_{j_1},\ldots,\mathbf{X}_{j_{n-k}}] \in A, \mathbf{X}_{i_1} \in \mathbb{R}, \ldots, \mathbf{X}_{i_k} \in \mathbb{R}\right)
+    \end{split}
+\end{equation*}    
+\end{definition}
+
+Niech \(\mathbf{X}\) będzie \(n\)--wymiarową zmienną losową o dystrybuancie \(F\). Dystrybuanta
+rozkładu brzegowego \(\mathbf{X}\) względem zmiennych
+\(\mathbf{X}_{j_1},\ldots,\mathbf{X}_{j_{n-k}}\) spełnia równość
+\begin{equation}
+    F_{\mathbf{X}_{j_1},\ldots,\mathbf{X}_{j_{n-k}}}(\mathbf{x}_{j_1},\ldots,\mathbf{x}_{j_{n-k}}) = \lim_{\mathbf{x}_{i_1} \to \infty,\ldots,\mathbf{x}_{i_k} \to \infty} F(\mathbf{x}_1,\ldots,\mathbf{x}_n)\,.
+\end{equation}
+Dystrybuanta ta nosi nazwę \((n-k)\)--wymiarowej dystrybuanty brzegowej.
+
+Jeśli \(\mathbf{X}\) jest \(n\)--wymiarową zmienną losową o rozkładzie ciągłym, to rozkłady brzegowe
+są także rozkładami ciągłymi o gęstościach
+\begin{equation}
+    p_{\mathbf{X}_{j_1},\ldots,\mathbf{X}_{j_{n-k}}}(\mathbf{x}_{j_1},\ldots,\mathbf{x}_{j_{n-k}}) = \int\limits_{\mathbb{R}^k} p(\mathbf{x}') \dd{\mathbf{x}_{i_1}}\ldots\dd{\mathbf{x}_{i_k}}\,.
+\end{equation}
+Jeśli z kolei \(\mathbf{X}\) ma rozkład dyskretny, to rozkłady brzegowe także są rozkładami
+dyskretnymi z funkcjami prawdopodobieństwa
+\begin{equation}
+    p_{\mathbf{X}_{j_1},\ldots,\mathbf{X}_{j_{n-k}}}(\mathbf{x}_{j_1},\ldots,\mathbf{x}_{j_{n-k}}) = \sum_{i_1,\ldots,i_k}p(\mathbf{x})\,.
+\end{equation}
+
+\begin{theorem}
+Niech zmienna \(n\)--wymiarowa \(\mathbf{X}\) ma rozkład ciągły o gęstości \(p_\mathbf{X}\) i niech
+\(\mathbf{Y}_i = \boldsymbol{\varphi}_i(\mathbf{X})\) dla \(i=1,\ldots,n\). Jeśli odwzorowanie
+\(\boldsymbol{\varphi}\) jest różniczkowalne i odwracalne, przy czym odwzorowanie odwrotne
+\(\boldsymbol{\psi} = \boldsymbol{\varphi}^{-1}\) jest różniczkowalne, to \(n\)--wymiarowa zmienna
+\(\mathbf{Y}\) ma rozkład o gęstości
+\begin{equation*}
+    p_\mathbf{Y}(\mathbf{y}) = |J| p_\mathbf{X}(\boldsymbol{\psi}(\mathbf{y}))\,,
+\end{equation*}
+gdzie \(J := \det \left[\pdv{\boldsymbol{\psi}_j}{\mathbf{y}_i}\right]\) jest jakobianem
+odwzorowania \(\boldsymbol{\psi}\).
+\end{theorem}
+
+\subsection{Niezależność zmiennych losowych}
+
+\begin{definition}[Niezależności zmiennych losowych]
+Niech \(X_i : \Omega \mapsto \mathcal{X}\) będą zmiennymi losowymi. Zmienne \(X_1,\ldots,X_n\)
+nazywamy niezależnymi jeżeli dla dowolnych \(A_1,\ldots,A_n \in \mathcal{F}_\mathcal{X}\) zachodzi
+równość
+\begin{equation*}
+    P(X_1 \in A_1, \ldots, X_n \in A_n) = P(X_1 \in A_1) \ldots P(X_n \in A_n)\,.
+\end{equation*}
+\end{definition}
+
+\begin{theorem}
+Zmienne losowe wielowymiarowe \(\mathbf{X}, \mathbf{Y}\) o rozkładzie dyskretnym lub ciągłym z
+funkcją lub gęstością prawdopodobieństwa \(p(\mathbf{x},\mathbf{y})\) są niezależne wtedy i tylko
+wtedy, gdy dla dowolnych \(\mathbf{x}, \mathbf{y}\) zachodzi równość
+\begin{equation*}
+    p(\mathbf{x}, \mathbf{y}) = p_\mathbf{X}(\mathbf{x}) p_\mathbf{Y}(\mathbf{y})\,.    
+\end{equation*}
+\end{theorem}
+
+\begin{theorem}[O niezależności funkcji zmiennych losowych]
+Niech \(X_1,\ldots,X_n\) będą zmiennymi losowymi o wartościach \(\mathcal{X}\), a \(g_1,\ldots,g_n:
+\mathcal{X} \mapsto \mathcal{Y}\), \(\varphi: \mathcal{X}^m \mapsto \mathcal{Y}\) i \(\psi:
+\mathcal{X}^{n-m}\mapsto\mathcal{Y}\) funkcjami oraz \(m < n\). Wówczas jeśli \(X_1,\ldots,X_n\) są
+niezależne to:
+\begin{enumerate}
+    
+    \item zmienne losowe \(g_1(X_1),\ldots,g_n(X_n)\) są niezależne;
+
+    \item zmienne losowe \(\varphi(X_1,\ldots,X_m)\) i \(\psi(X_{m+1},\ldots,X_n)\) są niezależne.
+
+\end{enumerate}
+\end{theorem}
+
+Jeśli \((\mathbf{X}, \mathbf{Y})\) jest zmienną losową o rozkładzie ciągłym z gęstością
+\(p(\mathbf{x}, \mathbf{y})\) i gęstość brzegowa \(p_\mathbf{Y}\) jest funkcją dodatnią, to dla
+każdego \(\mathbf{y}\) rozkład warunkowy \(\mathbf{X}\) pod warunkiem \(\mathbf{Y} = \mathbf{y}\)
+także jest ciągły z gęstością
+\begin{equation}
+    p(\mathbf{x} \mid \mathbf{y}) = \frac{p(\mathbf{x}, \mathbf{y})}{p_\mathbf{Y}(\mathbf{y})}\,,
+\end{equation}
+którą nazywamy gęstością warunkową \(\mathbf{X}\) pod warunkiem \(\mathbf{Y} = \mathbf{y}\).
+
+Jeśli \((\mathbf{X}, \mathbf{Y})\) jest zmienną losową o rozkładzie dyskretnym z funkcją
+prawdopodobieństwa \(p(\mathbf{x}, \mathbf{y})\) i brzegowa funkcja prawdopodobieństwa
+\(p_\mathbf{Y}\) jest funkcją dodatnią, to dla każdego \(\mathbf{y}\) rozkład warunkowy
+\(\mathbf{X}\) pod warunkiem \(\mathbf{Y} = \mathbf{y}\) także jest dyskretny z funkcją
+prawdopodobieństwa
+\begin{equation}
+    p(\mathbf{x} \mid \mathbf{y}) = \frac{p(\mathbf{x}, \mathbf{y})}{p_\mathbf{Y}(\mathbf{y})}\,,
+\end{equation}
+którą nazywamy warunkową funkcją prawdopodobieństwa \(\mathbf{X}\) pod warunkiem \(\mathbf{Y} =
+\mathbf{y}\).
+
+\begin{definition}[Warunkowej wartości oczekiwanej]
+Warunkową wartość oczekiwaną \(\mathbf{X}\) pod warunkiem \(\mathbf{Y} = \mathbf{y}\) nazywamy
+wielkość
+\begin{equation*}
+    \mathbb{E}[\mathbf{X} \mid \mathbf{y}] = \int\limits_{\mathbb{R}^n} \mathbf{x} p(\mathbf{x} \mid \mathbf{y}) \dd[n]{\mathbf{x}}
+\end{equation*}
+\end{definition}
+
+\begin{definition}[Warunkowej niezależności]
+Niech \(X_i : \Omega \mapsto \mathcal{X}\) oraz \(Y\) będą zmiennymi losowymi. Mówimy, że zmienne
+\(X_1,\ldots,X_n\) są warunkowo niezależne względem \(Y\), jeśli dla dowolnych \(A_i \in
+\mathcal{F}_\mathcal{X}\) i dowolnej wartości \(y\) zachodzi
+\begin{equation*}
+    \begin{split}
+        &P(X_1\in A_1,\ldots,X_n\in A_n \mid Y = y) \\
+        &= P(X_1 \in A_1 \mid Y = y)\ldots P(X_n \in A_n \mid Y = y)\,.
+    \end{split}
+\end{equation*}  
+\end{definition}
+
+Dla rozkładów ciągłych lub dyskretnych z gęstością lub funkcją prawdopodobieństwa \(p\) warunkowa
+niezależność \(\mathbf{X}, \mathbf{Y}\) względem \(\mathbf{Z}\) jest równoważna
+\begin{equation*}
+    p(\mathbf{x},\mathbf{y} \mid \mathbf{z}) = p_\mathbf{X}(\mathbf{x} \mid \mathbf{z})p_\mathbf{Y}(\mathbf{y} \mid \mathbf{z})\,.
+\end{equation*}
+
+\subsection{Kowariancja i współczynnik korelacji}
+
+\begin{definition}[Kowariancji]
+Kowariancją zmiennych losowych rzeczywistych \(X, Y\) o nazywamy liczbę
+\begin{equation*}
+    \mathrm{Cov}(X, Y) = \mathbb{E}[(X - m_X)(Y - m_Y)]\,,
+\end{equation*}
+gdzie wartości oczekiwane są liczone względem łącznego rozkładu prawdopodobieństwa \(p(x,y)\).
+\textbf{Współczynnikiem korelacji zmiennych \(X, Y\)} nazywamy liczbę
+\begin{equation*}
+    \rho_{X,Y} = \frac{\mathrm{Cov}(X, Y)}{\sigma_X \sigma_Y}\,.
+\end{equation*}
+\end{definition}
+
+\begin{theorem}[Własności kowariancji]
+Niech \(X, Y\) będą zmiennymi losowymi rzeczywistymi, wówczas
+
+\begin{enumerate}
+
+    \item \(\mathrm{Cov}(X, Y) = \mathbb{E}[XY] - m_X m_Y\).
+    
+    \item Jeśli \(X\) i \(Y\) są niezależne oraz istnieje \(\mathbb{E}(XY)\), to \(\mathrm{Cov}(X,Y)
+    = 0\).
+\end{enumerate}
+\end{theorem}
+
+\begin{definition}[Macierzy kowariancji]
+Macierzą kowariancji \(\mathbf{K}\) \(n\)--wymiarowej zmiennej losowej \(\mathbf{X}\) nazywamy
+macierz \(n \times n\) zdefiniowaną jako
+\begin{equation*}
+    \mathbf{K} = \mathbb{E}[(\mathbf{X} - \mathbf{m})(\mathbf{X} - \mathbf{m})^T]
+\end{equation*}
+lub równoważnie
+\begin{equation*}
+    \mathbf{K}_{ij} = \begin{cases}
+        \mathbb{V}[\mathbf{X}_i]\,,&i=j\\
+        \mathrm{Cov}(\mathbf{X}_i, \mathbf{X}_j)\,,&i\neq j
+    \end{cases}\quad.
+\end{equation*}
+\end{definition}
+
+\begin{theorem}[Własności macierzy kowariancji]
+Niech \(\mathbf{K}\) będzie macierzą kowariancji zmiennej \(\mathbf{X}\), wówczas
+\begin{enumerate}
+
+    \item Macierz kowariancji jest symetryczna.
+
+    \item Macierz kowariancji jest nieujemnie określona.
+
+    \item Jeśli zmienne \(\mathbf{X}_1,\ldots,\mathbf{X}_n\) są niezależne, to macierz kowariancji
+    jest diagonalna.
+    
+\end{enumerate}
+\end{theorem}
+
+\subsection{Wielowymiarowy rozkład normalny}
+
+\begin{definition}[Standardowego wielowymiarowego rozkładu normalnego]
+Zmienna losowa \(\mathbf{X}\) ma standardowy \(n\)--wymiarowy rozkład normalny jeśli jej składowe są
+niezależne i dla każdego \(i=1,\ldots,n\) \(\mathbf{X}_i \sim \mathcal{N}(0,1)\). Jest to rozkład
+ciągły o gęstości
+\begin{equation*}
+    p(\mathbf{x}) = \frac{1}{\sqrt{(2\pi)^n}}\exp\left(-\frac{1}{2}\mathbf{x}^T\mathbf{x}\right)\,.
+\end{equation*}
+\end{definition}
+
+\begin{definition}[Wielowymiarowego rozkładu normalnego]
+Zmienna losowa \(\mathbf{X}\) ma \(n\)--wymiarowy rozkład normalny (z ang. \textit{Multivariate
+Normal Distribution}, MVN), tzn. \(\mathbf{X} \sim \mathcal{N}(\boldsymbol{\mu},
+\boldsymbol{\Sigma})\) jeśli istnieje \(k\)--wymiarowa zmienna losowa \(\mathbf{Z}\) o standardowym
+rozkładzie normalnym dla pewnego \(k \leq n\) oraz istnieje \(\boldsymbol{\mu} \in \mathbb{R}^n\) i
+macierz \(\mathbf{A} \in \mathbb{R}^{n \times k}\) takie, że \(\boldsymbol{\Sigma} =
+\mathbf{A}\mathbf{A}^T\) oraz
+\begin{equation*}
+    \mathbf{X} = \mathbf{A}\mathbf{Z} + \boldsymbol{\mu}\,.
+\end{equation*}
+Jeśli macierz \(\boldsymbol{\Sigma}\) jest dodatnio określona, to rozkład
+\(\mathcal{N}(\boldsymbol{\mu}, \boldsymbol{\Sigma})\) jest ciągły, a jego gęstość jest dana przez
+\begin{equation*}
+    p(\mathbf{x}) = \frac{1}{\sqrt{(2\pi)^n\det\boldsymbol{\Sigma}}}\exp\left(-\frac{1}{2}(\mathbf{x}-\boldsymbol{\mu})^T\boldsymbol{\Sigma}^{-1}(\mathbf{x}-\boldsymbol{\mu})\right)
+\end{equation*}
+Macierz \(\boldsymbol{\Sigma}^{-1}\) nazywa się \textbf{macierzą precyzji}.
+\end{definition}
+
+Poziomice gęstości niezdegenerowanego wielowymiarowego rozkładu normalnego są elipsoidami, których
+półosie są skierowane wzdłuż wektorów własnych macierzy \(\boldsymbol{\Sigma}\) i mają długości
+proporcjonalne do pierwiastka z wartości własnych.
+
+\begin{theorem}[Własności niezdegenerowanego rozkładu normalnego]
+Niech \(\mathbf{X} \sim \mathcal{N}(\boldsymbol{\mu}, \boldsymbol{\Sigma})\) dla dodatnio określonej
+macierzy \(\boldsymbol{\Sigma}\), wówczas
+\begin{enumerate}
+
+    \item Wszystkie rozkłady brzegowe i warunkowe \(\mathbf{X}\) są rozkładami normalnymi.
+
+    \item Zmienne składowe \(\mathbf{X}_1,\ldots,\mathbf{X}_n\) są niezależne wtedy i tylko wtedy,
+    gdy \(\boldsymbol{\Sigma}\) jest macierzą diagonalną.
+    
+\end{enumerate}
+\end{theorem}
+
+\subsection{Rodzaje zbieżności zmiennych losowych}
+
+Niech \(X_1, X_2, \ldots\) i \(X\) będą zmiennymi losowymi o wartościach w tej samej przestrzeni
+\(\mathcal{X}\).
+
+\begin{definition}[Zbieżności stochastycznej]
+Ciag \((X_n)\) jest zbieżny do \(X\) według prawdopodobieństwa (lub stochastycznie) jeśli dla
+każdego \(\epsilon > 0\)
+\begin{equation*}
+    \lim_{n \to \infty} P(|X_n - X| < \epsilon) = 1\,.
+\end{equation*}
+\end{definition}
+
+\begin{definition}[Zbieżności z prawdopodobieństwem 1]
+Ciąg \((X_n)\) jest zbieżny do \(X\) z prawdopodobieństwem 1 jeśli
+\begin{equation*}
+    P\left(\lim_{n \to \infty} X_n = X\right) = 1\,.
+\end{equation*}
+\end{definition}
+
+\begin{definition}[Zbieżności według dystrybuant]
+Załóżmy, że \(\mathcal{X} = \mathbb{R}^k\) i niech \(F_{\mathbf{X}^n}\) będzie dystrybuantą
+\(\mathbf{X}^n\), \(F_\mathbf{X}\) dystrybuantą \(\mathbf{X}\). Ciąg \((\mathbf{X}^n)\) jest zbieżny
+do \(\mathbf{X}\) według dystrybuant jeśli dla każdego \(\mathbf{x} \in \mathbb{R}^k\) takiego, że
+\(F_\mathbf{X}\) jest ciągła w \(\mathbf{x}\) zachodzi
+\begin{equation*}
+    \lim_{n \to \infty} F_{\mathbf{X}^n}(\mathbf{x}) = F_\mathbf{X}(\mathbf{x})\,.
+\end{equation*}
+\end{definition}
+
+\begin{theorem}[Zależności między rodzajami zbieżności]
+Niech \((X_n)\) będzie ciągiem zmiennych losowych. Wówczas
+\begin{enumerate}
+
+    \item Jeśli \(X_n \to X\) z prawdopodobieństwem 1, to \(X_n \to X\) według prawdopodobieństwa.
+
+    \item Jeśli \(X_n \to X\) według prawdopodobieństwa, to istnieje podciąg \(X_{n_k}\) taki, że
+    \(X_{n_k} \to X\) z prawdopodobieństwem 1.
+
+    \item Jeśli \(X_n \to X\) według prawdopodobieństwa, to \(X_n \to X\) według dystrybuant.
+
+\end{enumerate}
+\end{theorem}
+
+\subsection{Wnioskowanie statystyczne}
+
+Niech zmienna losowa \(X\) określa model rozkładu pewnej cechy (cech) w ustalonym zbiorze instancji
+(tzw. \textbf{populacji generalnej}). Innymi słowy, przyjmujemy, że wartości cech zachowują się
+jakby zostały wybrane losowo zgodnie z rozkładem zmiennej \(X\). Do podstawowych zagadnień
+wnioskowania statystycznego należą:
+\begin{itemize}
+
+    \item oszacowanie wielkości charakteryzujących rozkład \(X\) (np. wartości średniej albo
+    wariancji);
+
+    \item weryfikacja hipotez dotyczących rozkładu \(X\) (tym nie będziemy się zajmować).
+    
+\end{itemize}
+
+\begin{definition}[Modelu statystycznego]
+Modelem statystycznym nazywamy parę \((\mathcal{P}, \mathcal{X})\), gdzie \(\mathcal{P}\) jest
+rodziną rozkładów prawdopodobieństwa na zbiorze \(\mathcal{X}\). Zazwyczaj przyjmuje się
+\begin{equation*}
+    \mathcal{P} = \{P_{\boldsymbol{\theta}} : \boldsymbol{\theta} \in \Theta \} 
+\end{equation*}
+dla pewnego zbioru parametrów \(\Theta\). Model statystyczny nazywamy \textbf{parametrycznym} jeśli
+\(\Theta \subset \mathbb{R}^k\).
+\end{definition}
+
+\begin{definition}[Prostej próby losowej]
+Prostą próbą losową o liczności \(n\) nazywamy ciąg niezależnych zmiennych losowych
+\(X_1,\ldots,X_n\) o wartościach w \(\mathcal{X}\) i o tym samym rozkładzie
+\(P_{\boldsymbol{\theta}} \in \mathcal{P}\) (z ang. \textit{independent and identically distributed,
+i.i.d}).
+\end{definition}
+
+\begin{definition}[Realizacji prostej próby losowej]
+Ciąg wartości \(x_1,\ldots,x_n \in \mathcal{X}\) takich, żeby
+\begin{equation*}
+    X_1(\omega) = x_1,\ldots,X_n(\omega) = x_n
+\end{equation*}
+dla pewnego \(\omega\) nazywamy realizacją prostej próby losowej \(X_1,\ldots,X_n\).
+\end{definition}
+
+\begin{definition}[Statystyki]
+Statystyką nazywa się zmienną losową będącą funkcją prostej próby losowej \(T(X_1,\ldots,X_n)\).
+\end{definition}
+Średnią w prostej próbie losowej nazywa się statystykę
+\begin{equation}
+    \overline{X} = \frac{1}{n}\sum_{i=1}^n X_i\,.
+\end{equation}
+Wariancją w prostej próbie losowej nazywa się statystykę
+\begin{equation}
+    S^2 = \frac{1}{n - 1}\sum_{i=1}^n (X_i - \overline{X})^2\,.
+\end{equation}
+
+\subsection{Prawa wielkich liczb i CTG}
+
+\begin{definition}
+Mówimy, że dla ciągu zmiennych losowych \(X_1,X_2,\ldots\) zachodzi \textbf{słabe prawo wielkich
+liczb} jeżeli
+\begin{equation*}
+    \frac{1}{n} \sum_{k=1}^n\left(X_k - \mathbb{E}[X_k]\right) \to 0
+\end{equation*}
+według prawdopodobieństwa. Jeżeli powyższy ciąg jest zbieżny z prawdopodobieństwem 1, to mówimy, że
+dla ciągu \((X_n)\) zachodzi \textbf{mocne prawo wielkich liczb}.
+\end{definition}
+
+\begin{theorem}
+Słabe prawo wielkich liczb zachodzi, jeśli ciąg \((X_n)\) spełnia \textbf{jeden} z podanych
+warunków:
+\begin{itemize}
+
+    \item \(\frac{1}{n^2}\mathbb{V}\left[\sum_{k=1}^n X_k\right] \to 0\) (prawo wielkich liczb
+    Markowa).
+
+    \item \(X_n\) są niezależne i ich wariancje są wspólnie ograniczone (prawo wielkich liczb
+    Czebyszewa).
+
+    \item \(X_n\) są niezależne i mają ten sam rozkład o skończonej wartości średniej (prawo
+    wielkich liczb Chinczyna).
+    
+\end{itemize}
+\end{theorem}
+
+\begin{theorem}[Prawo wielkich liczb Kołmogorowa]
+Jeśli \(X_n\) są niezależne, mają skończone wariancje oraz
+\begin{equation*}
+    \sum_{n=1}^\infty \frac{\mathbb{V}[X_n]}{n^2} < +\infty\,,
+\end{equation*}
+to dla \(X_n\) zachodzi mocne prawo wielkich liczb (prawo wielkich liczb Kołmogorowa).
+\end{theorem}
+
+\begin{theorem}[Centralne Twierdzenie Graniczne]
+Niech \(X_n\) będzie ciągiem niezależnych zmiennych losowych o tym samym rozkładzie ze skończoną
+wartością średnią \(m\) i wariancją \(\sigma^2 > 0\). Wtedy ciąg \(Z_n\)
+\begin{equation*}
+    Z_n := \frac{\frac{1}{n}\sum_{k=1}^n X_k}{\frac{\sigma}{\sqrt{n}}}
+\end{equation*}
+jest zbieżny według dystrybuant do zmiennej losowej \(Z\) o standardowym rozkładzie normalnym.
+\end{theorem}
+
+\subsection{Estymatory punktowe}
+
+\begin{definition}[Estymatora]
+Estymatorem nazywa się statystykę \(\hat{\theta}(X_1,\ldots,X_n)\) służącą do oszacowania wartości
+parametru \(\theta\). Liczbę \(\hat{\theta}(x_1,\ldots,x_n)\) dla konkretnej realizacji prostej
+próby losowej nazywa się wartością estymatora albo estymatą.
+\end{definition}
+
+\begin{definition}[Obciążenia estymatora]
+Liczbę
+\begin{equation*}
+    \mathrm{B}(\hat{\theta}) = \mathbb{E}[\hat{\theta}(X_1,\ldots,X_n)] - \theta
+\end{equation*}
+nazywamy obciążeniem estymatora \(\hat\theta\). Jeśli \(\mathrm{B}(\hat{\theta}) = 0\) to estymator
+nazywamy \textbf{nieobciążonym}.
+\end{definition}
+
+\begin{definition}[Błędu średniokwadratowego]
+Błędem średniokwadratowym (z ang. \textit{Mean Squared Error, MSE}) estymatora \(\hat{\theta}\)
+parametru \(\theta\) nazywamy liczbę
+\begin{equation*}
+    \mathrm{MSE}(\hat{\theta}) = \mathbb{E}[(\hat{\theta} - \theta)^2]\,.
+\end{equation*}
+\end{definition}
+
+\begin{theorem}
+Dla dowolnego estymatora \(\hat{\theta}\) zachodzi
+\begin{equation*}
+    \mathrm{MSE}(\hat{\theta}) = \mathbb{V}[\hat{\theta}] + (\mathrm{B}(\hat{\theta}))^2\,.
+\end{equation*}
+\end{theorem}
+
+\begin{definition}[Funkcji wiarygodności]
+Funkcją wiarygodności (z ang. \textit{likelihood function}) dla modelu \(\mathcal{P} =
+\{P_{\boldsymbol{\theta}} : \boldsymbol{\theta} \in \Theta\}\) nazywamy funkcję
+\begin{equation*}
+    \mathcal{L}: \mathbb{R}^n \times \Theta \ni (\mathbf{x},\boldsymbol{\theta}) \mapsto \mathcal{L}(\mathbf{x};\boldsymbol{\theta}) \in [0; +\infty)
+\end{equation*}
+wyznaczającą rozkład łączny obserwowanych danych jako funkcję parametru \(\boldsymbol{\theta}\).    
+\end{definition}
+Niech \(\mathbf{X}^1,\ldots,\mathbf{X}^n\) będzie prostą próbą losową. Jeśli
+\(P_{\boldsymbol{\theta}}\) są rozkładami ciągłymi lub dyskretnymi o gęstościach lub funkcjach
+prawdopodobieństwa \(p(\cdot;\boldsymbol{\theta})\), to
+\begin{equation}
+    \mathcal{L}(\mathbf{x}^1,\ldots,\mathbf{x}^n;\boldsymbol{\theta}) = \prod_{i=1}^n p(\mathbf{x}^i;\boldsymbol{\theta})\,.
+\end{equation}
+Dla wygody obliczeń często rozważa się tzw. zanegowaną logarytmiczną funkcję wiarygodności (z ang.
+\textit{Negated Log-Likelihood function, NLL}), tzn.
+\begin{equation}
+    L(\mathbf{x};\boldsymbol{\theta}) = - \log \mathcal{L}(\mathbf{x};\boldsymbol{\theta})\,.
+\end{equation}
+Wówczas dla realizacji prostej próby losowej mamy
+\begin{equation}
+    L(\mathbf{x}^1,\ldots,\mathbf{x}^n;\boldsymbol{\theta}) = -\sum_{i=1}^n \log p(\mathbf{x}^i;\boldsymbol{\theta})\,.
+\end{equation}
+
+\begin{definition}[Estymatora największej wiarygodności]
+Estymatorem największej wiarygodności (z ang. \textit{Maximum Likelihood Estimator, MLE}) nazywamy
+funkcję \(\boldsymbol{\hat{\theta}}\), która przy ustalonych wartościach obserwacji (realizacji
+prostej próby losowej) \(\{\mathbf{x}^1,\ldots,\mathbf{x}^n\}\) maksymalizuje wartość funkcji
+wiarygodności lub, co równoważne, minimalizuje wartość zanegowanej logarytmicznej funkcji
+wiarygodności tj.
+\begin{equation*}
+    \boldsymbol{\hat \theta}(\mathbf{x}^1,\ldots,\mathbf{x}^n) = \arg \min_{\boldsymbol{\theta} \in \Theta} \left[- \sum_{i=1}^n \log p(\mathbf{x}^i ; \boldsymbol{\theta})\right]\,.
+\end{equation*}
+\end{definition}
+    
+Jeśli funkcja wiarygodności jest różniczkowalna względem \(\boldsymbol{\theta}\) dla dowolnych
+\(\mathbf{x}^i\), to MLE można czasem wyznaczyć analitycznie korzystając z warunku koniecznego
+optymalności, tzn. rozwiązując układ równań
+\begin{equation}
+    \pdv{L(\mathbf{x}^1,\ldots,\mathbf{x}^n; \boldsymbol{\theta})}{\boldsymbol{\theta}} = 0\,.
+\end{equation}
+Jeśli MLE nie da się wyliczyć analitycznie, wyznacza się je przy użyciu algorytmów optymalizacji
+numerycznej. Estymatory MLE są asymptotycznie nieobciążone.
+
+\section{Elementy statystycznego uczenia maszynowego}
+
+% 1.  Podstawy wnioskowania Bayesowskiego; Bayesowski wybór modeli
+% 2.  Modele Gaussowskie; Liniowe modele Gaussowskie
+% 3.  Bayesowska regresja linowa
+% 4.  Regularyzacja
+% 5.  Robust regression
+% 6.  Procesy Gaussowskie
+% 7.  Estymator jądrowy gęstości
+% 8.  Wieloklasowa regresja logistyczna
+% 9.  Metryki do oceny klasyfikacji
+% 10. Klasyfikacja ekstremalnie niezbalansowana; Anomaly detection 
+% 11. Wnioskowanie metodami Monte Carlo: Gibbs sampling, Importance sampling, Metropolis-Hastings
+% 12. Metody oparte o sąsiedztwo
+% 13. Naiwny klasyfikator bayesowski
+
+
+\section{Uczenie głębokie i sieci neuronowe}
+
+% 1.  Matematyczny model neuronu; Perceptron wielowarstwowy
+% 2.  Universal Approximation Theorem
+% 3.  Loss functions: MLE, univariate regression, multiclass classification, cross-entropy loss
+% 4.  Aspekty optymalizacyjne (gradient descent, stochastic gradient descent, momentum, adam)
+% 5.  Algorytm wstecznej propagacji błędu, automatyczne różniczkowanie
+% 6.  Regularyzacja i inicjalizacja w sieciach głębokich
+% 7.  Measuring performance
+% 8.  Convolutional networks
+% 9.  Residual networks
+% 10. Transformers
+% 11. Intro to deep unsupervised learning
+% 12. Energy Based Models; RBMs; algorytm (Persistent) Contrastive Divergence
+% 13. Diffusion models
+    
+\end{document}
