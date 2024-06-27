@@ -1146,7 +1146,7 @@ to dla \(X_n\) zachodzi mocne prawo wielkich liczb (prawo wielkich liczb Kołmog
 Niech \(X_n\) będzie ciągiem niezależnych zmiennych losowych o tym samym rozkładzie ze skończoną
 wartością średnią \(m\) i wariancją \(\sigma^2 > 0\). Wtedy ciąg \(Z_n\)
 \begin{equation*}
-    Z_n := \frac{\frac{1}{n}\sum_{k=1}^n X_k}{\frac{\sigma}{\sqrt{n}}}
+    Z_n := \frac{\frac{1}{n}\sum_{k=1}^n X_k - m}{\frac{\sigma}{\sqrt{n}}}
 \end{equation*}
 jest zbieżny według dystrybuant do zmiennej losowej \(Z\) o standardowym rozkładzie normalnym.
 \end{theorem}
@@ -1299,13 +1299,11 @@ Całkę w powyższym wzorze nazywa się również funkcją ryzyka (z ang. \texti
 estymatora parametru.
 
 Są dwa zasadnicze problemy we wnioskowaniu bayesowskim: pierwszym jest potrzeba znania rozkładu a
-priori estymowanego parametru, drugim problem z obliczeniem czynnika normalizującego, który może być
-skomplikowaną całką lub sumą po wykładniczo-wielu elementach. Oba te problemy można czasami
+priori estymowanego parametru, drugim -- problem z obliczeniem czynnika normalizującego, który może
+być skomplikowaną całką lub sumą po wykładniczo-wielu elementach. Oba te problemy można czasami
 rozwiązać wprowadzając tzw. \textbf{prior sprzężony do wiarygodności}, tzn. zakładamy taki rozkład a
 priori, aby dla danej wiarygodności rozkład a posteriori miał znaną postać (np. rozkładu normalnego,
 rozkładu beta), wówczas nie musimy obliczać czynnika normalizującego, gdyż jest on po prostu znany.
-
-\subsection{Modele gaussowskie i liniowe modele gaussowskie}
 
 % 2.  Modele Gaussowskie; Liniowe modele Gaussowskie
 % 3.  Bayesowska regresja linowa
@@ -1335,6 +1333,5 @@ rozkładu beta), wówczas nie musimy obliczać czynnika normalizującego, gdyż 
 % 10. Transformers
 % 11. Intro to deep unsupervised learning
 % 12. Energy Based Models; RBMs; algorytm (Persistent) Contrastive Divergence
-% 13. Diffusion models
     
 \end{document}
