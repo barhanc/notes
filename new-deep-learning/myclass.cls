@@ -15,7 +15,6 @@
 \newcommand{\e}{\mathrm{e}}
 \newcommand{\im}{\mathrm{i}}
 \newcommand{\arcangle}{\mathord{<\mspace{-9mu}\mathrel{)}\mspace{2mu}}}
-\newcommand{\linesep}{\noindent\rule{\columnwidth}{1pt}}
 \let\oldemptyset\emptyset
 \let\emptyset\varnothing
 

@@ -1,21 +1,24 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{myclass}
 
-%**** Article One column ****
-\LoadClass[12pt]{article}
-\RequirePackage[a4paper]{geometry}
+\LoadClass{article}
 
-%**** Article Two column ****
-% \LoadClass[twocolumn]{article}
-% \RequirePackage[a4paper, total={7in, 9in}]{geometry}
+% ******* Packages *******
+\usepackage{amssymb}
+\usepackage{amsmath, amsfonts, enumerate, graphicx, 
+            mathrsfs, physics, wasysym, xcolor}
 
-% Custom symbols
+% ******* Additional packages *******
+\usepackage{lipsum, csquotes, amsthm}
+
+% ******* Custom symbols *******
 \newcommand{\e}{\mathrm{e}}
 \newcommand{\im}{\mathrm{i}}
 \newcommand{\arcangle}{\mathord{<\mspace{-9mu}\mathrel{)}\mspace{2mu}}}
-\newcommand{\linesep}{\noindent\rule{\columnwidth}{1pt}}
+\let\oldemptyset\emptyset
+\let\emptyset\varnothing
 
-% Coloring
+% ******* Coloring *******
 \RequirePackage[]{hyperref}
 \hypersetup{
     colorlinks=true,
@@ -24,10 +27,6 @@
     urlcolor=blue,
     }
 
-% Packages
-\usepackage{amssymb}
-\usepackage{amsmath, amsfonts, enumerate, graphicx, 
-            mathrsfs, physics, wasysym, xcolor}
-
-% Additional packages and commands depending on project:
-\usepackage{lipsum}
+% ******* Proof Environments *******
+\newtheorem{definition}{Definicja}[section]
+\newtheorem{theorem}{Twierdzenie}[section]

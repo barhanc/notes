@@ -20,6 +20,7 @@ matematycznej i ideowej, a nie implementacyjnej stronie zagadnień. Liczymy, iż
 zapewni odpowiednio głębokie zrozumienie tematu, dzięki któremu dalsze studiowanie całej gamy
 specyficznych technicznych tematów nie sprawi żadnego problemu.
 
+
 \subsection{Notacja}
 
 W dalszej części tekstu będziemy stosować przedstawioną tutaj pokrótce notację. Wektory, które
@@ -34,6 +35,7 @@ wielkimi literami np. \(\mathbf{X}, \mathbf{W}, \boldsymbol{\Phi}\). Analogiczni
 wektorów przez \(\mathbf{X}_{i_1 i_2 \ldots i_k}\) będziemy oznaczać \((i_1,i_2,\ldots,i_k)\)
 element \(k\)--wymiarowej tablicy \(\mathbf{X}\), natomiast \(\mathbf{X}^\mu\) będzie oznaczać
 \(\mu\)--ty element pewnego zbioru tablic.
+
 
 \subsection{Uczenie nadzorowane}
 
@@ -75,6 +77,7 @@ ale istnieje ryzyko jego przeuczenia (mówimy wówczas o \textit{high variance})
 o małej pojemności istnieje z kolei ryzyko, iż nie ma on wystarczająco ekspresywności (mówimy
 wówczas o \textit{high bias}).
  
+
 \subsection{Uczenie nienadzorowane}
 
 W przypadku uczenia nienadzorowanego naszym celem nie jest znalezienie modelu odwzorowującego cechy
@@ -85,6 +88,7 @@ generatywne modele nienadzorowane, za pomocą których modelujemy rozkład prawd
 czy to wprost poprzez funkcję gęstości prawdopodobieństwa, czy też jedynie jako model, z którego
 możemy próbkować nowe przykłady.
 
+
 \subsection{Praktyka uczenia maszynowego}
 
 W dalszej części nie będziemy skupiać się na detalach implementacyjnych. W naszej ocenie jednak
@@ -92,6 +96,7 @@ dziedzina uczenia maszynowego jest przede wszystkim \enquote{nauką eksperymenta
 ważne jest empiryczne sprawdzenie różnych metod przed wybraniem ostatecznego modelu dla danego
 zagadnienia. W tym paragrafie opisujemy standardowe praktyki stosowane przy treningu modeli uczenia
 maszynowego (głównie nadzorowanych operujących na danych tabelarycznych).
+
 
 \subsubsection{Przygotowanie danych}
 
@@ -178,7 +183,10 @@ testujemy na zbiorze walidacyjnym. Mamy \(K\) wyników dla zbiorów walidacyjnyc
 uśrednić (i ewentualnie obliczyć odchylenie standardowe). Takie wyniki są znacznie bardziej
 wiarygodne.
 
+
+
 \section{Rachunek prawdopodobieństwa i statystyka matematyczna}
+
 
 \subsection{Przestrzeń probabilistyczna}
 
@@ -262,6 +270,7 @@ Przestrzenią probabilistyczną nazywamy uporządkowaną trójkę \((\Omega, \ma
 \(\Omega\), a \(P\) -- rozkładem prawdopodobieństwa w \(\mathcal{F}\).
 \end{definition}
 
+
 \subsection{Prawdopodobieństwo warunkowe i niezależność zdarzeń}
 
 \begin{definition}[Prawdopodobieństwa warunkowego]
@@ -335,6 +344,7 @@ Jeśli zdarzenia \(A_1,\ldots,A_n\) są warunkowo niezależne względem \(B\) to
 \end{equation*}
 \end{theorem}
 
+
 \subsection{Prawdopodobieństwo całkowite i wzór Bayesa}
 
 \begin{definition}[Układu zupełnego zdarzeń]
@@ -361,6 +371,7 @@ Prawdopodobieństwa \(P(A_j)\) nazywamy prawdopodobieństwami \textbf{a priori},
 B)\) -- \textbf{a posteriori}. Prawdopodobieństwo \(P(B \mid A_j)\) nazywamy
 \textbf{wiarygodnością}.   
 \end{theorem}
+
 
 \subsection{Zmienne losowe}
 
@@ -547,6 +558,7 @@ tego rozkładu.
 Modą zmiennej losowej o rozkładzie ciągłym nazywa się dowolne maksimum lokalne gęstości tego
 rozkładu.
 \end{definition}
+
 
 \subsection{Ważne rozkłady jednowymiarowe}
 
@@ -810,6 +822,7 @@ gdzie \(J := \det \left[\pdv{\boldsymbol{\psi}_j}{\mathbf{y}_i}\right]\) jest ja
 odwzorowania \(\boldsymbol{\psi}\).
 \end{theorem}
 
+
 \subsection{Niezależność zmiennych losowych}
 
 \begin{definition}[Niezależności zmiennych losowych]
@@ -890,6 +903,7 @@ niezależność \(\mathbf{X}, \mathbf{Y}\) względem \(\mathbf{Z}\) jest równow
     p(\mathbf{x},\mathbf{y} \mid \mathbf{z}) = p_\mathbf{X}(\mathbf{x} \mid \mathbf{z})p_\mathbf{Y}(\mathbf{y} \mid \mathbf{z})\,.
 \end{equation*}
 
+
 \subsection{Kowariancja i współczynnik korelacji}
 
 \begin{definition}[Kowariancji]
@@ -945,6 +959,7 @@ Niech \(\mathbf{K}\) będzie macierzą kowariancji zmiennej \(\mathbf{X}\), wów
 \end{enumerate}
 \end{theorem}
 
+
 \subsection{Wielowymiarowy rozkład normalny}
 
 \begin{definition}[Standardowego wielowymiarowego rozkładu normalnego]
@@ -991,6 +1006,7 @@ macierzy \(\boldsymbol{\Sigma}\), wówczas
 \end{enumerate}
 \end{theorem}
 
+
 \subsection{Rodzaje zbieżności zmiennych losowych}
 
 Niech \(X_1, X_2, \ldots\) i \(X\) będą zmiennymi losowymi o wartościach w tej samej przestrzeni
@@ -1034,6 +1050,7 @@ Niech \((X_n)\) będzie ciągiem zmiennych losowych. Wówczas
 
 \end{enumerate}
 \end{theorem}
+
 
 \subsection{Wnioskowanie statystyczne}
 
@@ -1087,6 +1104,7 @@ Wariancją w prostej próbie losowej nazywa się statystykę
     S^2 = \frac{1}{n - 1}\sum_{i=1}^n (X_i - \overline{X})^2\,.
 \end{equation}
 
+
 \subsection{Prawa wielkich liczb i CTG}
 
 \begin{definition}
@@ -1132,6 +1150,7 @@ wartością średnią \(m\) i wariancją \(\sigma^2 > 0\). Wtedy ciąg \(Z_n\)
 \end{equation*}
 jest zbieżny według dystrybuant do zmiennej losowej \(Z\) o standardowym rozkładzie normalnym.
 \end{theorem}
+
 
 \subsection{Estymatory punktowe}
 
@@ -1209,9 +1228,85 @@ optymalności, tzn. rozwiązując układ równań
 Jeśli MLE nie da się wyliczyć analitycznie, wyznacza się je przy użyciu algorytmów optymalizacji
 numerycznej. Estymatory MLE są asymptotycznie nieobciążone.
 
+
 \section{Elementy statystycznego uczenia maszynowego}
 
-% 1.  Podstawy wnioskowania Bayesowskiego; Bayesowski wybór modeli
+Przechodzimy teraz do zagadnień uczenia maszynowego, w których wykorzystamy przedstawioną wcześniej
+teorię rachunku prawdopodobieństwa (w szczególności teorię zmiennych losowych) oraz wnioskowania
+statystycznego.
+
+\subsection{Podstawy wnioskowania bayesowskiego}
+
+Niech \(\mathcal{X} = \{\mathbf{x}^1,\ldots,\mathbf{x}^n\}\) będzie realizacją prostej próby
+losowej, czyli inaczej zbiorem obserwacji i.i.d. Zakładamy, że obserwacje te pochodzą z pewnego
+parametrycznego modelu statystycznego \(\mathcal{P}\) z parametrami \(\boldsymbol{\theta} \in
+\Theta\). Wcześniej \(\boldsymbol{\theta}\) miał jedynie rangę parametru. We wnioskowaniu
+bayesowskim uznajemy, że parametry \(\boldsymbol{\theta}\) są również zmiennymi losowymi, a model
+statystyczny modeluje warunkowy rozkład prawdopodobieństwa obserwacji pod warunkiem parametru. Mamy
+zatem rodzinę gęstości prawdopodobieństwa \(p(\mathbf{x} \mid \boldsymbol{\theta})\) i chcemy
+wnioskować o parametrze \(\boldsymbol{\theta}\) na podstawie obserwacji \(\mathcal{X}\). Jeśli znamy
+rozkład a priori (inaczej \textbf{prior}) parametru \(\boldsymbol{\theta}\) opisany przez
+\(p(\boldsymbol{\theta})\), to z twierdzenia Bayesa rozkład a posteriori (\textbf{posterior}) jest
+dany przez
+\begin{equation}
+    p(\boldsymbol{\theta} \mid \mathcal{X}) = \frac{p(\mathcal{X} \mid \boldsymbol{\theta}) p(\boldsymbol{\theta})}{p(\mathcal{X})} = \frac{p(\mathcal{X} \mid \boldsymbol{\theta}) p(\boldsymbol{\theta})}{\sum_{\boldsymbol{\theta}' \in \Theta} p(\mathcal{X} \mid \boldsymbol{\theta}') p(\boldsymbol{\theta}')}
+\end{equation}
+Nie jesteśmy tutaj zbyt formalni z notacją, gdyż używamy \(p\) bardziej jakby był to rozkład
+prawdopodobieństwa (miara probabilistyczna), a w rzeczywistości jest to gęstość lub funkcja
+prawdopodobieństwa, więc powinniśmy używać indeksów dolnych określających zmienną losową, której
+rozkład jest opisany danym \(p\), aby rozróżnić człony od siebie. Zapis taki jest jednak niezwykle
+wygodny i dość czytelny. Należy jedynie pamiętać, iż nazwa argumentu funkcji \(p\) określa teraz z
+jakiego wzoru powinniśmy skorzystać aby obliczyć jej wartość. Człon w mianowniku postaci
+\begin{equation}
+     Z = \sum_{\boldsymbol{\theta}' \in \Theta} p(\mathcal{X} \mid \boldsymbol{\theta}') p (\boldsymbol{\theta}') \approxeq \int\limits_\Theta p(\mathcal{X} \mid \boldsymbol{\theta}') p (\boldsymbol{\theta}') \dd[n]{\boldsymbol{\theta}'}
+\end{equation}
+jest tzw. \textbf{czynnikiem normalizacyjnym} (czyli po prostu liczbą, często oznaczaną przez
+\(Z\)), który zapewnia, iż \(p(\boldsymbol{\theta} \mid \mathcal{X})\) sumuje / całkuje się do
+\(1\).
+
+Ponieważ założyliśmy, iż obserwacje ze zbioru \(\mathcal{X}\) są warunkowo niezależne względem
+parametru \(\boldsymbol{\theta}\) oraz pochodzą z tego samego rozkładu opisanego przez
+\(p(\mathbf{x} \mid \boldsymbol{\theta})\), więc człon \(p(\mathcal{X} \mid \boldsymbol{\theta})\)
+zwany \textbf{wiarygodnością} możemy zapisać jako
+\begin{equation}
+    p(\mathcal{X} \mid \boldsymbol{\theta}) = \prod_{i=1}^n p(\mathbf{x}^i \mid \boldsymbol{\theta})\,.    
+\end{equation}
+Całe wnioskowanie bayesowskie opiera się na wyznaczeniu rozkładu a posteriori dla danego zbioru
+obserwacji \(\mathcal{X}\), który wyraża naszą wiedzę o estymowanym parametrze
+\(\boldsymbol{\theta}\). Na podstawie tego rozkładu możemy wyznaczyć estymatę punktową MAP
+maksymalizującą gęstość prawdopodobieństwa a posteriori, 
+\begin{equation}
+    \boldsymbol{\hat \theta}_\mathrm{MAP}(\mathcal{X}) = \arg \max_{\boldsymbol{\theta} \in \Theta} p(\boldsymbol{\theta} \mid \mathcal{X})\,,
+\end{equation}
+jak również niepewność związaną z wyznaczeniem tej estymaty np. poprzez wyznaczenie przedziału
+wiarygodności (nie należy mylić z przedziałem ufności). Możemy również skonstruować rozkład
+predykcyjny (z ang. \textit{posterior predictive distribution}) określający prawdopodobieństwo
+uzyskania nowej obserwacji \(\mathbf{t}\)\
+\begin{equation}
+    p(\mathbf{t} \mid \mathcal{X}) = \int\limits_\Theta p(\mathbf{t} \mid \boldsymbol{\theta}) p(\boldsymbol{\theta} \mid \mathcal{X}) \dd[n]{\boldsymbol{\theta}}\,.
+\end{equation}
+
+Znając rozkład a posteriori estymowanego parametru \(\boldsymbol{\theta}\) możemy nie tylko
+wyznaczyć estymaty punktowe, wartości oczekiwane i przedziały wiarygodności, ale również znaleźć
+estymator Bayesa (z ang. \textit{Bayes estimator}), który minimalizuje wartość oczekiwaną pewnej
+funkcji straty (z ang. \textit{loss function}) \(L(\boldsymbol{\theta}, \boldsymbol{\hat \theta})\)
+po wszystkich estymatorach \(\boldsymbol{\hat \theta}\)
+\begin{equation}
+    \boldsymbol{\hat \theta}_\mathrm{Bayes}(\mathcal{X}) = \arg\min_{\boldsymbol{\hat \theta} \in \Theta} \int\limits_{\Theta} L(\boldsymbol{\theta}, \boldsymbol{\hat \theta}) p(\boldsymbol{\theta} \mid \mathcal{X}) \dd[n]{\boldsymbol{\theta}}\,.
+\end{equation}
+Całkę w powyższym wzorze nazywa się również funkcją ryzyka (z ang. \textit{risk function})
+\(R(\boldsymbol{\hat \theta})\), która określa oczekiwaną stratę spowodowaną wykorzystaniem danego
+estymatora parametru.
+
+Są dwa zasadnicze problemy we wnioskowaniu bayesowskim: pierwszym jest potrzeba znania rozkładu a
+priori estymowanego parametru, drugim problem z obliczeniem czynnika normalizującego, który może być
+skomplikowaną całką lub sumą po wykładniczo-wielu elementach. Oba te problemy można czasami
+rozwiązać wprowadzając tzw. \textbf{prior sprzężony do wiarygodności}, tzn. zakładamy taki rozkład a
+priori, aby dla danej wiarygodności rozkład a posteriori miał znaną postać (np. rozkładu normalnego,
+rozkładu beta), wówczas nie musimy obliczać czynnika normalizującego, gdyż jest on po prostu znany.
+
+\subsection{Modele gaussowskie i liniowe modele gaussowskie}
+
 % 2.  Modele Gaussowskie; Liniowe modele Gaussowskie
 % 3.  Bayesowska regresja linowa
 % 4.  Regularyzacja
@@ -1221,7 +1316,7 @@ numerycznej. Estymatory MLE są asymptotycznie nieobciążone.
 % 8.  Wieloklasowa regresja logistyczna
 % 9.  Metryki do oceny klasyfikacji
 % 10. Klasyfikacja ekstremalnie niezbalansowana; Anomaly detection 
-% 11. Wnioskowanie metodami Monte Carlo: Gibbs sampling, Importance sampling, Metropolis-Hastings
+% 11. Importance sampling, Metropolis-Hastings, Gibbs sampling
 % 12. Metody oparte o sąsiedztwo
 % 13. Naiwny klasyfikator bayesowski
 
