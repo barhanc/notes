@@ -26,9 +26,8 @@ specyficznych technicznych tematów nie sprawi żadnego problemu.
 W dalszej części tekstu będziemy stosować przedstawioną tutaj pokrótce notację. Wektory, które
 traktujemy jako elementy przestrzeni \(\mathbb{R}^d\) ze standardowo zdefiniowanymi operacjami
 dodawania i mnożenia przez skalar będziemy oznaczali wytłuszczonymi małymi literami np.
-\(\mathbf{x}, \mathbf{w}, \boldsymbol{\phi}\). Wielkość \(\mathbf{x}_i\) z indeksem dolnym będącym
-literą alfabetu łacińskiego będzie oznaczać dany element wektora (w tym przypadku \(i\)--ty element
-\(\mathbf{x}\)). Wielkość \(\mathbf{x}^\mu\) z indeksem górnym będącym literą alfabetu greckiego
+\(\mathbf{x}, \mathbf{w}, \boldsymbol{\phi}\). Wielkość \(\mathbf{x}_i\) będzie oznaczać dany
+element wektora (w tym przypadku \(i\)--ty element \(\mathbf{x}\)). Wielkość \(\mathbf{x}^\mu\)
 będzie oznaczać pewien (w tym przypadku \(\mu\)--ty) element pewnego zbioru wektorów. Macierze oraz
 wielowymiarowe tablice (zwane również niefortunnie tensorami) będziemy oznaczać wytłuszczonymi
 wielkimi literami np. \(\mathbf{X}, \mathbf{W}, \boldsymbol{\Phi}\). Analogicznie jak w przypadku
@@ -42,28 +41,28 @@ element \(k\)--wymiarowej tablicy \(\mathbf{X}\), natomiast \(\mathbf{X}^\mu\) b
 Uczenie nadzorowane jest jednym z dwóch podstawowych (pomijając tzw. uczenie ze wzmocnieniem)
 paradygmatów w uczeniu maszynowym, którego ogólną ideą jest zdefiniowanie pewnego modelu
 odwzorowującego dane wejściowe na wyjściowe predykcje. Zakładamy w nim, iż mamy dostępny zbiór
-obserwacji w postaci uporządkowanych par \(\mathcal{X} = \{(\mathbf{x}^\mu, t_\mu)\}_{\mu=1}^n\),
-gdzie \(\mathbf{x} \in \mathbb{R}^d\) nazywamy wektorem cech a \(t\) jest prawidłową wartością
+obserwacji w postaci uporządkowanych par \(\mathcal{X} = \{(\mathbf{x}^\mu, y_\mu)\}_{\mu=1}^n\),
+gdzie \(\mathbf{x} \in \mathbb{R}^d\) nazywamy wektorem cech a \(y\) jest prawidłową wartością
 odpowiedzi dla tych cech. Dwa najbardziej podstawowe przypadki zagadnień tego rodzaju to regresja
-oraz klasyfikacja. W przypadku regresji zmienna \(t\) przyjmuje wartości z przedziału liczb
-rzeczywistych. W przypadku klasyfikacji zmienna \(t\) przyjmuje wartości ze skończonego zbioru
+oraz klasyfikacja. W przypadku regresji zmienna \(y\) przyjmuje wartości z przedziału liczb
+rzeczywistych. W przypadku klasyfikacji zmienna \(y\) przyjmuje wartości ze skończonego zbioru
 kategorii, przy czym wartości z tego zbioru nie powinny posiadać naturalnej tj. wynikającej z natury
 problemu, relacji porządku; gdy tak nie jest mamy do czynienia z regresją/klasyfikacją porządkową (z
 ang. \textit{ordinal regression/classification}).
 
-W jaki sposób tworzymy wspomniany model odwzorowujący \(\mathbf{x}\) na \(t\)? W dalszych
+W jaki sposób tworzymy wspomniany model odwzorowujący \(\mathbf{x}\) na \(y\)? W dalszych
 paragrafach poznamy różne metody, ale najczęściej (nie wchodząc teraz w modelowanie
-probabilistyczne) modelem jest pewna rodzina funkcji postaci \(\phi(\mathbf{x}; \mathbf{w})\)
+probabilistyczne) modelem jest pewna rodzina funkcji postaci \(\hat{y}(\mathbf{x}; \mathbf{w})\)
 parametryzowana skończoną liczbą parametrów, które możemy łącznie zapisać jako pewien wektor
 \(\mathbf{w} \in \mathbb{R}^m\). Aby znaleźć parametry \(\mathbf{w}\), dzięki którym dla konkretnego
 zagadnienia model będzie zadowalająco odwzorowywał cechy na predykcje (innymi słowy aby nauczyć
 model) wprowadzamy dodatkowo funkcjonał kosztu (z ang. \textit{loss function})
-\(L[\phi(\mathbf{x};\mathbf{w}), t]\), który kwantyfikuje odpowiedzi modelu \(\phi\) w stosunku do
-znanych prawidłowych odpowiedzi \(t\). Trening modelu polega wówczas na znalezieniu parametrów
+\(L[\hat{y}(\mathbf{x};\mathbf{w}), y]\), który kwantyfikuje odpowiedzi modelu \(\phi\) w stosunku do
+znanych prawidłowych odpowiedzi \(y\). Trening modelu polega wówczas na znalezieniu parametrów
 \(\mathbf{w}^*\), które minimalizują sumę wartości funkcji kosztu dla przykładów w zbiorze
 treningowym \(\mathcal{X}\)
 \begin{equation}
-    \mathbf{w}^* = \arg\min_{\mathbf{w}} \sum_{\mu=1}^n L[\phi(\mathbf{x}^\mu;\mathbf{w}), t_\mu]\,.
+    \mathbf{w}^* = \arg\min_{\mathbf{w}} \sum_{\mu=1}^n L[\hat{y}(\mathbf{x}^\mu;\mathbf{w}), y_\mu]\,.
 \end{equation}
 Zauważmy, że takie podejście ma jedną zasadniczą wadę -- istotnie nie interesuje nas tak naprawdę,
 jak model radzi sobie na zbiorze treningowym, tylko jak będzie radził sobie na nowych, niewidzianych
@@ -993,7 +992,7 @@ Poziomice gęstości niezdegenerowanego wielowymiarowego rozkładu normalnego s�
 półosie są skierowane wzdłuż wektorów własnych macierzy \(\boldsymbol{\Sigma}\) i mają długości
 proporcjonalne do pierwiastka z wartości własnych.
 
-\begin{theorem}[Własności niezdegenerowanego rozkładu normalnego]
+\begin{theorem}[Własności niezdegenerowanego rozkładu normalnego]\label{th:mvn}
 Niech \(\mathbf{X} \sim \mathcal{N}(\boldsymbol{\mu}, \boldsymbol{\Sigma})\) dla dodatnio określonej
 macierzy \(\boldsymbol{\Sigma}\), wówczas
 \begin{enumerate}
@@ -1235,6 +1234,7 @@ Przechodzimy teraz do zagadnień uczenia maszynowego, w których wykorzystamy pr
 teorię rachunku prawdopodobieństwa (w szczególności teorię zmiennych losowych) oraz wnioskowania
 statystycznego.
 
+
 \subsection{Podstawy wnioskowania bayesowskiego}
 
 Niech \(\mathcal{X} = \{\mathbf{x}^1,\ldots,\mathbf{x}^n\}\) będzie realizacją prostej próby
@@ -1305,18 +1305,217 @@ rozwiązać wprowadzając tzw. \textbf{prior sprzężony do wiarygodności}, tzn
 priori, aby dla danej wiarygodności rozkład a posteriori miał znaną postać (np. rozkładu normalnego,
 rozkładu beta), wówczas nie musimy obliczać czynnika normalizującego, gdyż jest on po prostu znany.
 
-% 2.  Modele Gaussowskie; Liniowe modele Gaussowskie
-% 3.  Bayesowska regresja linowa
-% 4.  Regularyzacja
-% 5.  Robust regression
-% 6.  Procesy Gaussowskie
-% 7.  Estymator jądrowy gęstości
-% 8.  Wieloklasowa regresja logistyczna
-% 9.  Metryki do oceny klasyfikacji
-% 10. Klasyfikacja ekstremalnie niezbalansowana; Anomaly detection 
-% 11. Importance sampling, Metropolis-Hastings, Gibbs sampling
-% 12. Metody oparte o sąsiedztwo
-% 13. Naiwny klasyfikator bayesowski
+
+\subsection{Modele gaussowskie i liniowe modele gaussowskie}
+
+Zajmiemy się teraz wnioskowaniem bayesowskim w modelach, w których potrafimy analitycznie znaleźć
+postać rozkład a posteriori. Jak już wspomnieliśmy (Tw. \ref{th:mvn}) gdy zmienna losowa
+\(\mathbf{X}\) ma wielowymiarowy rozkład normalny z wartością oczekiwaną \(\boldsymbol{\mu}\) i
+dodatnio określoną macierzą kowariancji \(\boldsymbol{\Sigma}\) to wszystkie rozkłady warunkowe i
+brzegowe są rozkładami normalnymi. Poniżej wyznaczymy parametry tych rozkładów.
+
+\begin{theorem}
+Niech zmienne losowe \(\mathbf{x} \in \mathbb{R}^{n-k}\) i \(\mathbf{y} \in \mathbb{R}^k\) mają
+łącznie wielowymiarowy rozkład normalny
+\begin{equation*}
+    \mqty[\mathbf{x} \\ \mathbf{y}] \sim \mathcal{N}\left(\mqty[\boldsymbol{\mu}_\mathbf{x} \\ \boldsymbol{\mu}_\mathbf{y}], \mqty[\boldsymbol{\Sigma}_{\mathbf{xx}} & \boldsymbol{\Sigma}_{\mathbf{xy}} \\ \boldsymbol{\Sigma}_{\mathbf{yx}} & \boldsymbol{\Sigma}_{\mathbf{yy}}] \right)\,.
+\end{equation*} 
+Wówczas
+\begin{enumerate}
+    
+    \item Zmienne losowe \(\mathbf{x}\) i \(\mathbf{y}\) mają odpowiednio rozkłady
+    \begin{equation*}
+        \mathbf{x} \sim \mathcal{N}(\boldsymbol{\mu}_\mathbf{x}, \boldsymbol{\Sigma}_{\mathbf{xx}})\,,\quad \mathbf{y} \sim \mathcal{N}(\boldsymbol{\mu}_\mathbf{y}, \boldsymbol{\Sigma}_{\mathbf{yy}})\,.
+    \end{equation*}
+
+    \item Rozkład warunkowy \(\mathbf{x} \mid \mathbf{y}\) jest rozkładem normalnym \(\mathbf{x}
+    \mid \mathbf{y} \sim \mathcal{N}(\boldsymbol{\mu}_{\mathbf{x}\mid\mathbf{y}},
+    \boldsymbol{\Sigma}_{\mathbf{x}\mid\mathbf{y}})\) o parametrach
+    \begin{equation*}
+        \boldsymbol{\mu}_{\mathbf{x}\mid\mathbf{y}} = \boldsymbol{\mu}_\mathbf{x} + \boldsymbol{\Sigma}_\mathbf{xy}\boldsymbol{\Sigma}_\mathbf{yy}^{-1}(\mathbf{y} - \boldsymbol{\mu}_\mathbf{y})\,,\quad \boldsymbol{\Sigma}_{\mathbf{x}\mid\mathbf{y}} = \boldsymbol{\Sigma}_\mathbf{xx} - \boldsymbol{\Sigma}_\mathbf{xy}\boldsymbol{\Sigma}_\mathbf{yy}^{-1}\boldsymbol{\Sigma}_\mathbf{yx}\,.
+    \end{equation*}
+\end{enumerate}
+\end{theorem}
+Powyższe własności normalnych rozkładów łącznych pozwalają jawnie wnioskować w tzw. liniowych
+modelach gaussowskich (z ang. \textit{Linear Gaussian Models}). Załóżmy, iż nasze obserwacje są
+modelowane zmienną losową \(\mathbf{y}\) o rozkładzie normalnym z estymowanym parametrem
+\(\mathbf{x}\) i znanymi parametrami \(\mathbf{A}, \mathbf{b}, \boldsymbol{\Sigma}_\mathbf{y}\) tak,
+że wiarygodność ma postać
+\begin{equation}
+    \mathbf{y} \mid \mathbf{x} \sim \mathcal{N}(\mathbf{A}\mathbf{x} + \mathbf{b}, \boldsymbol{\Sigma}_\mathbf{y})\,,
+\end{equation}
+gdzie \(\mathbf{A}\) jest w ogólności macierzą prostokątną. Jeśli jako prior na \(\mathbf{x}\)
+przyjmiemy również rozkład normalny
+\begin{equation}
+    \mathbf{x} \sim \mathcal{N}(\boldsymbol{\mu}_\mathbf{x}, \boldsymbol{\Sigma}_\mathbf{x})
+\end{equation}
+to rozkład a posteriori jest również rozkładem normalnym. W szczególności załóżmy, że mamy zbiór
+obserwacji i.i.d. \(\mathcal{X} = \{\mathbf{y}^1, \ldots, \mathbf{y}^n\}\). Wówczas wiarygodność ma
+postać
+\begin{equation}
+    p(\mathcal{X} \mid \mathbf{x}) \propto \prod_{i=1}^n \exp\left(-\frac{1}{2}(\mathbf{y}^i - (\mathbf{Ax}+\mathbf{b}))^T\boldsymbol{\Sigma}_\mathbf{y}^{-1}(\mathbf{y}^i - (\mathbf{Ax}+\mathbf{b}))\right)\,,
+\end{equation}
+a rozkład a posteriori
+\begin{equation}
+    p(\mathbf{x} \mid \mathcal{X}) \propto p(\mathcal{X} \mid \mathbf{x}) \exp\left(-\frac{1}{2}(\mathbf{x} - \boldsymbol{\mu}_\mathbf{x})^T\boldsymbol{\Sigma}_\mathbf{x}^{-1}(\mathbf{x} - \boldsymbol{\mu}_\mathbf{x})\right)\,.
+\end{equation}
+Rozpisując wszystkie czynniki i pomijając czynnik stałe otrzymujemy
+\begin{equation}
+    \begin{split}
+        \log p(\mathbf{x} \mid \mathcal{X}) &\propto -\frac{1}{2}\mathbf{x}^T\left(\boldsymbol{\Sigma}_\mathbf{x}^{-1} + n\mathbf{A}^T\boldsymbol{\Sigma}_\mathbf{y}^{-1}\mathbf{A}\right)\mathbf{x}\\
+        & + \mathbf{x}^T\left(\boldsymbol{\Sigma}_\mathbf{x}^{-1}\boldsymbol{\mu}_\mathbf{x} + \mathbf{A}^T\boldsymbol{\Sigma}_\mathbf{y}^{-1}\left[\sum_{i=1}^n\mathbf{y}^i - n\mathbf{b}\right]\right)
+    \end{split}
+\end{equation}
+skąd widzimy, iż rozkład \(\mathbf{x} \mid \mathcal{X}\) jest rozkładem normalnym o parametrach
+\begin{equation}\label{eq:linear_gauss}\boxed{
+    \begin{split}
+        &\boldsymbol{\mu}_{\mathbf{x} \mid \mathcal{X}} = \boldsymbol{\Sigma}_{\mathbf{x} \mid \mathcal{X}} \left(\boldsymbol{\Sigma}_\mathbf{x}^{-1}\boldsymbol{\mu}_\mathbf{x} + \mathbf{A}^T\boldsymbol{\Sigma}_\mathbf{y}^{-1}\left[\sum_{i=1}^n\mathbf{y}^i - n\mathbf{b}\right]\right) \,,\\
+        &\boldsymbol{\Sigma}_{\mathbf{x} \mid \mathcal{X}} = \left(\boldsymbol{\Sigma}_\mathbf{x}^{-1} + n\mathbf{A}^T\boldsymbol{\Sigma}_\mathbf{y}^{-1}\mathbf{A}\right)^{-1}\,.
+    \end{split}
+}\end{equation}
+
+
+\subsection{Regresja liniowa}
+
+Załóżmy, iż modelujemy obserwacje postaci \((y, \mathbf{x})\), gdzie \(y\) to skalar zwany
+\textbf{zmienną objaśnianą}, którego wartość obserwujemy, a \(\mathbf{x}\) to wektor zmiennych
+objaśniających, co do którego zakładamy, iż dla danego pomiaru \(y\) jest on znany dokładnie.
+Dodatkowo załóżmy liniowy model \(\hat{y}(\mathbf{x};\mathbf{w})\) postaci
+\begin{equation}
+    \hat{y}(\mathbf{x};\mathbf{w}) = \mathbf{x}^T\mathbf{w}\,,
+\end{equation}
+w którym mamy dodatkowo \textbf{błąd losowy} \(\epsilon \sim \mathcal{N}(0, \sigma^2)\) z nieznanym
+\(\sigma\). Możemy zatem napisać model statystyczny postaci
+\begin{equation}
+    y(\mathbf{x}) \mid \mathbf{w}, \sigma \sim \mathcal{N}(\hat{y}(\mathbf{x}; \mathbf{w}), \sigma^2)\,,
+\end{equation}
+gdzie \(\mathbf{w}\), \(\sigma\) to estymowane parametry. Powiedzmy, iż mamy zbiór obserwacji i.i.d.
+\(\mathcal{X} = \{y_1(\mathbf{x}^1), \ldots, y_n(\mathbf{x}^n)\}\). Wiarygodność ma zatem postać
+\begin{equation}\boxed{
+    \mathcal{L}(\mathcal{X} ; \mathbf{w}, \sigma) = \frac{1}{(2\pi\sigma^2)^{n/2}} \prod_{i=1}^n \exp\left(-\frac{1}{2\sigma^2}\left[y_i - \hat{y}(\mathbf{x}^i; \mathbf{w})\right]^2\right)\,.
+}\end{equation}
+W przypadku regresji liniowej zamiast pełnego wnioskowania bayesowskiego często stosuje się prostsze
+podejście polegające na ograniczeniu się do znalezienia estymaty punktowej MLE. Zanegowana
+logarytmiczna funkcja wiarygodności, którą będziemy również nazywać \textbf{funkcją kosztu} ma
+postać (pomijamy człony stałe, gdyż nie są one istotne przy dalszej minimalizacji)
+\begin{equation}\boxed{
+    L(\mathcal{X}; \mathbf{w}, \sigma) = n\log\sigma + \frac{1}{2\sigma^2}\sum_{i=1}^n \left[y_i - \hat{y}(\mathbf{x}^i; \mathbf{w})\right]^2 + \mathrm{const.}
+}\end{equation}
+Minimalizując funkcję \(L\) względem \(\mathbf{w}\) i \(\sigma\) otrzymamy estymaty MLE tych
+parametrów. Dla ustalonego stałego \(\sigma\) otrzymana funkcja \(L\) ma postać formy kwadratowej i
+otrzymany przy takim uproszczeniu problem optymalizacyjny nazywamy metodą najmniejszych kwadratów (z
+ang. \textit{Ordinary Least Squares, OLS}). W przypadku modelu liniowego estymatory można znaleźć
+analitycznie rozwiązując układ równań
+\begin{equation}
+    \begin{split}
+        &\pdv{L}{\mathbf{w}_j} = \frac{1}{2\sigma^2}\pdv{~}{\mathbf{w}_j}\sum_{i=1}^n\left[y_i - \mathbf{w}^T\mathbf{x}^i\right]^2 = -\frac{1}{\sigma^2}\sum_{i=1}^n (y_i - \mathbf{w}^T\mathbf{x}^i)\mathbf{x}^i_j = 0\,,\\
+        &\pdv{L}{\sigma} = \frac{n}{\sigma} - \frac{1}{\sigma^3}\sum_{i=1}^n \left[y_i - \hat{y}(\mathbf{x}^i; \mathbf{w})\right]^2 = 0\,.
+    \end{split}
+\end{equation}
+Z powyższego
+\begin{equation}
+    \begin{split}
+        &\sum_{i=1}^n y_i\mathbf{x}^i_j - \mathbf{w}_\mathrm{MLE}^T\sum_{i=1}^n\mathbf{x}^i\mathbf{x}^i_j = 0\,,\\
+        &\sigma_\mathrm{MLE}^2 = \frac{1}{n} \sum_{i=1}^n \left[y_i - \hat{y}(\mathbf{x}^i; \mathbf{w}_\mathrm{MLE})\right]^2\,.\\
+    \end{split}
+\end{equation}
+Wprowadzając wektor \(\mathbf{y}_i := y_i\) oraz macierz \(\mathbf{X}_{ij} := \mathbf{x}^i_j\) możemy
+zapisać pierwsze równanie jako
+\begin{equation}
+    -\mathbf{y}^T\mathbf{X} + \mathbf{w}^T_\mathrm{MLE} \mathbf{X}^T\mathbf{X} = 0\,,
+\end{equation}
+skąd
+\begin{equation}\boxed{
+    \begin{split}
+        &\mathbf{w}_\mathrm{MLE} = \left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T\mathbf{y} = \mathbf{X}^+\mathbf{y}\,,\\
+        &\sigma_\mathrm{MLE}^2 = \frac{1}{n}\left(\mathbf{y} - \mathbf{X}\mathbf{w}_\mathrm{MLE}\right)^T\left(\mathbf{y} - \mathbf{X}\mathbf{w}_\mathrm{MLE}\right)\,,
+    \end{split}
+}\end{equation}
+gdzie \(\mathbf{X}^+\) oznacza \textbf{pseudoodwrotność Moore'a--Penrose'a}, którą można efektywnie
+obliczyć korzystając z rozkładu SVD macierzy \(\mathbf{X}\).
+
+
+\subsection{Regularyzacja}
+
+Regularyzacją  nazywamy proces polegający na wprowadzeniu ad hoc do zagadnienia optymalizacji
+dodatkowych członów tak, aby rozwiązanie było regularne (prostsze, nieosobliwe, jednoznaczne). W
+przypadku funkcji kosztu \(L\) najczęściej dodajemy człon penalizujący rozwiązania o dużej normie
+estymowanego parametru tj. człon postaci \(\gamma \norm{\mathbf{w}}\) dla pewnej normy
+\(\norm{\cdot}\) i hiperparametru \(\gamma\). W kontekście bayesowskim regularyzację można również
+rozumieć jako pewną \enquote{niechęć} (tłumienie, zachowawczość) modelu do zmiany rozkładu a priori
+estymowanego parametru.
+
+W przypadku regresji liniowej jeśli zamiast poszukiwania estymaty MLE będziemy poszukiwać estymaty
+MAP (z ang. \textit{Maximum a Posteriori estimate}) z rozkładem a priori na parametr \(\mathbf{w}\)
+danym przez \(\mathbf{w} \sim \mathcal{N}(\mathbf{0}, \tau^{2}\mathbf{1})\), to logarytm gęstości
+rozkładu a posteriori (który również będziemy nazywać zregularyzowaną funkcją kosztu) ma postać
+(tutaj zakładamy, że \(\sigma\) jest znaną stałą)
+\begin{equation}\boxed{
+    L(\mathcal{X};\mathbf{w}) = \frac{1}{2\sigma^2}\sum_{i=1}^n\left[y_i - \hat{y}(\mathbf{x}^i;\mathbf{w})\right]^2 + \frac{1}{2\tau^2}\mathbf{w}^T\mathbf{w} + \mathrm{const.}
+}\end{equation}
+skąd możemy bez problemy wyznaczyć estymatę punktową MAP parametru \(\mathbf{w}\)
+\begin{equation}
+    \mathbf{w}_\mathrm{MAP} = \left(\gamma \mathbf{1} + \mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T\mathbf{y}\,,
+\end{equation}
+gdzie \(\gamma = \frac{\sigma^2}{\tau^2}\) nazywamy \textbf{siłą regularyzacji}. Zagadnienie
+minimalizacji funkcji kosztu będącej formą kwadratową z dodanym członem regularyzującym w postaci
+sumy kwadratów współrzędnych wektora \(\mathbf{w}\) (normy L2 wektora) nazywamy \textbf{regresją
+grzbietową} (z ang. \textit{ridge regression}), natomiast taką postać członu regularyzującego --
+regularyzacją L2. Zauważmy, że im większa jest wartość \(\gamma\) (mniejsza niepewność związana z
+rozkładem a priori) tym drugi człon w nawiasie staje się mniej istotny.
+
+Innym przykładem regularyzacji jest tzw. regularyzacja L1, która polega na dodaniu do funkcji kosztu
+członu postaci \(\gamma \sum_{j=1}^d |\mathbf{w}_j|\) tj. normy L1 wektora wag. Zagadnie
+optymalizacji formy kwadratowej z członem regularyzującym L1 nazywamy \textbf{regresją LASSO}. W
+takim przypadku nie da się prosto analitycznie znaleźć estymaty punktowej MAP i trzeba używać
+algorytmów optymalizacji numerycznej. W ogólności można połączyć regularyzacje L1 i L2 tj. rozważać
+zregularyzowaną funkcję kosztu postaci (tutaj parametr \(\sigma\) nie występuje, tj. ta funkcja
+kosztu nie ma bezpośredniej interpretacji probabilistycznej jako funkcja wiarygodności)
+\begin{equation}\boxed{
+    L(\mathcal{X};\mathbf{w}) = \frac{1}{2}\sum_{i=1}^n \left[y_i - \hat{y}(\mathbf{x}^i;\mathbf{w})\right]^2 + \frac{\gamma_1}{2}\norm{\mathbf{w}}_1 +  \frac{\gamma_2}{2}\norm{\mathbf{w}}_2\,.
+}\end{equation}
+Zagadnienie minimalizacji takiej funkcji kosztu nazywamy ElasticNet i tak jak w przypadku LASSO
+musimy korzystać z algorytmów optymalizacji numerycznej. Często wykorzystuje się tutaj algorytmy
+bezgradientowe np. coordinate descent.
+
+\subsection{Robust regression}
+
+Jednym z problemów wynikających z modelowania zależności \(y(\mathbf{x})\) przez rozkład normalny
+jest duża czułość takiego modelu na wartości odstające. Wynika to z tego, iż wynikająca z takiego
+modelu funkcja kosztu jest proporcjonalna do kwadratu odległości punktu od prostej regresji. Metody
+robust to zbiór modeli odpornych na wartości odstające, które to modele przypisują im mniejszą wagę
+niż standardowa regresja liniowa. Jednym z modeli robust jest tzw. \textbf{regresja LAD} (z ang.
+\textit{Least Absolute Deviation regression}), która (w ujęciu bayesowskim) modeluje zależność przez
+rozkład Laplace'a, który posiada tzw. ciężkie ogony (z ang. \textit{heavy tails}) i dzięki temu
+przypisuje większe prawdopodobieństwo wartościom odstającym, co sprawia, że model jest na nie mniej
+czuły. Rozkład Laplace'a przekłada się na zmianę w funkcji kosztu kwadratów odległości na wartość
+bezwzględną odległości.
+
+Innym przykładem robust regression jest \textbf{regresja Hubera}, w której heurystycznie wprowadzamy
+funkcję kosztu Hubera (z ang. \textit{Huber loss}) postaci
+\begin{equation}
+    L(\mathcal{X};\mathbf{w}) = \sum_{i=1}^n \ell_\mathrm{H}\left[y_i, \hat{y}(\mathbf{x}^i;\mathbf{w})\right]\,,
+\end{equation}
+gdzie
+\begin{equation}
+    \ell_\mathrm{H}\left[y, \hat{y}(\mathbf{x};\mathbf{w})\right] := \begin{cases}
+        \frac{1}{2}\left[y - \hat{y}(\mathbf{x};\mathbf{w})\right]^2\,,&|y -  \hat{y}(\mathbf{x};\mathbf{w})| \leq \epsilon\\
+        -\frac{1}{2}\epsilon^2 + \epsilon |y -  \hat{y}(\mathbf{x};\mathbf{w})|\,,&|y -  \hat{y}(\mathbf{x};\mathbf{w})| \geq \epsilon
+    \end{cases}\quad,
+\end{equation}
+przy czym \(\epsilon\) jest pewnym hiperparametrem. Widzimy, że koszt Hubera został tak wybrany aby
+być ciągłym i różniczkowalnym połączeniem błędów L1 i L2. Oczywiście możemy dodawać tutaj również
+człony regularyzujące (najczęściej L2).
+
+
+% Procesy Gaussowskie
+% Naiwny klasyfikator bayesowski
+% Estymator jądrowy gęstości
+% Wieloklasowa regresja logistyczna
+% Metryki do oceny klasyfikacji
+% Klasyfikacja ekstremalnie niezbalansowana; Anomaly detection 
+% Importance sampling, Metropolis-Hastings, Gibbs sampling
+% Metody oparte o sąsiedztwo
 
 
 \section{Uczenie głębokie i sieci neuronowe}
@@ -1331,7 +1530,6 @@ rozkładu beta), wówczas nie musimy obliczać czynnika normalizującego, gdyż 
 % 8.  Convolutional networks
 % 9.  Residual networks
 % 10. Transformers
-% 11. Intro to deep unsupervised learning
-% 12. Energy Based Models; RBMs; algorytm (Persistent) Contrastive Divergence
+% 11. Energy Based Models; RBMs; algorytm (Persistent) Contrastive Divergence
     
 \end{document}
