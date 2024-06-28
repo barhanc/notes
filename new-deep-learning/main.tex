@@ -57,12 +57,12 @@ parametryzowana skończoną liczbą parametrów, które możemy łącznie zapisa
 \(\mathbf{w} \in \mathbb{R}^m\). Aby znaleźć parametry \(\mathbf{w}\), dzięki którym dla konkretnego
 zagadnienia model będzie zadowalająco odwzorowywał cechy na predykcje (innymi słowy aby nauczyć
 model) wprowadzamy dodatkowo funkcjonał kosztu (z ang. \textit{loss function})
-\(L[\hat{y}(\mathbf{x};\mathbf{w}), y]\), który kwantyfikuje odpowiedzi modelu \(\phi\) w stosunku do
-znanych prawidłowych odpowiedzi \(y\). Trening modelu polega wówczas na znalezieniu parametrów
-\(\mathbf{w}^*\), które minimalizują sumę wartości funkcji kosztu dla przykładów w zbiorze
-treningowym \(\mathcal{X}\)
+\(\ell[\hat{y}(\mathbf{x};\mathbf{w}), y]\), który kwantyfikuje odpowiedzi modelu \(\phi\) w
+stosunku do znanych prawidłowych odpowiedzi \(y\). Trening modelu polega wówczas na znalezieniu
+parametrów \(\mathbf{w}^*\), które minimalizują sumę wartości funkcji kosztu dla przykładów w
+zbiorze treningowym \(\mathcal{X}\)
 \begin{equation}
-    \mathbf{w}^* = \arg\min_{\mathbf{w}} \sum_{\mu=1}^n L[\hat{y}(\mathbf{x}^\mu;\mathbf{w}), y_\mu]\,.
+    \mathbf{w}^* = \arg\min_{\mathbf{w}} L(\mathcal{X};\mathbf{w}) = \arg\min_{\mathbf{w}} \sum_{\mu=1}^n \ell[\hat{y}(\mathbf{x}^\mu;\mathbf{w}), y_\mu]\,.
 \end{equation}
 Zauważmy, że takie podejście ma jedną zasadniczą wadę -- istotnie nie interesuje nas tak naprawdę,
 jak model radzi sobie na zbiorze treningowym, tylko jak będzie radził sobie na nowych, niewidzianych
@@ -1472,64 +1472,35 @@ algorytmów optymalizacji numerycznej. W ogólności można połączyć regulary
 zregularyzowaną funkcję kosztu postaci (tutaj parametr \(\sigma\) nie występuje, tj. ta funkcja
 kosztu nie ma bezpośredniej interpretacji probabilistycznej jako funkcja wiarygodności)
 \begin{equation}\boxed{
-    L(\mathcal{X};\mathbf{w}) = \frac{1}{2}\sum_{i=1}^n \left[y_i - \hat{y}(\mathbf{x}^i;\mathbf{w})\right]^2 + \frac{\gamma_1}{2}\norm{\mathbf{w}}_1 +  \frac{\gamma_2}{2}\norm{\mathbf{w}}_2\,.
+    L(\mathcal{X};\mathbf{w}) = \frac{1}{2}\sum_{i=1}^n \left[y_i - \hat{y}(\mathbf{x}^i;\mathbf{w})\right]^2 + \frac{\gamma_1}{2}\norm{\mathbf{w}}_1 +  \frac{\gamma_2}{2}\norm{\mathbf{w}}_2^2\,.
 }\end{equation}
 Zagadnienie minimalizacji takiej funkcji kosztu nazywamy ElasticNet i tak jak w przypadku LASSO
 musimy korzystać z algorytmów optymalizacji numerycznej. Często wykorzystuje się tutaj algorytmy
 bezgradientowe np. coordinate descent.
 
-\subsection{Robust regression}
-
-Jednym z problemów wynikających z modelowania zależności \(y(\mathbf{x})\) przez rozkład normalny
-jest duża czułość takiego modelu na wartości odstające. Wynika to z tego, iż wynikająca z takiego
-modelu funkcja kosztu jest proporcjonalna do kwadratu odległości punktu od prostej regresji. Metody
-robust to zbiór modeli odpornych na wartości odstające, które to modele przypisują im mniejszą wagę
-niż standardowa regresja liniowa. Jednym z modeli robust jest tzw. \textbf{regresja LAD} (z ang.
-\textit{Least Absolute Deviation regression}), która (w ujęciu bayesowskim) modeluje zależność przez
-rozkład Laplace'a, który posiada tzw. ciężkie ogony (z ang. \textit{heavy tails}) i dzięki temu
-przypisuje większe prawdopodobieństwo wartościom odstającym, co sprawia, że model jest na nie mniej
-czuły. Rozkład Laplace'a przekłada się na zmianę w funkcji kosztu kwadratów odległości na wartość
-bezwzględną odległości.
-
-Innym przykładem robust regression jest \textbf{regresja Hubera}, w której heurystycznie wprowadzamy
-funkcję kosztu Hubera (z ang. \textit{Huber loss}) postaci
-\begin{equation}
-    L(\mathcal{X};\mathbf{w}) = \sum_{i=1}^n \ell_\mathrm{H}\left[y_i, \hat{y}(\mathbf{x}^i;\mathbf{w})\right]\,,
-\end{equation}
-gdzie
-\begin{equation}
-    \ell_\mathrm{H}\left[y, \hat{y}(\mathbf{x};\mathbf{w})\right] := \begin{cases}
-        \frac{1}{2}\left[y - \hat{y}(\mathbf{x};\mathbf{w})\right]^2\,,&|y -  \hat{y}(\mathbf{x};\mathbf{w})| \leq \epsilon\\
-        -\frac{1}{2}\epsilon^2 + \epsilon |y -  \hat{y}(\mathbf{x};\mathbf{w})|\,,&|y -  \hat{y}(\mathbf{x};\mathbf{w})| \geq \epsilon
-    \end{cases}\quad,
-\end{equation}
-przy czym \(\epsilon\) jest pewnym hiperparametrem. Widzimy, że koszt Hubera został tak wybrany aby
-być ciągłym i różniczkowalnym połączeniem błędów L1 i L2. Oczywiście możemy dodawać tutaj również
-człony regularyzujące (najczęściej L2).
-
-
+% Robust regression
 % Procesy Gaussowskie
+% Metody oparte o sąsiedztwo
 % Naiwny klasyfikator bayesowski
 % Estymator jądrowy gęstości
 % Wieloklasowa regresja logistyczna
 % Metryki do oceny klasyfikacji
 % Klasyfikacja ekstremalnie niezbalansowana; Anomaly detection 
 % Importance sampling, Metropolis-Hastings, Gibbs sampling
-% Metody oparte o sąsiedztwo
 
 
 \section{Uczenie głębokie i sieci neuronowe}
 
-% 1.  Matematyczny model neuronu; Perceptron wielowarstwowy
-% 2.  Universal Approximation Theorem
-% 3.  Loss functions: MLE, univariate regression, multiclass classification, cross-entropy loss
-% 4.  Aspekty optymalizacyjne (gradient descent, stochastic gradient descent, momentum, adam)
-% 5.  Algorytm wstecznej propagacji błędu, automatyczne różniczkowanie
-% 6.  Regularyzacja i inicjalizacja w sieciach głębokich
-% 7.  Measuring performance
-% 8.  Convolutional networks
-% 9.  Residual networks
-% 10. Transformers
-% 11. Energy Based Models; RBMs; algorytm (Persistent) Contrastive Divergence
+% Matematyczny model neuronu; Perceptron wielowarstwowy
+% Universal Approximation Theorem
+% Loss functions: MLE, univariate regression, multiclass classification, cross-entropy loss
+% Aspekty optymalizacyjne (gradient descent, stochastic gradient descent, momentum, adam)
+% Algorytm wstecznej propagacji błędu, automatyczne różniczkowanie
+% Regularyzacja i inicjalizacja w sieciach głębokich
+% Measuring performance
+% Convolutional networks
+% Residual networks
+% Transformers
+% Energy Based Models; RBMs; algorytm (Persistent) Contrastive Divergence
     
 \end{document}
