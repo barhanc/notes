@@ -24,7 +24,7 @@ specyficznych technicznych tematów nie sprawi żadnego problemu.
 \subsection{Notacja}
 
 W dalszej części tekstu będziemy stosować przedstawioną tutaj pokrótce notację. Wektory, które
-traktujemy jako elementy przestrzeni \(\mathbb{R}^d\) ze standardowo zdefiniowanymi operacjami
+traktujemy jako elementy przestrzeni \(\mathbb{R}^d\) ze standardowo zdefiniowanymi mathbfacjami
 dodawania i mnożenia przez skalar będziemy oznaczali wytłuszczonymi małymi literami np.
 \(\mathbf{x}, \mathbf{w}, \boldsymbol{\phi}\). Wielkość \(\mathbf{x}_i\) będzie oznaczać dany
 element wektora (w tym przypadku \(i\)--ty element \(\mathbf{x}\)). Wielkość \(\mathbf{x}^\mu\)
@@ -94,7 +94,7 @@ W dalszej części nie będziemy skupiać się na detalach implementacyjnych. W 
 dziedzina uczenia maszynowego jest przede wszystkim \enquote{nauką eksperymentalną} dlatego bardzo
 ważne jest empiryczne sprawdzenie różnych metod przed wybraniem ostatecznego modelu dla danego
 zagadnienia. W tym paragrafie opisujemy standardowe praktyki stosowane przy treningu modeli uczenia
-maszynowego (głównie nadzorowanych operujących na danych tabelarycznych).
+maszynowego (głównie nadzorowanych mathbfujących na danych tabelarycznych).
 
 
 \subsubsection{Przygotowanie danych}
@@ -929,7 +929,7 @@ Niech \(X, Y\) będą zmiennymi losowymi rzeczywistymi, wówczas
 \end{enumerate}
 \end{theorem}
 
-\begin{definition}[Macierzy kowariancji]
+\begin{definition}[Macierzy kowariancji]\label{def:covmat}
 Macierzą kowariancji \(\mathbf{K}\) \(n\)--wymiarowej zmiennej losowej \(\mathbf{X}\) nazywamy
 macierz \(n \times n\) zdefiniowaną jako
 \begin{equation*}
@@ -944,7 +944,7 @@ lub równoważnie
 \end{equation*}
 \end{definition}
 
-\begin{theorem}[Własności macierzy kowariancji]
+\begin{theorem}[Własności macierzy kowariancji]\label{th:covmat}
 Niech \(\mathbf{K}\) będzie macierzą kowariancji zmiennej \(\mathbf{X}\), wówczas
 \begin{enumerate}
 
@@ -1314,7 +1314,7 @@ postać rozkład a posteriori. Jak już wspomnieliśmy (Tw. \ref{th:mvn}) gdy zm
 dodatnio określoną macierzą kowariancji \(\boldsymbol{\Sigma}\) to wszystkie rozkłady warunkowe i
 brzegowe są rozkładami normalnymi. Poniżej wyznaczymy parametry tych rozkładów.
 
-\begin{theorem}
+\begin{theorem}\label{th:gauss_model}
 Niech zmienne losowe \(\mathbf{x} \in \mathbb{R}^{n-k}\) i \(\mathbf{y} \in \mathbb{R}^k\) mają
 łącznie wielowymiarowy rozkład normalny
 \begin{equation*}
@@ -1480,15 +1480,230 @@ bezgradientowe np. coordinate descent.
 
 \subsection{Robust regression}
 
+Zastanówmy się wpierw na czym tak naprawdę polega modelowanie rozkładu warunkowego \(y(\mathbf{x})
+\mid \mathbf{w}\) za pomocą określonego rozkładu prawdopodobieństwa.
+
+% TODO:...
+
+\subsection{Procesy gaussowskie}
+
+Jak już wspomnieliśmy (Def. \ref{def:covmat}) macierz kowariancji \(n\)--wymiarowej zmiennej losowej
+\(\mathbf{x}\) o wartości oczekiwanej \(\boldsymbol{\mu}\) jest zdefiniowana jako
+\begin{equation}
+    \mathbf{\Sigma} = \mathbb{E}\left[(\mathbf{x} - \boldsymbol{\mu})(\mathbf{x} - \boldsymbol{\mu})^T\right]\,.
+\end{equation}
+Wiemy również (Tw. \ref{th:covmat}), iż macierz ta jest nieujemnie określona. Pokażemy teraz, iż dla
+każdej nieujemnie określonej macierzy symetrycznej \(\mathbf{K}\) wymiaru \(n\times n\) istnieje
+\(n\)--wymiarowa zmienna losowa o wielowymiarowym rozkładzie normalnym, dla której \(\mathbf{K}\)
+jest macierzą kowariancji. Istotnie dla każdej nieujemnie określonej macierzy symetrycznej istnieje
+macierz \(\mathbf{L}\) taka, że
+\begin{equation}
+    \mathbf{K} = \mathbf{L}\mathbf{L}^T\,,
+\end{equation}
+jest to tzw. \textbf{dekompozycja Choleskiego}. Niech \(\mathbf{z} \sim \mathcal{N}(\mathbf{0},
+\mathbf{1})\), wówczas zmienna losowa \(\mathbf{L}\mathbf{z}\) ma rozkład o zerowej wartości
+oczekiwanej i macierzy kowariancji
+\begin{equation}
+    \mathbb{E}\left[(\mathbf{L}\mathbf{z})(\mathbf{L}\mathbf{z})^T\right] = \mathbb{E}\left[\mathbf{L}\mathbf{z}\mathbf{z}^T\mathbf{L}^T\right] = \mathbf{L}\mathbb{E}[\mathbf{z}\mathbf{z}^T]\mathbf{L}^T = \mathbf{L}\mathbf{1}\mathbf{L}^T = \mathbf{K}\,.
+\end{equation}
+Powyższe własności wskazują, iż macierze kowariancji można w pewnym sensie utożsamiać z nieujemnie
+określonymi macierzami symetrycznymi.
+
+\begin{definition}[Funkcji kowariancji]
+Funkcję \(k: \mathbb{R}^n\times\mathbb{R}^n\mapsto\mathbb{R}\) taką, że \(\forall m\in\mathbb{N} :
+\forall X = \{\mathbf{x}^1,\ldots,\mathbf{x}^m\} \subset \mathbb{R}^n\) macierz
+\begin{equation*}
+    k(X,X) = \mqty[k(\mathbf{x}^1, \mathbf{x}^1) & k(\mathbf{x}^1, \mathbf{x}^2) & \cdots & k(\mathbf{x}^1, \mathbf{x}^m)\\
+    k(\mathbf{x}^2, \mathbf{x}^1) & k(\mathbf{x}^2, \mathbf{x}^2) & \cdots & k(\mathbf{x}^2, \mathbf{x}^m)\\
+    \vdots & \vdots & \ddots & \vdots\\
+    k(\mathbf{x}^m, \mathbf{x}^1) & k(\mathbf{x}^m, \mathbf{x}^2) & \cdots & k(\mathbf{x}^m, \mathbf{x}^m)\\]
+\end{equation*}
+jest dodatnio określoną macierzą symetryczną nazywamy funkcją kowariancji, jądrem dodatnio
+określonym (z ang. \textit{positive definite kernel}) lub \textbf{jądrem Mercera}.
+\end{definition}
+
+Dla dwóch zbiorów punktów \(X = \{\mathbf{x}^1,\ldots,\mathbf{x}^m\} \subset \mathbb{R}^n\) i \(Y =
+\{\mathbf{y}^1,\ldots,\mathbf{y}^s\} \subset \mathbb{R}^n\) i funkcji kowariancji \(k\) wprowadzimy
+oznaczenie
+\begin{equation}
+    k(X,Y) := \mqty[k(\mathbf{x}^1, \mathbf{y}^1) & k(\mathbf{x}^1, \mathbf{y}^2) & \cdots & k(\mathbf{x}^1, \mathbf{y}^s)\\
+    k(\mathbf{x}^2, \mathbf{y}^1) & k(\mathbf{x}^2, \mathbf{y}^2) & \cdots & k(\mathbf{x}^2, \mathbf{y}^s)\\
+    \vdots & \vdots & \ddots & \vdots\\
+    k(\mathbf{x}^m, \mathbf{y}^1) & k(\mathbf{x}^m, \mathbf{y}^2) & \cdots & k(\mathbf{x}^m, \mathbf{y}^s)\\]\,.
+\end{equation}
+Poniżej podajemy kilka przykładów funkcji kowariancji
+\begin{itemize}
+    \item \textit{Gaussian kernel} dla normy \(\norm{\cdot}\) i hiper-parametrów \(a,l\) (amplituda
+    i skala długości)
+    \begin{equation}
+        k(\mathbf{x}, \mathbf{y}) = a^2\exp\left\{-\frac{1}{2l^2}\norm{\mathbf{x} - \mathbf{y}}^2\right\}
+    \end{equation}
+    
+    \item \textit{Periodic kernel} dla normy \(\norm{\cdot}\) i hiper-parametrów \(a, l, p\)
+    (amplituda, skala długości, okres zmienności)
+    \begin{equation}
+        k(\mathbf{x},\mathbf{y}) = a^2\exp\left\{-\frac{2}{l^2}\sin^2\left(\frac{\pi}{p}\norm{\mathbf{x} - \mathbf{y}}\right)\right\}
+    \end{equation}
+
+    \item \textit{White noise kernel} dla hiper-parametru \(\sigma\)
+    \begin{equation}
+        k(\mathbf{x},\mathbf{y}) = \sigma^2 \delta_{\mathbf{x},\mathbf{y}}
+    \end{equation}
+
+    \item \textit{Mat\'ern kernel} dla normy \(\norm{\cdot}\) i hiper-parametrów \(a, l, \nu\)
+    (amplituda, skala długości, regularność)
+    \begin{equation}
+        k(\mathbf{x},\mathbf{y}) = a^2 \frac{2^{1-\nu}}{\Gamma(\nu)}\left(\frac{\sqrt{2\nu}}{l}\norm{\mathbf{x} - \mathbf{y}}\right)^\nu K_\nu\left(\frac{\sqrt{2\nu}}{l}\norm{\mathbf{x} - \mathbf{y}}\right)\,,
+    \end{equation}
+    gdzie \(\Gamma(x)\) to funkcja gamma Eulera, a \(K_\nu(x)\) to zmodyfikowana funkcja Bessela
+    2-go rodzaju rzędu \(\nu\).
+
+\end{itemize}
+
+\begin{theorem}[Własności funkcji kowariancji]
+Suma lub iloczyn dwóch funkcji kowariancji oraz złożenie funkcji kowariancji z wielomianem o
+nieujemnych współczynnikach jest również funkcją kowariancji.
+\end{theorem}
+
+\begin{definition}[Procesu gaussowskiego]
+Procesem Gaussowskim (z ang. \textit{Gaussian Process}) nazywamy rodzinę skalarnych zmiennych
+losowych indeksowanych przez punkty \(\mathbf{x} \in \mathbb{R}^n\)
+\begin{equation*}
+    \mathcal{GP} = \left\{f_\mathbf{x} \mid \mathbf{x} \in \mathbb{R}^n\right\}
+\end{equation*}
+taką że każdy skończony podzbiór \(\mathcal{GP}\) ma łącznie wielowymiarowy rozkład normalny tj. dla
+dowolnego zbioru \(X = \{\mathbf{x}^1, \ldots, \mathbf{x}^m\} \subset \mathbb{R}^n\) zachodzi
+\begin{equation*}
+    \mqty[f_{\mathbf{x}^1} \\ \vdots \\ f_{\mathbf{x}^m}] \sim \mathcal{N}(\boldsymbol{\mu}_X, \mathbf{\Sigma}_{X})\,.
+\end{equation*}
+\end{definition}
+
+Zauważmy, iż proces Gaussowski możemy jednoznacznie zdefiniować podając przepisy na parametry
+\(\boldsymbol{\mu}_X\) i \(\mathbf{\Sigma}_X\) dla dowolnego zbioru \(X\). W praktyce często
+przyjmujemy \(\boldsymbol{\mu}_X = \mathbf{0}\), natomiast przepisem na macierz kowariancji może być
+zdefiniowana wyżej funkcja kowariancji \(k(X,X)\) tj.
+\begin{equation}
+    \mqty[f_{\mathbf{x}^1} \\ \vdots \\ f_{\mathbf{x}^m}] \sim \mathcal{N}(\mathbf{0}, k(X,X))\,.
+\end{equation}
+Process Gaussowski daje nam w praktyce rozkład prawdopodobieństwa nad funkcjami
+\(f:\mathbb{R}^n\mapsto\mathbb{R}\), których charakter jest określony przez jądro \(k\) (np. funkcja
+gładka dla jądra Gaussowskiego, okresowa dla jądra periodycznego, itp.). Zauważmy, że nie
+wnioskujemy tu o parametrach konkretnej rodziny funkcji (jak w przypadku regresji liniowej);
+interesuje nas jedynie rozkład predykcyjny. Załóżmy, iż w dokładnie znanych przez nas punktach \(X =
+\{\mathbf{x}^1,\mathbf{x}^2,\ldots,\mathbf{x}^m\}\) zaobserwowaliśmy wartości pewnej funkcji, o
+których zakładamy, iż pochodzą z procesu Gaussowskiego zadanego jądrem \(k\), które wyraża nasze
+założenia a priori co do charakteru badanej funkcji
+\begin{equation}
+    \mathbf{f}_X = \mqty[f_{\mathbf{x}^1} \\ \vdots \\ f_{\mathbf{x}^m}] \sim \mathcal{N}(\mathbf{0}, k(X,X))\,.
+\end{equation}
+Powiedzmy, iż chcemy znać wartości \(\mathbf{f}_Y\) tej funkcji w zadanych punktach \(Y =
+\{\mathbf{y}^1,\mathbf{y}^2,\ldots,\mathbf{y}^s\}\). Ponieważ założyliśmy, iż wartości funkcji
+pochodzą z procesu Gaussowskiego, więc rozkład łączny \(\mathbf{f}_X\) i \(\mathbf{f}_Y\) jest
+rozkładem normalnym
+\begin{equation}
+    \mqty[\mathbf{f}_X \\ \mathbf{f}_Y] \sim \mathcal{N}\left(\mathbf{0}, \mqty[k(X,X) & k(X,Y) \\ k(Y,X) & k(Y,Y)]\right)\,.
+\end{equation}
+Zauważmy, iż jest to instancja modelu gaussowskiego (Tw. \ref{th:gauss_model}), więc rozkład
+warunkowy \(\mathbf{f}_Y\mid \mathbf{f}_X\) jest również rozkładem normalnym o parametrach
+\begin{equation}
+    \begin{split}
+        &\boldsymbol{\mu} = k(Y,X)k^{-1}(X,X)\mathbf{f}_X\\
+        &\mathbf{\Sigma} = k(Y,Y) - k(Y,X)k^{-1}(X,X)k(X,Y)
+    \end{split}\quad.
+\end{equation}
+Dodatkową niepewność związaną z pomiarem wartości \(\mathbf{f}_X\) możemy uchwycić zmieniając postać
+jądra 
+\begin{equation}
+    k(\mathbf{x},\mathbf{y}) \leftarrow k(\mathbf{x},\mathbf{y}) + \mathcal{I}_X(\mathbf{x})\sigma^2\delta_{\mathbf{x},\mathbf{y}}\,,
+\end{equation}
+gdzie \(\sigma\) jest hiper-parametrem określającym precyzję pomiaru. Oczywiście \(k\) jest dalej
+funkcją kowariancji, gdyż takie podstawienie powoduje jedynie dodanie dodatnich członów do pewnych
+elementów diagonalnych macierzy kowariancji, więc macierz ta jest nadal symetryczna i dodatnio
+określona. Wówczas rozkład predykcyjny ma parametry
+\begin{equation}
+    \begin{split}
+        &\boldsymbol{\mu} = k(Y,X)\left[k(X,X) + \sigma^2\mathbf{1}\right]^{-1}\mathbf{f}_X\\
+        &\mathbf{\Sigma} = k(Y,Y) - k(Y,X)\left[k(X,X) + \sigma^2\mathbf{1}\right]^{-1}k(X,Y)
+    \end{split}\quad.
+\end{equation}
 
 
-% Robust regression
-% Procesy Gaussowskie
-% Metody oparte o sąsiedztwo
+\subsection{Metryki do oceny regresji i klasyfikacji}
+
+% TODO:...
+
+
+
+\subsection{Klasyfikator najbliższych sąsiadów}
+
+Do tej pory zajmowaliśmy się problemami regresji ciągłej zmiennej skalarnej. Przechodzimy teraz do
+metod uczenia maszynowego wykorzystywanych dla problemów klasyfikacji. Jako pierwszy rozważmy jeden
+z najprostszych (ale bardzo mocnych) modeli -- klasyfikator \(k\) najbliższych sąsiadów (z ang.
+\textit{k Nearest Neighbors, kNN}). Załóżmy, iż mamy zbiór obserwacji i.i.d. postaci \(\mathcal{X} =
+\{y_1(\mathbf{x}^1), \ldots, y_n(\mathbf{x}^n)\}\) przy czym \(y\) może być zarówno skalarną zmienną
+ciągłą jak i elementem skończonego zbioru klas. Zakładamy, że wektory cech \(\mathbf{x} \in
+\mathbb{R}^d\), a \(\mathsf{d}: \mathbb{R}^d \times \mathbb{R}^d \mapsto I \subseteq \mathbb{R}\)
+jest metryką, półmetryką lub pewną miarą podobieństwa między punktami \(\mathbb{R}^d\). Reguła
+decyzyjna klasyfikatora \(k\) najbliższych sąsiadów polega na znalezieniu dla nowego wektora cech
+\(\mathbf{t}\), \(k\) najbliższych względem funkcji \(\mathsf{d}\) punktów ze zbioru
+\(\{\mathbf{x}^1,\ldots,\mathbf{x}^n\}\) i zwróceniu najczęstszej klasy dla tych sąsiadów. Metodę
+najbliższych sąsiadów można również wykorzystać do regresji, gdzie zwracamy wartość średnią
+arytmetyczną wartości \(y\) dla znalezionych \(k\) najbliższych sąsiadów (powoduje to, że model taki
+potrafi tylko interpolować wartości, więc nie jest dobrym modelem dla regresji). W przypadku
+klasyfikacji możemy natomiast zwracać również rozkład prawdopodobieństwa klas dla nowego wektora
+cech \(\mathbf{t}\) przez podanie stosunków występowania danej klasy wśród \(k\) najbliższych
+sąsiadów do \(k\).
+
+Klasyfikator kNN jest bardzo elastycznym modelem z nieliniową granicą decyzyjną. Jakość klasyfikacji
+silnie zależy od lokalnej gęstości punktów w przestrzeni \(\mathbb{R}^d\) oraz wybranej wartości
+\(k\), będącej hiperparametrem tego modelu. Ogólnie niskie \(k\) powoduje, że kNN ma duży variance i
+dość \enquote{poszarpaną} granicę decyzyjną, natomiast wysokie \(k\) powoduje, że kNN ma duży bias i
+\enquote{gładką} granicę decyzyjną. Typowo wykorzystywane funkcje \(\mathsf{d}\) to
+\begin{itemize}
+
+    \item metryka euklidesowa \(\mathsf{d}(\mathbf{x},\mathbf{y}) = \sqrt{(\mathbf{x} -
+    \mathbf{y})^T(\mathbf{x} - \mathbf{y})}\);
+
+    \item pół-metryka euklidesowa \(\mathsf{d}(\mathbf{x},\mathbf{y}) = (\mathbf{x} -
+    \mathbf{y})^T(\mathbf{x} - \mathbf{y})\);
+
+    \item metryka Manhattan \(\mathsf{d}(\mathbf{x}, \mathbf{y}) = \sum_{i=1}^d |\mathbf{x}_i -
+    \mathbf{y}_i|\);
+    
+    \item podobieństwo cosinusowe \(\mathsf{d}(\mathbf{x}, \mathbf{y}) =
+    \frac{\mathbf{x}^T\mathbf{y}}{\norm{\mathbf{x}}_2 \norm{\mathbf{y}}_2}\)
+    
+\end{itemize}
+
+Jedną z modyfikacji klasyfikatora kNN, który może polepszyć wyniki w przypadku, gdy w naszej
+przestrzeni istnieją obszary, w których mamy małą gęstość punktów ze zbioru \(\mathcal{X}\) jest
+\textbf{ważenie sąsiadów}, które polega na tym, iż prawdopodobieństwa danej klasy wśród \(k\)
+sąsiadów obliczamy teraz jako średnią ważoną, gdzie wagą jest odwrotność odległości danego sąsiada
+od nowego wektora cech \(w(\mathbf{t}, \mathbf{x}) = 1 / \mathsf{d}(\mathbf{t}, \mathbf{x})\).
+
+W przypadku naiwnego kNN podczas treningu zapamiętujemy jedynie zbiór \(\mathcal{X}\) natomiast
+naiwna implementacja predykcji ma złożoność czasową \(O(knd)\), przy założeniu, że złożoność
+obliczenia funkcji \(\mathsf{d}\) dla pary punktów ma złożoność \(O(d)\). Jest to nieakceptowalna
+złożoność, gdyż zwykle chcemy używać klasyfikatora kNN do setek milionów punktów. Dwa podejścia,
+które stosuje się zwykle do rozwiązania tego problemu to: 
+\begin{itemize}
+
+    \item zbudowanie odpowiedniej struktury danych w fazie treningu, aby w czasie predykcji można
+    było szybciej znajdywać najbliższych sąsiadów (np. k-d tree, ball tree);
+
+    \item wykorzystanie algorytmów aproksymacyjnych (z ang. \textit{Approximate Nearest Neighbors,
+    ANN}) do znajdowania sąsiadów, którzy niekoniecznie naprawdę są najbliżsi, ale aproksymacja jest
+    wystarczająco dobra do praktycznych zastosowań.
+
+\end{itemize}
+
+Obecnie to drugie podejście jest dominujące i wykorzystywane na przykład w przypadku dużych modeli
+językowych do wyszukiwania kontekstów dla danych zapytań (z ang. \textit{Retrieval Augmented
+Generation}).
+
 % Naiwny klasyfikator bayesowski
 % Estymator jądrowy gęstości
 % Wieloklasowa regresja logistyczna
-% Metryki do oceny klasyfikacji
 % Klasyfikacja ekstremalnie niezbalansowana; Anomaly detection 
 % Importance sampling, Metropolis-Hastings, Gibbs sampling
 
