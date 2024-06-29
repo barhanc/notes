@@ -59,10 +59,10 @@ zagadnienia model będzie zadowalająco odwzorowywał cechy na predykcje (innymi
 model) wprowadzamy dodatkowo funkcjonał kosztu (z ang. \textit{loss function})
 \(\ell[\hat{y}(\mathbf{x};\mathbf{w}), y]\), który kwantyfikuje odpowiedzi modelu \(\phi\) w
 stosunku do znanych prawidłowych odpowiedzi \(y\). Trening modelu polega wówczas na znalezieniu
-parametrów \(\mathbf{w}^*\), które minimalizują sumę wartości funkcji kosztu dla przykładów w
+parametrów \(\mathbf{w}^*\), które minimalizują średnią z wartości funkcji kosztu dla przykładów w
 zbiorze treningowym \(\mathcal{X}\)
 \begin{equation}
-    \mathbf{w}^* = \arg\min_{\mathbf{w}} L(\mathcal{X};\mathbf{w}) = \arg\min_{\mathbf{w}} \sum_{\mu=1}^n \ell[\hat{y}(\mathbf{x}^\mu;\mathbf{w}), y_\mu]\,.
+    \mathbf{w}^* = \arg\min_{\mathbf{w}} \frac{1}{n}L(\mathcal{X};\mathbf{w}) = \arg\min_{\mathbf{w}} \frac{1}{n}\sum_{\mu=1}^n \ell[\hat{y}(\mathbf{x}^\mu;\mathbf{w}), y_\mu]\,.
 \end{equation}
 Zauważmy, że takie podejście ma jedną zasadniczą wadę -- istotnie nie interesuje nas tak naprawdę,
 jak model radzi sobie na zbiorze treningowym, tylko jak będzie radził sobie na nowych, niewidzianych
@@ -1012,17 +1012,17 @@ Niech \(X_1, X_2, \ldots\) i \(X\) będą zmiennymi losowymi o wartościach w te
 \(\mathcal{X}\).
 
 \begin{definition}[Zbieżności stochastycznej]
-Ciag \((X_n)\) jest zbieżny do \(X\) według prawdopodobieństwa (lub stochastycznie) jeśli dla
-każdego \(\epsilon > 0\)
+Ciag \((X_n)\) jest zbieżny do \(X\) według prawdopodobieństwa (lub stochastycznie) jeśli
 \begin{equation*}
-    \lim_{n \to \infty} P(|X_n - X| < \epsilon) = 1\,.
+    \forall \epsilon > 0, \delta > 0 : \exists N \in \mathbb{N} : \forall n > N : P\left(|X_n - X| > \epsilon\right) < \delta
 \end{equation*}
 \end{definition}
 
 \begin{definition}[Zbieżności z prawdopodobieństwem 1]
-Ciąg \((X_n)\) jest zbieżny do \(X\) z prawdopodobieństwem 1 jeśli
+Ciąg \((X_n)\) jest zbieżny do \(X\) z prawdopodobieństwem 1 (lub prawie na pewno) jeśli dla każdego
+\(\epsilon\)
 \begin{equation*}
-    P\left(\lim_{n \to \infty} X_n = X\right) = 1\,.
+    \forall \epsilon > 0, \delta > 0 : \exists N \in \mathbb{N} : \forall n > N : P\left(\sup_{m \geq n} |X_n - X| >  \epsilon\right) < \delta
 \end{equation*}
 \end{definition}
 
@@ -1478,6 +1478,10 @@ Zagadnienie minimalizacji takiej funkcji kosztu nazywamy ElasticNet i tak jak w 
 musimy korzystać z algorytmów optymalizacji numerycznej. Często wykorzystuje się tutaj algorytmy
 bezgradientowe np. coordinate descent.
 
+\subsection{Robust regression}
+
+
+
 % Robust regression
 % Procesy Gaussowskie
 % Metody oparte o sąsiedztwo
@@ -1493,7 +1497,7 @@ bezgradientowe np. coordinate descent.
 
 % Matematyczny model neuronu; Perceptron wielowarstwowy
 % Universal Approximation Theorem
-% Loss functions: MLE, univariate regression, multiclass classification, cross-entropy loss
+% Loss functions: MLE, univariate regression, multi-class classification, cross-entropy loss
 % Aspekty optymalizacyjne (gradient descent, stochastic gradient descent, momentum, adam)
 % Algorytm wstecznej propagacji błędu, automatyczne różniczkowanie
 % Regularyzacja i inicjalizacja w sieciach głębokich
