@@ -1505,14 +1505,41 @@ rozkład Laplace'a} (z ang. \textit{Asymmetric Laplace Distribution, ALD}).
 Mówimy, iż zmienna losowa rzeczywista \(X\) ma asymetryczny rozkład Laplace'a, tzn. \(X \sim
 \mathrm{ALD}(m, \lambda, q)\) jeśli jej gęstość wyraża się wzorem
 \begin{equation*}
-    p(x) = \frac{q(1-q)}{\lambda}\begin{cases}
-        \e^{}
-        
-    \end{cases}
-
+    p(x; m,\lambda,q) = \frac{q(1-q)}{\lambda}\begin{cases}
+        \e^{-\frac{q-1}{\lambda} (x - m)}\,,&x \leq m\\
+        \e^{-\frac{q}{\lambda} (x - m)}\,,&x \geq m
+    \end{cases}x
 \end{equation*}
 \end{definition}
-
+Zauważmy, że dystrybuanta rozkładu ALD ma postać
+\begin{equation}
+    F(x; m,\lambda,q) = \begin{cases}
+        q \e^{\frac{1-q}{\lambda}(x - m)}\,,&x \leq m\\
+        1 - (1-q)\e^{-\frac{q}{\lambda}(x - m)}\,,&x \geq m
+    \end{cases}
+\end{equation}
+zatem parametr \(q\) określa rząd kwantyla \(m\). W przypadku regresji możemy zatem modelować
+wartość \(y(\mathbf{x})\) przez rozkład ALD dla ustalonego \(q\) postaci
+\begin{equation}
+    y(\mathbf{x}) \mid \mathbf{w}, \lambda \sim \mathrm{ALD}(\hat{y}(\mathbf{x}; \mathbf{w}), \lambda, q)\,,
+\end{equation}
+gdzie \(\lambda\) pełni podobną rolę jak \(\sigma\) w przypadku rozkładu normalnego. Widzimy
+wówczas, iż estymacja MLE \(\mathbf{w}\) daje najlepsze \(\hat{y}\) takie, że ułamek \(1-q\) masy
+prawdopodobieństwa znajduje się pod prostą (estymujemy zatem warunkowy kwantyl rzędu \(q\)).
+Zanegowana logarytmiczna funkcja wiarygodności (inaczej funkcja kosztu) dla modelu ALD ma postać
+\begin{equation}\boxed{
+    L(\mathcal{X}; \mathbf{w}, \lambda) = n \log \lambda + \frac{1}{\lambda}\sum_{i=1}^n \left[(q-1)z_i\theta(-z_i) + qz_i\theta(z_i)\right]\,,
+}\end{equation}
+gdzie
+\begin{equation}
+    z_i := y_i - \hat{y}(\mathbf{x}^i;\mathbf{w})\,,
+\end{equation}
+a \(\theta\) oznacza funkcję skokową Heaviside'a. W przypadku ustalonego, stałego \(\lambda\) taką
+funkcję kosztu nazywamy \textbf{pinball loss}. Modelowanie \(y(\mathbf{x})\) za pomocą rozkładu ALD
+pozwala nam w prosty i \enquote{robust} sposób znaleźć również niepewność naszych predykcji
+punktowych, tj. dla danego zagadnienia dopasowujemy trzy modele oparte na ALD dla \(q = 0.5\)
+(estymacja punktowa, mediana, odporna na outliery) oraz np. \(q = 0.1\) i \(q = 0.9\) (tzw.
+\enquote{widełki}) będące oszacowanie niepewności punktowej estymaty. 
 
 \subsection{Procesy gaussowskie}
 
