@@ -1481,9 +1481,38 @@ bezgradientowe np. coordinate descent.
 \subsection{Robust regression}
 
 Zastanówmy się wpierw na czym tak naprawdę polega modelowanie rozkładu warunkowego \(y(\mathbf{x})
-\mid \mathbf{w}\) za pomocą określonego rozkładu prawdopodobieństwa.
+\mid \mathbf{w}\) za pomocą określonego rozkładu prawdopodobieństwa. Można by było pomyśleć, iż
+takie podejście wprowadza bardzo silne założenia, a co za tym idzie ograniczenia w stosowaniu
+naszego modelu. Zauważmy jednak, iż w przypadku podejścia typu \textit{likelihood} rozkład jest
+niejako wybierany w taki sposób, aby jego parametry były użyteczne. Istotnie w przypadku regresji
+zwykle nie ma jak zweryfikować rzeczywistego rozkładu \(y(\mathbf{x})\), gdyż mamy tylko po jednej
+wartości \(y\) dla danego \(\mathbf{x}\). Modelując \(y(\mathbf{x})\) rozkłxadem normalnym chodzi nam
+zatem raczej o to, że w takim modelu chcemy znaleźć parametr (prostą) taką, że punkty w zbiorze są
+po odpowiednich stronach owej prostej zgodnie z gęstością prawdopodobieństwa, która jest symetryczna
+i ma właśnie kształt dzwonu, tj. dużo masy prawdopodobieństwa jest zebrane w niewielkiej odległości
+od estymowanej prostej.
 
-% TODO:...
+W takim ujęciu możemy zakładać różne inne rozkłady na \(y(\mathbf{x})\) jeśli interesują nas proste,
+które inaczej mają rozdzielać masę prawdopodobieństwa między punkty. Problemem w przypadku rozkładu
+normalnego jest jego czułość na wartości odstające, gdyż w rozkładzie normalnym ogony tego rozkładu
+mają stosunkowo niewielką masę prawdopodobieństwa. Chcielibyśmy zatem rozkład z tzw. ciężkimi
+ogonami (z ang. \textit{heavy tails}). Dodatkowo chcielibyśmy mieć rozkład, który pozwala znaleźć
+prostą, która nie rozkłada masy po równo, ale np. tak, że 90\% masy prawdopodobieństwa jest pod nią.
+Oba te problemy możemy rozwiązać modelując rozkład \(y(\mathbf{x})\) przez tzw. \textbf{asymetryczny
+rozkład Laplace'a} (z ang. \textit{Asymmetric Laplace Distribution, ALD}).
+
+\begin{definition}[Asymetrycznego Rozkładu Laplace'a]
+Mówimy, iż zmienna losowa rzeczywista \(X\) ma asymetryczny rozkład Laplace'a, tzn. \(X \sim
+\mathrm{ALD}(m, \lambda, q)\) jeśli jej gęstość wyraża się wzorem
+\begin{equation*}
+    p(x) = \frac{q(1-q)}{\lambda}\begin{cases}
+        \e^{}
+        
+    \end{cases}
+
+\end{equation*}
+\end{definition}
+
 
 \subsection{Procesy gaussowskie}
 
@@ -1630,8 +1659,19 @@ określona. Wówczas rozkład predykcyjny ma parametry
 
 \subsection{Metryki do oceny regresji i klasyfikacji}
 
+Wcześniej nie wspominaliśmy nic o metodach sprawdzenia jakości modelu po wytrenowaniu. Zasadniczo,
+aby ocenić predykcje modelu używamy odpowiednich metryk, których wartości określają jak dobry jest
+model.
+
 % TODO:...
 
+\subsubsection{Regresja}
+
+\subsubsection{Prognozowanie szeregów czasowych}
+
+\subsubsection{Klasyfikacja binarna}
+
+\subsubsection{Klasyfikacja wieloklasowa}
 
 
 \subsection{Klasyfikator najbliższych sąsiadów}
@@ -1701,11 +1741,24 @@ Obecnie to drugie podejście jest dominujące i wykorzystywane na przykład w pr
 językowych do wyszukiwania kontekstów dla danych zapytań (z ang. \textit{Retrieval Augmented
 Generation}).
 
-% Naiwny klasyfikator bayesowski
-% Estymator jądrowy gęstości
-% Wieloklasowa regresja logistyczna
-% Klasyfikacja ekstremalnie niezbalansowana; Anomaly detection 
-% Importance sampling, Metropolis-Hastings, Gibbs sampling
+\subsection{Naiwny klasyfikator bayesowski}
+
+
+\subsection{Estymator jądrowy gęstości}
+
+
+\subsection{Wieloklasowa regresja logistyczna}
+
+
+\subsection{Klasyfikacja ekstremalnie niezbalansowana i anomaly detection}
+
+
+\subsection{Próbkowanie Monte Carlo łańcuchami Markowa}
+
+\subsubsection{Algorytm Metropolisa--Hastingsa}
+
+\subsubsection{Próbkowanie Gibbsa}
+
 
 
 \section{Uczenie głębokie i sieci neuronowe}
@@ -1720,6 +1773,5 @@ Generation}).
 % Convolutional networks
 % Residual networks
 % Transformers
-% Energy Based Models; RBMs; algorytm (Persistent) Contrastive Divergence
     
 \end{document}
