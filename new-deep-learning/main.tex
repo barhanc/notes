@@ -1283,7 +1283,7 @@ wiarygodności (nie należy mylić z przedziałem ufności). Możemy również s
 predykcyjny (z ang. \textit{posterior predictive distribution}) określający prawdopodobieństwo
 uzyskania nowej obserwacji \(\mathbf{t}\)\
 \begin{equation}
-    p(\mathbf{t} \mid \mathcal{X}) = \int\limits_\Theta p(\mathbf{t} \mid \boldsymbol{\theta}) p(\boldsymbol{\theta} \mid \mathcal{X}) \dd[n]{\boldsymbol{\theta}}\,.
+    p(\mathbf{t} \mid \mathcal{X}) = \int\limits_\Theta p(\mathbf{t} \mid \boldsymbol{\theta}) p(\boldsymbol{\theta} \mid \mathcal{X}) \dd[k]{\boldsymbol{\theta}}\,.
 \end{equation}
 
 Znając rozkład a posteriori estymowanego parametru \(\boldsymbol{\theta}\) możemy nie tylko
@@ -1292,7 +1292,7 @@ estymator Bayesa (z ang. \textit{Bayes estimator}), który minimalizuje wartoś�
 funkcji straty (z ang. \textit{loss function}) \(L(\boldsymbol{\theta}, \boldsymbol{\hat \theta})\)
 po wszystkich estymatorach \(\boldsymbol{\hat \theta}\)
 \begin{equation}
-    \boldsymbol{\hat \theta}_\mathrm{Bayes}(\mathcal{X}) = \arg\min_{\boldsymbol{\hat \theta} \in \Theta} \int\limits_{\Theta} L(\boldsymbol{\theta}, \boldsymbol{\hat \theta}) p(\boldsymbol{\theta} \mid \mathcal{X}) \dd[n]{\boldsymbol{\theta}}\,.
+    \boldsymbol{\hat \theta}_\mathrm{Bayes}(\mathcal{X}) = \arg\min_{\boldsymbol{\hat \theta} \in \Theta} \int\limits_{\Theta} L(\boldsymbol{\theta}, \boldsymbol{\hat \theta}) p(\boldsymbol{\theta} \mid \mathcal{X}) \dd[k]{\boldsymbol{\theta}}\,.
 \end{equation}
 Całkę w powyższym wzorze nazywa się również funkcją ryzyka (z ang. \textit{risk function})
 \(R(\boldsymbol{\hat \theta})\), która określa oczekiwaną stratę spowodowaną wykorzystaniem danego
@@ -1770,7 +1770,7 @@ Metryką, która łączy precision i recall jest \textbf{\(F_\beta\)--score} zde
 gdzie \(\beta\) określa ile razy bardziej ważny jest recall od precision. Typowo używa się
 \(F_1\)--score
 \begin{equation}
-    F_1 = \frac{\mathrm{Precision} \cdot \mathrm{Recall}}{\mathrm{Precision} + \mathrm{Recall}}\,. 
+    F_1 = 2\frac{\mathrm{Precision} \cdot \mathrm{Recall}}{\mathrm{Precision} + \mathrm{Recall}}\,. 
 \end{equation}
 
 Wiele klasyfikatorów oprócz twardych predykcji zwraca również rozkład prawdopodobieństwa nad
