@@ -442,7 +442,7 @@ przeliczalny zbiór \(\mathcal{S} \subset \mathbb{R}\) taki, że
     P( X \in \mathcal{S} ) = 1\,.
 \end{equation*}
 Dla takiej zmiennej określa się funkcję prawdopodobieństwa (z ang. \textit{probability mass
-function}, pmf)
+function, pmf})
 \begin{equation*}
     p(x) = P(X = x)\,,\quad x \in \mathcal{S}\,.
 \end{equation*}
@@ -458,7 +458,7 @@ Mówimy, że zmienna losowa rzeczywista \(X\) ma rozkład ciągły jeśli istnie
     P(X \in (a;b)) = \int\limits_a^b p(x) \dd{x}\,.
 \end{equation*}
 Funkcję \(p\) nazywamy gęstością rozkładu prawdopodobieństwa (z ang. \textit{probability density
-function}, pdf).
+function, pdf}).
 \end{definition}
 
 Jeśli \(X\) jest zmienną losową rzeczywistą o rozkładzie ciągłym to wartość dystrybuanty jest dana
@@ -1486,7 +1486,7 @@ takie podejście wprowadza bardzo silne założenia, a co za tym idzie ogranicze
 naszego modelu. Zauważmy jednak, iż w przypadku podejścia typu \textit{likelihood} rozkład jest
 niejako wybierany w taki sposób, aby jego parametry były użyteczne. Istotnie w przypadku regresji
 zwykle nie ma jak zweryfikować rzeczywistego rozkładu \(y(\mathbf{x})\), gdyż mamy tylko po jednej
-wartości \(y\) dla danego \(\mathbf{x}\). Modelując \(y(\mathbf{x})\) rozkłxadem normalnym chodzi nam
+wartości \(y\) dla danego \(\mathbf{x}\). Modelując \(y(\mathbf{x})\) rozkładem normalnym chodzi nam
 zatem raczej o to, że w takim modelu chcemy znaleźć parametr (prostą) taką, że punkty w zbiorze są
 po odpowiednich stronach owej prostej zgodnie z gęstością prawdopodobieństwa, która jest symetryczna
 i ma właśnie kształt dzwonu, tj. dużo masy prawdopodobieństwa jest zebrane w niewielkiej odległości
@@ -1501,14 +1501,14 @@ prostą, która nie rozkłada masy po równo, ale np. tak, że 90\% masy prawdop
 Oba te problemy możemy rozwiązać modelując rozkład \(y(\mathbf{x})\) przez tzw. \textbf{asymetryczny
 rozkład Laplace'a} (z ang. \textit{Asymmetric Laplace Distribution, ALD}).
 
-\begin{definition}[Asymetrycznego Rozkładu Laplace'a]
+\begin{definition}[Asymetrycznego rozkładu Laplace'a]
 Mówimy, iż zmienna losowa rzeczywista \(X\) ma asymetryczny rozkład Laplace'a, tzn. \(X \sim
 \mathrm{ALD}(m, \lambda, q)\) jeśli jej gęstość wyraża się wzorem
 \begin{equation*}
     p(x; m,\lambda,q) = \frac{q(1-q)}{\lambda}\begin{cases}
         \e^{-\frac{q-1}{\lambda} (x - m)}\,,&x \leq m\\
         \e^{-\frac{q}{\lambda} (x - m)}\,,&x \geq m
-    \end{cases}x
+    \end{cases}\quad.
 \end{equation*}
 \end{definition}
 Zauważmy, że dystrybuanta rozkładu ALD ma postać
@@ -1539,7 +1539,8 @@ funkcję kosztu nazywamy \textbf{pinball loss}. Modelowanie \(y(\mathbf{x})\) za
 pozwala nam w prosty i \enquote{robust} sposób znaleźć również niepewność naszych predykcji
 punktowych, tj. dla danego zagadnienia dopasowujemy trzy modele oparte na ALD dla \(q = 0.5\)
 (estymacja punktowa, mediana, odporna na outliery) oraz np. \(q = 0.1\) i \(q = 0.9\) (tzw.
-\enquote{widełki}) będące oszacowanie niepewności punktowej estymaty. 
+\enquote{widełki}) będące oszacowaniem niepewności punktowej estymaty. 
+
 
 \subsection{Procesy gaussowskie}
 
@@ -1690,13 +1691,56 @@ Wcześniej nie wspominaliśmy nic o metodach sprawdzenia jakości modelu po wytr
 aby ocenić predykcje modelu używamy odpowiednich metryk, których wartości określają jak dobry jest
 model.
 
-% TODO:...
 
 \subsubsection{Regresja}
 
-\subsubsection{Prognozowanie szeregów czasowych}
+W przypadku regresji najczęściej używanymi metrykami są RMSE (z ang. \textit{Root Mean Squared
+Error}) oraz MAE (z ang. \textit{Mean Absolute Error}) zdefiniowane odpowiednio jako
+\begin{equation}
+    \begin{split}
+        &\mathrm{RMSE} := \sqrt{\frac{1}{n}\sum_{i=1}^n (y_i - \hat{y}_i)^2}\,,\\
+        &\mathrm{MAE} := \frac{1}{n}\sum_{i=1}^n|y_i - \hat{y}_i|\,.
+    \end{split}
+\end{equation}
+Metryki te mają jednakową jednostkę jak predykcje. Jeśli chcielibyśmy mieć liczbę względną
+określającą jakość modelu to mamy do dyspozycji metryki MAPE (z ang. \textit{Mean Absolute
+Percentage Error}) oraz sMAPE (z ang. \textit{Symmetric Mean Absolute Percentage Error})
+zdefiniowane odpowiednio jako
+\begin{equation}
+    \begin{split}
+        &\mathrm{MAPE} := \frac{1}{n}\sum_{i=1}^n\left|\frac{y_i - \hat{y}_i}{y_i}\right|\,,\\
+        &\mathrm{sMAPE} := \frac{1}{n}\sum_{i=1}^n \frac{|y_i - \hat{y}_i|}{|y_i| + |\hat{y}_i|}\,.\\
+    \end{split}
+\end{equation}
+Obie te metryki mają zakres od 0 do 1, przy czym niższa wartość oznacza lepszy model. Metryki te
+mają jednak szereg problemów, z których najpoważniejsze to: problemy, gdy wartości są bliskie 0,
+asymetryczne traktowanie predykcji za dużych oraz za małych. Z tych powodów znacznie lepszą względną
+metryką jest MASE (z ang. \textit{Mean Absolute Scaled Error})
+\begin{equation}
+    \mathrm{MASE} := \frac{\sum_{i=1}^n |y_i - \hat{y}_i|}{\sum_{i=1}^n |y_i - \overline{y}|}\,,
+\end{equation}
+gdzie \(\overline{y} = \frac{1}{n}\sum_{i=1}^n y_i\).
+
 
 \subsubsection{Klasyfikacja binarna}
+
+W przypadku zadania klasyfikacji binarnej naszym celem dla danego wektora cech jest zwrócenie jednej
+z dwóch klas, które będziemy nazywać klasą pozytywną i negatywną. O ile w przypadku regresji pomiar
+jakości modelu był całkiem prosty, o tyle w przypadku klasyfikacji sytuacja jest nieco bardziej
+skomplikowana. Zauważmy bowiem, iż mamy 4 możliwości odpowiedzi klasyfikatora
+\begin{itemize}
+
+    \item \textit{True Positive (TP)} -- poprawnie zaklasyfikowaliśmy klasę pozytywną jako pozytywną
+    
+    \item \textit{True Negative (TN)} -- poprawnie zaklasyfikowaliśmy klasę negatywną jako negatywną
+
+    \item \textit{False Positive (FP)} -- niepoprawnie zaklasyfikowaliśmy klasę negatywną jako
+    pozytywną
+
+    \item \textit{False Negative (FN)} -- niepoprawnie zaklasyfikowaliśmy klasę pozytywną jako
+    negatywną
+    
+\end{itemize}
 
 \subsubsection{Klasyfikacja wieloklasowa}
 
