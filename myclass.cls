@@ -1,15 +1,31 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{myclass}
 
-\LoadClass{article}
+\LoadClass[11pt]{article}
+\RequirePackage{geometry}
+\geometry{
+    papersize={7in,9in},
+    bottom=3pc,
+    top=5pc,
+    left=5pc,
+    right=5pc,
+    bmargin=4.5pc,
+    footskip=18pt,
+    headsep=25pt}
+
 
 % ******* Packages *******
 \usepackage{amssymb}
-\usepackage{amsmath, amsfonts, enumerate, graphicx, 
-            mathrsfs, physics, wasysym, xcolor}
+\usepackage{amsmath, amsfonts, amsthm, enumerate, 
+            mathrsfs, physics, wasysym, xcolor,
+            csquotes, graphicx, fancyhdr}
 
 % ******* Additional packages *******
-\usepackage{lipsum, csquotes, amsthm}
+\usepackage{lipsum}
+
+% ******* Fancy header *******
+\fancyhf{} \lhead{\leftmark} \rhead{\thepage} 
+\pagestyle{fancy}
 
 % ******* Custom symbols *******
 \newcommand{\e}{\mathrm{e}}
