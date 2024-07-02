@@ -1228,7 +1228,7 @@ Jeśli MLE nie da się wyliczyć analitycznie, wyznacza się je przy użyciu alg
 numerycznej. Estymatory MLE są asymptotycznie nieobciążone.
 
 
-\section{Elementy statystycznego uczenia maszynowego}
+\section{Podstawy statystycznego uczenia maszynowego}
 
 Przechodzimy teraz do zagadnień uczenia maszynowego, w których wykorzystamy przedstawioną wcześniej
 teorię rachunku prawdopodobieństwa (w szczególności teorię zmiennych losowych) oraz wnioskowania
@@ -1691,26 +1691,19 @@ Wcześniej nie wspominaliśmy nic o metodach sprawdzenia jakości modelu po wytr
 aby ocenić predykcje modelu używamy odpowiednich metryk, których wartości określają jak dobry jest
 model.
 
-
 \subsubsection{Regresja}
 
 W przypadku regresji najczęściej używanymi metrykami są RMSE (z ang. \textit{Root Mean Squared
 Error}) oraz MAE (z ang. \textit{Mean Absolute Error}) zdefiniowane odpowiednio jako
 \begin{equation}
-    \begin{split}
-        &\mathrm{RMSE} := \sqrt{\frac{1}{n}\sum_{i=1}^n (y_i - \hat{y}_i)^2}\,,\\
-        &\mathrm{MAE} := \frac{1}{n}\sum_{i=1}^n|y_i - \hat{y}_i|\,.
-    \end{split}
+    \mathrm{RMSE} := \sqrt{\frac{1}{n}\sum_{i=1}^n (y_i - \hat{y}_i)^2}\,,\quad\mathrm{MAE} := \frac{1}{n}\sum_{i=1}^n|y_i - \hat{y}_i|\,.
 \end{equation}
 Metryki te mają jednakową jednostkę jak predykcje. Jeśli chcielibyśmy mieć liczbę względną
 określającą jakość modelu to mamy do dyspozycji metryki MAPE (z ang. \textit{Mean Absolute
-Percentage Error}) oraz sMAPE (z ang. \textit{Symmetric Mean Absolute Percentage Error})
+Percentage Error}) oraz SMAPE (z ang. \textit{Symmetric Mean Absolute Percentage Error})
 zdefiniowane odpowiednio jako
 \begin{equation}
-    \begin{split}
-        &\mathrm{MAPE} := \frac{1}{n}\sum_{i=1}^n\left|\frac{y_i - \hat{y}_i}{y_i}\right|\,,\\
-        &\mathrm{sMAPE} := \frac{1}{n}\sum_{i=1}^n \frac{|y_i - \hat{y}_i|}{|y_i| + |\hat{y}_i|}\,.\\
-    \end{split}
+    \mathrm{MAPE} := \frac{1}{n}\sum_{i=1}^n\left|\frac{y_i - \hat{y}_i}{y_i}\right|\,,\quad\mathrm{SMAPE} := \frac{1}{n}\sum_{i=1}^n \frac{|y_i - \hat{y}_i|}{|y_i| + |\hat{y}_i|}\,.\\
 \end{equation}
 Obie te metryki mają zakres od 0 do 1, przy czym niższa wartość oznacza lepszy model. Metryki te
 mają jednak szereg problemów, z których najpoważniejsze to: problemy, gdy wartości są bliskie 0,
@@ -1719,7 +1712,8 @@ metryką jest MASE (z ang. \textit{Mean Absolute Scaled Error})
 \begin{equation}
     \mathrm{MASE} := \frac{\sum_{i=1}^n |y_i - \hat{y}_i|}{\sum_{i=1}^n |y_i - \overline{y}|}\,,
 \end{equation}
-gdzie \(\overline{y} = \frac{1}{n}\sum_{i=1}^n y_i\).
+gdzie \(\overline{y} = \frac{1}{n}\sum_{i=1}^n y_i\). Metryka MASE jest zatem względnym błędem MAE
+jaki popełnia nasz model w stosunku do modelu naiwnego, który przewiduje zawsze wartość średnią.
 
 
 \subsubsection{Klasyfikacja binarna}
@@ -1742,7 +1736,89 @@ skomplikowana. Zauważmy bowiem, iż mamy 4 możliwości odpowiedzi klasyfikator
     
 \end{itemize}
 
+Na podstawie ilości TP, TN, FP i FN w zbiorze testowym możemy wykreślić tzw. \textbf{macierz
+pomyłek} (z ang. \textit{confusion matrix}) pokazującą ilość każdej z możliwości. Następnie możemy
+obliczyć różne stosunki tych wartości, aby uzyskać różne metryki. Najbardziej standardowymi są
+\textbf{accuracy}, \textbf{precision} oraz \textbf{recall} (lub inaczej sensitivity) zdefiniowane
+jako
+\begin{equation}
+    \mathrm{Accuracy} := \frac{\mathrm{TP} + \mathrm{TN}}{n}\,,\quad\mathrm{Precision} := \frac{\mathrm{TP}}{\mathrm{TP} + \mathrm{FP}}\,,\quad\mathrm{Recall} := \frac{\mathrm{TP}}{\mathrm{TP} + \mathrm{FN}}\,.
+\end{equation}
+Wartość accuracy mówi po prostu jaki stosunek przykładów został poprawnie zaklasyfikowany (zauważmy
+tutaj, że \(\mathrm{TP + TN + FP + FN} = n\)). Nie jest to jednak dobra miara jakości, gdy nasz
+zbiór jest niezbalansowany, tj. zawiera więcej przykładów określonej klasy.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figs/confusionMatrix.jpg}
+    \label{fig:confusionMatrix}
+    \caption{Macierz pomyłek oraz możliwe metryki oceny jakości klasyfikatora}
+\end{figure}
+
+Wartość precision określa jak pewny jest klasyfikator przy wykrywaniu klasy pozytywnej, natomiast
+recall mówi o tym jak dobrze klasyfikator \enquote{wyławia} przykłady pozytywne. Zauważmy jednak, iż
+nie możemy stosować żadnej z tych metryk w odosobnieniu. Istotnie klasyfikator, który zwraca zawsze
+klasę pozytywną ma maksymalny recall, a klasyfikator, który zwraca zawsze klasę negatywną ma
+nieokreślony precision (i jest oczywiście beznadziejnym klasyfikatorem). Musimy więc zawsze
+ewaluować model na obu tych metrykach i jedynie dobry wynik obu z nich mówi o jakości klasyfikatora.
+Oczywiście czasami chcielibyśmy określić jakość modelu za pomocą jednej liczby, a niekoniecznie
+sprawdzać zawsze macierz pomyłek (choć jest to bardzo użyteczne) lub podawać wartości dwóch metryk.
+Metryką, która łączy precision i recall jest \textbf{\(F_\beta\)--score} zdefiniowany jako
+\begin{equation}
+    F_\beta := (1 + \beta^2) \frac{\mathrm{Precision} \cdot \mathrm{Recall}}{\beta^2 \cdot \mathrm{Precision} + \mathrm{Recall}}\,, 
+\end{equation}
+gdzie \(\beta\) określa ile razy bardziej ważny jest recall od precision. Typowo używa się
+\(F_1\)--score
+\begin{equation}
+    F_1 = \frac{\mathrm{Precision} \cdot \mathrm{Recall}}{\mathrm{Precision} + \mathrm{Recall}}\,. 
+\end{equation}
+
+Wiele klasyfikatorów oprócz twardych predykcji zwraca również rozkład prawdopodobieństwa nad
+klasami. W przypadku klasyfikacji binarnej jest to oczywiście rozkład zero-jedynkowy z parametrem
+\(p\) określającym prawdopodobieństwo klasy pozytywnej dla danego wektora cech. Standardowo
+oczywiście twardą predykcją jest ta z klas, która ma większe prawdopodobieństwo, czyli (co
+równoważne) predykcją jest klasa pozytywna jeśli \(p > 0.5\). W niektórych problemach chcemy jednak
+zmienić ten próg i dokonać tzw. \textit{threshold tuning}. Wykresem, który pozwala na dokonanie
+tuningu progu jest \textbf{krzywa ROC} (z ang. \textit{Receiver Operatic Characteristic curve}),
+która jest krzywą parametryczną wyznaczoną przez punkty \((\mathrm{FPR}(\mathrm{threshold}),
+\mathrm{TPR}(\mathrm{threshold}))\) dla progów z zakresu \([0;1]\), gdzie
+\begin{equation}
+    \mathrm{TPR} := \frac{\mathrm{TP}}{\mathrm{TP + FN}}\,,\quad \mathrm{FPR} := \frac{\mathrm{FP}}{\mathrm{FP + TN}}\,.
+\end{equation}
+Metryką niezależną od wybranego progu jest tzw. \textbf{AUROC} (z ang. \textit{Area under ROC
+curve}) zdefiniowany jako pole powierzchni pod krzywą ROC dla danego klasyfikatora. Zauważmy, że
+klasyfikator losowy, który zwraca zawsze klasę pozytywną z prawdopodobieństwem równym wartości progu
+ma wartość AUROC równą 0.5, natomiast idealny klasyfikator, który niezależnie od wartości progu
+klasyfikuje wszystkie przykłady poprawnie ma AUROC równy 1.
+
+Inną analogiczną metryką jest \textbf{AUPRC}, gdzie zamiast krzywej ROC stosujemy krzywą
+\textbf{PRC} (z ang. \textit{Precision--Recall Curve}), w której zamiast TPR i FPR używamy
+odpowiednio Precision i Recall.
+
+
 \subsubsection{Klasyfikacja wieloklasowa}
+
+W przypadku klasyfikacji wieloklasowej używamy zasadniczo takich samych metryk jak w klasyfikacji
+binarnej, ale wprowadzamy mikro i makro uśrednianie (z ang. \textit{micro/macro-averaging}). Przez
+\(\mathrm{TP}_k\) będziemy rozumieć liczbę prawidłowo zaklasyfikowanych przykładów z klasy \(k\),
+\(\mathrm{FP}_k\) to liczba przykładów z innych klas, które zaklasyfikowaliśmy nieprawidłowo jako
+\(k\)--tą klasę, \(\mathrm{FN}_k\) to liczba przykładów z klasy \(k\), które zaklasyfikowaliśmy jako
+inną klasę. Wówczas odpowiednie metryki mają postać
+\begin{equation}
+    \begin{split}
+        &\mathrm{MicroPrecision} := \frac{\sum_{k} \mathrm{TP}_k}{\sum_{k} \mathrm{TP}_k + \sum_{k} \mathrm{FP}_k}\,,\\
+        &\mathrm{MacroPrecision} := \frac{1}{K} \sum_{k=1}^K \frac{\mathrm{TP}_k}{\mathrm{TP}_k + \mathrm{FP}_k}
+    \end{split}
+\end{equation}
+oraz
+\begin{equation}
+    \begin{split}
+        &\mathrm{MicroRecall} := \frac{\sum_{k} \mathrm{TP}_k}{\sum_{k} \mathrm{TP}_k + \sum_{k} \mathrm{FN}_k}\,,\\
+        &\mathrm{MacroRecall} := \frac{1}{K} \sum_{k=1}^K \frac{\mathrm{TP}_k}{\mathrm{TP}_k + \mathrm{FN}_k}\,.
+    \end{split}
+\end{equation}
+W przypadku klasyfikacji wieloklasowej macierz pomyłek jest macierzą wymiaru \(K \times K\), gdzie
+\(K\) jest liczbą klas.
 
 
 \subsection{Klasyfikator najbliższych sąsiadów}
@@ -1751,11 +1827,11 @@ Do tej pory zajmowaliśmy się problemami regresji ciągłej zmiennej skalarnej.
 metod uczenia maszynowego wykorzystywanych dla problemów klasyfikacji. Jako pierwszy rozważmy jeden
 z najprostszych (ale bardzo mocnych) modeli -- klasyfikator \(k\) najbliższych sąsiadów (z ang.
 \textit{k Nearest Neighbors, kNN}). Załóżmy, iż mamy zbiór obserwacji i.i.d. postaci \(\mathcal{X} =
-\{y_1(\mathbf{x}^1), \ldots, y_n(\mathbf{x}^n)\}\) przy czym \(y\) może być zarówno skalarną zmienną
-ciągłą jak i elementem skończonego zbioru klas. Zakładamy, że wektory cech \(\mathbf{x} \in
-\mathbb{R}^d\), a \(\mathsf{d}: \mathbb{R}^d \times \mathbb{R}^d \mapsto I \subseteq \mathbb{R}\)
-jest metryką, półmetryką lub pewną miarą podobieństwa między punktami \(\mathbb{R}^d\). Reguła
-decyzyjna klasyfikatora \(k\) najbliższych sąsiadów polega na znalezieniu dla nowego wektora cech
+\{y_i(\mathbf{x}^i)\}_{i=1}^n\) przy czym \(y\) może być zarówno skalarną zmienną ciągłą jak i
+elementem skończonego zbioru klas. Zakładamy, że wektory cech \(\mathbf{x} \in \mathbb{R}^d\), a
+\(\mathsf{d}: \mathbb{R}^d \times \mathbb{R}^d \mapsto I \subseteq \mathbb{R}\) jest metryką,
+półmetryką lub pewną miarą podobieństwa między punktami \(\mathbb{R}^d\). Reguła decyzyjna
+klasyfikatora \(k\) najbliższych sąsiadów polega na znalezieniu dla nowego wektora cech
 \(\mathbf{t}\), \(k\) najbliższych względem funkcji \(\mathsf{d}\) punktów ze zbioru
 \(\{\mathbf{x}^1,\ldots,\mathbf{x}^n\}\) i zwróceniu najczęstszej klasy dla tych sąsiadów. Metodę
 najbliższych sąsiadów można również wykorzystać do regresji, gdzie zwracamy wartość średnią
@@ -1812,6 +1888,7 @@ Obecnie to drugie podejście jest dominujące i wykorzystywane na przykład w pr
 językowych do wyszukiwania kontekstów dla danych zapytań (z ang. \textit{Retrieval Augmented
 Generation}).
 
+
 \subsection{Naiwny klasyfikator bayesowski}
 
 
@@ -1821,7 +1898,7 @@ Generation}).
 \subsection{Wieloklasowa regresja logistyczna}
 
 
-\subsection{Klasyfikacja ekstremalnie niezbalansowana i anomaly detection}
+\subsection{Anomaly detection}
 
 
 \subsection{Próbkowanie Monte Carlo łańcuchami Markowa}
