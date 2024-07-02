@@ -1891,8 +1891,59 @@ Generation}).
 
 \subsection{Naiwny klasyfikator bayesowski}
 
+Rozważamy dalej problem klasyfikacji, w którym mamy zbiór przykładów i.i.d. postaci \(\mathcal{X} =
+\{y_i(\mathbf{x}^i)\}_{i=1}^n\), gdzie \(y \in \{c_1, \ldots, c_K\} \) oraz \(\mathbf{x} \in
+\mathbb{R}^d\). W ogólności mamy rozkład warunkowy danej klasy pod warunkiem wektora cech, który
+jest dany przez gęstość prawdopodobieństwa \(p(c_k \mid \mathbf{x})\). Korzystając z twierdzenia
+Bayesa możemy zapisać
+\begin{equation}
+    p(c_k \mid \mathbf{x}) = \frac{p(\mathbf{x} \mid c_k) p(c_k)}{p(\mathbf{x})}\,.
+\end{equation}
+Jeśli umiemy obliczyć licznik wyrażenia po prawej stronie, to korzystając z \textbf{reguły
+decyzyjnej MAP} klasę dla nowego wektora cech wybieramy jako
+\begin{equation}
+    \arg\max_{c_k \in \{c_1, \ldots, c_K\}} p(\mathbf{x} \mid c_k) p(c_k)\,.
+\end{equation}
+Powstaje pytanie jak obliczyć to wyrażenie przy tak luźnych założeniach. Wprowadzamy naiwne
+założenie warunkowej niezależności cech względem danej klasy tj.
+\begin{equation}
+    p(\mathbf{x} \mid c_k) = p(\mathbf{x}_1, \ldots, \mathbf{x}_d \mid c_k) = \prod_{j=1}^d p(\mathbf{x}_j \mid c_k)\,.
+\end{equation}
+Teraz jednowymiarowe rozkłady warunkowe \(p(\mathbf{x}_j \mid c_k)\) możemy estymować z danych
+\(\mathcal{X}\) np. korzystając z jądrowego estymatora gęstości lub zakładając konkretny model
+parametryczny (np. jednowymiarowy rozkład normalny, rozkład dwumianowy) i estymując jego parametry
+dla każdej z klas osobno. Naiwne założenie warunkowej niezależności pozwala złagodzić problemy
+wynikające z przekleństwa wymiarowości (z ang. \textit{curse of dimensionality}), takie jak potrzeba
+zbiorów danych skalujących się wykładniczo wraz z liczbą cech \(d\). Człon \(p(c_k)\) można
+natomiast prosto oszacować jako stosunek przykładów danej klasy w zbiorze \(\mathcal{X}\).
+
 
 \subsection{Estymator jądrowy gęstości}
+
+Załóżmy, że mamy zbiór obserwacji i.i.d. \(\{\mathbf{x}^1, \ldots, \mathbf{x}^n\}\) taki, że
+\(\mathbf{x} \sim \mathcal{D}\) dla pewnego \(d\)--wymiarowego ciągłego rozkładu
+prawdopodobieństwa \(\mathcal{D}\) z nieznaną gęstością prawdopodobieństwa \(p(\mathbf{x})\). Chcemy
+znaleźć estymator \(\hat{p}(\mathbf{x})\) tej funkcji. Estymatorem jądrowym gęstości funkcji \(p\)
+(z ang. \textit{kernel density estimator}) nazywamy funkcję
+\begin{equation}\boxed{
+    \hat{p}(\mathbf{x}) := \frac{1}{mh^d}\sum_{i=1}^n K\left(\frac{\mathbf{x} - \mathbf{x}^i}{h}\right)\,,
+}\end{equation}
+gdzie \(h \in \mathbb{R}\) jest pewnym hiperparametrem zwanym \textit{bandwidth}, a \(K:
+\mathbb{R}^n \mapsto [0; \infty)\) to tzw. funkcja jądrowa będąca parzystą funkcją posiadającą w 0
+maksimum globalne oraz spełniającą warunek unormowania
+\begin{equation}
+    \int\limits_{\mathbb{R}^d} K(\mathbf{x}) \dd[d]{\mathbf{x}}= 1\,.
+\end{equation}
+Ze statystycznego punktu widzenia, postać jądra nie ma istotnego znaczenia i wybór funkcji  \(K\)
+może być arbitralny, uwzględniający przede wszystkim pożądane własności otrzymanego estymatora, na
+przykład klasę jego regularności (ciągłość, różniczkowalność itp.). W przypadku jednowymiarowym jako
+funkcję \(K\) przyjmuje się klasyczne postacie gęstości rozkładów probabilistycznych, na przykład
+gęstość rozkładu normalnego. W przypadku wielowymiarowym stosuje się tzw. jądro radialne tj. dla
+jądra jednowymiarowego \(K\) wielowymiarowe jądro radialne definiujemy jako
+\begin{equation}
+    K(\mathbf{x}) = K(\norm{\mathbf{x}})
+\end{equation}
+dla pewnej normy (typowo normy euklidesowej) \(\norm{\cdot}\).
 
 
 \subsection{Wieloklasowa regresja logistyczna}
