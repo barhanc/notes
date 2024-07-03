@@ -24,7 +24,7 @@ specyficznych technicznych tematów nie sprawi żadnego problemu.
 \subsection{Notacja}
 
 W dalszej części tekstu będziemy stosować przedstawioną tutaj pokrótce notację. Wektory, które
-traktujemy jako elementy przestrzeni \(\mathbb{R}^d\) ze standardowo zdefiniowanymi mathbfacjami
+traktujemy jako elementy przestrzeni \(\mathbb{R}^d\) ze standardowo zdefiniowanymi operacjami
 dodawania i mnożenia przez skalar będziemy oznaczali wytłuszczonymi małymi literami np.
 \(\mathbf{x}, \mathbf{w}, \boldsymbol{\phi}\). Wielkość \(\mathbf{x}_i\) będzie oznaczać dany
 element wektora (w tym przypadku \(i\)--ty element \(\mathbf{x}\)). Wielkość \(\mathbf{x}^\mu\)
@@ -94,7 +94,7 @@ W dalszej części nie będziemy skupiać się na detalach implementacyjnych. W 
 dziedzina uczenia maszynowego jest przede wszystkim \enquote{nauką eksperymentalną} dlatego bardzo
 ważne jest empiryczne sprawdzenie różnych metod przed wybraniem ostatecznego modelu dla danego
 zagadnienia. W tym paragrafie opisujemy standardowe praktyki stosowane przy treningu modeli uczenia
-maszynowego (głównie nadzorowanych mathbfujących na danych tabelarycznych).
+maszynowego (głównie nadzorowanych operujących na danych tabelarycznych).
 
 
 \subsubsection{Przygotowanie danych}
@@ -1947,6 +1947,91 @@ dla pewnej normy (typowo normy euklidesowej) \(\norm{\cdot}\).
 
 
 \subsection{Wieloklasowa regresja logistyczna}
+
+Powróćmy do zagadnienia klasyfikacji, w którym mamy zbiór obserwacji i.i.d. \(\mathcal{X} =
+\{y_i(\mathbf{x}^i)\}_{i=1}^n\), gdzie \(y \in \{c_1,\ldots,c_K\}\) i \(\mathbf{x} \in
+\mathbb{R}^d\). Pokażemy teraz podejście oparte na estymacji MLE podobnie jak w przypadku regresji.
+Założymy, że obserwacje \(y(\mathbf{x})\) pochodzą z rozkładu kategorialnego (wielopunktowego)
+zależnego od parametrów \(\mathbf{W}\) jako
+\begin{equation}
+    y(\mathbf{x}) \mid \mathbf{W} \sim \mathrm{Cat}(\boldsymbol{\pi}_1(\boldsymbol{\phi}(\mathbf{x}; \mathbf{W})), \ldots, \boldsymbol{\pi}_K(\boldsymbol{\phi}(\mathbf{x}; \mathbf{W})))\,,
+\end{equation}
+gdzie funkcja \(\boldsymbol{\pi}: \mathbb{R}^K \mapsto [0;1]^K\) musi spełniać warunek unormowania
+\begin{equation*}
+    \forall \mathbf{z}\in\mathbb{R}^K: \sum_{j=1}^K \boldsymbol{\pi}_j(\mathbf{z}) = 1\,,
+\end{equation*}
+aby jej składowe były odpowiadały prawdopodobieństwom danej klasy, Funkcja \(\boldsymbol{\phi}:
+\mathbb{R}^d \mapsto \mathbb{R}^K\) jest natomiast dowolną funkcją przekształcającą wektor cech na
+rzeczywisty wektor wymiaru \(K\). W szczególności przyjmiemy następującą postać funkcji
+\(\boldsymbol{\pi}\) zwaną \textbf{funkcją softmax}
+\begin{equation}\boxed{
+    \boldsymbol{\pi}_j(\mathbf{z}) = \frac{\exp\left(\mathbf{z}_j\right)}{\sum_{k=1}^K \exp\left(\mathbf{z}_k\right)}\,.
+}\end{equation}
+W przypadku wieloklasowej regresji logistycznej (zwanej również \textbf{regresją softmax}) jako
+funkcję \(\boldsymbol{\phi}\) przyjmiemy proste przekształcenie liniowe
+\begin{equation}
+    \boldsymbol{\phi}(\mathbf{x}; \mathbf{W}) = \mathbf{W}\mathbf{x}\,,
+\end{equation} 
+gdzie \(\mathbf{W}\) jest macierzą estymowanych parametrów wymiaru \(K \times d\). Wyprowadzimy
+teraz wzór na funkcję kosztu przy takim modelu statystycznym. Zauważmy wpierw, iż wiarygodność
+pojedynczego przykładu ze zbioru \(\mathcal{X}\) możemy zapisać jako
+\begin{equation}
+    p(y_i(\mathbf{x}^i) \mid \mathbf{W}) = \prod_{j=1}^K \boldsymbol{\pi}_j\left(\boldsymbol{\phi}(\mathbf{x}^i; \mathbf{W})\right)^{[y_i = c_j]}\,,
+\end{equation}
+gdzie \([\ldots]\) oznacza nawias Iversona. W takim razie wiarygodność całego zbioru \(\mathcal{X}\)
+ma postać
+\begin{equation}
+    \mathcal{L}(\mathcal{X}; \mathbf{W}) = \prod_{i=1}^n \prod_{j=1}^K \boldsymbol{\pi}_j\left(\boldsymbol{\phi}(\mathbf{x}^i; \mathbf{W})\right)^{[y_i = c_j]}\,,
+\end{equation}
+skąd funkcja kosztu ma postać
+\begin{equation}
+    L(\mathcal{X}; \mathbf{W}) = - \sum_{i=1}^n \sum_{j=1}^K [y_i = c_j] \log \left[ \boldsymbol{\pi}_j\left(\boldsymbol{\phi}(\mathbf{x}^i; \mathbf{W})\right)\right]\,.
+\end{equation}
+Wprowadzając macierz \(\mathbf{T}_{ij} = [y_i = c_j]\), której każdy wiersz jest tzw.
+\textbf{wektorem one-hot} dla danego przykładu, możemy zapisać
+\begin{equation}\boxed{
+    L(\mathcal{X}; \mathbf{W}) = - \sum_{i=1}^n \sum_{j=1}^K \mathbf{T}_{ij} \log \left[ \boldsymbol{\pi}_j\left(\boldsymbol{\phi}(\mathbf{x}^i; \mathbf{W})\right)\right]\,.
+}\end{equation}
+Niestety dla tak zdefiniowanej funkcji kosztu nie można znaleźć wzoru na minimum w postaci
+analitycznej (jak w przypadku regresji liniowej), dlatego do znalezienia estymaty MLE wykorzystujemy
+algorytmy optymalizacji numerycznej, w tym przypadku zwykle algorytmy gradientowe. Wyprowadzimy więc
+jeszcze wzór na pochodną funkcji kosztu po parametrach \(\mathbf{W}\). Oznaczmy
+\(\boldsymbol{\phi}^i(\mathbf{W}) = \boldsymbol{\phi}(\mathbf{x}^i; \mathbf{W})\) oraz
+\(\boldsymbol{\pi}_j^i(\mathbf{W}) = \boldsymbol{\pi}_j(\boldsymbol{\phi}^i(\mathbf{W}))\). Obliczmy
+najpierw pochodną \(L\) po \(\boldsymbol{\phi}^i_\alpha\)
+\begin{equation}
+    \begin{split}
+        \pdv{L}{\boldsymbol{\phi}^i_\alpha} &= -\sum_{\mu=1}^n\sum_{\beta=1}^K \pdv{L}{\boldsymbol{\pi}_\beta^\mu}\pdv{\boldsymbol{\pi}_\beta^\mu}{\boldsymbol{\phi}^i_\alpha}\\
+        &= -\sum_{\mu=1}^n\sum_{\beta=1}^K \frac{\mathbf{T}_{\mu\beta}}{\boldsymbol{\pi}_\beta^\mu} \frac{\exp(\boldsymbol{\phi}_\beta^\mu)\delta_{\mu i}\delta_{\beta \alpha} \left[\sum_{k=1}^K \exp(\boldsymbol{\phi}_k^\mu)\right] - \exp(\boldsymbol{\phi}_\beta^\mu) \exp(\boldsymbol{\phi}^\mu_\alpha) \delta_{\mu i}}{\left[\sum_{k=1}^K \exp(\boldsymbol{\phi}_k^\mu)\right]^2}\,,
+    \end{split}
+\end{equation}
+gdzie \(\delta\) oznacza deltę Kroneckera. Rozpisując dalej powyższe wyrażenie otrzymujemy
+\begin{equation}
+    \begin{split}
+        &-\sum_{\mu=1}^n\sum_{\beta=1}^K \mathbf{T}_{\mu\beta} \frac{\cancel{\sum_{k=1}^K \exp(\boldsymbol{\phi}^\mu_k)}}{\cancel{\exp(\boldsymbol{\phi}^\mu_\beta)}} \left\{\frac{\cancel{\exp(\boldsymbol{\phi}_\beta^\mu)}\delta_{\mu i}\delta_{\beta \alpha}}{\cancel{\sum_{k=1}^K \exp(\boldsymbol{\phi}_k^\mu)}} - \frac{\cancel{\exp(\boldsymbol{\phi}_\beta^\mu)} \exp(\boldsymbol{\phi}^\mu_\alpha) \delta_{\mu i}}{\left[\sum_{k=1}^K \exp(\boldsymbol{\phi}_k^\mu)\right]^{\cancel{2}}}\right\}\\
+        &= -\sum_{\mu=1}^n\sum_{\beta=1}^K \left(\mathbf{T}_{\mu\beta} \delta_{\mu i}\delta_{\beta\alpha} - \mathbf{T}_{\mu\beta}\boldsymbol{\pi}^\mu_\alpha\delta_{\mu i}\right) = \boldsymbol{\pi}_\alpha^i - \mathbf{T}_{i\alpha}\,,
+    \end{split}
+\end{equation}
+zatem ostatecznie
+\begin{equation}
+    \pdv{L}{\boldsymbol{\phi}_\alpha^i} = \boldsymbol{\pi}_\alpha^i - \mathbf{T}_{i\alpha}\,,
+\end{equation}
+lub wprowadzając macierze \(\boldsymbol{\Phi}_{ij} = \boldsymbol{\phi}^i_j\) oraz
+\(\boldsymbol{\Pi}_{ij} = \boldsymbol{\pi}^i_j\) możemy zapisać powyższy wzór w eleganckiej postaci
+macierzowej
+\begin{equation}\boxed{
+    \pdv{L}{\boldsymbol{\Phi}} = \boldsymbol{\Pi} - \mathbf{T}\,.
+}\end{equation}
+Możemy zatem prosto obliczyć pochodną funkcji kosztu po parametrach \(\mathbf{W}\) jako
+\begin{equation}
+    \pdv{L}{\mathbf{W}_{\mu\nu}} = \sum_{i=1}^n \sum_{\alpha=1}^{K} \pdv{L}{\boldsymbol{\phi}_\alpha^i}\pdv{\boldsymbol{\phi}_\alpha^i}{\mathbf{W}_{\mu\nu}} = \sum_{i=1}^n \sum_{\alpha=1}^{K} (\boldsymbol{\pi}_\alpha^i - \mathbf{T}_{i\alpha}) \mathbf{x}^i_\nu \delta_{\alpha \mu} = \sum_{i=1}^n (\boldsymbol{\pi}_\mu^i - \mathbf{T}_{i\mu})\mathbf{x}^i_\nu\,.
+\end{equation}
+Wprowadzając macierz \(\mathbf{X}_{ij} = \mathbf{x}^i_j\) możemy zapisać powyższy wzór w zwięzłej
+postaci macierzowej
+\begin{equation}\boxed{
+    \pdv{L}{\mathbf{W}} = (\boldsymbol{\Pi} - \mathbf{T})^T \mathbf{X}\,.
+}\end{equation}
+
 
 
 \subsection{Anomaly detection}
