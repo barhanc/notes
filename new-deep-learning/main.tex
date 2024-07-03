@@ -2033,8 +2033,37 @@ postaci macierzowej
 }\end{equation}
 
 
-
 \subsection{Anomaly detection}
+
+Anomalie to punkty tak różne od \enquote{typowych}, że trzeba uznać, iż zostały wygenerowane przez
+inne zjawisko. Można je traktować jak ekstremalnie małą klasę pozytywną (klasyfikacja ekstremalnie
+niezbalansowana). Typowo wyróżnia się następujące rodzaje anomalii w danych:
+
+\begin{itemize}
+    
+    \item \textbf{local} -- punkty anomalne różnią się od pobliskich;
+
+    \item \textbf{global} -- punkty anomalne różnią się od ogółu danych;
+
+    \item \textbf{dependency} -- zależności między typowymi wartościami cech są zaburzone;
+
+    \item \textbf{clustered} -- anomalie są do siebie podobne i tworzą zbite klastry.
+    
+\end{itemize}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.95\textwidth]{figs/typesOfAnomalies.png}
+    \label{fig:typesOfAnomalies}
+    \caption{Wizualizacja rodzajów anomalii}
+\end{figure}
+
+Typowe podejścia do anomaly detection są nienadzorowane i mierzą \enquote{anormalność} punktu, bez
+patrzenia na klasy. Do oceny jakości dalej trzeba oznaczonych punktów, przynajmniej z klasy
+pozytywnej. Podejścia nadzorowane to klasyfikacji z modyfikacjami -- typowo lepsze wyniki, ale dużo
+większy koszt stworzenia zbioru. Algorytmy pół-nadzorowane (z ang. \textit{semi-supervised}) łączą
+powyższe na różne sposoby.
+
 
 
 \subsection{Próbkowanie Monte Carlo łańcuchami Markowa}
