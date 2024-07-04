@@ -1793,7 +1793,8 @@ klasyfikuje wszystkie przykłady poprawnie ma AUROC równy 1.
 
 Inną analogiczną metryką jest \textbf{AUPRC}, gdzie zamiast krzywej ROC stosujemy krzywą
 \textbf{PRC} (z ang. \textit{Precision--Recall Curve}), w której zamiast TPR i FPR używamy
-odpowiednio Precision i Recall.
+odpowiednio Precision i Recall. Metryka AUPRC jest często wykorzystywana w przypadku klasyfikacji
+ekstremalnie niezbalansowanej, w której mamy bardzo mało (< 1\%) klasy pozytywnej.
 
 
 \subsubsection{Klasyfikacja wieloklasowa}
@@ -1929,7 +1930,7 @@ znaleźć estymator \(\hat{p}(\mathbf{x})\) tej funkcji. Estymatorem jądrowym g
     \hat{p}(\mathbf{x}) := \frac{1}{mh^d}\sum_{i=1}^n K\left(\frac{\mathbf{x} - \mathbf{x}^i}{h}\right)\,,
 }\end{equation}
 gdzie \(h \in \mathbb{R}\) jest pewnym hiperparametrem zwanym \textit{bandwidth}, a \(K:
-\mathbb{R}^n \mapsto [0; \infty)\) to tzw. funkcja jądrowa będąca parzystą funkcją posiadającą w 0
+\mathbb{R}^d \mapsto [0; \infty)\) to tzw. funkcja jądrowa będąca parzystą funkcją posiadającą w 0
 maksimum globalne oraz spełniającą warunek unormowania
 \begin{equation}
     \int\limits_{\mathbb{R}^d} K(\mathbf{x}) \dd[d]{\mathbf{x}}= 1\,.
@@ -1944,6 +1945,20 @@ jądra jednowymiarowego \(K\) wielowymiarowe jądro radialne definiujemy jako
     K(\mathbf{x}) = K(\norm{\mathbf{x}})
 \end{equation}
 dla pewnej normy (typowo normy euklidesowej) \(\norm{\cdot}\).
+
+KDE w praktycznych zastosowaniach często przyspiesza się za pomocą struktur danych analogicznych jak
+w przypadku kNN, tj. zamiast sumować przyczynki od wszystkich punktów \(\mathbf{x}^i\) dla danego
+\(\mathbf{x}\), znajdujemy \(k\) najbliższych sąsiadów \(\mathbf{x}\) ze zbioru
+\(\{\mathbf{x}^i\}_{i=1}^n\) stosując np. ANN i obliczamy przyczynki do \(\hat{p}(\mathbf{x})\)
+tylko od nich.
+
+Jedynym większym problemem w przypadku KDE jest wybór odpowiedniej wartości parametru \(h\). Jeśli
+używamy jądra gaussowskiego to \textbf{reguła Silvermana}, która podaje prosty przepis na szerokość
+kernela, przy założeniu, iż rozkład jest unimodalny
+\begin{equation}
+    h_\mathrm{Silverman} = \left(\frac{4}{d + 2}\right)n^{\frac{-1}{d + 4}}\sigma\,,
+\end{equation}
+gdzie \(\sigma\) to odchylenie standardowe, \(n\) to liczba próbek, a \(d\) -- liczba wymiarów.
 
 
 \subsection{Wieloklasowa regresja logistyczna}
@@ -2065,13 +2080,59 @@ większy koszt stworzenia zbioru. Algorytmy pół-nadzorowane (z ang. \textit{se
 powyższe na różne sposoby.
 
 
+\subsection{Metody selekcji cech}
+
+Zwykle dane w zbiorach wykorzystywanych w uczeniu maszynowym mają dużą wymiarowość (wiele cech). Nas
+jednak najbardziej interesuje tzw. \textit{intrinsic dimensionality}, czyli podprzestrzeń, która
+jest realnie ważna dla problemu klasyfikacji lub regresji. Celem selekcji cech jest właśnie wybór
+tych cech, które są istotne. Typowo obliczamy ważność cech (z ang. \textit{feature importance}) i
+usuwamy te najmniej wartościowe. Takie podejście może pomóc nam usunąć szum z danych i poprawić
+wyniki modeli (jest to szczególne ważne dla modeli, które używają cech wprost np. kNN, Naive Bayes).
+Najczęstszymi podejściami do selekcji cech są tzw. metody \textit{filter} i \textit{embedded}.
+\begin{itemize}
+    
+    \item \textbf{Metody \textit{filter}}. Waga cechy jest obliczana na podstawie pewnej ogólnej
+    miary jakości cech; są typowo oparte na pewnych statystykach i sprawdzają pojedynczą zmienną
+    naraz (tzw. metody \textit{univariate}).
+    
+    \begin{itemize}
+
+        \item \textbf{\textit{Variance threshold}}. Przeskalowujemy cechy korzystajac z MinMax, aby
+        wszystkie miały ten sam zakres wartości. Obliczamy wariancję każdej cechy. Odrzucamy cechy o
+        bardzo małej wariancji, oznacza to bowiem, iż są praktycznie stałe. Próg typowo jest
+        ustalany na bardzo niski typu 0.01.
+
+        \item \textbf{Korelacja cech}. Obliczamy macierz korelacji i cech, po czym z każdej pary
+        eliminujemy najmocniej skorelowane cechy, poprzez usunięcie tej o niższej wariancji lub tej,
+        która ma średnio większe korelacje z innymi cechami.
+
+        \item \textbf{Korelacja ze zmienną zależną}. Obliczamy korelacje między cechami, a zmienną
+        zależną i usuwamy te o wartości bezwzględnej bliskiej 0. 
+
+        \item \textbf{\textit{Mutual Information}}. Obliczamy informację wzajemną (z ang.
+        \textit{Mutual Information, MI}) zdefiniowaną dla zmiennych losowych rzeczywistych \(X, Y\),
+        jako
+        \begin{equation}
+            I(X; Y) = \iint p(x, y) \log\left[\frac{p(x,y)}{p(x)p(y)}\right] \dd{x}\dd{y}\,.
+        \end{equation}
+        Gdy zmienne są niezależne, to MI wynosi 0. Aby obliczyć powyższy wzór używamy KDE i
+        najbliższych sąsiadów, aby przybliżyć rozkłady prawdopodobieństwa.
+
+    \end{itemize}
+
+    \item \textbf{Metody \textit{embedded}}. W metodach embedded trenujemy jakiś parametryczny model
+    uczenia maszynowego na naszych danych i wagi tego modelu interpretujemy jako wagi cech w
+    zbiorze. Metody te wymagają dobrych modeli, zauważmy bowiem, że wagi modelu mówią tak naprawdę
+    jak ważna jest dana cecha dla predykcji tego modelu, a nie ogólnie dla zagadnienia. Jako modele
+    można wybrać proste modele liniowe, w których mamy prostą interpretację wag.
+
+\end{itemize}
 
 \subsection{Próbkowanie Monte Carlo łańcuchami Markowa}
 
 \subsubsection{Algorytm Metropolisa--Hastingsa}
 
 \subsubsection{Próbkowanie Gibbsa}
-
 
 
 \section{Uczenie głębokie i sieci neuronowe}

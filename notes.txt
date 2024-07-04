@@ -1,0 +1,440 @@
+ *  Przejrzałem następujące papery dotyczące naszego tematu pracy tj. obliczania odległości między
+    wyborami. - How similar are two elections? - How to sample approval elections? - Understanding
+    distance measures between Elections. - Diversity, Agreement and Polarization in Elections.
+
+    Przedstawię tutaj krótkie streszczenie wymaganej teorii.
+
+    Wyborami porządkowymi (Ordinal Election) nazwiemy parę E = (C, V), gdzie C jest zbiorem
+    kandydatów, a V jest zbiorem głosów, gdzie każdy v in V ma postać |C|-krotki określającej
+    porządek w jakim dany wyborca v szereguje kandydatów (przy czym pierwszy kandydat oznacza tego
+    najlepszego). Dane wybory możemy reprezentować jako macierz E  wymiaru |V| x |C|, której kolejne
+    wiersze określają kolejne głosy, a dany wiersz zawiera numery kandydatów w kolejności
+    preferencji danego wyborcy, przykładowo dla C = {0,1,2,3} i 4 głosów następująca macierz może
+    reprezentować wybory
+    
+    E = 
+    0 1 2 3 
+    3 1 0 2 
+    3 0 2 1 
+    0 1 3 2
+
+    Inną możliwą i często bardziej użyteczną reprezentacją jest reprezentacja w postaci macierzy
+    pozycji pos_E wymiaru |V| x |C|, której wiersze określają kolejne głosy, ale dany wiersz zawiera
+    teraz numery pozycji, na których znajdują się kolejni kandydaci, przykładowo dla wyborów E
+    reprezentowanych przez powyższą macierz macierz pos_E ma postać
+
+    pos_E = 
+    0 1 2 3 
+    2 1 3 0 
+    1 3 2 0 
+    0 1 3 2
+
+    Wyborami aprobatowymi (Approval Election) nazwiemy z kolei parę E = (C, V), gdzie C jest zbiorem
+    kandydatów, a V jest zbiorem głosów, gdzie każdy v in V jest pewnym podzbiorem C określającym
+    kandydatów, którzy dla danego wyborcy są "wystarczająco dobrzy". Dane wybory aprobatowe możemy
+    wygodnie reprezentować jako binarną macierz E wymiaru |V| x |C|, której element E_ij = 1 iff
+    j-ty kandydat znajduje się w i-tym głosie. Przykładowo dla wyborów C = {0,1,2,3}, V = {{0,1},
+    {2}, {}, {1,2,3}} możemy je reprezentować jako macierz
+
+    E = 
+    1 1 0 0 
+    0 0 1 0 
+    0 0 0 0 
+    0 1 1 1
+
+    Pomiędzy wyborami (zarówno porządkowymi jak i aprobatowymi) można wprowadzić miary odległości
+    (metryki lub półmetryki), które dla dwóch różnych wyborów E1, E2 zawierających tę samą liczbę
+    głosów i kandydatów mierzą stopień podobieństwa między nimi. W naszej pracy zajmujemy się
+    odległościami o udowodnionej przynależności do klasy NP-hard. Wymienię tutaj 5 odległości, dla
+    których implementujemy zoptymalizowane algorytmu typu brute-force oraz heurystyki
+
+    - Isomorphic swap distance. Tą odległość można zdefiniować jako następujący problem
+    optymalizacji kombinatorycznej
+
+    min_{v in S_nv} min_{s in S_nc} sum_{i=0,..,nv-1} sum_{k=0,..,nc-1} sum_{l=0,..,nc-1} D[i,v(i),k,l,s(k),s(l)]
+    
+    gdzie 
+    
+    D[i,j,k,l,m,n] := 1/2 *  { (pos_E1[i,k] - pos_E1[i,l]) * (pos_E2[j,m] - pos_E2[j,n]) < 0 },
+    
+    a { . } oznacza nawias Iversona. S_n oznacza z kolei zbiór wszystkich permutacji zbioru [n].
+    Zauważmy, iż taki sposób obliczania tablicy D[...] nie jest optymalny, gdyż zgodnie z tym co
+    można wyczytać na Wikipedii swap distance (inaczej Kendall tau distance) między dwoma głosami
+    porządkowymi v1, v2 można obliczyć w złożoności O(n log n) gdzie |v1|=|v2|=n, a nawet O(n
+    sqrt(log n)). Powyższe sformułowanie dopuszcza jednak ciekawą heurystykę, o której później.
+
+    - Isomorphic Spearman distance. Tą odległość można zdefiniować jako problem BAP (Bilinear
+    Assignment Problem)
+
+    min_{v in S_nv} min_{s in S_nc} sum_{i=0,..,nv-1} sum_{k=0,..,nc-1} D[i,v(i),k,s(k)]
+    
+    gdzie D[i,j,k,l] := abs(pos_E1[i,k] - pos_E2[j,l]). Dla problemu BAP istnieje literatura, w
+    której opisano i sprawdzono eksperymentalnie różne heurystykji do rozwiązywania tego problemu.
+    Więcej opisano poniżej.
+
+    - Isomorphic Hamming distance. Również tę odległość można zdefiniować jako BAP, przy czym jest
+    to odległość dla wyborów aprobatowych.
+
+    min_{v in S_nv} min_{s in S_nc} sum_{i=0,..,nv-1} sum_{k=0,..,nc-1} D[i,v(i),k,s(k)]
+
+    gdzie D[i,j,k,l] := E1[i,k] xor E2[j,l].
+
+    - Pairwise Distance. Odległość tą można zdefiniować jako problem QAP (Quadratic Assignment
+    Problem), dla którego istnieje bardzo dużo literatury dotyczącej szybkich heurystyk i algorytmów
+    dokładnych
+
+    min_{s in S_nc} sum_{k=0,..,nc-1} sum_{l=0,..,nc-1} D[k,s(k),l,s(l)]
+
+    gdzie D[i,j,k,l] := abs(M_E1[i,k] - M_E2[j,l]), a M_E oznacza macierz wymiaru |C|x|C|, której
+    element (i,j) określa liczbę głosów po rządkowych, w których kandydat i-ty znajduje się przed
+    kandydatem j-tym i stosujemy konwencję M_E[i,i] = 0.
+
+    - k-Kemeny score TODO: Nie moja działka
+
+    =======================================================
+    
+    Mając już wprowadzoną wymaganą teorię (oczywiście w paperach to jest tylko mały fragment, ale
+    nam potrzebne jest tylko to) zacznę opisywać, co do tej pory zrobiliśmy.
+
+2024-04-24
+
+   ->  Zająłem się na początku odległościami Spearman i Hamming. Na początku zaimplementowałem
+    proste brute-forcy w Pythonie, aby sprawdzić swoje zrozumienie podanych definicji oraz
+    poprawność redukcji do problemu BAP i porównałem wyniki z istniejącą implementacją w Mapelu.
+    Wyniki były poprawne, ale oczywiście brute-force w Python jest niezwykle wolny.
+
+   -> Następnie zaimplementowałem programy ILP rozwiązujące opisane problemy optymalizacyjne
+    korzystając z bardzo wygodnego frameworku CVXPY. Zaimplementowałem dwie redukcje do ILP: jedną
+    wziętą wprost z pracy "How similar are two elections?", natomiast drugą oparłem o paper "An
+    algorithm for the quadratic assignment problem using Benders' decomposition", L.Kaufman,
+    F.Broeckx który co prawda opisuje problem QAP, ale metodę tam zaprezentowaną łatwo było
+    przełożyć na problem BAP. Niestety obie redukcje były znacznie wolniejsze niż istniejąca w
+    Mapelu implementacja brute-force'a dlatego porzuciłem używanie biblioteki CVXPY (dodatkowo
+    biblioteka ta sprawa pewne problemy przy instalowaniu, dlatego nie byłaby dobrym wyborem w
+    ogólności)
+
+   -> Następnie zająłem się implementacją zoptymalizowanego brute-force'a w C, który byłby szybszy
+    od istniejącej implementacji w C++. Poniżej podaj, krótki opis bf
+
+    Zauważmy, że dla ustalonej permutacji v lub s, problem BAP redukuje się do znacznie prostszego,
+    wielomianowo rozwiązywalnego problemu LAP (Linear Assignment Problem), który można bardzo szybko
+    rozwiązywać. Idea bf to po prostu przeglądanie wszystkich permutacji zbioru S_min(nv,nc) i dla
+    każdej permutacji rozwiązanie LAP aby znaleźć optymalną permutację zbioru S_max(nv,nc) (jest to
+    już niewielki improvement nad implementacją w Mapelu, która zawsze przegląda permutacje
+    kandydatów niewykorzystując symetrii problemu). Do rozwiązania LAP użyłem bardzo efektywnej
+    implementacji algorytmu J-V, która jest dostępna pod licencją MIT. PJ pracuje obecnie nad
+    przyspieszeniem tej implementacji wykorzystując instrukcje SIMD. Dodatkowym usprawnieniem mojej
+    implementacji bf nad implementacją w Mapelu było wykorzystanie odpowiedniego porządku
+    przeszukiwania wszystkich permutacji. Podczas gdy implementacja w Mapelu przegląda permutacje w
+    porządku leksykograficznym, ja zauważyłem, iż lepiej będzie przeglądać je w porządku w jakim
+    generuje je algorytm Heap'a. Wówczas bowiem każda kolejna permutacja różni się od poprzednie
+    zamianą jedynie dwóch elementów, a co za tym idzie, aby obliczyć nową macierz kosztu dla
+    problemu LAP
+
+    C[i,j] = sum_{k=0,..,nc-1} D[i,j,k,s(k)]
+
+    nie trzeba sumować po wszystkich k, a wystarczy jedynie odjąć wartości D[i,j,p,s(p)],
+    D[i,j,q,s(q)] i dodać wartości D[i,j,p,s(q)], D[i,j,q,s(p)] (gdzie p,q są indeksami elementów,
+    które zamieniamy w kolejnej iteracji algorytmu Heap'a)  do poprzedniej wartości macierzy kosztu
+    C[i,j]. Istotnie zauważmy, że mamy
+
+    C'[i,j] = sum_{k=0,..,nc-1} D[i,j,k,s'(k)]
+            = sum_{k=0,..,nc-1} D[i,j,k,s(k)] - D[i,j,p,s(p)] - D[i,j,q,s(q)] + D[i,j,p,s(q)] + D[i,j,q,s(p)]
+            = C[i,j] - D[i,j,p,s(p)] - D[i,j,q,s(q)] + D[i,j,p,s(q)] + D[i,j,q,s(p)]
+
+    Algorytm został zaimplementowany w taki sposób, aby rozwiązywać dowolny problem BAP po
+    zdefiniowaniu makra #define d(i,j,k,l) ... wykorzystywanego do obliczania elementów tablicy
+    D[...]. Obecnie bottleneckiem implementacji w C jest funkcja rozwiązująca problem LAP. Pomimo
+    tego implementacja w C jest nawet 2x szybsza od implementacji w Mapelu i średnio 1.5x szybsza.
+    Uważam, że jest to dobry wynik, który jeszcze może uda się poprawić po przyspieszeniu
+    implementacji algorytmu rozwiązującego lap (PJ).
+
+  -> Następnie zająłem się implementacją heurystyki Alternating rozwiązującej LAP, opisanej w
+    paperze arXiv:1707.07057. Heurystyka ta działa następującą: losujemy z rozkładu jednostajnego
+    dwie permutacje s, v. Następnie ustalamy jedną z nich, obliczamy macierz kosztu dla problemu
+    LAP, rozwiązujemy LAP i aktualizujemy drugą permutację, następnie ustalamy drugą permutację,
+    obliczamy macierz kosztu dla LAP, rozwiązujemy LAP i aktualizujemy pierwszą permutację, ....
+    Robimy tak, aż do osiągnięcia zbieżności. Pomysł jest dość prosty i opiera się na mechanizmie
+    podobnym do coordinate-descent, ale nasze testy pokazują, iż daje bardzo dobre wyniki, zwłaszcza
+    jeśli uruchomimy go n-krotnie tj. dla różnych wylosowanych permutacji początkowych to jego
+    approximation ratio rzadko przekracza 1.2 dla testowanych przypadków. Tutaj testowałem również
+    inną metodę inicjalizacji permutacji nazwaną w podlinkowanym paperze RandomXYGreedy, ale
+    działała ona gorzej lub tak samo jako wylosowanie z rozkładu jednostajnego, dlatego zostawiłem
+    taką inicjalizację jak jest.
+
+  -> Powyższe wyniki wskazują, iż praktycznie problem BAP tj. Spearman/Hamming distance mamy już
+    właściwie rozwiązany. Pozostaje jeszcze wyciągnąć trochę performance przez używanie instrukcji
+    SIMD, gdyż mogą one przyspieszyć zarówno implementację LAP jak i fragment implementacji
+    heurystyki Alternating odpowiedzialnej za obliczenie nowej macierzy kosztu dla problemu LAP,
+    gdyż w tym momencie jest to bottleneck tej implementacji.
+
+
+2024-04-29
+
+  -> Zaimplementowałem dwa algorytmy brute-force dla problemu Isomorphic Swap Distance. Oba używają
+    prostych obserwacji dotyczących dynamicznego aktualizowania macierzy kosztu dla problemu LAP.
+
+    W przypadku algorytmu 1. (swap_bf()) zauważmy następującą rzecz: aby obliczyć macierz kosztu LAP
+    dla każdej permutacji kandydatów s musimy obliczyć
+
+    cost[i,j] = sum_{k=0,..,nc-1} sum_{l=0,..,nc-1} d( i,j,k,l,s(k),s(l) )
+
+    gdzie d(i,j,k,l,m,n) := 1/2 * { (pos_U[i,k] - pos_U[i,l]) * (pos_V[j,m] - pos_V[j,n]) < 0 }
+
+    Niech s' będzie kolejną permutacją generowaną przez algorytm Heap'a, wówczas istnieją dokładnie
+    dwa indeksy p != q takie, że s'(p) = s(q) i s'(q) = s(p), a dla pozostałych mamy s'(r) = s(r).
+    Wykorzystamy tą obserwację do wyprowadzenia relacji rekurencyjnej między
+
+    cost'[i,j] = sum_{k=0,..,nc-1} sum_{l=0,..,nc-1} d( i,j,k,l,s'(k),s'(l) )
+
+    a cost[i,j].
+
+    Istotnie mamy (oznaczając dla uproszczenia c := cost[i,j]) i pomijając indeksy i,j w d( ... )
+
+    c' = sum_{k=0,..,nc-1} [ sum_{l=0,..,nc-1} d(k,l,s'(k),s(l)) - d(k,p,s'(k),s(p)) - d(k,q,s'(k),s(q)) + d(k,p,s'(k),s(q)) + d(k,q,s'(k),s(p))]
+
+   (1) = sum_{l=0,..,nc-1}[ sum_{k=0,..,nc-1} d(k,l,s'(k),s(l)) ]
+         - sum_{k=0,..,nc-1} d(k,p,s'(k),s(p))
+         - sum_{k=0,..,nc-1} d(k,q,s'(k),s(q))
+         + sum_{k=0,..,nc-1} d(k,p,s'(k),s(q))
+         + sum_{k=0,..,nc-1} d(k,q,s'(k),s(p))
+
+   (2) = sum_{l=0,..,nc-1}[ sum_{k=0,..,nc-1} d(k,l,s(k),s(l)) - d(p,l,s(p),s(l) - d(q,l,s(q),s(l)) + d(p,l,s(q),s(l)) + d(q,l,s(p),s(l))) ]
+         - [ sum_{k=0,..,nc-1} d(k,p,s(k),s(p)) - d(p,p,s(p),s(p)) - d(q,p,s(q),s(p)) + d(p,p,s(q),s(p)) + d(q,p,s(p),s(p)) ]
+         - [ sum_{k=0,..,nc-1} d(k,q,s(k),s(q)) - d(p,q,s(p),s(q)) - d(q,q,s(q),s(q)) + d(p,q,s(q),s(q)) + d(q,q,s(p),s(q)) ]
+         + [ sum_{k=0,..,nc-1} d(k,p,s(k),s(q)) - d(p,p,s(p),s(q)) - d(q,p,s(q),s(q)) + d(p,p,s(q),s(q)) + d(q,p,s(p),s(q)) ]
+         + [ sum_{k=0,..,nc-1} d(k,q,s(k),s(p)) - d(p,q,s(p),s(p)) - d(q,q,s(q),s(p)) + d(p,q,s(q),s(p)) + d(q,q,s(p),s(p)) ]
+
+   (3) = sum_{k=0,..,nc-1} sum_{l=0,..,nc-1} d(k,l,s(k),s(l))
+         - sum_{l=0,..,nc-1} [ d(p,l,s(p),s(l)) + d(q,l,s(q),s(l)) ]
+         + sum_{l=0,..,nc-1} [ d(p,l,s(q),s(l)) + d(q,l,s(p),s(l)) ]
+         - sum_{k=0,..,nc-1} [ d(k,p,s(k),s(p)) + d(k,q,s(k),s(q)) ]
+         + sum_{k=0,..,nc-1} [ d(k,p,s(k),s(q)) + d(k,q,s(k),s(p)) ]
+         + d(p,p,s(p),s(p)) + d(q,p,s(q),s(p)) - d(p,p,s(q),s(p)) - d(q,p,s(p),s(p))
+         + d(p,q,s(p),s(q)) + d(q,q,s(q),s(q)) - d(p,q,s(q),s(q)) - d(q,q,s(p),s(q))
+         - d(p,p,s(p),s(q)) - d(q,p,s(q),s(q)) + d(p,p,s(q),s(q)) + d(q,p,s(p),s(q))
+         - d(p,q,s(p),s(p)) - d(q,q,s(q),s(p)) + d(p,q,s(q),s(p)) + d(q,q,s(p),s(p))
+  
+   (4) = c
+         - 2 * sum_{l=0,..,nc-1} [ d(p,l,s(p),s(l)) + d(q,l,s(q),s(l)) ]
+         + 2 * sum_{l=0,..,nc-1} [ d(p,l,s(q),s(l)) + d(q,l,s(p),s(l)) ]
+         + 2 * d(p,q,s(p),s(q))
+         + 2 * d(p,q,s(q),s(p))
+         
+
+    gdzie przy przejściu z (3) do (4) skorzystaliśmy z konkretnych własności zdefiniowanej tablicy d(i,j,k,l,m,n), tj.
+
+    * forall i,j,k,l,m,n : d(i,j,k,l,m,n) = d(i,j,l,k,n,m)
+    * forall i,j,k,l,x   : d(i,j,x,x,k,l) = d(i,j,k,l,x,x) = 0
+    * forall i,j,k,l,m,n : d(i,j,k,l,m,n) = not d(i,j,k,l,n,m) = not d(i,j,l,k,m,n)
+
+    Ostatecznie zatem mamy następującą relację rekurencyjną
+
+    cost'[i,j] = cost[i,j] 
+                 + sum_{k=0,..,nc-1}[  {(pos_U[i,p] - pos_U[i,k]) * (pos_V[j,s(q)] - pos_V[j,s(k)]) < 0} 
+                                     + {(pos_U[i,q] - pos_U[i,k]) * (pos_V[j,s(p)] - pos_V[j,s(k)]) < 0} 
+                                     - {(pos_U[i,p] - pos_U[i,k]) * (pos_V[j,s(p)] - pos_V[j,s(k)]) < 0}
+                                     - {(pos_U[i,q] - pos_U[i,k]) * (pos_V[j,s(q)] - pos_V[j,s(k)]) < 0} 
+                                    ]
+                 + {(pos_U[i,p] - pos_U[i,q]) * (pos_V[j,s(p)] - pos_V[j,s(q)]) < 0}
+                 + {(pos_U[i,p] - pos_U[i,q]) * (pos_V[j,s(p)] - pos_V[j,s(q)]) > 0}
+
+
+    W przypadku funkcji swap_bf_mem() opieramy się na innej postaci odległości swap dla dwóch wektorów. Do tej pory odległość
+    tą wyrażaliśmy (dla ustalonej permutacji kandydatów s i ustalonych i,j) jako podwójną sumę
+
+    sum_{k=0,..,nc-1} sum_{l=0,..,nc-1} 1/2 * {(pos_U[i,k] - pos_U[i,l]) * (pos_V[j,s(k)] - pos_V[j,s(l)]) < 0}
+
+    gdzie wyrażenie w nawiasie Iversona jest chyba najprostszym (arytmetycznie) sposobem
+    sprawdzenia, czy dwie wartości mają różny znak. Opisowo odległość ta bierze dwa głosy: i-ty z U
+    i j-ty z V, a następnie zlicza liczbę par kandydatów (k,l) takich, że ich porządek w U[i,:] i
+    V[j,:] jest różny, przy czym do obliczenia ich pozycji w V[j,:] zmieniamy ich nazwy zgodnie z
+    danym odwzorowaniem s kandydatów. Zauważmy jednak bardzo ważny fakt, odległość ta jest
+    niezmiennicza względem permutacji tj. dla dowolnej permutacji pi zachodzi
+
+    sum_{k=0,..,nc-1} sum_{l=0,..,nc-1} 1/2 * {(pos_U[i,k] - pos_U[i,l]) * (pos_V[j,s(k)] - pos_V[j,s(l)]) < 0}
+        = sum_{k=0,..,nc-1} sum_{l=0,..,nc-1} 1/2 * {(pos_U[i,pi(k)] - pos_U[i,pi(l)]) * (pos_V[j,s( pi(k) )] - pos_V[j,s( pi(l) )]) < 0}
+    
+    gdyż w obu przypadkach sumujemy wyrażenie 
+
+    1/2 * {(pos_U[i,k] - pos_U[i,l]) * (pos_V[j,s(k)] - pos_V[j,s(l)]) < 0}
+
+    po wszystkich parach (k,l), tylko w pierwszym wzorze robimy to w kolejności (0,0), (0,1), (0,2),
+    ..., (nc-1,nc-1), a w drugim w kolejności (pi(0),pi(0)), (pi(0),pi(1)), ...,
+    (pi(nc-1),pi(nc-1)), ale oczywiście kolejność sumowania nie wpływa na wynik sumy.
+
+    Zauważmy, iż w szczególności biorąc pi = U[i,:] otrzymujemy
+
+    sum_{k=0,..,nc-1} sum_{l=0,..,nc-1} 1/2 * {(k - l) * (pos_V[j,s( U[i,k] )] - pos_V[j,s( U[i,l] )]) < 0}
+    = sum_{k=0,..,nc-1} sum_{l=k+1,..,nc-1} {pos_V[j,s( U[i,k] )] < pos_V[j,s( U[i,l] )]}
+
+    czyli szukamy liczby inwersji (tj. par elementów niebędących w poprawnej kolejności) w
+    permutacji (pos_U[i,:] o s o V[j,:]) (sic! U i V są w dobrej kolejności w tym wzorze). Ideą
+    algorytmu jest uprzednie obliczenie i zapamiętanie w lookup table liczby inwersji dla każdej
+    permutacji, gdyż liczba ta jest równa odpowiedniemu elementowi macierzy kosztu dla danego
+    odwzorowania kandydatów s. Robimy to kodując permutację pi długości n jako liczbę w n-kowym
+    systemie liczbowym w następujący sposób
+
+    E(pi) = n**0 * pi[0] + n**1 * pi[1] + ... + n**(n-1) * pi[n-1]
+
+    i zapisujemy pod tym (tj. E(pi)) indeksem w lookup table uprzednio obliczoną liczbę inwersji.
+    Zauważmy, iż obliczenie klucza (kodowania) permutacji s zajmuje O(n) operacji, więc obliczając
+    go naiwnie dla każdej iteracji algorytmu Heap'a nie dostajemy żadnego (algorytmicznego) zysku
+    nad dynamicznym obliczaniem macierzy kosztu jak w swap_bf(). Możemy jednak klucz obliczać
+    dynamicznie. Istotnie jeśli wprowadzimy macierz key[i,j], której element określa kodowanie
+    permutacji (pos_U[i,:] o s o V[j,:]) to możemy wyprowadzić zależność rekurencyjną między
+    key'[i,j] i key[i,j]. Zauważmy, iż wartość permutacji (pos_U[i,:] o s' o V[j,:]) będzie różna od
+    (pos_U[i,:] o s o V[j,:]) tylko dla dwóch indeksów a,b takich że V[j,a] = p i V[j,b] = q, w
+    takim razie
+      
+    key'[i,j] := E((pos_U[i,:] o s' o V[j,:]))
+    key[i,j]  := E((pos_U[i,:] o s o V[j,:])) 
+    
+    E((pos_U[i,:] o s' o V[j,:])) = E((pos_U[i,:] o s o V[j,:])) 
+                                    - n**a * pos_U[i,s(p)] - n**b * pos_U[i,s(q)] 
+                                    + n**a * pos_U[i,s(q)] + n**b * pos_U[i,s(p)]
+   
+    gdzie a,b można łatwo obliczyć, gdyż a = pos_V[j,p], b = pos_V[j,q].
+
+    We właściwej implementacji używamy systemu dziesiątkowego niezależnie od n (zakładając
+    oczywiście n<=10) i używamy tylko n-1 pierwszych elementów permutacji do kodowania (gdyż
+    jednoznacznie identyfikują one permutację), dlatego do powyższego wyrażenia rekurencyjnego
+    należy dołożyć jeszcze if-y, które sprawdzają, czy n a,b <= n-2.
+
+
+2024-05-10
+
+    Zaimplementowałem prostą heurystykę do obliczania Isomorphic swap distance opartą na
+    pomyśle podobnym do alternating algorithm/coordinate descent. Implementacja dość
+    prosta, ale trzeba trochę ją dostroić, żeby wyciągnąć więcej performance. Pierwsze
+    testy pokazują, że działa całkiem dobrze, tj. approx ration jest nawet zadowalające.
+    Heurystyka działa tak: rozwiązujemy tak naprawdę w sposób przybliżony Trilinear
+    Assignment Problem (TAP)
+
+    min_{v in S_nv} min_{s in S_nc} min_{pi in S_nc} sum_{i=0,..,nv-1} sum_{k=0,..,nc-1} sum{l=0,..,nc-1} d(i,v(i),k,l,s(k),pi(l)).
+
+    Losujemy najpierw dwie permutacje odpowiednio z S_nv i S_nc i inicjujemy v oraz s i pi
+    (s i pi inicjujemy tak samo). Następnie ustalamy dwie z trzech permutacji, obliczamy
+    macierz kosztu do problemu LAP, rozwiązujemy LAP i aktualizujemyg jedną z permutacji
+    i tak cyklicznie dla każdej permutacji aż do osiągnięcia zbieżności. Na koniec obliczamy
+
+    sum_{i=0,..,nv-1} sum_{k=0,..,nc-1} sum_{l=0,..,nc-1} d(i,v(i),k,l,s(k),s(l))
+
+    sum_{i=0,..,nv-1} sum_{k=0,..,nc-1} sum_{l=0,..,nc-1} d(i,v(i),k,l,pi(k),pi(l))
+    
+    i zwracamy mniejszą z tych wartości. Ogólnie wydaje mi się, że w przypadku problemu
+    Isomorphic swap distance można pokazać, iż mając rozwiązanie analogicznego problemu
+    TAP (tj. z taką samą tablicą kosztu d( )) (v,s,pi) rozwiązaniem optymalnym Isomorphic
+    swapa jest zarówno (v,s) jak i (v, pi). Podobne twierdzenie działa bowiem dla problemów
+    QAP i BAP.
+
+
+2024-05-18
+    
+    Zaimplementowałem algorytm branch-and-bound dla isomorphic swap distance, który opiera się na 
+    generowaniu wszystkich permutacji wszystkich podzbiorów właściwych zbioru kandydatów i obliczania
+    parcjalnych odległości swap przy ustalonym prefiksie przyporządkowania kandydatów (korzystając z lap())
+    , jeśli ta parcjalna odległość (będąca dolnym ograniczeniem właściwej odległości) jest większa od górnego
+    ograniczenia (uzyskiwanego na początku z heurystyki swap_aa), to cała gałąź drzewa przeszukiwań jest
+    przycinana (tj. nie sprawdzamy już dalszych permutacji z tym prefiksem). Niestety algorytm ten jest
+    wolniejszy od brute-force, tj. nie przycinamy wystarczająco dużo, wystarczająco wcześnie, aby
+    zrekompensować fakt, iż przy pełnym przeszukiwaniu wywoływalibyśmy funkcję lap() aż
+    
+    sum_{k=1,..,nc} k! * (nc choose k)
+
+    zamiast jedynie nc! razy. Wynika to zfektu, iż "landscape" naszej funkcji kosztu (odległości) jest
+    dla typowych kultur wyborów (ic, euclidean) dość płaski, więc nie możemy wcześnie przycinać drzewa.
+    Dla pojedynczych kultur (urn) algorytm ten działał lepiej, ale dla nich heurystyka najczęściej
+    znajduje rozwiązanie dokładne. Być może zmiana sposobu przeszukiwania z BFS na DFS lub Best-FS
+    by pomogła. Przede wszystkim trzeba zrobić lepszy bound (!!!).
+ 
+
+2024-05-24
+
+    Ulepszyłem lower bound dla algorytmu branch-and-bound dla problemu BAP. Działa on całkiem fajnie 
+    jeśli nv ~= nc i nc jest oczywiście niewielkie. Jest to zatem dobry algorytm do uzyskania
+    dokładnego rozwiązania dla niewielkich instancji ale takich, że naiwny brute-force zajmuje już bardzo długo.
+    Obliczenie lower boundu opiera się na następującej prostej obserwacji:
+    
+    Powiedzmy, że jesteśmy w węźle drzewa przeszukiwania, w którym mamy ustalony prefiks permutacji s
+    długości n' < nc. Chcemy znaleźć lower bound na rozwiązanie z takim prefiksem, niech s* będzie
+    optymalną permutacją z takim prefiksem, wówczas forall k=1,..,n': s(k) = s*(k) i optymalna wartość
+    wynosi
+
+    min_{v in S_nv} sum_{i=1,..,nv} cost[i, v(i)]
+    
+    gdzie
+
+    cost[i,j] = sum_{k=1,..,nc} d(i,j,k,s*(k)) = sum_{k=1,..,n'} d(i,j,k,s(k)) + sum_{k=n'+1,..,nc} d(i,j,k,s*(k))
+
+    czyli oczywistym lower boundem na element (i,j) macierzy kosztu jest 
+
+    cost[i,j] >= sum_{k=1,..,n'} d(i,j,k,s(k)) + min sum_{k=n'+1,..,nc} d(i,j,k,s*(k)) = lcost[i,j]
+
+    gdzie minimalizujemy po przyporządkowaniach pozostałych nc-n' elementów, oczywiście zauważmy, że jest to problem
+    LAP, więc możemy go rozwiązać w czasie O(nc**3).
+    Ponieważ dla każdych i,j zachodzi cost[i,j] >= lcost[i,j], więc
+    
+    min_{v in S_nv} sum_{i=1,..,nv} cost[i,v(i)] >= min_{v' in S_nv} sum_{i=1,..,nv} lcost[i,v'(i)]
+
+    zatem rozwiązując problem LAP dla macierzy kosztu lcost[i,j] otrzymujemy poszukiwany lower bound.
+
+===========================================================
+TODO
+
+  -> (!!!) wrapper do mapela
+
+  -> US Air Force lap() solver
+
+  -> korzystając z GCC Vector Extensions zoptymalizować bap() i swap()
+     konkretnie:
+     
+     * bap_aa()
+     * swap_bf()
+     * swap_bf_mem()
+     * swap_aa()
+    
+     korzystając z SIMD + jakieś inne optymalizacje (cache optimization,
+     basically jak mamy już speed up czysto algorytmicznie i dla standardowych optymalizacji to
+     możemy próbować bardziej chirurgiczne zmiany)
+
+  -> Finish all TODOs in every file of mine
+
+
+  -> [FD] k-Kemeny based distances
+
+  -> [PJ] FAQ-QAP-based heuristic for swap distance
+
+  -> [PJ] Pairwise wrapper
+
+  -> [MW] BB for swap distance
+
+  -> [  ] create testing framework and perform tests
+
+===========================================================
+
+[v] 1. Isomorphic Swap
+[v] 2. Isomorphic Spearman
+[v] 3. Isomorphic Hamming
+[v] 4. Pairwise distance
+[x] 5. Polarization/Diversity/Agreement
+
+[v] 1. Swap brute-force + Idea for nice heuristic
+[v] 2. Bilinear Assignment Problem (BAP)
+[v] 3. Bilinear Assignment Problem (BAP)
+[v] 4. Quadratic Assignment Problem (QAP)
+[x] 5. All require computing  k-Kemeny score <=> k-Median Problem
+
+===========================================================
+
+
+
+
+
+
+
+
+
+
+
+
