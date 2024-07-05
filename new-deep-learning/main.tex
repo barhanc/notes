@@ -2061,7 +2061,7 @@ niezbalansowana). Typowo wyróżnia się następujące rodzaje anomalii w danych
     \item \textbf{global} -- punkty anomalne różnią się od ogółu danych;
 
     \item \textbf{dependency} -- zależności między typowymi wartościami cech są zaburzone;
-
+    
     \item \textbf{clustered} -- anomalie są do siebie podobne i tworzą zbite klastry.
     
 \end{itemize}
@@ -2077,7 +2077,15 @@ Typowe podejścia do anomaly detection są nienadzorowane i mierzą \enquote{ano
 patrzenia na klasy. Do oceny jakości dalej trzeba oznaczonych punktów, przynajmniej z klasy
 pozytywnej. Podejścia nadzorowane to klasyfikacji z modyfikacjami -- typowo lepsze wyniki, ale dużo
 większy koszt stworzenia zbioru. Algorytmy pół-nadzorowane (z ang. \textit{semi-supervised}) łączą
-powyższe na różne sposoby.
+powyższe na różne sposoby. Metody nienadzorowane typowo polegają na obliczeniu tzw. \textbf{outlier
+score}, który wyznacza \enquote{nietypowość} punktu według algorytmu. Typowym hiperparametrem, który
+trzeba w takich metodach ustalić jest \textbf{contamination}, czyli oczekiwana ilość anomalii w
+zbiorze.
+
+Standardowymi metodami wykorzystywanymi w nienadzorowanym anomaly detection są \textbf{Isolation
+Forest} oraz KDE. W przypadku KDE estymujemy rozkład klasy normalnej i dla każdego nowego punktu
+obliczamy log-likelihood na podstawie estymowanej funkcji gęstości prawdopodobieństwa. Niskie
+log-likelihood oznacza anomalię (musimy jednak ustawić oczywiście pewien próg).
 
 
 \subsection{Metody selekcji cech}
