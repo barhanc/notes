@@ -21,7 +21,7 @@
             csquotes, graphicx, fancyhdr}
 
 % ******* Additional packages *******
-\usepackage{lipsum, cancel}
+\usepackage{lipsum, cancel, tcolorbox}
 
 % ******* Fancy header *******
 \fancyhf{} \lhead{\leftmark} \rhead{\thepage} 
