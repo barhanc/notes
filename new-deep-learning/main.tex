@@ -1677,12 +1677,12 @@ gdzie \(\sigma\) jest hiper-parametrem określającym precyzję pomiaru. Oczywi�
 funkcją kowariancji, gdyż takie podstawienie powoduje jedynie dodanie dodatnich członów do pewnych
 elementów diagonalnych macierzy kowariancji, więc macierz ta jest nadal symetryczna i dodatnio
 określona. Wówczas rozkład predykcyjny ma parametry
-\begin{equation}
+\begin{equation}\boxed{
     \begin{split}
         &\boldsymbol{\mu} = k(Y,X)\left[k(X,X) + \sigma^2\mathbf{1}\right]^{-1}\mathbf{f}_X\\
         &\mathbf{\Sigma} = k(Y,Y) - k(Y,X)\left[k(X,X) + \sigma^2\mathbf{1}\right]^{-1}k(X,Y)
     \end{split}\quad.
-\end{equation}
+}\end{equation}
 
 
 \subsection{Metryki do oceny regresji i klasyfikacji}
@@ -2190,13 +2190,13 @@ skąd ostatecznie
 \end{equation}
 Jeśli z rozkładu \(q\) wygenerowaliśmy próbki \(X =
 \left\{\mathbf{x}^1,\ldots,\mathbf{x}^m\right\}\) to na mocy silnego prawa wielkich liczb mamy
-\begin{equation}
+\begin{equation}\boxed{
     \mathbb{E}_p[f(\mathbf{x})] \approx \frac{\sum_{i=1}^m f(\mathbf{x}^i) \frac{\tilde{p}(\mathbf{x}^i)}{\tilde{q}(\mathbf{x}^i)}}{\sum_{j=1}^m \frac{\tilde{p}(\mathbf{x}^j)}{\tilde{q}(\mathbf{x}^j)}} = \sum_{i=1}^m \lambda_i f(\mathbf{x}^i)\,,
-\end{equation}
+}\end{equation}
 gdzie
-\begin{equation}
+\begin{equation}\boxed{
     \lambda_i = \frac{\tilde{p}(\mathbf{x}^i) / \tilde{q}(\mathbf{x}^i)}{\sum_{j=1}^m \tilde{p}(\mathbf{x}^j) / \tilde{q}(\mathbf{x}^j) }\,.
-\end{equation}
+}\end{equation}
 
 Algorytm Importance Sampling jest prostym algorytmem Monte Carlo, który ma jeden zasadniczy problem.
 W jaki sposób mamy wybrać rozkład proponujący kandydatów \(q\)? Pewną odpowiedź na to pytanie
