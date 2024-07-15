@@ -13,4 +13,4 @@
   elementary Theory of Computation.
 
 * [[link](https://barhanc.github.io/notes/new-deep-learning/main.pdf)] (Polish) LaTeX notes on
-  Machine Learning and Deep Learning.
+  Mathematical Statistics, Machine Learning and Deep Learning.
