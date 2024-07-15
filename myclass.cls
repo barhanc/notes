@@ -24,7 +24,7 @@
 \usepackage{lipsum}
 
 % ******* Fancy header *******
-\fancyhf{} \lhead{\leftmark} \rhead{\thepage} 
+\fancyhf{} \lhead{\leftmark} \rhead{\thepage}
 \pagestyle{fancy}
 
 % ******* Custom symbols *******
@@ -44,5 +44,7 @@
     }
 
 % ******* Proof Environments *******
-\newtheorem{definition}{Definicja}[section]
-\newtheorem{theorem}{Twierdzenie}[section]
+\theoremstyle{definition}
+\newtheorem{definition}{Definicja}
+\theoremstyle{theorem}
+\newtheorem{theorem}{Twierdzenie}
