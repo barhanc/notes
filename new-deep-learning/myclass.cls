@@ -11,7 +11,8 @@
     right=5pc,
     bmargin=4.5pc,
     footskip=18pt,
-    headsep=25pt}
+    headsep=25pt
+}
 
 
 % ******* Packages *******
@@ -35,14 +36,11 @@
 \let\emptyset\varnothing
 
 % ******* Coloring *******
-\RequirePackage[]{hyperref}
-\hypersetup{
-    colorlinks=true,
-    linkcolor= blue,
-    filecolor=blue,      
-    urlcolor=blue,
-    }
+\RequirePackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue}
 
 % ******* Proof Environments *******
+\theoremstyle{definition}
 \newtheorem{definition}{Definicja}[section]
+\theoremstyle{theorem}
 \newtheorem{theorem}{Twierdzenie}[section]
