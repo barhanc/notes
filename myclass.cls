@@ -41,6 +41,6 @@
 
 % ******* Proof Environments *******
 \theoremstyle{definition}
-\newtheorem{definition}{Definicja}[section]
+\newtheorem{definition}{Def.}[section]
 \theoremstyle{theorem}
-\newtheorem{theorem}{Twierdzenie}[section]
+\newtheorem{theorem}{Tw.}[section]
