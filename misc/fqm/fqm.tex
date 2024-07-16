@@ -1,0 +1,1799 @@
+\documentclass{myclass}
+\usepackage[polish]{babel}
+
+\usetikzlibrary{quantikz}
+
+% TODO
+%
+% * idea of computation using those devices (QFT, Shor), applications to number theory
+%
+% * [ possible physical realizations of quantum computing, probably focus on Josephson junctions and
+%   charge qubits as they seem most elegant ]
+%
+% * A short overview of classical and quantum information theory (I don't want to go very deep there
+%   at the moment): Shannon/Von Neumann entropy, channels, quantum information transfer/cryptography
+%   ------------ 
+%
+%
+%
+%
+% My notes regarding abstract foundations of quantum theory and introduction to quantum computing
+\author{Bartosz Hanc}
+
+\begin{document}
+
+\tableofcontents
+\newpage
+\section{Abstrakcyjna teoria kwantów}
+
+\subsection{Elementy teorii przestrzeni Hilberta}
+
+Przez \(\mathbb{V} := (V,\mathbb{C},+,\cdot)\) będziemy oznaczać przestrzeń wektorową nad ciałem
+liczb zespolonych.
+
+\begin{definition}
+Odwzorowanie \(d: V \times V \mapsto \mathbb{R}\) będziemy nazywać \textit{metryką} w zbiorze \(V
+\neq \emptyset\) iff
+\begin{itemize}
+
+\item \(\forall u,v \in V : d(u,v) \geq 0\), przy czym równość zachodzi iff \(u = v\)
+(\textit{nieujemność})
+
+\item \(\forall u,v \in V : d(u,v) = d(v,u)\) (\textit{symetria})
+
+\item \(\forall u,v,w \in V : d(u,v) + d(v,w) \geq d(u,w)\) (\textit{nierówność trójkąta})
+
+\end{itemize}
+Parę \((V,d(\cdot,\cdot))\) będziemy nazywać \textit{przestrzenią metryczną}.
+\end{definition}
+
+\begin{definition}
+Niech \((V,d)\) będzie przestrzenią metryczną. Mówimy, iż dany ciąg \((u_n)\) elementów zbioru \(V\)
+jest zbieżny do \(g\in V\) tj. \(u_n \to g\) przy \(n \to \infty\) iff \(d(u_n,g) \to 0\) przy \(n
+\to \infty\).   
+\end{definition}
+
+\begin{definition}
+Ciąg \((u_n)\) elementów \(u_n \in V\) będziemy nazywać \textit{ciągiem Cauchy'ego} w przestrzeni
+metrycznej \((V,d(\cdot,\cdot))\) iff spełnia on kryterium Cauchy'ego tj.
+\begin{equation*}
+    \forall \epsilon > 0 : \exists N : \forall n,m > N : d(u_n,u_m) < \epsilon\,.
+\end{equation*}  
+\end{definition}
+
+\begin{theorem}
+Każdy ciąg zbieżny w przestrzeni metrycznej \((V,d)\) jest ciągiem Cauchy'ego w tej przestrzeni.
+\end{theorem}
+
+\begin{definition}
+Przestrzeń metryczną \((V,d(\cdot,\cdot))\) nazwiemy \textit{zupełną} iff każdy ciąg Cauchy'ego
+\((u_n)\) elementów \(u_n \in V\) jest zbieżny do granicy \(g \in V\).
+\end{definition}
+
+\begin{definition}
+Niech \(\mathbb{V}\) będzie przestrzenią wektorową. Odwzorowanie \(\braket{\cdot} : V \times V
+\mapsto \mathbb{C}\) nazwiemy \textit{iloczynem wewnętrznym} wektorów iff
+\begin{itemize}
+    
+    \item \(\forall u,v \in V : \braket{u}{v}^* = \braket{v}{u}\)
+    
+    \item \(\forall u,v_1,v_2 \in V : \forall \alpha, \beta \in \mathbb{C} : \braket{u}{\alpha v_1 +
+    \beta v_2} = \alpha \braket{u}{v_1} + \beta \braket{u}{v_2}\)
+
+    \item \(\forall u \in V : \braket{u} \geq 0\), przy czym równość zachodzi iff \(u =
+    \mathsf{0}\). Zauważmy tutaj, iż z pierwszego aksjomatu \(\braket{u} \in \mathbb{R}\), gdyż
+    \(\braket{u} = \braket{u}^* \implies \Im{\braket{u}} = 0\). 
+
+\end{itemize}
+Parę \((\mathbb{V},\braket{\cdot})\) będziemy nazywać \textit{przestrzenią unitarną}.
+\end{definition}
+
+\begin{theorem}
+Każda przestrzeń unitarna jest metryczna z metryką indukowaną przez iloczyn wewnętrzny \(d(u,v) :=
+\norm{u - v} = \sqrt{\braket{u-v}}\).
+\end{theorem}
+
+\begin{theorem}[\textit{Nierówność Cauchy'ego--Schwarza}]
+Niech \((\mathbb{V},\braket{\cdot})\) -- przestrzeń unitarna. Wówczas
+\begin{equation*}
+    \forall u,v \in V : |\braket{u}{v}|^2 \leq \braket{u}\braket{v}\,.
+\end{equation*}  
+\end{theorem}
+
+\begin{definition}
+Przeliczalny zbiór wektorów \(\{v_1,...,v_n\}\) nazwiemy \textit{ortogonalnym} iff 
+\begin{equation*}
+    \forall i\neq j; i,j\in\{1,...,n\} : \braket{v_i}{v_j} = 0\,.
+\end{equation*}
+Ten sam zbiór wektorów nazwiemy \textit{ortonormalnym} iff 
+\begin{equation*}
+    \forall i,j\in\{1,...,n\} : \braket{v_i}{v_j} = \delta_{ij}\,,
+\end{equation*}
+gdzie \(\delta_{ij}\) jest deltą Kroneckera.
+\end{definition}
+
+\begin{theorem}
+Każda przestrzeń unitarna \((\mathbb{V}, \braket{\cdot})\) posiada bazę ortonormalną, tj. bazę,
+której wektory bazowe tworzą zbiór ortonormalny.
+\end{theorem}
+
+\begin{definition}
+\textit{Przestrzenią Hilberta} \(\mathscr{H}=(\mathbb{V},\braket{\cdot})\) nazwiemy zupełną
+przestrzeń unitarną.
+\end{definition}
+
+\begin{definition}
+Niech \(\mathscr{H} = (\mathbb{V},\braket{\cdot})\) będzie przestrzenią Hilberta. Odwzorowanie
+liniowe \(F:V\mapsto\mathbb{C}\) nazwiemy \textit{funkcjonałem liniowym} w przestrzeni
+\(\mathscr{H}\).
+\end{definition}
+
+\begin{theorem}
+Niech \(V^*\) oznacza zbiór wszystkich funkcjonałów liniowych \(F:V\mapsto\mathbb{C}\). Wówczas
+\(\mathbb{V}^*:=(V^*,\mathbb{C},+,\cdot)\), gdzie
+\begin{itemize}
+    \item \(\forall F_1,F_2 \in V^* : \forall v \in V : (F_1+F_2)(v) = F_1(v) + F_2(v)\)
+
+    \item \(\forall F \in V^* : \forall \alpha \in \mathbb{C} : \forall v \in V : (\alpha \cdot
+    F)(v) = \alpha F(v)\)
+\end{itemize}
+jest przestrzenią wektorową, którą nazywamy \textit{przestrzenią dualną}.
+\end{theorem}
+
+\begin{theorem}[\textit{Riesza}]
+Niech \(\mathscr{H}=(\mathbb{V},\braket{\cdot})\) będzie przestrzenią Hilberta, a \(\mathbb{V}^*\)
+jej przestrzenią dualną. Wówczas istnieje wzajemnie jednoznaczne odwzorowanie wektorów \(v \in V\)
+na funkcjonały liniowe \(F \in V^*\). Dodatkowo dla każdego funkcjonału \(F\) istnieje dokładnie
+jeden wektor \(u \in V\) taki, że
+\begin{equation*}
+    \forall v \in V : F(v) = \braket{u}{v}\,.
+\end{equation*}
+\end{theorem}
+
+\begin{definition}
+\textit{Iloczynem Kroneckera} macierzy \(\oper{A} = [a_{ij}]_{n\times m}\) i \(\oper{B} =
+[b_{ij}]_{n'\times m'}\) nazywamy macierz wymiaru \(nn'\times mm'\) postaci
+\begin{equation*}
+    \begin{split}
+        \oper{A} \otimes \oper{B} &= \mqty[a_{11} & \cdots & a_{1m} \\ \vdots & \ddots & \vdots \\ a_{n1} & \cdots & a_{nm}] \otimes \mqty[b_{11} & \cdots & b_{1m'} \\ \vdots & \ddots & \vdots \\ b_{n'1} & \cdots & b_{n'm'}] = \mqty[a_{11}\oper{B} & \cdots & a_{1m}\oper{B} \\ \vdots & \ddots & \vdots \\ a_{n1}\oper{B} & \cdots & a_{nm}\oper{B}]
+    \end{split}
+\end{equation*}
+Iloczyn Kroneckera dowolnych macierzy \(\oper{A},\oper{B},\oper{C},\oper{D}\) spełnia
+\begin{itemize}
+    \item Jeśli istnieją iloczyny \(\oper{AC}, \oper{BD}\) to
+    \((\oper{A}\otimes\oper{B})(\oper{C}\otimes\oper{D}) = (\oper{AC})\otimes(\oper{BD})\).
+    \item Jeśli macierze \(\oper{A},\oper{B}\) są odwracalne to
+    \((\oper{A}\otimes\oper{B})^{-1}=\oper{A}^{-1}\otimes\oper{B}^{-1}\)
+    \item \((\oper{A}\otimes\oper{B})^\dagger = \oper{A}^\dagger \otimes \oper{B}^\dagger\)
+    \item \(\oper{A}\otimes(\oper{B}+\oper{C}) = \oper{A}\otimes\oper{B}+\oper{A}\otimes\oper{C}\)
+    \item \((\oper{A}+\oper{B})\otimes\oper{C} = \oper{A}\otimes\oper{C}+\oper{B}\otimes\oper{C}\)
+\end{itemize}
+\end{definition}
+
+\begin{definition}
+\textit{Iloczynem tensorowym} przestrzeni Hilberta \(\mathscr{H}_1\) i \(\mathscr{H}_2\) o bazach
+ortonoromalnych odpowiednio \(\{\phi_i^{(1)}\}\) i \(\{\phi_i^{(2)}\}\) nazywamy przestrzeń Hilberta
+\(\mathscr{H} = \mathscr{H}_1 \otimes \mathscr{H}_2\) taką, że:
+\begin{itemize}
+    
+    \item Jej bazą ortonormalną jest zbiór \(\{\phi_i^{(1)} \otimes \phi_j^{(2)}\}\).
+
+    \item Iloczyn wewnętrzny wektorów bazowych w przestrzeni \(\mathscr{H}_1 \otimes \mathscr{H}_2\)
+    jest zdefiniowany jako
+    \begin{equation*}
+        \braket{\phi_i^{(1)} \otimes \phi_j^{(2)}}{\phi_k^{(1)} \otimes \phi_l^{(2)}} := \braket{\phi_i^{(1)}}{\phi_k^{(1)}}_1 \cdot \braket{\phi_j^{(2)}}{\phi_l^{(2)}}_2 = \delta_{ik}\delta_{jl}\,,
+    \end{equation*}
+    gdzie \(\braket{\cdot}_i\) to iloczyn wewnętrzny w \(\mathscr{H}_i\).
+\end{itemize}
+\end{definition}
+
+\subsubsection*{Notacja Diraca}
+
+Niech \(\mathscr{H}\) będzie przestrzenią Hilberta. Wprowadzimy teraz kompaktową notacją wektorów i
+funkcjonałów liniowych wymyśloną przez P.A.M. Diraca. Aby uprościć zapis, będziemy mówili o
+wektorach należących do przestrzeni \(\mathscr{H}\) (używając nawet symbolu należenia \(\in
+\mathscr{H}\)), mając oczywiście formalnie na myśli wektory należące do zbioru \(V\).
+
+Wektory należące do \(\mathscr{H}\) będziemy oznaczać jako
+\begin{equation*}
+    \ket{\psi},\, \ket{\phi},\, ...\,,
+\end{equation*}
+przy czym \(\ket{\cdot}\) to tzw. \textit{ket} i formalnie jest to odwzorowanie \(\ket{\cdot} :
+\mathsf{S} \mapsto V\), gdzie \(\mathsf{S}\) jest zbiorem znaków, których używamy do oznaczenia
+konkretnych wektorów ze zbioru \(V\). Nie będziemy jednak przestrzegali tego formalnego znaczenia,
+utożsamiając dla wygody również  sam symbol z wektorem.
+
+Funkcjonały liniowe należące do przestrzeni dualnej będziemy oznaczać jako
+\begin{equation*}
+    \bra{\psi},\, \bra{\phi},\, ...\,,
+\end{equation*}
+przy czym \(\bra{\cdot}\) to tzw. \textit{bra} i formalnie jest to odwzorowanie \(\bra{\cdot} :
+\mathsf{S}^* \mapsto V^*\), gdzie \(\mathsf{S}^*\) jest zbiorem znaków, których używamy do
+oznaczenia konkretnych funkcjonałów ze zbioru \(V^*\). Ponieważ z tw. Riesza istnieje wzajemnie
+jednoznaczne odwzorowanie funkcjonałów liniowych na wektory, więc możemy utożsamić \(\mathsf{S}^* =
+\mathsf{S}\).
+
+\subsubsection*{Skończenie wymiarowa przestrzeń Hilberta nad $\mathbb{C}$}
+
+Rozważymy teraz konstrukcję skończenie wymiarowej przestrzeni Hilberta złożonej ze skończenie
+wymiarowej przestrzeni wektorowej \(\mathbb{V} = (\mathbb{C}^n, \mathbb{C}, +, \cdot)\), której
+elementy będziemy w danej bazie \textit{ortonormalnej} \(\{\phi_1, \ldots, \phi_n\}\) zapisywać jako
+\begin{equation*}
+    \mathbb{V} \ni \ket{\psi} = \sum_{i=1}^n a_i \ket{\phi_i} = \mqty[a_1 \\ \vdots \\ a_n]\,,
+\end{equation*}
+gdzie \(a_i = \braket{\phi_i}{\psi}\in\mathbb{C}\) oraz iloczynu wewnętrznego zdefiniowanego jako
+\begin{equation*}
+    \braket{\psi}{\phi} := \sum_{i=1}^n a_{i}^*b_i
+\end{equation*}
+dla
+\begin{equation*}
+    \psi = \mqty[a_1 \\ \vdots \\ a_n]\,,\quad \phi = \mqty[b_1 \\ \vdots \\ b_n]\,.
+\end{equation*}
+Powstała w ten sposób skończenie wymiarowa przestrzeń unitarna jest trywialnie zupełna, a zatem
+skonstruowaliśmy skończenie wymiarową przestrzeń Hilberta. Wektor w tej przestrzeni możemy utożsamić
+(poprzez iloczyn wewnętrzny) z macierzą kolumnową jego współrzędnych w danej bazie ortonormalnej.
+Jasne jest również czym jest funkcjonał liniowy stowarzyszony z danym wektorem
+\begin{equation*}
+    \bra{\psi} = \mqty[a_1 \\ \vdots \\ a_n]^\dagger = \mqty[a_1^* & \ldots & a_n^*]\,,
+\end{equation*}
+gdzie \(\dagger\) oznacza \textit{sprzężenie hermitowskie} macierzy, tj. sprzężoną macierz
+transponowaną. W dalszej części skupimy się głównie na skończenie wymiarowych przestrzeniach
+Hilberta \(((\mathbb{C}^n, \mathbb{C}, +, \cdot),\braket{\cdot})\), gdyż stanowią one podstawę opisu
+teorii obliczeń kwantowych i kwantowej teorii informacji. Należy zdawać sobie jednak sprawę, iż
+stanowi to duże uproszczenie w stosunku do wymagań pełnoprawnych teorii fizycznych (mechanika
+falowa, kwantowa teoria pola), w których niezbędna jest teoria nieskończenie wymiarowych przestrzeni
+Hilberta.
+
+\subsection{Elementy teorii operatorów liniowych}
+
+\begin{definition}
+\textit{Operatorem liniowym} \(\oper{A}\) w przestrzeni \(\mathscr{H} = (\mathbb{V},
+\braket{\cdot})\) nazywamy odwzorowanie liniowe 
+\begin{equation*}
+    \oper{A} : D(\oper{A}) \mapsto D(\oper{A})\,,
+\end{equation*}
+gdzie \(D(\oper{A})\) jest pewną podprzestrzenią wektorową przestrzeni \(\mathbb{V}\). Dodatkowo
+zakładamy, iż dziedziny operatorów są gęste, to znaczy ich domknięcia są równe \(\mathscr{H}\).
+\end{definition}
+
+Zgodnie z wcześniejszymi komentarzami nie będziemy wnikali w subtelne problemy wynikające z faktu,
+iż w nieskończenie wymiarowej przestrzeni Hilberta pojęcie operatora liniowego jest nieodłącznie
+związane z pojęciem dziedziny tego operatora, który w ogólności nie jest określony na całej
+przestrzeni Hilberta, a tylko na pewnym jej podzbiorze. Komplikacje te nie występują w skończenie
+wymiarowych przestrzeniach Hilberta wymiaru \(n\), w których operatory liniowe możemy utożsamiać z
+\textit{endomorfizmami} tej przestrzeni
+\begin{equation*}
+\oper{A}: V \mapsto V\,.
+\end{equation*}
+
+Jak wiadomo z elementarnej algebry w przypadku \(n\)--wymiarowej przestrzeni wektorowej każdemu
+endomorfizmowi \(\oper{A}\) możemy przyporządkować macierz wymiaru \(n\times n\), której elementy w
+danej bazie ortonormalnej \(\{\phi_1,\ldots,\phi_n\}\) są dane przez wartości \(\oper{A}\) na
+wektorach bazowych
+\begin{equation*}
+\begin{split}
+\oper{A}\ket{\phi_1} &= A_{11}\ket{\phi_1} + A_{21}\ket{\phi_2} + \ldots + A_{n1}\ket{\phi_n}\\
+&\vdots\\
+\oper{A}\ket{\phi_n} &= A_{1n}\ket{\phi_1} + A_{2n}\ket{\phi_2} + \ldots + A_{nn}\ket{\phi_n}
+\end{split}\quad,
+\end{equation*}
+skąd element \(A_{ij}\) macierzy \(\oper{A}\) w bazie ortonormalnej \(\{\phi_i\}\) jest dany przez
+\begin{equation*}
+A_{ij} = \bra{\phi_i}\oper{A}\ket{\phi_j}\,.
+\end{equation*}
+
+\begin{definition}
+\textit{Sprzężeniem} operatora \(\oper{A}\) nazywamy operator \(\oper{A}^\dagger\) zdefiniowany
+(pomijając wszelkie problemy związane z określeniem dziedzin operatorów) przez równanie
+\begin{equation*}
+\forall \psi,\phi\in\mathscr{H}: \bra{\psi}\oper{A}^\dagger\ket{\phi} = \bra{\phi}\oper{A}\ket{\psi}^*\,.
+\end{equation*}
+\end{definition}
+
+Podstawiając w miejsce wektorów \(\psi\), \(\phi\) wektory bazy otrzymujemy (w przypadku skończenie
+wymiarowych przestrzeni Hilberta) zależność między macierzą \(\oper{A}\) i jej sprzężeniem
+hermitowskim \(\oper{A}^\dagger\)
+\begin{equation*}
+A^\dagger_{ij} = A_{ji}^*\,.
+\end{equation*} 
+
+\begin{definition}
+\textit{Komutatorem} operatorów \(\oper{A}\), \(\oper{B}\) operator \([\oper{A},\oper{B}]\)
+zdefiniowany jako
+\begin{equation*}
+\forall \psi \in D : [\oper{A},\oper{B}]\psi = \oper{A}\oper{B}\psi - \oper{B}\oper{A}\psi\,. 
+\end{equation*}
+Jeśli \([\oper{A},\oper{B}] = \oper{\mathsf{0}}\) (gdzie \(\oper{\mathsf{0}}\) oznacza
+\textit{operator zerowy} \(\oper{\mathsf{0}}\psi=\mathsf{0}\)), to mówimy, że operatory
+\(\oper{A}\), \(\oper{B}\) \textit{komutują}.
+\end{definition}
+
+\begin{definition}
+\textit{Antykomutatorem} operatorów \(\oper{A}\), \(\oper{B}\) nazywamy operator
+\(\{\oper{A},\oper{B}\}\) zdefiniowany jako
+\begin{equation*}
+    \{\oper{A},\oper{B}\}\psi := \oper{A}\oper{B}\psi + \oper{B}\oper{A}\psi\,.
+\end{equation*}
+\end{definition}
+
+\begin{theorem}
+Dla dowolnych operatorów \(\oper{A}\), \(\oper{B}\), \(\oper{C}\) zakładając odpowiednie dziedziny,
+zachodzi:
+\begin{itemize}
+    \item \([\oper{A} + \oper{B},\oper{C}] = [\oper{A},\oper{C}] + [\oper{B},\oper{C}]\) ;
+    \item \([\oper{A}\oper{B},\oper{C}] = \oper{A}[\oper{B},\oper{C}] +
+    [\oper{A},\oper{C}]\oper{B}\) .
+    \item \([[\oper{A}, \oper{B}], \oper{C}] + [[\oper{B},\oper{C}],\oper{A}] + [[\oper{C},
+    \oper{A}], \oper{B}] = \oper{0}\) (\textit{tożsamość Jacobiego})
+\end{itemize}   
+\end{theorem}
+
+\begin{definition}
+\textit{Ślad operatora \(\oper{A}\)} definiujemy jako liczbę \(\Trace \oper{A} \in \mathbb{C}\)
+równą
+\begin{equation*}
+\Trace{\oper{A}} := \sum_{i} \bra{\phi_i}\oper{A}\ket{\phi_i}\,,
+\end{equation*}
+gdzie \(\{\phi_i\}\) jest dowolną ortonormalną bazą przestrzeni \(\mathscr{H}\).
+\end{definition}
+
+\begin{theorem}
+Ślad operatora nie zależy od wyboru ortonormalnej bazy przestrzeni Hilberta.    
+\end{theorem}
+
+\begin{theorem} Podstawowe własności śladu.
+\begin{itemize}
+    \item \(\Trace(\alpha\oper{A} + \beta\oper{B}) = \alpha\Trace(\oper{A}) +
+    \beta\Trace(\oper{B})\)
+    \item \(\Trace{\oper{ABC}} = \Trace{\oper{BCA}} = \Trace{\oper{CAB}}\)
+    \item \(\Trace{\oper{A}} = \left(\Trace{\oper{A}^\dagger}\right)^*\)
+    \item \(\det{\e^{\oper{A}}} = \e^{\Trace{\oper{A}}}\)
+\end{itemize}  
+\end{theorem}
+
+\begin{definition}[\textit{Funkcja operatora}]
+Niech \(f(x):\mathbb{R}\mapsto\mathbb{R}\) będzie funkcją zmiennej rzeczywistej taką, że istnieje
+szereg potęgowy
+\begin{equation*}
+\sum_{n=0}^\infty\frac{a_n}{n!}x^n\,,
+\end{equation*}
+który jest zbieżny jednostajnie na \(\mathbb{R}\) do \(f\). Wówczas funkcję operatora
+\(f(\oper{A})\) definiujemy jako
+\begin{equation*}
+f(\oper{A}) := \sum_{n=0}^\infty \frac{a_n}{n!}\oper{A}^n\,,
+\end{equation*}
+gdzie przyjmujemy \(\oper{A}^0 := \oper{1}\). W szczególności mamy
+\begin{itemize}
+    \item \(\exp(\oper{A}) := \sum_{n=0}^\infty \frac{1}{n!}\oper{A}^n\)
+
+    \item \(\sin(\oper{A}) := \sum_{n=0}^\infty \frac{(-1)^n}{(2n+1)!}\oper{A}^{2n+1}\)
+
+    \item \(\cos(\oper{A}) := \sum_{n=0}^\infty \frac{(-1)^n}{(2n)!}\oper{A}^{2n}\)
+\end{itemize}
+\end{definition}
+
+W teorii kwantowej główną rolę odgrywają trzy rodziny operatorów: operatory samosprzężone, rzutowe i
+unitarne.
+
+\linesep
+
+\begin{definition}
+    \textit{Operatorem samosprzężonym} (pomijając wszelkie problemy związane z określeniem dziedzin
+    operatorów) nazywamy operator \(\oper{A}\), dla którego \(\oper{A} = \oper{A}^\dagger\).
+\end{definition}
+
+W przypadku skończenie wymiarowych przestrzeni Hilberta definicja ta jest pełna, a operatory
+samosprzężony możemy utożsamiać z macierzami hermitowskimi tj. macierzami, których elementy
+spełniają związek
+\begin{equation*}
+    A_{ij} = A_{ji}^*\,.
+\end{equation*}
+
+W przypadku nieskończenie wymiarowych przestrzeni Hilberta definicja ta jest niepełna gdyż trzeba
+mieć świadomość, iż równość operatorów oznacza z definicji równość ich dziedzin, co wymaga
+wprowadzenia rozróżnienia między operatorami jedynie \textit{symetrycznymi} (tj. spełniającymi
+równość \(\bra{\psi}\oper{A}\ket{\phi} = \bra{\phi}\oper{A}\ket{\psi}^*\) dla dowolnych
+\(\psi,\phi\in D(\oper{A})\)), a operatorami samosprzężonymi.
+
+Operatory samosprzężone odgrywają wyróżnioną rolę w teorii kwantowej ze względu na trzy twierdzenia,
+które są dla nich spełnione.
+
+\begin{theorem}
+Wartości własne operatora samosprzężonego są liczbami rzeczywistymi.   
+\end{theorem}
+
+\begin{theorem}
+Zbiór wektorów własnych operatora samosprzężonego rozpina przestrzeń \(\mathscr{H}\).   
+\end{theorem}
+
+\begin{theorem}
+Jeśli widmo operatora samosprzężonego nie jest zdegenerowane, to wektory własne tworzą zbiór
+ortogonalny.
+\end{theorem}
+
+\linesep
+
+\begin{definition}
+\textit{Operatorem rzutowym} nazywamy operator \(\oper{P}\) taki, że \(\oper{P} = \oper{P}^\dagger\)
+(samosprzężoność) i \(\oper{P}^2 = \oper{P}\) (idempotentność). 
+\end{definition}
+
+Ważnym przykładem operatora rzutowego jest operator rzutowania na jednowymiarową podprzestrzeń
+rozpiętą na unormowanym wektorze \(\ket{\phi}\) (rzutowanie na kierunek wektora \(\phi\)), który w
+notacji Diraca możemy zapisać jako \(\oper{P} = \ket{\phi}\bra{\phi}\) tj. \(\forall \psi :
+\oper{P}(\psi) = \braket{\phi}{\psi}\phi\). Jest to oczywiście operator liniowy, gdyż dla dowolnych
+wektorów \(\ket{\psi_1}\), \(\ket{\psi_2}\) i skalarów \(\alpha\), \(\beta\) mamy
+\begin{equation*}
+    \begin{split}
+        &\ket{\phi}\bra{\phi}(\alpha\ket{\psi_1} + \beta\ket{\psi_2}) = \ket{\phi}\braket{\phi}{\alpha\psi_1 + \beta\psi_2} \\
+        &= \alpha\ket{\phi} \braket{\phi}{\psi_1} + \beta\ket{\phi}\braket{\phi}{\psi_2}\,.
+    \end{split}
+\end{equation*}
+Jest również idempotentny, gdyż 
+\begin{equation*}
+    \ket{\phi}\bra{\phi}(\ket{\phi}\braket{\phi}{\psi}) =  \ket{\phi}\braket{\phi}{\psi}
+\end{equation*}
+z założenia \(\braket{\phi} = 1\) oraz samosprzężony
+\begin{equation*}
+    (\braket{\psi_1}{\phi}\braket{\phi}{\psi_2})^* = \braket{\psi_1}{\phi}^*\braket{\phi}{\psi_2}^* = \braket{\phi}{\psi_1}\braket{\psi_2}{\phi} = \braket{\psi_2}{\phi}\braket{\phi}{\psi_1}\,.
+\end{equation*}
+Łatwo pokazać również, iż jeśli \(\{\phi_i\}\) jest ortonormalnym zbiorem wektorów, to
+\begin{equation*}
+    \oper{P} = \sum_i \ket{\phi_i}\bra{\phi_i}
+\end{equation*}
+jest operatorem rzutowym. W szczególności, jeśli \(\{\phi_i\}\) jest ortonormalną bazą przestrzeni
+\(\mathscr{H}\), to
+\begin{equation*}
+    \sum_i \ket{\phi_i}\bra{\phi_i} = \oper{1}\,.
+\end{equation*}
+
+\linesep
+
+\begin{definition}
+\textit{Operatorem unitarnym} nazywamy operator \(\oper{U}\) taki, że
+\begin{equation*}
+    \oper{U}\oper{U}^\dagger = \oper{U}^\dagger\oper{U} = \oper{1}\,.
+\end{equation*}
+\end{definition}
+
+Przekształcenia unitarne reprezentowane przez operatory unitarne mają użyteczną własność polegającą
+na zachowywaniu wartości iloczynu wewnętrznego dwóch wektorów, a zatem w szczególności normy wektora
+\begin{equation*}
+    \braket{\oper{U}\psi}{\oper{U}\phi} = \braket{\oper{U}^\dagger\oper{U}\psi}{\phi} = \braket{\psi}{\phi}\,.
+\end{equation*}
+
+\linesep
+
+\begin{theorem}[\textit{spektralne}]
+Niech \(\mathscr{H}\) będzie przestrzenią Hilberta. Dla każdego samosprzężonego operatora liniowego
+\(\oper{A}\) w \(\mathscr{H}\) istnieje unikalna rodzina operatorów rzutowych \(\oper{P}(\lambda)\)
+indeksowanych ciągłym parametrem \(\lambda \in \mathbb{R}\) taka, że
+\begin{itemize}
+    
+    \item \(\oper{P}(\lambda_1)\oper{P}(\lambda_2) = \oper{P}(\min(\lambda_1,\lambda_2))\)
+
+    \item \(\forall \lambda: \lim_{\epsilon\to0^+}\oper{P}(\lambda+\epsilon) = \oper{P}(\lambda)\)
+    
+    \item \(\lim_{\lambda\to-\infty}\oper{P}(\lambda) = \oper{0}\)
+
+    \item \(\lim_{\lambda\to+\infty}\oper{P}(\lambda) = \oper{1}\)
+
+    \item \(\oper{A} = \int\limits_{-\infty}^{+\infty}\lambda \dd{\oper{P}(\lambda)}\)
+
+\end{itemize}
+gdzie ostatnia całka to tzw. \textit{całka Riemanna--Stieltjesa} względem miary operatorowej
+zdefiniowana jako
+\begin{equation*}
+        \int\limits_a^b f(x) \dd{\sigma(x)} := \lim_{n\to\infty}\sum_{k=1}^nf(x_k)\left[\sigma(x_k) - \sigma(x_{k-1})\right]\,,
+\end{equation*}
+dla 
+\begin{equation*}
+    f: \mathbb{R} \mapsto \mathbb{R}\,,\quad \sigma: \mathbb{R} \mapsto X\,,
+\end{equation*}
+gdzie \([a;b] = \bigcup_{k=1}^{n}[x_{k-1}; x_k]\) jest podziałem normalnym odcinka \([a;b]\).
+Dodatkowo dla dowolnej funkcji operatora \(f\) zachodzi
+\begin{equation*}
+    f(\oper{A}) = \int\limits_{-\infty}^{+\infty} f(\lambda) \dd{\oper{P}(\lambda)}\,.
+\end{equation*}
+\end{theorem}        
+
+W szczególnym przypadku, gdy operator samosprzężony \(\oper{A}\) ma niezdegenerowane widmo
+\(\{\lambda_i\}\) będące zbiorem przeliczalnym, wiemy, że zbiór unormowanych wektorów własnych
+\(\{\phi_i\}\) jest bazą ortonormalną przestrzeni \(\mathscr{H}\), czyli dla dowolnego wektora
+\(\psi \in \mathscr{H}\) możemy zapisać
+\begin{equation*}
+    \ket{\psi} = \sum_{i} c_i\ket{\phi_i} = \sum_{i} \braket{\phi_i}{\psi}\ket{\phi_i}\,,
+\end{equation*}
+gdzie \(c_i = \braket{\phi_i}{\psi} \in \mathbb{C}\) to współrzędne wektora w zadanej bazie.
+Działając operatorem \(\oper{A}\) na wektor \(\psi\) mamy
+\begin{equation*}
+    \oper{A}\ket{\psi} = \sum_{i} \braket{\phi_i}{\psi}\oper{A}\ket{\phi_i} =
+    \sum_{i} \braket{\phi_i}{\psi}\lambda_i\ket{\phi_i} = \left(\sum_i\lambda_i\ket{\phi_i}\bra{\phi_i}\right)\ket{\psi} \,.
+\end{equation*}
+Całka Stieltjesa z twierdzenia spektralnego przechodzi więc w tym przypadku w sumę (być może
+nieskończoną) operatorów rzutowych rzutujących na jednowymiarowe podprzestrzenie rozpięte na
+kolejnych wektorach własnych operatora
+\begin{equation*}
+    \oper{A} = \sum_{i} \lambda_i \ket{\phi_i}\bra{\phi_i}\,.
+\end{equation*}
+
+\subsection{Postulaty teorii kwantów}
+
+Poniżej przedstawiono postulaty ogólnej, abstrakcyjnej teorii kwantów. Postulaty te obowiązują we
+wszystkich realizacjach teorii kwantów np. mechanice falowej, czy kwantowej teorii pola, jednak ze
+względu na swój ogólny charakter same w sobie nie dostarczają narzędzi do rozwiązywania żadnych
+konkretnych problemów fizycznych. Nie należy ich również traktować jako podstaw do aksjomatyzacji
+teorii kwantowej. Stanowią one raczej sposób uporządkowania w spójną strukturę wiedzy dotyczącej
+konkretnych realizacji teorii kwantów
+\medskip
+
+\begin{enumerate}[label=\Roman*.]
+    
+    \item \textbf{O modelu matematycznym.} Modelem matematycznym teorii kwantów jest teoria
+    przestrzeni Hilberta nad ciałem liczb zespolonych i teoria operatorów liniowych działających w
+    tej przestrzeni.
+
+    \item \textbf{O pytaniach elementarnych.} Pytaniem elementarnym nazwiemy pytanie, na które
+    odpowiedź może brzmieć jedynie ,,TAK'' lub ,,NIE''. Pytanie elementarne nazwiemy rozstrzygalnym
+    w obrębie danej teorii kwantowej iff istnieje wzajemnie jednoznaczne przyporządkowanie tego
+    pytania do pewnego operatora rzutowego \(\oper{P}\). Będziemy wówczas mówili, iż dane pytanie
+    elementarne jest reprezentowane przez \(\oper{P}\). Każde pytanie elementarne reprezentowane
+    przez \(\oper{P}\) można zanegować otrzymując pytanie reprezentowane przez \(\oper{1} -
+    \oper{P}\), natomiast dwa pytania elementarne reprezentowane przez \(\oper{P}_1\) i
+    \(\oper{P}_2\) można połączyć spójnikiem
+    \begin{itemize}
+        \item ,,I''; otrzymując pytanie reprezentowane przez \(\oper{P}_1\oper{P}_2\), przy czym
+        musi zachodzić \([\oper{P}_1, \oper{P}_2] = \oper{\mathsf{0}}\).
+
+        \item ,,LUB''; otrzymując pytanie reprezentowane przez \(\oper{P}_1 + \oper{P}_2\), przy
+        czym musi zachodzić \(\oper{P}_1\oper{P}_2 = \oper{\mathsf{0}}\).
+
+    \end{itemize}
+
+    \item \textbf{O stanach układu.} Stan układu fizycznego jest reprezentowany przez unormowany
+    wektor \(\ket{\Psi}\) w pewnej przestrzeni Hilberta \(\mathscr{H}\), przy czym utożsamiamy ze
+    sobą wektory różniące się jedynie globalnym czynnikiem fazowym tj. \(\ket{\Psi} \sim
+    \e^{\im\alpha}\ket{\Psi}\), \(\alpha \in \mathbb{R}\).
+
+    \item \textbf{O prawdopodobieństwach.} Teoria kwantowa dostarcza jedynie probabilistycznych
+    odpowiedzi na rozstrzygalne pytania elementarne. Prawdopodobieństwo \(p\), iż odpowiedź na
+    pytanie elementarne reprezentowane przez \(\oper{P}\) jest twierdząca, dla układu
+    reprezentowanego przez \(\Psi\) wynosi
+    \begin{equation*}
+        p = \bra{\Psi}\oper{P}\ket{\Psi}\,.
+    \end{equation*}
+    Zauważmy, że z samosprzężoności operatora \(\oper{P}\) mamy \(p = p^*\), więc \(p
+    \in\mathbb{R}\), natomiast z nierówności Cauchy'ego--Schwarza mamy
+    \begin{equation*}
+        \braket{\Psi}\braket{\oper{P}\Psi} = 1 \cdot \bra{\Psi}\oper{P}\ket{\Psi} = p \geq |\bra{\Psi}\oper{P}\ket{\Psi}|^2 = p^2\,,
+    \end{equation*}
+    skąd \(p(p-1) \leq 0\), co implikuje \(p \in [0;1]\) zgodnie z aksjomatami prawdopodobieństwa.
+
+    Operator jednostkowy \(\oper{1}\) reprezentuje pytanie, na które odpowiedź jest zawsze
+    pozytywna. Jest to więc w istocie pytaniem o istnienie układu.
+
+    \item \textbf{O wielkościach fizycznych.} Każda wielkość fizyczna \(A\) występująca w danej
+    teorii kwantowej jest reprezentowana przez samosprzężony operator liniowy \(\oper{A}\) i
+    stowarzyszoną z nim na mocy twierdzenia spektralnego rodzinę operatorów rzutowych
+    \(\oper{P}_A(\lambda)\). Operator rzutowy \(\oper{P}_A(\lambda)\) reprezentuje pytanie:
+    \begin{quote}
+        czy wielkość fizyczna \(A\) ma wartość nie większą od \(\lambda\)?
+    \end{quote}
+    Na mocy postulatu drugiego możemy skonstruować pytanie:
+    \begin{quote}
+        czy wielkość fizyczna \(A\) ma wartość z przedziału \((\lambda_1;\lambda_2]\)?
+    \end{quote}
+    reprezentowane przez operator 
+    \begin{equation*}
+        \oper{P}_A(\lambda_1;\lambda_2) = \left[\oper{1} - \oper{P}_A(\lambda_1)\right]\oper{P}_A(\lambda_2) =
+        \oper{P}_A(\lambda_2)-\oper{P}_A(\lambda_1)\,.
+    \end{equation*}
+    Wartość oczekiwaną funkcji \(f\) wielkości \(A\) dla zespołu statystycznego układów
+    przygotowanych w stanie \(\Psi\) obliczamy jako
+    \begin{equation*}
+        \begin{split}
+            \expval{f(A)} &= \int\limits_{-\infty}^{+\infty} f(\lambda) \dv{p(\lambda)}{\lambda} \dd{\lambda} = \int\limits_{-\infty}^{+\infty} f(\lambda) \dv{\bra{\Psi}\oper{P}_A(\lambda)\ket{\Psi}}{\lambda} \dd{\lambda} \\
+            &= \bra{\Psi}\left[\int\limits_{-\infty}^{+\infty} f(\lambda) \dd{\oper{P}_A(\lambda)}\right]\ket{\Psi} = \bra{\Psi}f(\oper{A})\ket{\Psi}\,.
+        \end{split}
+    \end{equation*}
+
+    \item \textbf{O ewolucji układu w czasie.} Stan układu \(\ket{\Psi}\) ewoluuje zgodnie z
+    \textit{równaniem Schr\"{o}dingera}
+    \begin{equation*}
+        \oper{H}\ket{\Psi} = \im\hbar\partial_t\ket{\Psi}\,,
+    \end{equation*}
+    gdzie \(\oper{H}\) jest specjalnym operatorem samosprzężonym reprezentującym hamiltonian układu,
+    tworzonym wedle określonych reguł w danej realizacji teorii kwantów. Równoważnie możemy
+    powiedzieć, iż istnieje operator unitarny \(\oper{U}(t;t_0)\) taki, że
+    \begin{equation*}
+        \ket{\Psi(t)} = \oper{U}(t;t_0)\ket{\Psi(t_0)}\,.
+    \end{equation*}
+    Istotnie pokażemy, iż ewolucja zgodna z równaniem Schr\"{o}dingera jest unitarna
+    \begin{equation*}
+        \dv{\braket{\Psi}}{t} = \braket{\dot{\Psi}}{\Psi} + \braket{\Psi}{\dot{\Psi}} = -\frac{1}{\im\hbar}\bra{\oper{H}\Psi}\ket{\Psi} + \frac{1}{\im\hbar}\bra{\Psi}\ket{\oper{H}\Psi} = 0\,,
+    \end{equation*}
+    gdzie w ostatniej linijce skorzystaliśmy z samosprzężoności \(\oper{H}\). Powyższy wynik nazywa
+    się również zasadą zachowania prawdopodobieństwa.
+
+    \item \textbf{O kolapsie.} Po pomiarze wielkości \(A\) układu w stanie \(\ket{\Psi}\), który
+    zwrócił wartość z przedziału \((\lambda_1;\lambda_2]\) stan układu zostaje natychmiastowo
+    zredukowany do
+    \begin{equation*}
+        \ket{\Psi} \to \frac{\oper{P}_A(\lambda_1;\lambda_2)\ket{\Psi}}{\sqrt{\bra{\Psi}\oper{P}_A(\lambda_1;\lambda_2)\ket{\Psi}}}\,.
+    \end{equation*}
+
+    \item \textbf{O układach złożonych.} Przestrzeń Hilberta \(\mathscr{H}\) układu złożonego ma
+    strukturę iloczynu tensorowego przestrzeni Hilberta układów prostych wchodzących w jego skład
+    \(\mathscr{H}=\mathscr{H}_1\otimes\mathscr{H}_2\otimes\ldots\otimes\mathscr{H}_n\).
+
+\end{enumerate}
+
+\subsubsection*{Zasady nieoznaczoności}
+
+Niech \(A\) będzie pewną wielkością fizyczną reprezentowaną przez operator \(\oper{A}\). Zdefiniujmy
+odchylenie standardowe \(\sigma_A\) wielkości \(A\) dla układu w stanie \(\Psi\) jako
+\begin{equation*}
+    \sigma_A := \sqrt{\expval{(A - \expval{A})^2}} = \sqrt{\bra{\Psi}\oper{\mathcal{A}}^2\ket{\Psi}}\,,
+\end{equation*}
+gdzie \(\oper{\mathcal{A}} := \oper{A} - \expval{A}\). Dla dowolnych dwóch wielkość fizycznych \(A\)
+i \(B\) w układzie reprezentowanym przez \(\Psi\) mamy z nierówności Cauchy'ego--Schwarza
+\begin{equation*}
+    \sigma_A^2\sigma_B^2 \geq \left|\braket{\oper{\mathcal{A}}\Psi}{\oper{\mathcal{B}}\Psi}\right|^2\,.
+\end{equation*}
+Jednocześnie dla dowolnego \(z = x + \im y \in\mathbb{C}\) mamy
+\begin{equation*}
+    |z|^2 = x^2 + y^2 = \left(\frac{z + z^*}{2}\right)^2 + \left(\frac{z-z^*}{2\im}\right)^2\,.
+\end{equation*}
+Z powyższego mamy więc
+\begin{equation*}
+    \sigma_A^2\sigma_B^2 \geq \left[\frac{1}{2\im}\left(\braket{\oper{\mathcal{A}}\Psi}{\oper{\mathcal{B}}\Psi} - \braket{\oper{\mathcal{B}}\Psi}{\oper{\mathcal{A}}\Psi}\right)\right]^2 + \left[\frac{1}{2}(\braket{\oper{\mathcal{A}}\Psi}{\oper{\mathcal{B}}\Psi} + \braket{\oper{\mathcal{B}}\Psi}{\oper{\mathcal{A}}\Psi})\right]^2\,,
+\end{equation*}
+skąd po prostych przekształceniach otrzymujemy
+\begin{equation*}
+    \sigma_A^2\sigma_B^2 \geq \left(\frac{1}{2\im}\bra{\Psi}[\oper{A},\oper{B}]\ket{\Psi}\right)^2 + \left(\frac{1}{2}\bra{\Psi}\{\oper{A},\oper{B}\}\ket{\Psi} - \expval{A}\expval{B}\right)^2
+    \quad.
+\end{equation*}
+Powyższą nierówność nazywamy \textit{zasadą nieoznaczoności Schr\"{o}dingera}. W szczególności z
+powyższego wynika \textit{zasada nieoznaczoności Robertsona}
+\begin{equation*}
+    \sigma_A^2\sigma_B^2 \geq \left(\frac{1}{2\im}\bra{\Psi}[\oper{A},\oper{B}]\ket{\Psi}\right)^2
+    \quad,
+\end{equation*}
+która dla operatorów spełniających \textit{kanoniczną relację komutacyjną} \([\oper{A},\oper{B}] =
+\im\hbar\oper{1}\) przyjmuje postać \textit{zasady nieoznaczonosci Heisenberga}
+\begin{equation*}
+    \sigma_A\sigma_B \geq \frac{\hbar}{2}\quad.
+\end{equation*}
+Zauważmy jednakże, iż w rozważanych przez nas \(n\)--wymiarowych przestrzeniach Hilberta nie
+istnieją operatory spełniające kanoniczną relację komutacyjną. Istotnie biorąc ślad z powyższego
+wyrażenia mamy
+\begin{equation*}
+    0 = \Tr \oper{AB} - \Tr\oper{BA} = \im n\hbar \neq 0\,.
+\end{equation*}
+
+
+\subsubsection*{Twierdzenie Ehrenfesta}
+
+Niech \(A\) będzie pewną wielkością fizyczną reprezentowaną przez operator \(\oper{A}\), wówczas
+\begin{equation*}
+        \dv{\expectationvalue{A}}{t} = \dv{}{t} \braket{\Psi}{\oper{A}\Psi}
+        = \braket{\pdv{\Psi}{t}}{\oper{A}\Psi} + \braket{\Psi}{\oper{A}\pdv{\Psi}{t}} + \braket{\Psi}{\pdv{\oper{A}}{t}\Psi}\,.
+\end{equation*}
+Jednocześnie z równania Schr\"{o}dingera mamy \(\oper{H}\Psi=\im\hbar{\partial_t\Psi}\), skąd
+\begin{equation*}
+    \dv{\expectationvalue{A}}{t} = \frac{\im}{\hbar}\braket{\oper{H}\Psi}{\oper{A}\Psi} - \frac{\im}{\hbar}\braket{\Psi}{\oper{A}\oper{H}\Psi} + \bra{\Psi}\pdv{\oper{A}}{t}\ket{\Psi}\,,
+\end{equation*}
+ale ze względu na fakt, iż \(\oper{H}\) jest operatorem samosprzężonym mamy
+\begin{equation*}
+    \dv{\expectationvalue{A}}{t} = \bra{\Psi}\pdv{\oper{A}}{t}\ket{\Psi} + \frac{\im}{\hbar}\bra{\Psi}[\oper{H},\oper{A}]\ket{\Psi}
+    \quad.
+\end{equation*}
+Powyższe równanie nazywamy \textit{twierdzeniem Ehrenfesta}.
+
+\subsubsection*{Zasada nieoznaczoności energii--czasu}
+
+Z twierdzenia Ehrenfesta dla operatora \(\oper{A}\) niezależnego od czasu mamy
+\begin{equation*}
+    \dv{\expval{A}}{t} = \frac{\im}{\hbar}\bra{\Psi}[\oper{H}, \oper{A}]\ket{\Psi}\,.
+\end{equation*}
+Jednocześnie z zasady nieoznaczoności Robertsona mamy
+\begin{equation*}
+    \sigma_H^2\sigma_A^2 \geq \left(\frac{1}{2\im}\bra{\Psi}[\oper{H}, \oper{A}]\ket{\Psi}\right)^2\,.
+\end{equation*}
+Podstawiając wyrażenie na wartość oczekiwaną komutatora otrzymujemy z powyższego
+\begin{equation*}
+    \sigma_H\sigma_A \geq \frac{\hbar}{2} \left|\dv{\expval{A}}{t}\right|\,.
+\end{equation*}
+Jeśli wartość oczekiwana nie zmienia się w czasie to powyższa nierówność nie mówi nic odkrywczego.
+Jeśli jednak rozważymy pewien proces, podczas którego wartość oczekiwana zmienia się w czasie
+\(\Delta t\) o \(\Delta A\) to możemy dokonać przybliżenia 
+\begin{equation*}
+    \frac{\sigma_A}{\left|\dv{\expval{A}}{t}\right|} \approx \frac{|\Delta A|}{|\Delta A| / \Delta t} = \Delta t\,,
+\end{equation*}
+a wówczas z powyższej nierówności otrzymujemy zależność
+\begin{equation*}
+    \sigma_H\Delta t \gtrsim \frac{\hbar}{2}\,,
+\end{equation*}
+którą nazywamy \textit{zasadą nieoznaczoności energii--czasu}.
+
+
+\subsection{Kwantowe układy dwupoziomowe}
+
+Przedstawimy teraz ważną realizację abstrakcyjnej teorii kwantów -- teorię układów dwupoziomowych,
+które stanowią podstawę teorii obliczeń kwantowych i kwantowej teorii informacji. Modelem
+matematycznym tej teorii jest skończenie wymiarowa przestrzeń Hilberta
+\begin{equation*}
+    \mathscr{H} = ((\mathbb{C}^2, \mathbb{C}, +, \cdot), \braket{\cdot})
+\end{equation*}
+i teoria operatorów liniowych w tej przestrzeni, które możemy utożsamiać z zespolonymi macierzami
+\(2\times 2\).
+
+\subsubsection{Macierze Pauliego}
+
+Macierze Pauliego definiujemy jako zespolone macierze \(2\times 2\)
+\begin{equation*}
+    \oper{X} := \mqty[0 & 1 \\ 1 & 0]\,,\quad \oper{Y} := \mqty[0 & -\im \\ \im & 0]\,,\quad \oper{Z} := \mqty[1 & 0 \\ 0 & -1]\,.
+\end{equation*}
+Przydatne jest zdefiniowanie \textit{wektora macierzy Pauliego} \(\boldsymbol{\sigma}\)
+\begin{equation*}
+    \boldsymbol{\sigma} = (\oper{X}, \oper{Y}, \oper{Z})\,,
+\end{equation*}
+dzięki któremu możemy łatwo zapisać sumę przeskalowanych macierzy Pauliego jako
+\(\mathbf{c}\cdot\boldsymbol{\sigma}\), gdzie \(\mathbf{c}\in\mathbb{C}^3\) jest pewnym wektorem o
+elementach zespolonych.
+
+\renewcommand{\arraystretch}{2}
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{|ccc|}
+    \hline
+    \multicolumn{1}{|c|}{\(\oper{XY} = \im\oper{Z} = -\oper{YX}\)}            &
+    \multicolumn{1}{c|}{\([\oper{X},\oper{Y}] = 2\im\oper{Z}\)}          & \(\{\oper{X}, \oper{Y}\}
+    = \oper{\mathsf{0}}\)      \\ \hline
+    \multicolumn{1}{|c|}{\(\oper{YZ} = \im\oper{X} = -\oper{ZY}\)}            &
+    \multicolumn{1}{c|}{\([\oper{Y},\oper{Z}] = 2\im\oper{X}\)}          & \(\{\oper{Y}, \oper{Z}\}
+    = \oper{\mathsf{0}}\)      \\ \hline
+    \multicolumn{1}{|c|}{\(\oper{ZX} = \im\oper{Y} = -\oper{XZ}\)}            &
+    \multicolumn{1}{c|}{\([\oper{Z},\oper{X}] = 2\im\oper{Y}\)}          & \(\{\oper{Z}, \oper{X}\}
+    = \oper{\mathsf{0}}\)      \\ \hline
+    \multicolumn{1}{|c|}{\(\oper{X}^2 = \oper{Y}^2 = \oper{Z}^2 = \oper{1}\)} &
+    \multicolumn{1}{c|}{\(\Tr\oper{X} = \Tr\oper{Y} = \Tr\oper{Z} = 0\)} & \(\det\oper{X} =
+    \det\oper{Y} = \det\oper{Z} = -1\) \\ \hline
+    \multicolumn{3}{|c|}{\(\e^{\im\mathbf{a}\cdot\oper{\sigma}} = \oper{1}\cos|\mathbf{a}| + \im
+    \mathbf{\hat{a}}\cdot\oper{\sigma}\sin|\mathbf{a}|\)} \\ \hline
+    \multicolumn{3}{|c|}{\((\mathbf{a}\cdot\oper{\sigma})\cdot(\mathbf{b}\cdot\oper{\sigma}) =
+    (\mathbf{a}\cdot\mathbf{b})\oper{1} + \im(\mathbf{a}\times\mathbf{b})\cdot\oper{\sigma}\)} \\
+    \hline
+    \end{tabular}
+    \caption{Wybrane własności macierzy Pauliego}
+\end{table}
+\renewcommand{\arraystretch}{1}
+
+Zauważmy, że dowolny operator samosprzężony \(\oper{A}\) w rozpatrywanej przestrzeni \(\mathscr{H}\)
+ma postać
+\begin{equation*}
+    \oper{A} = \mqty[a_0 + a_z & a_x - \im a_y \\ a_x + \im a_y & a_0 - a_z] = a_0\oper{1} + \mathbf{a}\cdot\boldsymbol{\sigma}\,, 
+\end{equation*}
+gdzie \(a_0,a_x,a_y,a_z \in \mathbb{R}\). Jednocześnie bez straty ogólności możemy przyjąć \(a_0 =
+0\), gdyż stała ta przesuwa jedynie widmo operatora \(\oper{A}\) o ustaloną wartość, co pozwala
+przedstawić dowolny operator samosprzężony jako wektor \(\mathbf{a}\) w trójwymiarowej przestrzeni.
+
+\subsubsection{Sfera Blocha}
+
+W trójwymiarowej przestrzeni możemy również przedstawić wektor stanu \(\Psi\). Istotnie wektor stanu
+jest określony przez 2 zmienne zespolone
+\begin{equation*}
+    \ket{\Psi} = \mqty[\alpha \\ \beta]\,,
+\end{equation*}
+czyli 4 zmienne rzeczywiste, ale ze względu na warunek unormowania \(|\alpha|^2 + |\beta|^2 = 1\)
+mamy tylko 3 zmienne niezależne. Dodatkowo pamiętając, iż globalna faza wektora stanu nie ma
+znaczenia możemy wyeliminować jeszcze jedną zmienną i zapisać wektor \(\Psi\) jako
+\begin{equation*}
+    \ket{\Psi} = \cos\frac{\theta}{2}\mqty[1 \\ 0] + \e^{\im\phi}\sin\frac{\theta}{2}\mqty[0\\1] = \cos\frac{\theta}{2}\ket{0} + \e^{\im\phi}\sin\frac{\theta}{2}\ket{1}
+\end{equation*}
+dla pewnych parametrów \(\phi,\theta\in\mathbb{R}\). Powyżej wektory bazy ortonormalnej oznaczyliśmy
+jako \(\{\ket{0}, \ket{1}\}\) zgodnie z oznaczeniami stosowanymi w teorii obliczeń kwantowych (w
+szczególności \(\ket{0}\) \textit{nie oznacza} w powyższej notacji wektora zerowego \(\mathsf{0}\)).
+Zmienne \(\phi\), \(\theta\) możemy interpretować odpowiednio jako kąt azymutalny i kąt zenitalny
+punktu na sferze jednostkowej, którą nazywamy \textit{sferą Blocha}. Zauważmy, iż przy wybranej
+parametryzacji bieguny sfery określają odpowiednio stany \(\ket{0}\) i \(\ket{1}\).
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.45\columnwidth]{figs/Bloch_sphere.png}
+    \label{fig:bloch_sphere}
+    \caption{Sfera Blocha}
+\end{figure}
+
+Możemy połączyć oba przedstawienia tj. przedstawienia operatora i wektora stanu jeśli tylko zamiast
+wektora stanu użyjemy operatora rzutowania na stan \(\Psi\). Możemy rozłożyć go wówczas (jak każdy
+operator samosprzężony) na macierze Pauliego
+\begin{equation*}
+    \ket{\Psi}\bra{\Psi} = s_0\oper{1} + \mathbf{s}\cdot\boldsymbol{\sigma}\,,
+\end{equation*}
+przy czym parametry \(s_0,s_x,s_y,s_z\) muszą spełniać
+\begin{equation*}
+    \ket{\Psi}\bra{\Psi}\ket{\Psi}\bra{\Psi} = \ket{\Psi}\bra{\Psi}\,,
+\end{equation*}
+czyli
+\begin{equation*}
+    s_0\oper{1} + \mathbf{s}\cdot\boldsymbol{\sigma} = (s_0^2 + |\mathbf{s}|^2)\oper{1} + 2s_0\mathbf{s}\cdot\boldsymbol{\sigma}\,,
+\end{equation*}
+skąd \(s_0 = |\mathbf{s}| = 1/2\). Operator rzutowania \(\ket{\Psi}\bra{\Psi}\) możemy zatem w
+ogólności rozłożyć na macierze Pauliego w następujący sposób
+\begin{equation*}
+    \ket{\Psi}\bra{\Psi} = \frac{1}{2}(\oper{1} + \mathbf{s}\cdot\boldsymbol{\sigma})\,,
+\end{equation*}
+gdzie przeskalowaliśmy zmienne \(s_x,s_y,s_z\) tak, że teraz \(|\mathbf{s}| = 1\).
+
+Widzimy więc, iż stan \(\Psi\) możemy reprezentować jako wektor \(\mathbf{s}\) określający punkt na
+sferze jednostkowej w trójwymiarowej przestrzeni, a operator samosprzężony jako dowolny wektor
+\(\mathbf{a}\) w tej przestrzeni. Przejście od rzeczywistego wektora \(\mathbf{s}\) do
+abstrakcyjnego wektora stanu \(\ket{\Psi}\) odbywa sie poprzez określenie współrzędnych sferycznych
+\((\theta,\phi)\) wektora \(\mathbf{s}\) i zmapowanie ich zgodnie z przepisem
+\begin{equation*}
+    \ket{\Psi} = \cos\frac{\theta}{2}\ket{0} + \e^{\im\phi}\sin\frac{\theta}{2}\ket{1}\,.
+\end{equation*}
+
+
+\subsubsection{Ewolucja układu dwupoziomowego}
+
+Dla układów dwupoziomowych ogólne równania ewolucji amplitud prawdopodobieństwa wektora stanu
+\begin{equation*}
+    \ket{\Psi} = \mqty[\alpha \\ \beta]
+\end{equation*}
+dla hamiltonianu postaci
+\begin{equation*}
+    \oper{H} = \mqty[H_{11}(t) & H_{12}(t) \\ H_{21}(t) & H_{22}(t)]
+\end{equation*}
+mają postać
+\begin{equation*}
+    \begin{cases}
+        \im\hbar\dot{\alpha} = H_{11}(t)\alpha + H_{12}(t)\beta\\
+        \im\hbar\dot{\beta}  = H_{21}(t)\alpha + H_{22}(t)\beta
+    \end{cases}
+\end{equation*}
+Równanie ewolucji możemy zapisać również wykorzystując przedstawienie geometryczne wektorów stanu i
+operatorów na sferze Blocha. Istotnie różniczkując operator rzutowy \(\oper{\rho} =
+\ket{\Psi}\bra{\Psi}\) mamy
+\begin{equation*}
+    \begin{split}
+        \pdv{\oper{\rho}}{t} &= \ket{\dot{\Psi}}\bra{\Psi} + \ket{\Psi}\bra{\dot{\Psi}} = \frac{1}{\im\hbar}\ket{\oper{H}\Psi}\bra{\Psi} - \frac{1}{\im\hbar}\ket{\Psi}\bra{\oper{H}\Psi}\\
+        &=\frac{1}{\im\hbar}(\oper{H}\oper{\rho}-\oper{\rho}\oper{H}) = \frac{1}{\im\hbar}[\oper{H},\oper{\rho}]\,.
+    \end{split}
+\end{equation*}
+
+Z powyższego mamy więc dla \(\oper{\rho} = \frac{1}{2}(\oper{1} +
+\mathbf{s}\cdot\boldsymbol{\sigma})\) i \(\oper{H} = \mathbf{H}\cdot\boldsymbol{\sigma}\)
+\begin{equation*}
+    \frac{\hbar}{2}\dot{\mathbf{s}} = \mathbf{H}\times\mathbf{s}
+\end{equation*}
+
+Przedstawienie geometryczne wektora stanu na sferze Blocha nie jest jedynie obserwacją matematyczną.
+Pozwala ono zwizualizować semi-klasyczną ewolucję wektorowej wielkości fizycznej \(\mathbf{S}\),
+której składowe \(S_x\), \(S_y\), \(S_z\) są w przestrzeni \(\mathscr{H}\) reprezentowane przez
+samosprzężone operatory Pauliego \(\oper{X}\), \(\oper{Y}\), \(\oper{Z}\). Istotnie zgodnie z
+twierdzeniem Ehrenfesta
+\begin{equation*}
+    \dv{\expval{\mathbf{S}}}{t} = \frac{\im}{\hbar}\bra{\Psi}[\oper{H}, \boldsymbol{\sigma}]\ket{\Psi} = \frac{\im}{\hbar}\bra{\Psi}\left([\oper{H},\oper{X}],[\oper{H},\oper{Y}],[\oper{H},\oper{Z}]\right)\ket{\Psi}\,.
+\end{equation*}
+Jednocześnie dla \(\oper{H} = \mathbf{H}\cdot\boldsymbol{\sigma}\)
+\begin{equation*}
+    \begin{split}
+        &[\oper{H},\oper{X}] = -2\im H_y\oper{Z} + 2\im H_z \oper{Y}\\
+        &[\oper{H},\oper{Y}] = -2\im H_z\oper{X} + 2\im H_x \oper{Z}\\
+        &[\oper{H},\oper{Z}] = -2\im H_x\oper{Y} + 2\im H_y \oper{X}
+    \end{split}\quad,
+\end{equation*}
+skąd
+\begin{equation*}
+    \frac{\hbar}{2}\dv{\expval{\mathbf{S}}}{t} = \mathbf{H} \times \expval{\mathbf{S}}\,.
+\end{equation*}
+Widzimy zatem, iż ruch wektora \(\mathbf{s}\) po sferze Blocha odpowiada ewolucji wartości
+oczekiwanej wielkości fizycznej \(\mathbf{S}\), którą to ewolucję możemy w przybliżeniu
+semi-klasycznym traktować jako faktyczną ewolucję tych wielkości.
+
+\subsubsection{Obroty na sferze Blocha}
+
+Powyższe rozważania pokazują, iż w przedstawieniu geometrycznym stan \(\Psi\) reprezentowany przez
+jednostkowy wektor \(\mathbf{s}\) na sferze Blocha ewoluuje w taki sposób, iż efektywnie jego
+położenie na sferze Blocha w czasie \(t\) można przedstawić jako obrót wektora położenia w czasie
+\(t_0\) o pewien kąt \(\varphi\) wokół ustalonej osi \(\mathbf{\hat{n}}\)
+\begin{equation*}
+    \mathbf{s}(t) = \overleftrightarrow{\mathbf{R}}_\mathbf{\hat{n}}(\varphi)\mathbf{s}(t_0)\,.
+\end{equation*}
+W ujęciu abstrakcyjnego wektora \(\ket{\Psi}\) przekształcenie to odpowiada oczywiście pewnemu
+przekształceniu unitarnemu \(\oper{U}\), tj.
+\begin{equation*}
+    \ket{\Psi(t)} = \oper{U}\ket{\Psi(t_0)}\,.
+\end{equation*}
+Warte zbadania wydaje się więc wyznaczenie operatora \(\oper{U}\), który odpowiada obrotowi na
+sferze Blocha. Aby wyznaczyć jawny wzór na operator \(\oper{U}\) rozważmy infinitezymalny obrót
+wektora \(\mathbf{s}\) wokół osi \(\mathbf{\hat{n}}\) o kąt \(\epsilon\). Jak łatwo pokazać
+\begin{equation*}
+    \mathbf{s}' = \overleftrightarrow{\mathbf{R}}_\mathbf{\hat{n}}(\epsilon)\mathbf{s} = \mathbf{s} + \epsilon(\mathbf{s}\times\mathbf{\hat{n}})
+\end{equation*}
+w przybliżeniu do wyrazów liniowych względem \(\epsilon\). Wektor rzeczywisty \(\mathbf{s}\)
+najłatwiej powiązać z abstrakcyjnym wektorem \(\ket{\Psi}\) poprzez operator rzutowy \(\oper{\rho} =
+\ket{\Psi}\bra{\Psi}\) dla którego zachodzi
+\begin{equation*}
+    \ket{\oper{U}\Psi}\bra{\oper{U}\Psi} = \oper{U}\oper{\rho}\oper{U}^\dagger = \frac{1}{2}\left(\oper{1} + \mathbf{s}'\cdot\boldsymbol{\sigma}\right)\,,
+\end{equation*}
+skąd
+\begin{equation*}
+    \mathbf{s}\cdot\oper{U}\boldsymbol{\sigma}\oper{U}^\dagger = (\mathbf{s} + \epsilon(\mathbf{s}\times\mathbf{\hat{n}}))\cdot\boldsymbol{\sigma} = \mathbf{s}\cdot(\boldsymbol{\sigma} + \epsilon(\mathbf{\hat{n}}\times\boldsymbol{\sigma}))\,.
+\end{equation*}
+Otrzymujemy zatem równanie
+\begin{equation*}
+    \oper{U}\boldsymbol{\sigma}\oper{U}^\dagger = \boldsymbol{\sigma} + \epsilon(\mathbf{\hat{n}}\times\boldsymbol{\sigma})\,.
+\end{equation*}
+Poszukajmy \(\oper{U}\) spełniających to równanie postaci
+\begin{equation*}
+    \oper{U} = \oper{1} + \im\epsilon\oper{A}\,,\quad \oper{U}^\dagger = \oper{1} - \im\epsilon\oper{A}^\dagger\,,
+\end{equation*}
+gdzie \(\oper{A}\) jest operatorem samosprzężonym postaci \(\oper{A} =
+\mathbf{a}\cdot\boldsymbol{\sigma}\). Zauważmy, iż tak zdefiniowany \(\oper{U}\) jest unitarny w
+przybliżeniu do wyrazów liniowych względem \(\epsilon\). Podstawiając powyższe wzory na \(\oper{U}\)
+oraz \(\oper{U}^\dagger\) i ograniczając się do wyrazów liniowych względem \(\epsilon\) otrzymujemy
+\begin{equation*}
+    \im\epsilon[\oper{A}, \boldsymbol{\sigma}] = \epsilon(\mathbf{\hat{n}}\times\boldsymbol{\sigma}).
+\end{equation*}
+Widzimy zatem, iż taki, a nie inny strzał na postać operatora \(\oper{U}\) był podyktowany
+wyprowadzonymi wcześniej wzorami na komutatory operatora samosprzężonego z operatorami Pauliego,
+które naśladują strukturę zwykłego trójwymiarowego iloczynu wektorowego. Z powyższego otrzymujemy
+zatem \(\mathbf{a} = \frac{1}{2}\mathbf{\hat{n}}\), skąd
+\begin{equation*}
+    \oper{U} = \oper{1} + \frac{\im \epsilon}{2} \mathbf{\hat{n}} \cdot \boldsymbol{\sigma}\,.
+\end{equation*}
+Stąd łatwo możemy już uzyskać operator unitarny \(\oper{U}_\mathbf{\hat{n}}(\varphi)\) odpowiadający
+obrotowi o kąt \(\varphi\) wokół osi \(\mathbf{\hat{n}}\)
+\begin{equation*}
+    \oper{U}_\mathbf{\hat{n}}(\varphi) = \lim_{N\to\infty}\left(\oper{1} + \frac{\im \varphi}{2N} \mathbf{\hat{n}} \cdot \boldsymbol{\sigma}\right)^N = \exp{\frac{\im}{2}\varphi\mathbf{\hat{n}}\cdot\boldsymbol{\sigma}} = \oper{1}\cos\frac{\varphi}{2} + \im(\mathbf{\hat{n}}\cdot\boldsymbol{\sigma})\sin\frac{\varphi}{2}
+\end{equation*}
+W szczególności dla obrotów wokół osi \(x\), \(y\), \(z\) mamy odpowiednio
+\begin{equation*}
+    \begin{split}
+        &\oper{U}_\mathbf{\hat{x}}(\varphi) = \mqty[\cos\frac{\varphi}{2} & \im\sin\frac{\varphi}{2} \\ \im\sin\frac{\varphi}{2} & \cos\frac{\varphi}{2}]\\
+        &\oper{U}_\mathbf{\hat{y}}(\varphi) = \mqty[\cos\frac{\varphi}{2} & \sin\frac{\varphi}{2} \\ -\sin\frac{\varphi}{2} & \cos\frac{\varphi}{2}]\\
+        &\oper{U}_\mathbf{\hat{z}}(\varphi) = \mqty[\e^{+\im\varphi/2} & 0 \\ 0 & \e^{-\im\varphi/2}]
+    \end{split}\quad.
+\end{equation*}
+
+\subsubsection{Przykład -- magnetyczny rezonans jądrowy }
+Rozpatrzmy cząstkę obdarzoną momentem magnetycznym \(\mu\) o spinie połówkowym i nie posiadającą
+ładunku elektrycznego (neutron), która została umieszczona w wirującym z częstością radiową polu
+magnetycznym
+\begin{equation*}
+    \mathbf{B}(t) = B_\text{rf}\cos(\omega t)\mathbf{\hat{x}} - B_\text{rf}\sin(\omega t) \mathbf{\hat{y}} + B_0\mathbf{\hat{z}}\,.
+\end{equation*}
+Cząstka ta stanowi pewien układ dwupoziomowy, którego oddziaływanie z polem magnetycznym jest
+opisane hamiltonianem Pauliego
+\begin{equation*}
+    \oper{H} = -\mu\mathbf{B}\cdot\boldsymbol{\sigma} = -\mu\mqty[B_0 & B_\text{rf}\e^{+\im\omega t} \\ B_\text{rf}\e^{-\im\omega t} & -B_0]\,.
+\end{equation*}
+Równania ewolucji na amplitudy prawdopodobieństwa mają więc postać
+\begin{equation*}
+    \begin{cases}
+        \frac{1}{\im\omega_0}\dot{\alpha} =n e^{+\im\omega t}\beta + \alpha \\
+        \frac{1}{\im\omega_0}\dot{\beta} = n \e^{-\im\omega t}\alpha - \beta
+    \end{cases}\quad,
+\end{equation*}
+gdzie wprowadziliśmy parametry \(\omega_0 := \mu B_0 / \hbar\) i \(n := B_\text{rf}/B_0\). Łatwo
+sprawdzić, iż rozwiązaniem powyższego układu równań jest
+\begin{equation*}
+    \begin{cases}
+        \alpha(t) = \left(c_1 \e^{+\im\Omega t} + c_2 \e^{-\im \Omega t}\right) n \e^{+\im\omega t / 2}\\
+        \beta(t)  = \left[c_1 (\Omega - \delta)\e^{+\im\Omega t} - c_2 (\Omega + \delta)\e^{-\im\Omega t}\right]\omega_0^{-1}\e^{-\im\omega t / 2} 
+    \end{cases}\quad,
+\end{equation*}
+gdzie
+\begin{equation*}
+    \delta = \omega_0 - \frac{\omega}{2}\,,\quad \Omega = \sqrt{n^2\omega_0^2 + \delta^2}\,.
+\end{equation*}
+Zdefiniowaną wielkość \(\Omega\) nazywamy \textit{częstością Rabiego}. Załóżmy, iż w chwili
+początkowej \(\alpha = 0\) i \(\beta = 1\), wówczas
+\begin{equation*}
+\begin{split}
+    &\alpha(t) = \frac{\im n\omega_0}{\Omega}\sin(\Omega t)\e^{+\im\omega t/2}\\
+    &\beta(t) = \left\{\cos(\Omega t) +\frac{\im}{\Omega}\left(\frac{1}{2}\omega - \omega_0\right)\sin(\Omega t)\right\}\e^{-\im\omega t/2}
+\end{split}\quad.
+\end{equation*}
+Z powyższego prawdopodobieństwo \(p_{1\to0}\) znalezienia układu w stanie \(\ket{0}\) wynosi
+\begin{equation*}
+        p_{1\to0}(t) = |\alpha|^2 = \left(\frac{n\omega_0}{\Omega}\right)^2\sin^2(\Omega t) = \frac{1}{2}\left(\frac{n\omega_0}{\Omega}\right)^2(1-\cos(2\Omega t))\,.
+\end{equation*}
+Natomiast prawdopodobieństwo \(p_{1\to1}\) znalezienia układu w stanie \(\ket{1}\) wynosi
+\begin{equation*}
+        p_{1\to1}(t) = |\beta|^2 =\cos^2(\Omega t) + \left(\frac{\omega_0 - \frac{1}{2}\omega}{\Omega}\right)^2\sin^2(\Omega t) = 1 - p_{1\to 0}(t)\,.
+\end{equation*}
+Prawdopodobieństwa oscylują w czasie z częstością równą podwojonej częstości Rabiego. Amplituda tych
+oscylacji wynosi
+\begin{equation*}
+    \frac{1}{2}\left(\frac{n\omega_0}{\Omega}\right)^2 = \frac{n^2\omega_0^2}{2}\frac{1}{\left(\omega_0 - \frac{1}{2}\omega\right)^2 +
+    \left(n\omega_0\right)^2}
+\end{equation*}
+i przyjmuje wartość maksymalną, gdy spełniony jest \textit{warunek rezonansu} postaci
+\begin{equation*}
+    \hbar\omega = 2\mu B_0\,.
+\end{equation*}
+
+Zauważmy, iż opisane zjawisko stanowi podstawę do manipulacji qubitami. Istotnie w stanie rezonansu
+wektor stanu ewoluuje zgodnie z
+\begin{equation*}
+    \ket{\Psi(t)} = \alpha(t)\ket{0} + \beta(t)\ket{1} = \im\sin(\Omega t)\e^{+\im\omega_0 t}\ket{0} + \cos(\Omega t)\e^{-\im\omega_0 t}\ket{1}
+\end{equation*}
+Poprzez dostosowanie czasu \(t\) przez jaki układ dwupoziomowy oddziałuje z wirowym polem możemy
+sterować stanem \(\Psi\) w jakim się znajduje, przykładowo jeśli początkowo układ był w stanie
+\(\ket{1}\) to włączając wirowe pole magnetyczne na czas \(t = \pi/2\Omega\) (tzw. \textit{impuls
+\(\pi\)}, gdyż na sferze Blocha odpowiada mu obrót o \(\pi\)) układ przechodzi do stanu \(\ket{0}\)
+(pomijając nieistotny globalny czynnik fazowy), natomiast dla \(t = \pi/4\Omega\) (tzw.
+\textit{impuls \(\pi/2\)}) układ przechodzi do stanu
+\begin{equation*}
+    \frac{1}{\sqrt{2}}\left(\im\e^{+\im\omega_0t}\ket{0} + \e^{-\im\omega_0t}\ket{1}\right)\,,
+\end{equation*}
+w którym mamy jednakowe prawdopodobieństwa odpowiedzi twierdzących na pytania \(\dyad{0}\) i
+\(\dyad{1}\).
+
+Dla atomu z dwoma poziomami energetycznymi poddanemu działaniu wiązki laserowej otrzymuje się
+identyczne równanie pod warunkiem przyjęcia przybliżenia tzw. \textit{wirującej fali}, które jest
+prawdziwe, gdy długość fali jest znacznie większa od rozmiarów próbki. W tym przypadku
+\(2\hbar\omega_0\) jest różnicą energii między dwoma poziomami atomowymi, \(\omega\) jest częstością
+laserową, a iloczyn \(\mu B_\text{rf}\) przechodzi na iloczyn elektrycznego momentu dipolowego atomu
+i amplitudy pola elektrycznego fali elektromagnetycznej \(p E_0\).
+
+\subsection{Korelacje kwantowe}
+
+\subsubsection{Stany dwuqubtiowe}
+
+Rozważmy dwa układy dwupoziomowe \(A\), \(B\), których modelem matematycznym są przestrzenie
+Hilberta \(\mathscr{H}_A = \{\ket{0_A},\ket{1_A}\}\), \(\mathscr{H}_B = \{\ket{0_B},\ket{1_B}\}\)
+(zauważmy, iż w przypadku przestrzeni skończenie wymiarowych podanie wektorów bazy ortonormalnej w
+jakiej pracujemy w pełni charakteryzuje przestrzeń Hilberta nad \(\mathbb{C}\)). Ogólne stany
+układów \(A\) i \(B\) mają więc postać
+\begin{equation*}
+    \ket{\Psi_A} = \psi^{(A)}_0\ket{0_A} + \psi^{(A)}_1\ket{1_A}\,,\quad \ket{\Psi_B} = \psi^{(B)}_0\ket{0_B} + \psi^{(B)}_1\ket{1_B}\,,
+\end{equation*}
+gdzie oczywiście \(|\psi^{(A)}_0|^2 + |\psi^{(A)}_1|^2 = 1 = |\psi^{(B)}_0|^2 + |\psi^{(B)}_1|^2\).
+Zgodnie z postulatem o układach złożonych układ złożony z podukładów \(A\), \(B\) jest opisany
+przestrzenią Hilberta \(\mathscr{H}_{AB} = \mathscr{H}_A\otimes\mathscr{H}_B\). Ogólny stan układu
+złożonego ma zatem postać
+\begin{equation*}
+    \begin{split}
+        \ket{\Psi_{AB}} &= \psi_{00}\ket{0_A}\otimes\ket{0_B}+\psi_{01}\ket{0_A}\otimes\ket{1_B}+\psi_{10}\ket{1_A}\otimes\ket{0_B}+\psi_{11}\ket{1_A}\otimes\ket{1_B}\\
+        &= \psi_{00}\mqty[1 \\ 0 \\ 0 \\ 0] + \psi_{01}\mqty[0 \\ 1 \\ 0 \\ 0] + \psi_{10}\mqty[0 \\ 0 \\ 1 \\ 0] + \psi_{11}\mqty[0 \\ 0 \\ 0 \\ 1]\\
+        &= \psi_{00}\ket{0_A0_B} + \psi_{01}\ket{0_A1_B} + \psi_{10}\ket{1_A0_B} + \psi_{11}\ket{1_A1_B}\,.
+    \end{split}
+\end{equation*}
+Jaką informację zawiera wektor stanu układu złożonego? Jeśli istnieje faktoryzacja \(\ket{\Psi_{AB}}
+= \ket{\Psi_A} \otimes \ket{\Psi_B}\) to wówczas wektor stanu układu złożonego mówi, iż \(A\)
+znajduje się w stanie \(\ket{\Psi_A}\), a \(B\) w stanie \(\ket{\Psi_B}\). Zauważmy jednak, iż w
+ogólności taka faktoryzacja nie musi być możliwa. Istotnie jeśli \(\ket{\Psi_{AB}} = \ket{\Psi_A}
+\otimes \ket{\Psi_B}\) to
+\begin{equation*}
+    \begin{split}
+        &\ket{\Psi_{AB}} = \mqty[\psi_0^{(A)} \\ \psi_1^{(A)}]\otimes\mqty[\psi_0^{(B)} \\ \psi_1^{(B)}] \\
+        &= \psi_0^{(A)}\psi_0^{(B)}\ket{0_A0_B} + \psi_0^{(A)}\psi_1^{(B)}\ket{0_A1_B} + \psi_1^{(A)}\psi_0^{(B)}\ket{1_A0_B} + \psi_1^{(A)}\psi_1^{(B)}\ket{1_A1_B}\,,
+    \end{split}
+\end{equation*}
+czyli współczynniki \(\psi_{q_Aq_B}\) muszą spełniać
+\begin{equation*}
+    \psi_{00}\psi_{11} = \psi_{01}\psi_{10}\,,
+\end{equation*}
+przy czym jest to warunek konieczny i wystarczający. Stany \(\Psi_{AB}\), dla których powyższy
+warunek nie zachodzi nazywamy \textit{stanami splątanymi}. W ogólności więc współczynniki
+\(\psi_{q_Aq_B}\) są amplitudami prawdopodobieństw znalezienia układu \(A\) w stanie \(q_A\) i
+układu \(B\) w stanie \(q_B\) (zauważmy, iż w przypadku \(N\) qubtiów potrzebujemy \(2^N\)
+współczynników \(\psi_{q_1q_2\ldots q_N}\), gdyż możliwych konfiguracji, których amplitudy
+prawdopodobieństwa musimy określić jest właśnie \(2^N\)).
+
+\subsubsection{Układy złożone}
+
+Zajmiemy się teraz ogólnymi układami złożonymi postaci \(\mathscr{H}_A\otimes\mathscr{H}_B\), gdzie
+modelami układów \(A, B\) będą dowolne \(n_A\)-- i \(n_B\)--wymiarowe zespolone przestrzenie
+Hilberta zadane przez bazy ortonormalne \(\{\ket{i_A}\}\), \(\{\ket{i_B}\}\). Bazą ortonormalną
+przestrzeni \(\mathscr{H}_{AB} = \mathscr{H}_A \otimes \mathscr{H}_B\) jest więc \(\ket{i_A j_B}\)
+ze standardowo zdefiniowanym iloczynem wewnętrznym.
+
+\subsubsection*{Operatory}
+
+W ogólności operatory liniowe w przestrzeni \(\mathscr{H}_{AB}\) są zespolonymi macierzami
+\((\dim{\mathscr{H}_A})^2\times(\dim{\mathscr{H}_B})^2\). Jednakże interesować nas będą głównie
+operatory liniowe postaci
+\begin{equation*}
+    \oper{M} = \oper{M}_A \otimes \oper{M}_B\,,
+\end{equation*}
+gdzie \(\oper{M}_A\), \(\oper{M}_B\) są operatorami liniowymi w przestrzeniach \(\mathscr{H}_A,
+\mathscr{H}_B\). Nietrudno zauważyć, iż jeśli \(\oper{M}_A\), \(\oper{M}_B\) są samosprzężone to
+\(\oper{M}_A \otimes \oper{M}_B\) również jest samosprzężony. Dodatkowo jeśli \(\oper{P}_A\),
+\(\oper{P}_B\) są operatorami rzutowymi to \(\oper{P}_A \otimes \oper{P}_B\) również jest operatorem
+rzutowym tylko że w przestrzeni \(\mathscr{H}\). Istotnie dla dowolnych operatorów \((\oper{P}_A
+\otimes \oper{P}_B)^2 = \oper{P}_A^2 \otimes \oper{P}_B^2\), więc dla operatorów rzutowych mamy
+\((\oper{P}_A \otimes \oper{P}_B)^2 = \oper{P}_A \otimes \oper{P}_B\) i wiemy, że \(\oper{P}_A
+\otimes \oper{P}_B\) jest samosprzężony. Można również pokazać, iż jeśli \(\oper{U}_A, \oper{U}_B\)
+są unitarne to \(\oper{U}_A \otimes \oper{U}_B\) również jest unitarny. Istotnie dla dowolnych
+operatorów \((\oper{U}_A \otimes \oper{U}_B)^\dagger = \oper{U}_A^\dagger\otimes\oper{U}_B^\dagger\)
+i \((\oper{U}_A \otimes \oper{U}_B)^{-1} = \oper{U}_A^{-1}\otimes\oper{U}_B^{-1}\), więc dla
+operatorów unitarnych \((\oper{U}_A \otimes \oper{U}_B)^\dagger = (\oper{U}_A \otimes
+\oper{U}_B)^{-1}\).
+
+Niech \(M\) będzie pewną wielkością fizyczną określającą układ \(A\) reprezentowaną w przestrzeni
+\(\mathscr{H}_A\) przez \(\oper{M}\). W przestrzeni \(\mathscr{H}_{AB}\) ta wielkość jest
+reprezentowana przez \(\oper{M}\otimes\oper{1}_B\). Jeśli \(\oper{P}_M(\lambda_1 ; \lambda_2)\) jest
+operatorem rzutowym reprezentującym w przestrzeni \(\mathscr{H}_A\) pytanie o wartość wielkości
+\(M\), to w przestrzeni \(\mathscr{H}_{AB}\) (tj. jeśli \(A\) jest częścią większego układu \(AB\))
+pytanie to reprezentuje operator \(\oper{P}_M(\lambda_1;\lambda_2)\otimes\oper{1}_B\).
+
+\subsubsection{Operator gęstości}
+
+Jak zauważyliśmy na przykładzie układów dwuqubtiowych stan układu złożonego \(\Psi_{AB}\) jest w
+ogólności stanem splątanym, w którym amplitudy prawdopodobieństw przy wektorach bazowych
+\(\ket{i_Aj_B}\) są dowolnymi liczbami zespolonymi \(\psi_{ij}\) spełniającymi warunek unormowania.
+Podstawową cechą układu splątanego jest fakt, iż jeśli \(\ket{\Psi_{AB}}\) jest stanem splątanym to
+dla dowolnej wielkości fizycznej \(M\) określającej podukład \(A\) nie istnieje stan
+\(\ket{\Psi_A}\), dla którego
+\begin{equation*}
+    p = \mel{\Psi_{AB}}{\oper{P}\otimes\oper{1}_B}{\Psi_{AB}} = \mel{\Psi_A}{\oper{P}}{\Psi_A}\,.
+\end{equation*}
+Istotnie
+\begin{equation*}
+    \mel{\Psi_A}{\oper{P}}{\Psi_A} = \sum_{i,j} \psi_i^*\psi_j \mel{i_A}{\oper{P}}{j_A} = \Tr(\oper{P}\dyad{\Psi_A})
+\end{equation*}
+oraz
+\begin{equation*}
+    \begin{split}
+        &\mel{\Psi_{AB}}{\oper{P}\otimes\oper{1}_B}{\Psi_{AB}} = \bra{\Psi_{AB}}\oper{P}\otimes\oper{1}_B\sum_{k,l}\psi_{kl}\ket{k_Al_B} \\
+        &= \bra{\Psi_{AB}}\sum_{k,l}\psi_{k,l}\oper{P}\ket{k_A}\otimes\ket{l_B} = \sum_{i,j}\psi_{ij}^*\bra{i_Aj_B}\sum_{k,l}\psi_{k,l}\oper{P}\ket{k_A}\otimes\ket{l_B} \\
+        &= \sum_{i,j,k,l}\psi_{ij}^*\psi_{kl}\bra{i_Aj_B}\left(\oper{P}\ket{k_A}\otimes\ket{l_B}\right) = \sum_{i,j,k,l}\psi_{ij}^*\psi_{kl}\mel{i_A}{\oper{P}}{k_A}\otimes \braket{j_B}{l_B} \\
+        &= \sum_{i,j,k,l}\psi_{ij}^*\psi_{kl}\delta_{jl} \mel{i_A}{\oper{P}}{k_A} = \sum_{i,j,k} \psi_{ij}^*\psi_{kj} \mel{i_A}{\oper{P}}{k_A}\,.
+    \end{split}
+\end{equation*}
+Zauważmy, iż definiując \(\rho_{ki} = \sum_{j} \psi_{kj}\psi_{ij}^*\) możemy zapisać
+\begin{equation*}
+    \mel{\Psi_{AB}}{\oper{P}\otimes\oper{1}_B}{\Psi_{AB}} = \sum_{i,k}\rho_{ki}\mel{i_A}{\oper{P}}{k_A} = \Trace(\oper{P}\oper{\rho})\,,
+\end{equation*}
+gdzie \(\oper{\rho}\) nazywamy \textit{operatorem gęstości}. Zauważmy, iż możemy zapisać
+\(\oper{\rho}\) również jako
+\begin{equation*}
+    \oper{\rho} = \Trace_B(\dyad{\Psi_{AB}})\,,
+\end{equation*}
+gdzie \(\Trace_B\) oznacza tzw. \textit{ślad częściowy} względem układu \(B\), taki że element
+\(ij\) macierzy gęstości jest dany przez
+\begin{equation*}
+    \rho_{ij} = \mel{i_A}{\oper{\rho}}{j_A} = \sum_k \braket{i_Ak_B}{\Psi_{AB}}\braket{\Psi_{AB}}{j_Ak_B}\,.
+\end{equation*}
+Zauważmy, że operator gęstości jest operatorem samosprzężonym \(\oper{\rho}^\dagger = \oper{\rho}\),
+nieujemnie określonym\footnote{Istotnie wystarczy zauważyć, że dla dowolnego \(\Phi\) mamy 
+\begin{equation*}
+    \mel{\Phi}{\oper{\rho}}{\Phi} = \sum_{i,j}\phi_i^*\phi_j\sum_k \psi_{ik}\psi_{jk}^* = \sum_k \sum_{i,j}(\phi_i^*\psi_{ik})(\phi_j\psi_{jk}^*) = \sum_k \left|\sum_{i}\phi_i^*\psi_{ik}\right|^2 \geq 0\,.
+\end{equation*}
+}, o śladzie równym jedności \(\Trace\oper{\rho} = 1\). Z powyższych własności wynika, iż istnieje
+baza ortonormalna \(\{\ket{\nu}\}\), w której macierz gęstości jest diagonalna, a elementy na
+przekątnej są nieujemnymi liczbami\footnote{Istotnie ponieważ \(\oper{\rho}\) jest nieujemnie
+określona, więc w szczególności dla \(\Phi\) będącego wektorem własnym macierzy \(\oper{\rho}\) z
+wartością własną \(\lambda\) mamy \(0 \leq \mel{\Phi}{\oper{\rho}}{\Phi} = \lambda \braket{\Phi}\),
+skąd \(\lambda \geq 0\).} sumującymi się do 1, czyli możemy zapisać
+\begin{equation*}
+    \oper{\rho} = \sum_\nu p_\nu \dyad{\nu}\,,\quad \sum_\nu p_\nu = 1\,,\quad \forall\nu:p_\nu \geq 0\,.
+\end{equation*}
+Widzimy zatem, iż \(\oper{\rho}\) nie ma w ogólności postaci \(\dyad{\Psi_A}\), przy czym warunkiem
+wystarczającym aby tak było jest \(\oper{\rho}^2 = \oper{\rho}\) (czyli aby macierz gęstości była
+idempotentna), co wynika wprost z powyższej postaci\footnote{Istotnie jeśli \(\oper{\rho}^2 =
+\oper{\rho}\) to dla wszystkich \(\nu\) \(p_\nu ^2 = p_\nu\), co oznacza \(p_\nu \in \{0,1\}\) ale z
+warunku unormowania wynika, iż dokładnie wszystkie poza jednym \(p_\nu\) są zerowe, a jeden równy 1
+i odzyskujemy postać \(\oper{\rho} = \dyad{\Psi_A}\).}. W ogólności więc jeśli \(A\) jest podukładem
+układu złożonego \(AB\) w stanie splątanym to informacja o nim (w sensie prawdopodobieństw wyników
+pomiarów wielkości fizycznych) nie jest opisywana przez wektor stanu tylko przez macierz gęstości 
+\begin{equation*}
+    \oper{\rho} = \Trace_B(\dyad{\Psi_{AB}})\,,
+\end{equation*}
+a prawdopodobieństwa i wartości oczekiwane są dane przez ślady
+\begin{equation*}
+    p = \Trace(\oper{P}_M(\lambda_1;\lambda_2)\oper{\rho})\,,\quad \expval{M} = \Trace(\oper{M}\oper{\rho})\,.
+\end{equation*}
+Mówimy wtedy, iż układ \(A\) jest w \textit{stanie mieszanym}. Jeżeli z kolei układ można opisać
+poprzez wektor stanu (tj. macierz gęstości ma postać \(\dyad{\Psi_A}\)) to mówimy, iż jest on w
+\textit{stanie czystym}. Zauważmy, czym fundamentalnie różni się stan mieszany powyższej postaci od
+stanu czystego \(\ket{\Psi_A} = \sum_\nu \sqrt{p_\nu} \ket{\nu}\). W przypadku stanu czystego
+prawdopodobieństwo odpowiedzi na \(\oper{P}\) zawiera człony interferencyjne
+\begin{equation*}
+    p = \sum_{\nu,\mu} \sqrt{p_\mu p_\nu}\mel{\mu}{\oper{P}}{\nu} = \sum_{\nu} p_\nu \mel{\nu}{\oper{P}}{\nu} + \sum_{\mu \neq \nu} \sqrt{p_\mu p_\nu}\mel{\mu}{\oper{P}}{\nu}\,,
+\end{equation*}
+natomiast w przypadku stanu mieszanego mamy
+\begin{equation*}
+    p = \Trace(\oper{P\rho}) = \sum_\nu p_\nu \mel{\nu}{\oper{P}}{\nu}\,,
+\end{equation*}
+czyli tak naprawdę klasyczny wzór na prawdopodobieństwo całkowite. Stan mieszany opisuje więc
+efektywnie niekoherentną mieszaninę stanów \(\ket{\nu}\), w których każdy przygotowano z
+prawdopodobieństwem \(p_\nu\). 
+
+\subsubsection*{Ewolucja operatora gęstości}
+
+Równanie ewolucji operatora gęstości (tzw. \textit{równanie von Neumanna}) można wyprowadzić
+rozważając równanie ewolucji prawdopodobieństw. Istotnie zakładając, iż hamiltonian układu złożonego
+ma postać \(\oper{H}\otimes\oper{1}_B\) mamy
+\begin{equation*}
+    \begin{split}
+        \dv{p}{t} &= \mel{\dot{\Psi}_{AB}}{\oper{P}\otimes\oper{1}_B}{\Psi_{AB}} + \mel{\Psi_{AB}}{\oper{P}\otimes\oper{1}_A}{\dot{\Psi}_{AB}} \\
+        & = \frac{1}{\im\hbar} \mel{\Psi_{AB}}{[\oper{P}, \oper{H}]\otimes\oper{1}_B}{\Psi_{AB}} = \Trace\left(\frac{1}{\im\hbar}[\oper{P}, \oper{H}]\oper{\rho}\right) = \Trace\left(\frac{1}{\im\hbar}\oper{P}[\oper{H}, \oper{\rho}]\right)\,,
+    \end{split}
+\end{equation*}
+gdzie skorzystaliśmy z liniowości i niezmienniczości śladu względem cyklicznych przestawień.
+Jednocześnie z drugiej strony \(\dot{p} = \Trace(\oper{P}\dot{\oper{\rho}})\), zatem
+\begin{equation*}
+    \im\hbar\pdv{\oper{\rho}}{t} = [\oper{H}, \oper{\rho}]\,.
+\end{equation*}
+Równoważnie jeśli \(\ket{\Psi_{AB}(t)} = \oper{U}\otimes\oper{1}_B\ket{\Psi_{AB}(t_0)}\) to
+\begin{equation*}
+    \begin{split}
+        p(t) &= \Trace(\oper{P}\oper{\rho}(t)) = \mel{\Psi_{AB}}{(\oper{U}^\dagger\otimes\oper{1}_B)(\oper{P}\otimes\oper{1}_B)(\oper{U}\otimes\oper{1}_B)}{\Psi_{AB}} \\
+        &= \mel{\Psi_{AB}}{\oper{U}^\dagger\oper{PU}\otimes\oper{1}_B}{\Psi_{AB}} =\Trace(\oper{U}^\dagger\oper{P}\oper{U}\oper{\rho})= \Trace(\oper{P}\oper{U}\oper{\rho}\oper{U}^\dagger)\,,
+    \end{split}
+\end{equation*}
+skąd
+\begin{equation*}
+    \oper{\rho}(t) = \oper{U}\oper{\rho}(t_0)\oper{U}^\dagger\,.
+\end{equation*}
+
+\subsubsection{Kula Blocha}
+
+Jak każdy operator samosprzężony w przestrzeni qubtiów również operator gęstości można rozłożyć na
+macierze Pauliego
+\begin{equation*}
+    \oper{\rho} = s_0\oper{1} + \mathbf{s}\cdot\oper{\sigma} = \mqty[s_0 + s_z & s_x - \im s_y\\ s_x + \im s_y & s_0 - s_z]\,.
+\end{equation*}
+Ponieważ macierz gęstości ma ślad jednostkowy, więc \(s_0 = 1/2\). Dodatkowo ponieważ jest
+nieujemnie określona, więc wartości własne muszą być nieujemne. Jednocześnie wartości te wyznaczone
+są jako pierwiastki wielomianu
+\begin{equation*}
+    \det(\oper{\rho} - \lambda\oper{1}) = \lambda^2 - \lambda + \frac{1}{4} - |\mathbf{s}|^2\,.
+\end{equation*}
+Aby wielomian \(Ax^2 + Bx + C\) miał oba pierwiastki nieujemne musimy mieć \(-B/A \geq 0\) i \(C/A
+\geq 0\), skąd \(|\mathbf{s}|^2 \leq \frac{1}{4}\). Operator gęstości możemy zatem zapisać jako
+\begin{equation*}
+    \oper{\rho} = \frac{1}{2}(\oper{1} + \mathbf{s}\cdot\oper{\sigma})\,,
+\end{equation*}
+gdzie \(|\mathbf{s}|^2 \leq 1\). Możemy go zatem reprezentować geometrycznie jako punkt wewnątrz
+kuli jednostkowej w kartezjańskim układzie współrzędnych, którą nazywamy \textit{kulą Blocha}.
+Zauważmy, iż jeśli \(\oper{\rho}\) przedstawia stan czysty to zachodzi \(s_x^2 + s_y^2 = 1 -
+s_z^2\), czyli stany czyste są reprezentowane przez punkty na sferze Blocha, a stany mieszane jako
+punkty wewnątrz kuli Blocha. 
+
+Stan mieszany, dla którego \(\mathbf{s} = \mathbf{0}\) tj. \(\oper{\rho} = \frac{1}{2}\oper{1}\)
+nazywamy \textit{stanem maksymalnie splątanym} lub \textit{stanem Bella}. Nietrudno zauważyć, iż
+wszystkie stany Bella mają postać
+\begin{equation*}
+    \frac{1}{\sqrt{2}}\left(\ket{i_Aj_B} + \e^{\im\alpha}\ket{(1-i)_A(1-j)_B}\right)\,.
+\end{equation*}
+
+Zauważmy, iż jeśli układ złożony ewoluuje zgodnie z przekształceniem unitarnym będącym iloczynem
+tensorowym \(\oper{U}\otimes\oper{1}_B\) to \(\oper{\rho}(t) =
+\oper{U}\oper{\rho}(t_0)\oper{U}^\dagger\) i w przestrzeni \(\mathbf{s}\) tej ewolucji odpowiada
+obrót dany wzorami wyprowadzonymi dla sfery Blocha (w szczególności więc długość wektora
+\(\mathbf{s}\) nie zmienia się, choć niekoniecznie wynosi 1).
+
+
+\subsubsection{Fizyczna realizacja stanu splątanego}
+
+Rozpocznijmy od prostej obserwacji, iż jeśli początkowo układ złożony \(AB\) nie jest w stanie
+splątanym tj. \(\ket{\Psi_{AB}(t_0)} = \ket{\Psi_A(t_0)} \otimes \ket{\Psi_B(t_0)}\) i ewolucja
+unitarna układu złożonego ma postać iloczynu tensorowego \(\oper{U}_A\otimes\oper{U}_B\) to
+\begin{equation*}
+    \ket{\Psi_{AB}(t)} = \oper{U}_A\ket{\Psi_A(t_0)} \otimes \oper{U}_B\ket{\Psi_B(t_0)} = \ket{\Psi_A(t)} \otimes \ket{\Psi_B(t)}\,,
+\end{equation*}
+więc układ pozostaje niesplątany. W celu utworzenia stanu splątanego z początkowego stanu
+niesplątanego hamiltonian układu złożonego musi zawierać człony opisujące oddziaływanie między
+podukładami \(A\) i \(B\). Jako przykład rozpatrzymy magnetyczne oddziaływanie dwóch spinów 1/2
+opisane hamiltonianem
+\begin{equation*}
+    \oper{H}_{AB} = \frac{\hbar\omega}{2}\oper{\sigma}_A \otimes \oper{\sigma}_B = \frac{\hbar\omega}{2}\mqty[1 & 0 & 0 & 0 \\ 0 & -1 & 2 & 0 \\ 0 & 2 & -1 & 0 \\ 0 & 0 & 0 & 1]\,.
+\end{equation*}
+Wartości własne \(\oper{H}_{AB}\) wynoszą \(\hbar\omega/2\) i \(-3\hbar\omega/2\), a odpowiadające
+im wektory własne
+\begin{equation*}
+    \begin{split}
+        a \ket{00} + b \ket{01} + b \ket{10} + c\ket{11}\,,\quad d \ket{01} - d \ket{10}
+    \end{split}
+\end{equation*}
+dla \(a,b,c,d\in\mathbb{C}\). Rozwiązanie ma zatem postać
+\begin{equation*}
+    \ket{\Psi_{AB}(t)} = \e^{-\im\omega t/2}\left(a \ket{00} + b \ket{01} + b \ket{10} + c\ket{11}\right) + \e^{3\im\omega t/2}d\left(\ket{01} - \ket{10}\right)\,.
+\end{equation*}
+Dla \(t=0\) mamy
+\begin{equation*}
+    \ket{\Psi_{AB}(0)} = a\ket{00} + (b+d)\ket{01} + (b-d)\ket{10} + c\ket{11}\,.
+\end{equation*}
+Załóżmy, iż początkowo stan jest niesplątany i \(\ket{\Psi_{AB}(0)} = \ket{10}\) tj. \(a=c=0\) i \(b
+= -d = 1/2\), wówczas
+\begin{equation*}
+    \begin{split}
+        \ket{\Psi_{AB}(t)} &= \frac{1}{2}\e^{-\im\omega t/2}\left(\e^{-\im\omega t}(\ket{01} + \ket{10}) - \e^{\im\omega t}(\ket{01} - \ket{10})\right) \\
+        &= \e^{\im\omega t/2}\left[\cos(\omega t)\ket{10} - \im\sin(\omega t)\ket{01}\right]\,.
+    \end{split}
+\end{equation*}
+Po czasie \(t = \pi/4\omega\) otrzymujemy więc stan maksymalnie splątany
+\begin{equation*}
+    \frac{1}{\sqrt{2}}\left(\ket{10} - \im\ket{01}\right)\,.
+\end{equation*}
+Trudności przy fizycznej implementacji powyższego schematu wynikają z faktu, iż opisane
+oddziaływanie jest najczęściej oddziaływaniem wewnętrznym układu, dla którego nie możemy kontrolować
+czasu oddziaływania \(t\) jak w przypadku MRJ.
+
+\subsubsection*{Operator SWAP}
+
+Zauważmy, iż dla operatora \(\oper{\sigma}_A \otimes \oper{\sigma}_B\) zachodzi
+\begin{equation*}
+    \oper{\sigma}_A \otimes \oper{\sigma}_B\left[(\alpha + \beta)\ket{01} + (\alpha - \beta)\ket{10}\right] = (\alpha - 3\beta)\ket{01} + (\alpha + 3\beta)\ket{10}\,,
+\end{equation*}
+skąd w szczególności dla \(\alpha = \beta = 1\)
+\begin{equation*}
+   2 \oper{\sigma}_A \otimes \oper{\sigma}_B \ket{01} = -2 \ket{01} + 4 \ket{10}
+\end{equation*}
+a dla \(\alpha = -\beta = 1\)
+\begin{equation*}
+    2 \oper{\sigma}_A \otimes \oper{\sigma}_B \ket{10} = 4 \ket{01} - 2 \ket{10}\,.
+\end{equation*}
+Z powyższego możemy zdefiniować tzw. operator SWAP postaci
+\begin{equation*}
+    \oper{U}_\text{SWAP} = \frac{1}{2}\left(\oper{1} + \oper{\sigma}_A \otimes \oper{\sigma}_B \right) = \mqty[1 & 0 & 0 & 0\\ 0 & 0 & 1 & 0 \\ 0 & 1 & 0 & 0 \\ 0 & 0 & 0 & 1]
+\end{equation*}
+dla którego \(\oper{U}_\text{SWAP}\ket{i_Aj_B} = \ket{j_Ai_B}\). Operator ten permutuje qubtiy \(A\)
+i \(B\). Nietrudno dodatkowo zauważyć, iż \(\oper{U}_\text{SWAP}\) jest operatorem samosprzężonym i
+unitarnym.
+
+\subsubsection{No-cloning theorem}
+
+Uniwersalnym procesem klonującym stan kwantowy \(\ket{\chi}\in\mathscr{H}\) na stan
+\(\ket{\Phi}\in\mathscr{H}\) nazwiemy proces, dla którego istnieje operator unitarny \(\oper{U}\)
+działający w przestrzeni \(\mathscr{H}\otimes\mathscr{H}\) taki, że
+\begin{equation*}
+    \oper{U}(\ket{\chi}\otimes\ket{\Phi}) = \ket{\chi}\otimes\ket{\chi}
+\end{equation*}
+dla dowolnego stanu \(\ket{\chi}\). Udowodnimy, iż taki proces nie istnieje. Istotnie załóżmy nie
+wprost, iż taki proces istnieje. Wówczas dla dowolnych wektorów \(\ket{\chi_1}, \ket{\chi_2}\) mamy
+\begin{equation*}
+    \oper{U}(\ket{\chi_1}\otimes\ket{\Phi}) = \ket{\chi_1}\otimes\ket{\chi_1}\,,\quad \oper{U}(\ket{\chi_2}\otimes\ket{\Phi}) = \ket{\chi_2}\otimes\ket{\chi_2}\,,
+\end{equation*}
+ale zauważmy, że
+\begin{equation*}
+     \braket{\chi_1}{\chi_2}^2 = \braket{\chi_1\chi_1}{\chi_2\chi_2} = \mel{\chi_1\Phi}{\oper{U}^\dagger\oper{U}}{\chi_2\Phi} = \braket{\chi_1\Phi}{\chi_2\Phi} = \braket{\chi_1}{\chi_2}\,,
+\end{equation*}
+skąd \(\braket{\chi_1}{\chi_2}\) jest równy 0 lub 1, czyli \(\chi_1, \chi_2\) nie mogą być dowolne,
+a zatem otrzymaliśmy sprzeczność.
+
+\subsubsection{Dekoherencja}
+
+Dekoherencją nazywamy zjawisko polegające na nieodwracalnej utracie zależności fazowych przez układ
+kwantowy na skutek oddziaływania z otoczeniem. Innymi słowy jest to proces, podczas którego tłumione
+są człony pozadiagonalne macierzy gęstości podukładu, co skutkuje odzyskaniem klasycznych wzorów na
+dodawanie prawdopodobieństw.
+
+Rozważymy prosty model sprzężenia układu z otoczeniem, w którym występuje zjawisko dekoherencji. W
+modelu tym mamy układ dwupoziomowy \(A\) (qubit) i foton \(F\), który jest na nim rozpraszany.
+Zakładamy, iż rozproszony foton może być modelowany układem trójpoziomowym \(\{\ket{0}, \ket{1},
+\ket{2}\}\), a oddziaływanie między układami jest opisane operatorem unitarnym\footnote{Jest tutaj
+jedna subtelna kwestia; zauważmy, iż działanie operatora \(\oper{U}\) zdefiniowaliśmy jedynie na
+podprzestrzeni rozpiętej przez \(\{\ket{00}, \ket{10}\}\), a nie na całej przestrzeni
+\(\mathscr{H}_{AF}\). Skąd możemy mieć pewność, iż istnieje odwzorowanie unitarne działające na
+całej przestrzeni takie, że jego działanie na podprzestrzeni jest takie jak zdefiniowane? Zauważmy
+najpierw, iż zdefiniowany \(\oper{U}\) jest izometrią w podprzestrzeni tj. dla dowolnych wektorów
+\(\Psi, \Phi\) należących do niej zachodzi \(\braket{\oper{U}\Psi}{\oper{U}\Phi} =
+\braket{\Psi}{\Phi}\) (\(\oper{U}\) nie jest unitarny w tej podprzestrzeni, zauważmy bowiem iż jest
+reprezentowany przez macierz prostokątną \(4 \times 2\)). Można jednak pokazać, iż dowolna izometria
+w podprzestrzeni \(\mathscr{V} \subset \mathscr{H}\) \(\oper{V}:\mathscr{V}\mapsto\mathscr{H}\)
+posiada unitarne rozszerzenie \(\oper{U}:\mathscr{H}\mapsto\mathscr{H}\) tj. istnieje operator
+unitarny \(\oper{U}\) zdefiniowany na całej przestrzeni \(\mathscr{H}\) taki, że \(\forall
+\Phi\in\mathscr{V}: \oper{U}\Phi = \oper{V}\Phi\).\\ Istotnie niech \(\{\ket{v}\}\cup\{\ket{u}\}\)
+będzie bazą ortonormalną \(\mathscr{H}\), gdzie \(\{\ket{v}\}\) jest bazą ortonormalną
+podprzestrzeni \(\mathscr{V}\) i zakładamy \(\dim\mathscr{V}, \dim\mathscr{H} < \infty\). Ponieważ
+\(\oper{V}\) jest izometrią, więc obrazem bazy ortonormalnej podprzestrzeni \(\mathscr{V}\) będzie
+pewien zbiór ortonormalny \(\{\ket{v'}\}\) o liczności \(\dim\mathscr{V} < \infty\). Zbiór ten
+możemy rozszerzyć do bazy przestrzeni \(\mathscr{H}\) dodając do niego pewne wektory \(\ket{u'}\).
+Jeśli teraz zdefiniujemy odwzorowanie \(\oper{U}:\mathscr{H}\mapsto\mathscr{H}\) jako
+\(\oper{U}\ket{v} = \oper{V}\ket{v} = \ket{v'}, \oper{U}\ket{u} = \ket{u'}\) to skonstruowaliśmy
+izometrię w przestrzeni \(\mathscr{H}\), ale każda izometria reprezentowana przez macierz kwadratową
+jest unitarna (gdyż jeśli dla macierzy kwadratowej \(\oper{A}\) istnieje macierz \(\oper{B}\) taka,
+że \(\oper{BA} = \oper{1}\) to \(\oper{A}\) jest odwracalna). W przykładzie nie interesują nas
+wartości tego odwzorowania dla pozostałych wektorów bazowych (poza wektorami bazowymi
+podprzestrzeni) gdyż stany te w tym modelu są nierealizowalne fizycznie.}
+\begin{equation*}
+    \oper{U}\ket{00} = \sqrt{1-p}\ket{00} + \sqrt{p}\ket{01}\,,\quad \oper{U}\ket{10} = \sqrt{1-p}\ket{10} + \sqrt{p}\ket{12}\,,
+\end{equation*}
+gdzie zakładamy, iż amplitudy prawdopodobieństwa rozproszenia fotonu są niezależne od stanu układu
+\(A\), ale końcowy stan fotonu zależy od stanu qubitu. Możemy sobie wyobrazić, iż qubitem jest
+kwantowe lusterko, które może być pod kątem \(+\pi/4\) lub \(-\pi/4\) w stosunku do toru fotonu,
+który może nie trafić w lusterko (tj. pozostać w stanie podstawowym \(\ket{0}\)), odbić się w górę
+(\(\ket{1}\)) lub w dół (\(\ket{2}\)), przy czym amplituda prawdopodobieństwa trafienia lub nie w
+lusterko jest niezależna od jego ustawienia. Załóżmy, iż początkowo qubit jest w stanie czystym
+\begin{equation*}
+    \ket{\Psi_{AF}} = (\alpha\ket{0} + \beta\ket{1}) \otimes \ket{0}\,.
+\end{equation*}
+Początkowo macierz gęstości układu \(A\) ma zatem postać
+\begin{equation*}
+    \oper{\rho} = \mqty[|\alpha|^2 & \alpha\beta^* \\ \alpha^*\beta & |\beta|^2] = \mqty[\rho_{00} & \rho_{01} \\ \rho_{10} & \rho_{11}]\,.
+\end{equation*}
+Po rozproszeniu fotonu natomiast stan układu złożonego ewoluuje do
+\begin{equation*}
+    \oper{U}\ket{\Psi_{AF}} = \alpha\sqrt{1-p}\ket{00} + \alpha\sqrt{p}\ket{01} + \beta\sqrt{1-p}\ket{10} + \beta\sqrt{p}\ket{12}\,,
+\end{equation*}
+skąd macierz gęstości ma postać
+\begin{equation*}
+    \oper{\rho}' = \mqty[\rho_{00} & (1-p)\rho_{01} \\ (1-p)\rho_{10} & \rho_{11}]\,.
+\end{equation*}
+Jeśli \(p = 1 - \epsilon\) to macierz jest prawie diagonalna. Zauważmy jednak, iż w tym modelu
+dekoherencja jest jedynie pozorna gdyż stan pełnego układu \(AF\) jest oczywiście stanem czystym i
+jeśli tylko potrafimy mierzyć wielkości związane z rozproszonym fotonem to mamy pełną informację o
+układzie. W realistycznym przypadku otoczenie ma tak wiele stopni swobody, iż jest nie możliwe
+abyśmy mieli nad nimi pełną kontrolę i efektywnie wielkości związane z otoczeniem są
+nieobserwowalne. Możemy ulepszyć nasz model jeśli założymy, iż nasz qubit rozprasza nie pojedynczy
+foton a wiele (\(N\)) fotonów jeden po drugim. W stanie początkowym wszystkie fotony są w stanie
+podstawowym tj.
+\begin{equation*}
+    \ket{\Psi_{AE}} = (\alpha\ket{0_A} + \beta\ket{1_A}) \otimes \ket*{\underbrace{0\ldots0}_N}\,.
+\end{equation*}
+Aby odtworzyć ewolucję dla przypadku pojedynczego fotonu zdefiniujmy ciąg operatorów unitarnych
+\(\oper{U}_n = \oper{V}_n \otimes \oper{1}_{N-n}\), gdzie
+\begin{equation*}
+    \begin{split}
+        &\oper{V}_n\ket{0_Ai_1\ldots i_{n-1}0} = \sqrt{1-p}\ket{0_Ai_1\ldots i_{n-1}0} + \sqrt{p}\ket{0_Ai_1\ldots i_{n-1}1}\\
+        &\oper{V}_n\ket{1_Aj_1\ldots j_{n-1}0} = \sqrt{1-p}\ket{1_Aj_1\ldots j_{n-1}0} + \sqrt{p}\ket{1_Aj_1\ldots j_{n-1}2}
+    \end{split}
+\end{equation*}
+dla \(n \geq 1\) i dowolnych \(i_1,\ldots,i_{n-1} \in \{0,1\}\), \(j_1,\ldots,j_{n-1} \in \{0,2\}\).
+Ponownie operator izometryczny \(\oper{V}_n\) zdefiniowaliśmy jedynie na \(2^n\)--wymiarowej
+podprzestrzeni ale posiada on unitarne rozszerzenie do przestrzeni \(2\cdot 3^n\)--wymiarowej.
+Operator \(\oper{V}_n\) jest operatorem opisującym rozproszenie \(n\)--tego w kolejności fotonu na
+qubicie. Niech 
+\begin{equation*}
+    \ket{\Psi_n} = \oper{U}_n\ldots\oper{U}_1\ket{\Psi_{AE}}\,.
+\end{equation*}
+Niech \(\{0,1\}^n, \{0,2\}^n\) oznaczają zbiory wszystkich słów binarnych długości \(n\) nad
+alfabetem odpowiednio \(\{0,1\}\) oraz \(\{0,2\}\). Dla słowa \(\mathfrak{a} \in \{0,1\}^n\)
+(\(\mathfrak{b} \in \{0,2\}^n\)) przez \(\kappa(\mathfrak{a})\) oznaczmy liczbę niezerowych miejsc w
+tym słowie. Wówczas
+\begin{equation*}
+    \begin{split}
+        \ket{\Psi_n} &= \Bigg[\alpha\sum_{\mathfrak{a}\in\{0,1\}^n}\left(\sqrt{1-p}\right)^{n-\kappa(\mathfrak{a})}\left(\sqrt{p}\right)^{\kappa(\mathfrak{a})}\ket{0_A\mathfrak{a}} \\
+        &+ \beta\sum_{\mathfrak{b}\in\{0,2\}^n}\left(\sqrt{1-p}\right)^{n-\kappa(\mathfrak{b})}\left(\sqrt{p}\right)^{\kappa(\mathfrak{b})}\ket{1_A\mathfrak{b}} \Bigg] \otimes \ket*{\underbrace{0\ldots 0}_{N-n}}\,.
+    \end{split}
+\end{equation*}
+Istotnie dowodząc indukcyjnie; dla \(n=1\) mamy
+\begin{equation*}
+    \ket{\Psi_1} = \left[\alpha\sqrt{1-p}\ket{0_A0} + \alpha\sqrt{p}\ket{0_A1} + \beta\sqrt{1-p}\ket{1_A0} + \beta\sqrt{p}\ket{1_A2}\right]\otimes \ket*{\underbrace{0\ldots 0}_{N-1}}
+\end{equation*}
+co jest oczywiście równe \(\oper{U}_1\ket{\Psi_{AE}}\), następnie zakładając, że wzór jest słuszny
+dla \(\ket{\Psi_n}\) mamy
+\begin{equation*}
+    \begin{split}
+        \ket{\Psi_{n+1}} &= \oper{U}_{n+1}\ket{\Psi_n} = \Bigg[\alpha\sum_{\mathfrak{a}\in\{0,1\}^n}\left(\sqrt{1-p}\right)^{n-\kappa(\mathfrak{a})}\left(\sqrt{p}\right)^{\kappa(\mathfrak{a})}\oper{U}_{n+1}\ket{0_A\mathfrak{a}0} \\
+        &+ \beta\sum_{\mathfrak{b}\in\{0,2\}^n}\left(\sqrt{1-p}\right)^{n-\kappa(\mathfrak{b})}\left(\sqrt{p}\right)^{\kappa(\mathfrak{b})}\oper{U}_{n+1}\ket{1_A\mathfrak{b}0} \Bigg] \otimes \ket*{\underbrace{0\ldots 0}_{N-(n+1)}}\,,
+    \end{split}
+\end{equation*}
+skąd współczynnik przy \(\alpha\) ma postać (dla uproszczenia zapisu oznaczymy \(r=\sqrt{1-p},
+s=\sqrt{p}\))
+\begin{equation*}
+    \begin{split}
+        \sum_{\mathfrak{a}\in\{0,1\}^n}r^{n+1-\kappa(\mathfrak{a})}s^{\kappa(\mathfrak{a})}\ket{0_A\mathfrak{a}0} + \sum_{\mathfrak{a}\in\{0,1\}^n}r^{n-\kappa(\mathfrak{a})}s^{\kappa(\mathfrak{a}) + 1}\ket{0_A\mathfrak{a}1}\,,
+    \end{split}
+\end{equation*}
+a przy \(\beta\)
+\begin{equation*}
+    \begin{split}
+        \sum_{\mathfrak{b}\in\{0,2\}^n}r^{n+1-\kappa(\mathfrak{b})}s^{\kappa(\mathfrak{b})}\ket{1_A\mathfrak{b}0} + \sum_{\mathfrak{b}\in\{0,2\}^n}r^{n-\kappa(\mathfrak{b})}s^{\kappa(\mathfrak{b}) + 1}\ket{1_A\mathfrak{b}2}\,.
+    \end{split}
+\end{equation*}
+Zauważmy jednak, iż \(\kappa(\mathfrak{a}) = \kappa(\mathfrak{a}0) = \kappa(\mathfrak{a}1) - 1\),
+zatem możemy zapisać
+\begin{equation*}
+    \begin{split}
+        &\sum_{\mathfrak{a}\in\{0,1\}^n}r^{n+1-\kappa(\mathfrak{a})}s^{\kappa(\mathfrak{a})}\ket{0_A\mathfrak{a}0} + \sum_{\mathfrak{a}\in\{0,1\}^n}r^{n-\kappa(\mathfrak{a})}s^{\kappa(\mathfrak{a}) + 1}\ket{0_A\mathfrak{a}1} \\
+        &=\sum_{\mathfrak{a}0\in\{0,1\}^{n+1}}r^{n+1-\kappa(\mathfrak{a}0)}s^{\kappa(\mathfrak{a}0)}\ket{0_A\mathfrak{a}0} + \sum_{\mathfrak{a}1\in\{0,1\}^{n+1}}r^{n + 1-\kappa(\mathfrak{a}1)}s^{\kappa(\mathfrak{a}1)}\ket{0_A\mathfrak{a}1} \\
+        &=\sum_{\mathfrak{a} \in \{0,1\}^{n+1}}r^{n+1-\kappa(\mathfrak{a})}s^{\kappa(\mathfrak{a})}\ket{0_A\mathfrak{a}}
+    \end{split}
+\end{equation*}
+i analogicznie dla współczynnika przy \(\beta\), zatem
+\begin{equation*}
+    \begin{split}
+        \ket{\Psi_{n+1}} &= \Bigg[\alpha\sum_{\mathfrak{a}\in\{0,1\}^{n+1}}\left(\sqrt{1-p}\right)^{n+1-\kappa(\mathfrak{a})}\left(\sqrt{p}\right)^{\kappa(\mathfrak{a})}\ket{0_A\mathfrak{a}} \\
+        &+ \beta\sum_{\mathfrak{b}\in\{0,2\}^{n+1}}\left(\sqrt{1-p}\right)^{n+1-\kappa(\mathfrak{b})}\left(\sqrt{p}\right)^{\kappa(\mathfrak{b})}\ket{1_A\mathfrak{b}} \Bigg] \otimes \ket*{\underbrace{0\ldots 0}_{N-(n+1)}}\,,
+    \end{split}
+\end{equation*}
+więc z zasady indukcji matematycznej zaproponowany wzór jest poprawny dla dowolnych \(n \geq 1\).
+Możemy więc nareszcie obliczyć macierz gęstości układu \(A\) po rozproszeniu \(N\) fotonów. Mamy
+\begin{equation*}
+    \begin{split}
+        \rho_{00}' &= \sum_{\mathfrak{c} \in \{0,1,2\}^N} |\braket{0_A\mathfrak{c}}{\Psi_N}|^2 = |\alpha|^2\sum_{\mathfrak{a} \in \{0,1\}^N}(1-p)^{N-\kappa(\mathfrak{a})}p^{\kappa(\mathfrak{a})} \\
+        &= |\alpha|^2\sum_{k=0}^N {N \choose k} (1-p)^{N-k}p^k = |\alpha|^2(1-p+p)^N = |\alpha|^2 = \rho_{00}
+    \end{split}
+\end{equation*}
+analogicznie \(\rho_{11}' = \rho_{11}\), natomiast dla elementów pozadiagonalnych mamy
+\begin{equation*}
+    \begin{split}
+        \rho_{01}' &= \rho_{10}'^* = \sum_{\mathfrak{c} \in \{0,1,2\}^N} \braket{0_A\mathfrak{c}}{\Psi_N}\braket{\Psi_N}{1_A\mathfrak{c}} \\
+        &= \braket*{0_A\underbrace{0\ldots0}_N}{\Psi_N}\braket*{\Psi_N}{1_A\underbrace{0\ldots0}_N} = \alpha\beta^*(1-p)^N = \rho_{01}(1-p)^N\,,
+    \end{split}
+\end{equation*}
+czyli
+\begin{equation*}
+    \oper{\rho}' = \mqty[\rho_{00} & \rho_{01}(1-p)^N \\ \rho_{10}(1-p)^N & \rho_{11}]\,.
+\end{equation*}
+Widzimy zatem, iż nawet jeśli \(p\) nie jest bliskie 1 to dla bardzo dużej liczby \(N\), na przykład
+rzędu \(10^{23}\), elementy pozadiagonalne się praktycznie zerują i nie mamy jak odzyskać tej
+informacji, gdyż jest rozłożona na \(\sim 10^{23}\) stopni swobody. Zakładając, że liczba
+rozproszonych fotonów na jednostkę czasu wynosi \(\Gamma\) możemy oszacować czas dekoherencji tj.
+czas po którym \((1-p)^{\Gamma t} \leq \epsilon\)
+\begin{equation*}
+    \tau = \frac{1}{\Gamma}\frac{\log\epsilon}{\log(1-p)} \sim \frac{1}{\Gamma}\,.
+\end{equation*}
+
+
+\section{Obliczenia kwantowe}
+
+Niech \(\mathscr{H} = \{\ket{0}, \ket{1}\}\) będzie przestrzenią Hilberta opisującą pojedynczy
+qubit. Podstawowym obiektem zainteresowania w kontekście obliczeń kwantowych jest przestrzeń
+Hilberta \(\mathscr{H}^{\otimes n} = \underbrace{\mathscr{H}\otimes\ldots\otimes\mathscr{H}}_n\),
+której baza ortonormalna ma postać \(\{\ket{\mathfrak{a}}\mid \mathfrak{a}\in\{0,1\}^n\}\).
+Oczywiście każde słowo binarne długości \(n\) możemy utożsamić z liczbą naturalną z przedziału
+\(k\in \{0,1,\ldots,2^n-1\}\), więc bazę ortonormalną przestrzeni \(\mathscr{H}^{\otimes n}\)
+będziemy zapisywać również jako \(\{\ket{k} \mid k \in \{0,1,\ldots,2^n-1\}\}\). Bazę tą nazywamy
+\textit{bazą obliczeniową}.
+
+Na Rysunku \ref{fig:quant-scheme} przedstawiono ogólny schemat obliczeń kwantowych. Najpierw w
+chwili \(t_0\) inicjalizujemy \(n\) qubitów (np. poprzez pomiar powodujący kolaps), następnie qubity
+ewoluują zgodnie z pewnym odwzorowaniem unitarnym \(\oper{U}(t;t_0)\), a następnie aby odczytać
+wynik dokonujemy pomiaru na (pod)układzie qubitów. Zauważmy, iż ponieważ wymagamy aby ewolucja była
+unitarna, więc obliczenia kwantowe są z konieczności obliczeniami odwracalnymi tj. z uzyskanego
+wyniku (stanu końcowego \(\ket{\Psi(t)}\)) możemy odtworzyć dane (stan początkowy
+\(\ket{\Psi(t_0)}\)) poprzez zastosowanie operatora unitarnego \(\oper{U}^{-1}\).
+
+\begin{figure}[ht]
+    \centering
+    \begin{quantikz}
+        \lstick[6]{input}&\lstick{$\ket{0}$}&\gate[6]{\oper{U}(t;t_0)} &
+        \meter{}\rstick[3]{output}\\
+        &\lstick{$\ket{0}$}&& \meter{}\\
+        &\lstick{$\ket{0}$}&& \meter{}\\
+        &\lstick{$\ket{0}$}&& &\\
+        &\lstick{$\ket{0}$}&& &\\
+        &\lstick{$\ket{0}$}&& &
+    \end{quantikz}
+    \label{fig:quant-scheme}
+    \caption{Ogólny schemat obliczeń kwantowych}
+\end{figure}
+
+Odwracalność obliczeń kwantowych jest zasadniczo różna od klasycznych obwodów logicznych, które w
+ogólności nie są odwracalne. Wiemy chociażby, iż bramki \(\gatesym{NAND}\) wystarczą do konstrukcji
+dowolnych obwodów logicznych tj. funkcji \(f:\{0,1\}^n \mapsto \{0,1\}^m\), ale bramka
+\(\gatesym{NAND}\) jest jawnie nieodwracalna, gdyż mamy
+\begin{equation*}
+    \gatesym{NAND}(x,y) = 1 \oplus xy\,,
+\end{equation*}
+gdzie \(\oplus\) oznacza dodawania modulo 2, więc np. \(\gatesym{NAND}(0,0) = \gatesym{NAND}(0,1) =
+1\), zatem z wyniku działania tej bramki nie możemy odtworzyć danych wejściowych. Istnieją jednak
+klasyczne odwracalne bramki logiczne postaci odwzorowań \(\{0,1\}^n\mapsto\{0,1\}^n\). Przedstawimy
+dwie z nich, gdyż znajdują one zastosowanie również w obwodach kwantowych. Bramka \(\gatesym{cNOT}\)
+(z ang. \textit{controlled NOT}) działa w następujący sposób
+\begin{equation*}
+    \gatesym{cNOT}(x,y) = (x, x\oplus y)\,,
+\end{equation*}
+bit \(x\) jest zatem \textit{bitem kontrolnym}; jeśli \(x=0\) to kopiujemy \(y\), natomiast jeśli
+\(x=1\) to \(y \mapsto \gatesym{NOT}(y)\). Drugą bramką jest bramka Toffoli działająca w następujący
+sposób
+\begin{equation*}
+    \gatesym{Toff}(x,y,z) = (x,y,z\oplus xy)\,.
+\end{equation*}
+Zauważmy, iż jeśli \(z=1\) to bramka ta w sposób odwracalny realizuje operację \(\gatesym{NAND}\). Z
+tego względu bramka Toffoli jest uniwersalna i można za jej pomocą zrealizować dowolną funkcję
+boolowską (zakładając oczywiście odpowiednią liczbę bitów pomocniczych -- takich jak \(z\)).
+
+
+\subsection{Kwantowe bramki logiczne}
+
+Kwantową bramką logiczną działającą na \(n\) qubitach nazywamy dowolny operator unitarny
+\(\oper{U}\) działający w przestrzeni \(\mathscr{H}^{\otimes n}\) reprezentowany przez macierz
+wymiaru \(2^n\times2^n\). Będą nas interesować jednak głównie bramki jedno-- i dwuqubitowe ze
+względu na następujące twierdzenie.
+\begin{theorem}
+    Każde przekształcenie unitarne w \(\mathscr{H}^{\otimes n}\) może być zapisane jako złożenie
+    przekształceń jednoqubitowych i bramek cNOT. Dodatkowo każde przekształcenie jednoqubitowe jest
+    złożeniem bramek obrotów wokół X, Y, Z i bramki przesunięcia fazowego. Zbiór bramek
+    \(\{\gatesym{cNOT}, \gatesym{R}_x, \gatesym{R}_y, \gatesym{R}_z, \gatesym{P}\}\) jest więc
+    uniwersalny.
+\end{theorem}
+
+Poniżej podajemy listę najczęstszych bramek jedno-- i dwuqubitowych (bramki będziemy oznaczać
+czcionką prostą, niewytłuszczoną choć są to oczywiście operatory). Niektóre z nich pojawiły się
+wcześniej jako operatory. Diagramy bramek zamieszczono na Rysunku \ref{fig:gates}.
+
+\begin{figure}[h!]
+    \centering
+    \begin{quantikz}
+        & \ctrl{1} & \qw \\
+        & \targ{} & \qw 
+    \end{quantikz}
+    \begin{quantikz}
+        & \ctrl{1} & \qw \\
+        & \ctrl{1} & \qw \\
+        & \targ{}  & \qw \\
+    \end{quantikz}
+    \begin{quantikz}
+        & \ctrl{1} & \qw \\
+        & \gate{U} & \qw 
+    \end{quantikz}
+    \begin{quantikz}
+        & \swap{1} & \qw \\
+        & \targX{} & \qw 
+    \end{quantikz}
+    \begin{quantikz}
+        & \phase{\phi} & \qw
+    \end{quantikz}
+    \begin{quantikz}
+        & \gate{\cdot} & \qw
+    \end{quantikz}
+    \label{fig:gates}
+    \caption{Diagramy odpowiednio bramek cNOT, Toff, cU, SWAP, \(\gatesym{P}(\phi)\) i pozostałych}
+\end{figure}
+
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{clc}
+    \cline{1-1} \cline{3-3} \multicolumn{1}{|c|}{\textbf{Pauli X}} & \multicolumn{1}{l|}{} &
+    \multicolumn{1}{c|}{\textbf{Rotation X}} \\ \cline{1-1} \cline{3-3}
+    \multicolumn{1}{|c|}{\(\gatesym{X}=\mqty[0&1\\1&0]\)} & \multicolumn{1}{l|}{} &
+    \multicolumn{1}{c|}{\(\gatesym{R}_x(\theta)=\mqty[\cos(\theta/2) & -\im\sin(\theta/2)\\
+    -\im\sin(\theta/2) & \cos(\theta/2)]\)} \\ \cline{1-1} \cline{3-3}
+    \multicolumn{1}{l}{}
+    &                       & \multicolumn{1}{l}{} \\ \cline{1-1} \cline{3-3}
+    \multicolumn{1}{|c|}{\textbf{Pauli Y}} & \multicolumn{1}{l|}{} &
+    \multicolumn{1}{c|}{\textbf{Rotation Y}} \\ \cline{1-1} \cline{3-3}
+    \multicolumn{1}{|c|}{\(\gatesym{Y}=\mqty[0&-\im\\+\im&0]\)} & \multicolumn{1}{l|}{} &
+    \multicolumn{1}{c|}{\(\gatesym{R}_y(\theta)=\mqty[\cos(\theta/2) & -\sin(\theta/2)\\
+    +\sin(\theta/2) & \cos(\theta/2)]\)}       \\ \cline{1-1} \cline{3-3} & & \\ \cline{1-1}
+    \cline{3-3} \multicolumn{1}{|c|}{\textbf{Pauli Z}} & \multicolumn{1}{l|}{} &
+    \multicolumn{1}{c|}{\textbf{Rotation Z}} \\ \cline{1-1} \cline{3-3}
+    \multicolumn{1}{|c|}{\(\gatesym{Z}=\mqty[+1&0\\0&-1]\)} & \multicolumn{1}{l|}{} &
+    \multicolumn{1}{c|}{\(\gatesym{R}_z(\theta)=\mqty[\exp(-\im\theta/2) & 0\\0 &
+    \exp(+\im\theta/2)]\)}                            \\ \cline{1-1} \cline{3-3}
+    \multicolumn{1}{l}{}
+    &                       & \multicolumn{1}{l}{} \\ \cline{1-1} \cline{3-3}
+    \multicolumn{1}{|c|}{\textbf{Hadamard}} & \multicolumn{1}{l|}{} &
+    \multicolumn{1}{c|}{\textbf{Phase shift}} \\ \cline{1-1} \cline{3-3}
+    \multicolumn{1}{|c|}{\(\gatesym{H}=\frac{1}{\sqrt{2}}\mqty[1 & 1\\ 1 & -1]\)} &
+    \multicolumn{1}{l|}{} & \multicolumn{1}{c|}{\(\gatesym{P}(\phi) = \mqty[1 &
+    0\\0&\e^{\im\phi}]\)} \\ \cline{1-1} \cline{3-3} \multicolumn{1}{l}{} &                       &
+    \multicolumn{1}{l}{} \\ \cline{1-1} \cline{3-3} \multicolumn{1}{|c|}{\textbf{cNOT}} &
+    \multicolumn{1}{l|}{} & \multicolumn{1}{c|}{\textbf{cZ}} \\ \cline{1-1} \cline{3-3}
+    \multicolumn{1}{|c|}{\(\gatesym{cNOT} = \mqty[1 & 0 & 0 & 0\\ 0 & 1 & 0 & 0\\ 0 & 0 & 0 & 1 \\ 0
+    & 0 & 1 & 0]\)}    & \multicolumn{1}{l|}{} & \multicolumn{1}{c|}{\(\gatesym{cZ} = \mqty[1 & 0 &
+    0 & 0\\ 0 & 1 & 0 & 0\\ 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & -1]\)}                  \\ \cline{1-1}
+    \cline{3-3} \multicolumn{1}{l}{} &                       & \multicolumn{1}{l}{} \\ \cline{1-1}
+    \cline{3-3} \multicolumn{1}{|c|}{\textbf{cU}} & \multicolumn{1}{l|}{} &
+    \multicolumn{1}{c|}{\textbf{SWAP}} \\ \cline{1-1} \cline{3-3}
+    \multicolumn{1}{|c|}{\(\gatesym{cU} = \mqty[\oper{1} & 0 \\ 0 & \oper{U}]\)} &
+    \multicolumn{1}{l|}{} & \multicolumn{1}{c|}{\(\gatesym{SWAP} = \mqty[1 & 0 & 0 & 0\\ 0 & 0 & 1 &
+    0\\ 0 & 1 & 0 & 0 \\ 0 & 0 & 0 & 1]\)}                 \\ \cline{1-1} \cline{3-3}
+    \multicolumn{1}{l}{} &                       & \multicolumn{1}{l}{} \\ \cline{1-1}
+    \multicolumn{1}{|c|}{\textbf{Toffoli}} &                       & \textbf{} \\ \cline{1-1}
+    \multicolumn{1}{|c|}{\(\gatesym{Toff} = \mqty[\oper{1}_6 & \mathbf{0} \\
+    \mathbf{0}^\top & \mqty{0 & 1\\ 1 & 0}]\)} &                       & \\ \cline{1-1}
+    \end{tabular}
+\end{table}
+
+Łatwo sprawdzić, iż wszystkie zdefiniowane bramki są przekształceniami unitarnymi. W szczególności
+zauważmy, iż bramki cNOT i Toff permutują wektory bazy ortonormalnej i działają dokładnie w taki
+sposób jak klasyczne odpowiedniki tj.
+\begin{equation*}
+    \gatesym{cNOT}\ket{xy} = \ket{x(x\oplus y)}\,,\quad \gatesym{Toff}\ket{xyz} = \ket{xy(z\oplus xy)}\,.
+\end{equation*}
+Ponieważ wszystkie funkcje boolowskie można wyrazić przez klasyczne bramki Toffoli, więc dowolną
+taką funkcję możemy obliczyć w modelu obliczeń kwantowych zasadniczo za pomocą takiej samej liczby
+bramek. Zauważmy jednak, iż w przypadku modelu obliczeń kwantowych wejściem bramki może być dowolna
+superpozycja wektorów z bazy obliczeniowej; na wyjściu otrzymamy zatem superpozycję wszystkich
+wartości funkcji. Oczywiście dokonując na końcu pomiaru otrzymamy tylko jedną z wartości, więc w
+taki sposób nie uzyskamy oczywistej przewagi nad modelem klasycznym. Okazuje się jednak iż ów
+\textit{paralelizm kwantowy} można wykorzystać w sposób dający nawet wykładniczą przewagę nad
+algorytmami klasycznymi.
+
+\subsection{Algorytmy kwantowe}
+
+TODO
+
+\subsubsection{Kwantowa Transformata Fouriera}
+
+TODO
+
+\subsubsection{Algorytm Shora}
+
+TODO
+
+\subsubsection*{Algorytm RSA}
+
+Bob wybiera dwie liczby pierwsze \(p,q\in\mathbb{P}\), oblicza liczbę \(N = pq\) oraz wybiera liczbę
+\(c \perp \phi(N) = (p-1)(q-1)\), gdzie \(\phi\) to funkcja Eulera (liczbę \(c\) nazywamy
+\textit{kluczem publicznym}). Następnie oblicza odwrotność liczby \(c\) modulo \(\phi(N)\), tj.
+liczbę \(d\) taką, że \(cd \equiv_{\phi(N)} 1\) (liczbę \(d\) nazywamy \textit{kluczem prywatnym}).
+Istnienie liczby \(d\) zapewnia twierdzenie Eulera, istotnie wynika z niego, iż \(d\) można obliczyć
+jako (przy czym nie jest to efektywne i zwykle używa się rozszerzonego algorytmu Euklidesa)
+\begin{equation*}
+    c^{\phi(\phi(N))} \equiv_{\phi(N)} c\cdot c^{\phi(\phi(N))-1} \equiv_{\phi(N)} 1  \implies d \equiv_{\phi(N)} c^{\phi(\phi(N))-1}\,.
+\end{equation*}
+Bob wysyła następnie Alicji niezabezpieczoną drogą liczby \(c\) i \(N\). 
+
+Załóżmy, że Alicja chce wysłać do Boba zaszyfrowaną wiadomość reprezentowaną przez liczbę \(a < N\).
+Aby to zrobić Alicja oblicza liczbę \(b \equiv_N a^c\) i wysyła ją do Boba niezabezpieczoną drogą.
+
+Bob odczytuje wiadomość obliczając
+\begin{equation*}
+    b^d \equiv_N a^{cd} \equiv_N a\,.
+\end{equation*}
+
+Powyższa równość wynika z Małego Twierdzenia Fermata. Istotnie zauważmy wpierw, iż jeśli \(p \perp
+q\) to \(x \equiv_p y\) i \(x \equiv_q y\) implikują \(x \equiv_{pq} y\). Istotnie z założeń wynika,
+iż \(\exists k,k' \in \mathbb{Z}\) takie, że \(x - y = kp = k'q\), ale ponieważ \(p \perp q\) to \(q
+| k\) (i analogicznie \(p | k'\)), więc istnieje \(k'' \in \mathbb{Z}\) takie, że \(x - y = k''
+pq\). Do udowodnienia powyższej równość wystarczy zatem pokazać, iż \(a^{cd} \equiv_p a\) i \(a^{cd}
+\equiv_q  a\). Pokażemy dowód dla \(p\) (dowód dla \(q\) jest analogiczny). Istotnie z definicji
+liczb \(c,d\) mamy \(cd = k(p-1)(q-1) + 1 = l(p-1) + 1\) dla pewnych \(k,l\in\mathbb{Z}\). Z
+powyższego mamy więc
+\begin{equation*}
+    a^{cd} \equiv_p a(a^{p-1})^l\,.
+\end{equation*}
+Jeśli \(a \perp p\) to z MTF mamy \(a^{p-1} \equiv_p 1\), zatem \(a^{cd} \equiv_p a\cdot1^l \equiv_p
+a\), w przeciwnym wypadku mamy natomiast \(p | a\), zatem \(a^{cd} \equiv_p 0 \equiv_p a\), co
+kończy dowód.
+
+Trudność w odszyfrowaniu wiadomości znając jedynie zaszyfrowaną wiadomość \(b\), liczbę \(N\) i
+klucz publiczny \(c\) wynika z faktu, iż aby wyznaczyć klucz prywatny \(d\) musimy wyznaczyć funkcję
+Eulera \(\phi(N)\) (aby obliczyć odwrotność liczby \(c\) modulo \(\phi(N)\)), której efektywne
+wyznaczenie wymaga faktoryzacji liczby \(N\) na czynniki pierwsze. Rozkład liczby na czynniki
+pierwsze jest z kolei powszechnie uznawany za problem bardzo trudny obliczeniowo (przynajmniej na
+klasycznym komputerze nie jest znany algorytm rozwiązujący ten problem w czasie wielomianowym
+względem liczby bitów faktoryzowanej liczby).
+
+
+\section{Informacja kwantowa}
+
+\subsection{Bazy dopełniające}
+\begin{definition}
+    Niech \(\{\phi_i\}\), \(\{\theta_i\}\)  będą dwiema bazami ortonormalnymi \(N\)--wymiarowej
+    przestrzeni Hilberta \(\mathscr{H}\). Bazy te nazwiemy \textit{dopełniającymi} iff
+    \begin{equation*}
+        \forall i,j\in\{1,\ldots,N\}\,:\, |\braket{\phi_i}{\theta_j}|^2 = \frac{1}{N}\,.
+    \end{equation*}
+\end{definition}
+Jedną z możliwości skonstruowania bazy dopełniającej bazy \(\{\phi_i\}\) jest wykorzystanie
+dyskretnej transformacji Fouriera tj. wektory bazy dopełniającej są dane przez
+\begin{equation*}
+    \ket{\theta_i} = \frac{1}{\sqrt{N}}\sum_{j=1}^N \e^{2\pi\im ij/N}\ket{\phi_j}\,.
+\end{equation*}
+Nietrudno zauważyć, iż wówczas \(|\braket{\phi_m}{\theta_n}|^2 = 1/N\) dla dowolnych \(m, n\) oraz
+dodatkowo mamy
+\begin{equation*}
+    \begin{split}
+        &\braket{\theta_m}{\theta_n} = \frac{1}{N}\sum_{j=1}^N \e^{2\pi\im(m - n)j/N} \\
+        &= \begin{cases}
+            1\,,&\text{dla \(m=n\)}\\
+            N^{-1}\e^{2\pi\im(m-n)/N}\frac{\e^{2\pi\im(m-n)} - 1}{\e^{2\pi\im(m-n)/N} - 1} = 0\,,&\text{dla \(m\neq n\)}
+        \end{cases} = \delta_{mn}\,,
+    \end{split}
+\end{equation*}
+gdzie ostatnia równość wynika z faktu, iż \(m-n\in\mathbb{Z}\), zatem \(e^{2\pi\im(m-n)} =
+\cos(2\pi(m-n)) + \im\sin(2\pi(m-n)) = 1\), czyli \(\{\theta_i\}\) tworzą bazę ortonormalną.
+
+Załóżmy, że mamy zespół układów kwantowych przygotowanych w stanie \(\ket{\theta_k}\), gdzie
+\(\theta_k\) jest (określonym) jednym z wektorów bazowych ortonormalnej bazy \(\{\theta_i\}\), ale
+nie wiemy o jaki stan chodzi. Jeśli dokonamy pomiaru używając bazy \(\{\theta_i\}\) to w 100\%
+przypadków otrzymamy wynik \(\ket{\theta_k}\) -- uzyskamy więc maksymalną informację o układzie.
+Jeśli natomiast pomiaru dokonamy w bazie dopełniającej \(\{\phi_i\}\) to otrzymamy wszystkie możliwe
+wyniki \(\{\phi_i\}\), każdy z prawdopodobieństwem \(1/N\) -- uzyskamy więc minimalną informację o
+układzie.
+
+
+\subsection{Entropia Shannona i von Neumanna}
+
+TODO
+
+
+
+
+
+\end{document}
