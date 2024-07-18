@@ -1989,49 +1989,67 @@ skąd funkcja kosztu ma postać
 \begin{equation}
     L(\mathcal{X}; \mathbf{W}) = - \sum_{i=1}^n \sum_{j=1}^K [y_i = c_j] \log \left[ \boldsymbol{\pi}^j\left(\boldsymbol{\phi}(\mathbf{x}_i; \mathbf{W})\right)\right]\,.
 \end{equation}
-Wprowadzając macierz \(\mathbf{T}^{ij} = [y_i = c_j]\), której każdy wiersz jest tzw.
-\textbf{wektorem one-hot} dla danego przykładu, możemy zapisać
+Wprowadzając macierze 
+\begin{equation*}
+    \begin{split}
+        &\mathbf{X}^{ij} = \mathbf{x}_j^i\,,\quad \mathbf{X} = \mqty[\mathbf{x}_1 & \ldots & \mathbf{x_n}]\\
+        &\mathbf{T}^{ij} = [y_j = c_i]\\
+        &\boldsymbol{\Phi}^{ij}(\mathbf{X}; \mathbf{W}) = \boldsymbol{\phi}^i(\mathbf{x}_j;\mathbf{W}) = \sum_{k=1}^d \mathbf{W}^{ik}\mathbf{X}^{kj}\,,\quad \boldsymbol{\Phi}(\mathbf{X};\mathbf{W}) = \mathbf{W}\mathbf{X}\\
+        &\boldsymbol{\Pi}^{ij}(\boldsymbol{\Phi}) = \boldsymbol{\pi}^i\left(\boldsymbol{\phi}(\mathbf{x}_j;\mathbf{W})\right) = \frac{\exp\boldsymbol{\Phi}^{ij}}{\sum_{k=1}^K \exp \boldsymbol{\Phi}^{kj}}
+    \end{split}
+\end{equation*}
+gdzie każda kolumna macierzy \(\mathbf{X}\) jest wektorem cech danego przykładu; każda kolumna
+\(\mathbf{T}\) jest tzw. \textbf{wektorem one--hot} dla danego przykładu tj. wektorem binarnym, w
+którym dokładnie na jednej pozycji jest wartość 1 i pozycja ta odpowiada prawidłowej klasie dla
+danego przykładu; każda kolumna macierzy \(\boldsymbol{\Phi}\) jest wektorem \textbf{mlogitów} tj.
+liczb rzeczywistych, które po zastosowaniu funkcji softmax dają wartości prawdopodobieństwa każdej
+klasy; możemy zapisać
 \begin{equation}\boxed{
-    L(\mathcal{X}; \mathbf{W}) = - \sum_{i=1}^n \sum_{j=1}^K \mathbf{T}^{ij} \log \left[ \boldsymbol{\pi}^j\left(\boldsymbol{\phi}(\mathbf{x}_i; \mathbf{W})\right)\right]\,.
+    L(\mathcal{X}; \mathbf{W}) = -\sum_{j=1}^n\sum_{i=1}^K \mathbf{T}^{ij} \log \left[ \boldsymbol{\Pi}^{ij}(\mathbf{\Phi}(\mathbf{X}; \mathbf{W})) \right]\,.
 }\end{equation}
+
 Niestety dla tak zdefiniowanej funkcji kosztu nie można znaleźć wzoru na minimum w postaci
 analitycznej (jak w przypadku regresji liniowej), dlatego do znalezienia estymaty MLE wykorzystujemy
 algorytmy optymalizacji numerycznej, w tym przypadku zwykle algorytmy gradientowe. Wyprowadzimy więc
-jeszcze wzór na pochodną funkcji kosztu po parametrach \(\mathbf{W}\). Oznaczmy
-\(\boldsymbol{\phi}_i(\mathbf{W}) = \boldsymbol{\phi}(\mathbf{x}_i; \mathbf{W})\) oraz
-\(\boldsymbol{\pi}^j_i(\mathbf{W}) = \boldsymbol{\pi}^j(\boldsymbol{\phi}_i(\mathbf{W}))\). Obliczmy
-najpierw pochodną \(L\) po \(\boldsymbol{\phi}_i^\alpha\)
+jeszcze wzór na pochodną funkcji kosztu po parametrach \(\mathbf{W}\). Obliczmy najpierw pochodną
+\(L\) po \(\boldsymbol{\Phi}^{ij}\) (dla przejrzystości zapisu nie piszemy granic sumowania --
+wynikają one naturalnie z wymiarów macierzy)
 \begin{equation}
-    \begin{split}
-        \pdv{L}{\boldsymbol{\phi}_i^\alpha} &= -\sum_{\mu=1}^n\sum_{\beta=1}^K \pdv{L}{\boldsymbol{\pi}^\beta_\mu}\pdv{\boldsymbol{\pi}^\beta_\mu}{\boldsymbol{\phi}_i^\alpha}\\
-        &= -\sum_{\mu=1}^n\sum_{\beta=1}^K \frac{\mathbf{T}^{\mu\beta}}{\boldsymbol{\pi}^\beta_\mu} \frac{\exp(\boldsymbol{\phi}^\beta_\mu)\delta_{\mu i}\delta_{\beta \alpha} \left[\sum_{k=1}^K \exp(\boldsymbol{\phi}^k_\mu)\right] - \exp(\boldsymbol{\phi}^\beta_\mu) \exp(\boldsymbol{\phi}_\mu^\alpha) \delta_{\mu i}}{\left[\sum_{k=1}^K \exp(\boldsymbol{\phi}^k_\mu)\right]^2}\,,
-    \end{split}
+    \pdv{L}{\boldsymbol{\Phi}^{pq}} = -\sum_{i,j,r,s} \frac{\mathbf{T}^{ij}}{\boldsymbol{\Pi}^{rs}}\delta_{ir}\delta_{js}\pdv{\boldsymbol{\Pi}^{rs}}{\boldsymbol{\Phi}^{pq}} = - \sum_{i,j} \frac{\mathbf{T}^{ij}}{\boldsymbol{\Pi}^{ij}}\pdv{\boldsymbol{\Pi}^{ij}}{\boldsymbol{\Phi}^{pq}}\,.
 \end{equation}
-gdzie \(\delta\) oznacza deltę Kroneckera. Rozpisując dalej powyższe wyrażenie otrzymujemy
+Jednocześnie
 \begin{equation}
-    \begin{split}
-        &-\sum_{\mu=1}^n\sum_{\beta=1}^K \mathbf{T}^{\mu\beta} \frac{\cancel{\sum_{k=1}^K \exp(\boldsymbol{\phi}_\mu^k)}}{\cancel{\exp(\boldsymbol{\phi}_\mu^\beta)}} \left\{\frac{\cancel{\exp(\boldsymbol{\phi}^\beta_\mu)}\delta_{\mu i}\delta_{\beta \alpha}}{\cancel{\sum_{k=1}^K \exp(\boldsymbol{\phi}^k_\mu)}} - \frac{\cancel{\exp(\boldsymbol{\phi}^\beta_\mu)} \exp(\boldsymbol{\phi}_\mu^\alpha) \delta_{\mu i}}{\left[\sum_{k=1}^K \exp(\boldsymbol{\phi}^k_\mu)\right]^{\cancel{2}}}\right\}\\
-        &= -\sum_{\mu=1}^n\sum_{\beta=1}^K \left(\mathbf{T}^{\mu\beta} \delta_{\mu i}\delta_{\beta\alpha} - \mathbf{T}^{\mu\beta}\boldsymbol{\pi}_\mu^\alpha\delta_{\mu i}\right) = \boldsymbol{\pi}^\alpha_i - \mathbf{T}^{i\alpha}\,,
-    \end{split}
+    \pdv{\boldsymbol{\Pi}^{ij}}{\boldsymbol{\Phi}^{pq}} = \frac{\delta_{pi}\delta_{qj}\exp\boldsymbol{\Phi}^{ij}\left[\sum_k \exp\boldsymbol{\Phi}^{kj}\right] - \delta_{qj} \exp\boldsymbol{\Phi}^{ij} \exp\boldsymbol{\Phi}^{pj}}{\left[\sum_k \exp\boldsymbol{\Phi}^{kj}\right]^2}\,,
 \end{equation}
-zatem ostatecznie
+skąd
 \begin{equation}
-    \pdv{L}{\boldsymbol{\phi}^\alpha_i} = \boldsymbol{\pi}^\alpha_i - \mathbf{T}^{i\alpha}\,,
+    \frac{1}{\boldsymbol{\Pi}^{ij}}\pdv{\boldsymbol{\Pi}^{ij}}{\boldsymbol{\Phi}^{pq}} = \delta_{pi}\delta_{qj} - \delta_{qj}\boldsymbol{\Pi}^{pj}\,.
 \end{equation}
-lub wprowadzając macierze \(\boldsymbol{\Phi}^{ij} = \boldsymbol{\phi}_i^j\) oraz
-\(\boldsymbol{\Pi}^{ij} = \boldsymbol{\pi}_i^j\) możemy zapisać powyższy wzór w eleganckiej postaci
+Z powyższego zatem
+\begin{equation}
+    \pdv{L}{\boldsymbol{\Phi}^{pq}} = -\sum_{i,j} \mathbf{T}^{ij}\delta_{pi}\delta_{qj} + \sum_{i,j}\mathbf{T}^{ij}\delta_{qj}\boldsymbol{\Pi}^{pj} = \boldsymbol{\Pi}^{pq} - \mathbf{T}^{pq}\,,
+\end{equation}
+gdzie skorzystaliśmy z faktu, iż z konstrukcji dla dowolnej kolumny \(q\) macierzy \(\mathbf{T}\)
+zachodzi \(\sum_{i}\mathbf{T}^{iq} = 1\). Możemy zapisać powyższy wzór w eleganckiej postaci
 macierzowej
 \begin{equation}\boxed{
     \pdv{L}{\boldsymbol{\Phi}} = \boldsymbol{\Pi} - \mathbf{T}\,.
 }\end{equation}
-Możemy zatem prosto obliczyć pochodną funkcji kosztu po parametrach \(\mathbf{W}\) jako
+Pochodną funkcji kosztu po parametrach \(\mathbf{W}\) możemy zatem obliczyć jako
 \begin{equation}
-    \pdv{L}{\mathbf{W}^{\mu\nu}} = \sum_{i=1}^n \sum_{\alpha=1}^{K} \pdv{L}{\boldsymbol{\phi}^\alpha_i}\pdv{\boldsymbol{\phi}^\alpha_i}{\mathbf{W}^{\mu\nu}} = \sum_{i=1}^n \sum_{\alpha=1}^{K} (\boldsymbol{\pi}^\alpha_i - \mathbf{T}^{i\alpha}) \mathbf{x}_i^\nu \delta_{\alpha \mu} = \sum_{i=1}^n (\boldsymbol{\pi}^\mu_i - \mathbf{T}^{i\mu})\mathbf{x}_i^\nu\,.
+    \pdv{L}{\mathbf{W}^{rs}} = \sum_{p,q}\pdv{L}{\boldsymbol{\Phi}^{pq}}\pdv{\boldsymbol{\Phi}^{pq}}{\mathbf{W}^{rs}}\,,
 \end{equation}
-Wprowadzając macierz \(\mathbf{X}^{ij} = \mathbf{x}_i^j\) możemy zapisać powyższy wzór w zwięzłej
-postaci macierzowej
+gdzie
+\begin{equation}
+    \pdv{\boldsymbol{\Phi}^{pq}}{\mathbf{W}^{rs}} = \sum_t \delta_{rp} \delta_{st} \mathbf{X}^{tq} = \delta_{rp}\mathbf{X}^{sq}\,,
+\end{equation}
+skąd
+\begin{equation}
+    \pdv{L}{\mathbf{W}^{rs}} = \sum_{q} (\boldsymbol{\Pi}^{rq} - \mathbf{T}^{rq}) \mathbf{X}^{sq}\,,
+\end{equation}
+co również możemy zapisać w zwartej postaci macierzowej
 \begin{equation}\boxed{
-    \pdv{L}{\mathbf{W}} = (\boldsymbol{\Pi} - \mathbf{T})^T \mathbf{X}\,.
+    \pdv{L}{\mathbf{W}} = (\boldsymbol{\Pi} - \mathbf{T}) \mathbf{X}^T\,.
 }\end{equation}
 
 
