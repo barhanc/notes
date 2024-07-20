@@ -20,8 +20,6 @@
 \newcommand{\e}{\mathrm{e}}
 \newcommand{\im}{\mathrm{i}}
 \newcommand{\arcangle}{\mathord{<\mspace{-9mu}\mathrel{)}\mspace{2mu}}}
-\let\oldint\int
-\let\int\varint
 \let\oldemptyset\emptyset
 \let\emptyset\varnothing
 
