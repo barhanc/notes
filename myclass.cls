@@ -30,5 +30,6 @@
 % ******* Proof Environments *******
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}[section]
-\theoremstyle{theorem}
+
+\theoremstyle{definition}
 \newtheorem{theorem}{Theorem}[section]
