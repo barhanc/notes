@@ -1,32 +1,21 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{myclass}
 
-\LoadClass[11pt]{article}
-\RequirePackage{geometry}
-\geometry{
-    papersize={7in,9in},
-    bottom=3pc,
-    top=5pc,
-    left=5pc,
-    right=5pc,
-    bmargin=4.5pc,
-    footskip=18pt,
-    headsep=25pt
-}
-
+\LoadClass[a5paper]{article}
+\RequirePackage[total={4.5in, 6.75in}]{geometry}
 
 % ******* Packages *******
-\usepackage{amssymb}
-\usepackage{amsmath, amsfonts, amsthm, enumerate, 
-            mathrsfs, physics, wasysym, xcolor,
-            csquotes, graphicx, fancyhdr}
+\usepackage{amssymb, amsmath, amsfonts, amsthm, 
+            mathrsfs, physics, xcolor, lipsum,
+            csquotes, graphicx, fancyhdr, ulem, 
+            bm}
+\usepackage[breakable]{tcolorbox}
 
-% ******* Additional packages *******
-\usepackage{lipsum, cancel, tcolorbox}
-
-% ******* Fancy header *******
-\fancyhf{} \lhead{\leftmark} \rhead{\thepage} 
+% ******* Page style *******
 \pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\rfoot{\thepage} 
 
 % ******* Custom symbols *******
 \newcommand{\e}{\mathrm{e}}
@@ -37,10 +26,13 @@
 
 % ******* Coloring *******
 \RequirePackage{hyperref}
-\hypersetup{colorlinks=true,linkcolor=blue}
+\hypersetup{colorlinks=true}
 
 % ******* Proof Environments *******
 \theoremstyle{definition}
-\newtheorem{definition}{Def.}[section]
-\theoremstyle{theorem}
-\newtheorem{theorem}{Tw.}[section]
+\newtheorem{definition}{Definicja}[section]
+\tcolorboxenvironment{definition}{colframe=white,breakable,before skip=10pt,after skip=10pt }
+
+\theoremstyle{definition}
+\newtheorem{theorem}{Twierdzenie}[section]
+\tcolorboxenvironment{theorem}{colframe=black,boxrule=0.5pt,colback=white,breakable,before skip=10pt,after skip=10pt }

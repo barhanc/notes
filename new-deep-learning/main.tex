@@ -4,9 +4,8 @@
 \numberwithin{equation}{subsection}
 
 \begin{document}
+{\footnotesize \tableofcontents}
 
-\tableofcontents
-\newpage
 
 \section{Wstęp}
 
@@ -19,7 +18,6 @@ części staramy się przedstawiać opisywane tematy w sposób minimalistyczny, 
 matematycznej i ideowej, a nie implementacyjnej stronie zagadnień. Liczymy, iż takie podejście
 zapewni odpowiednio głębokie zrozumienie tematu, dzięki któremu dalsze studiowanie całej gamy
 specyficznych technicznych tematów nie sprawi żadnego problemu.
-
 
 \subsection{Notacja}
 
@@ -2189,7 +2187,10 @@ pewnego łańcucha Markowa.
 Łańcuchem Markowa nazwiemy ciąg zmiennych losowych \((\mathbf{X}_t)\) o wartościach w
 \(\mathbb{R}^n\) taki, że spełnione jest \textbf{kryterium Markowa}
 \begin{equation*}
-    \forall A \subset \mathbb{R}^n : P(\mathbf{X}_t \in A \mid \mathbf{X}_{t-1} = \mathbf{x}_{t-1}, \ldots, \mathbf{X}_0 = \mathbf{x}_0) = P(\mathbf{X}_t \in A \mid \mathbf{X}_{t-1} = \mathbf{x}_{t-1})\,.
+    \begin{split}
+        \forall A \subset \mathbb{R}^n :\, &P(\mathbf{X}_t \in A \mid \mathbf{X}_{t-1} = \mathbf{x}_{t-1}, \ldots, \mathbf{X}_0 = \mathbf{x}_0) \\
+        &= P(\mathbf{X}_t \in A \mid \mathbf{X}_{t-1} = \mathbf{x}_{t-1})\,.
+    \end{split}
 \end{equation*}
 Elementy ciągu nazywamy stanami łańcucha.
 \end{definition}
@@ -2248,21 +2249,19 @@ tak aby uniknąć znaczących korelacji. Pozostaje pytanie jak skonstruować fun
 \(\pi(\mathbf{y} \mid \mathbf{x})\) dla danego rozkładu granicznego \(p(\mathbf{x})\). Podstawową
 konstrukcję podaje algorytm Metropolisa--Hastingsa.
 \begin{tcolorbox}[title=Algorytm Metropolisa--Hastingsa]
+1: Jako stan początkowy przyjmij dowolną dopuszczalną wartość \(\mathbf{x}_0\).
+2: Powtarzaj:
 \begin{itemize}
-    \item Jako stan początkowy przyjmij dowolną dopuszczalną wartość \(\mathbf{x} \leftarrow
-    \mathbf{x}_0\).
-    \item Powtarzaj:
-    \begin{itemize}
-        \item Będąc w aktualnym stanie \(\mathbf{x}\) z prostego rozkładu proponującego kandydatów
-        \(q(\mathbf{y} \mid \mathbf{x})\) wylosuj kandydata \(\mathbf{y}\) na wartość łańcucha w
-        kolejnym stanie.
-        \item Z prawdopodobieństwem
-        \begin{equation*}
-            r(\mathbf{y} \mid \mathbf{x}) = \min\left\{1, \frac{p(\mathbf{y})q(\mathbf{x} \mid \mathbf{y})}{p(\mathbf{x})q(\mathbf{y} \mid \mathbf{x})}\right\}
-        \end{equation*}
-        zaakceptuj kandydata jako nowy stan i przejdź do stanu \(\mathbf{y}\). W przeciwnym razie
-        pozostać w stanie \(\mathbf{x}\).
-    \end{itemize}
+    \item Będąc w aktualnym stanie \(\mathbf{x}\) z prostego rozkładu proponującego kandydatów
+    \(q(\mathbf{y} \mid \mathbf{x})\) wylosuj kandydata \(\mathbf{y}\) na wartość łańcucha w
+    kolejnym stanie.
+    
+    \item Z prawdopodobieństwem
+    \begin{equation*}
+        r(\mathbf{y} \mid \mathbf{x}) = \min\left\{1, \frac{p(\mathbf{y})q(\mathbf{x} \mid \mathbf{y})}{p(\mathbf{x})q(\mathbf{y} \mid \mathbf{x})}\right\}
+    \end{equation*}
+    zaakceptuj kandydata jako nowy stan i przejdź do stanu \(\mathbf{y}\). W przeciwnym razie
+    pozostać w stanie \(\mathbf{x}\).
 \end{itemize}
 \end{tcolorbox}
 

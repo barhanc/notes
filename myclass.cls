@@ -9,7 +9,6 @@
             mathrsfs, physics, xcolor, lipsum,
             csquotes, graphicx, fancyhdr, ulem, 
             bm}
-\usepackage[integrals]{wasysym}
 
 % ******* Page style *******
 \pagestyle{fancy}
