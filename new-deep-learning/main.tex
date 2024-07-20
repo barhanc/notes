@@ -2212,19 +2212,19 @@ nieefektywne, więc w praktyce generujemy próbki z jednego łańcucha po prostu
 tak aby uniknąć znaczących korelacji. Pozostaje pytanie jak skonstruować funkcję przejścia
 \(\pi(\bm{y} \mid \bm{x})\) dla danego rozkładu granicznego \(p(\bm{x})\). Podstawową konstrukcję
 podaje algorytm Metropolisa--Hastingsa.
-\begin{tcolorbox}[title=Algorytm Metropolisa--Hastingsa]
-1: Jako stan początkowy przyjmij dowolną dopuszczalną wartość \(\bm{x}_0\). 2: Powtarzaj:
-\begin{itemize}
-    \item Będąc w aktualnym stanie \(\bm{x}\) z prostego rozkładu proponującego kandydatów
-    \(q(\bm{y} \mid \bm{x})\) wylosuj kandydata \(\bm{y}\) na wartość łańcucha w kolejnym stanie.
-    
-    \item Z prawdopodobieństwem
+\begin{tcolorbox}[title=Algorytm Metropolisa--Hastingsa, breakable, boxrule=0pt]
+\begin{enumerate}
+\item Jako stan początkowy przyjmij dowolną dopuszczalną wartość \(\bm{x}_0\).
+\item Będąc w aktualnym stanie \(\bm{x}\) z prostego rozkładu proponującego kandydatów \(q(\bm{y}
+    \mid \bm{x})\) wylosuj kandydata \(\bm{y}\) na wartość łańcucha w kolejnym stanie.
+\item Z prawdopodobieństwem
     \begin{equation*}
         r(\bm{y} \mid \bm{x}) = \min\left\{1, \frac{p(\bm{y})q(\bm{x} \mid \bm{y})}{p(\bm{x})q(\bm{y} \mid \bm{x})}\right\}
     \end{equation*}
-    zaakceptuj kandydata jako nowy stan i przejdź do stanu \(\bm{y}\). W przeciwnym razie pozostać w
+    zaakceptuj kandydata jako nowy stan i przejdź do stanu \(\bm{y}\). W przeciwnym razie pozostań w
     stanie \(\bm{x}\).
-\end{itemize}
+\item GOTO 2.
+\end{enumerate}
 \end{tcolorbox}
 
 Funkcja przejścia ma zatem postać
