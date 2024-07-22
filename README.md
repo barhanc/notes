@@ -12,5 +12,5 @@
 * [[link](https://barhanc.github.io/notes/theory-of-computation/main.html)] (Polish) HTML notes on
   elementary Theory of Computation.
 
-* [[link](https://barhanc.github.io/notes/new-deep-learning/main.pdf)] (Polish) (WIP) LaTeX notes on
+* [[link](https://barhanc.github.io/notes/new-deep-learning/main.pdf)] (Polish) LaTeX notes on
   Probabilty Theory and Statistical Machine Learning.
