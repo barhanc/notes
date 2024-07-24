@@ -1,0 +1,59 @@
+Rachunek prawdopodobieństwa
+
+  Zmienne losowe wielowymiarowe (dystrybuanta, wartość oczekiwana, transformacja zmiennych)
+
+  Sum rule, Product rule, Bayes theorem, Independence, Warunkowa wartość oczekiwana
+
+  Ważne rozkłady jednowymiarowe (Dwupunktowy, Bernoulliego, Geometryczny, Poissona, Uniform, Wykładniczy, Normalny)
+
+  MVN
+
+  Metoda MLE oraz MAP
+
+  Generatory pseudolosowe LCG
+
+  Metoda odwrotnej dystrybuanty i Box-Muller
+
+  MCMC i Algorytm Metropolisa-Hastingsa
+
+  KDE
+
+
+Podstawy uczenia maszynowego
+
+  REGRESSION
+  --------------------
+  Regresja liniowa
+  Regularyzacja
+  Robust regression
+  Gaussian processes
+
+  CLASSIFICATION
+  --------------------
+  Naive Bayes
+  kNN
+  Logistic Regression
+  Softmax Regression
+
+
+Uczenie głębokie i sieci neuronowe
+
+  Matematyczny model neuronu; Perceptron wielowarstwowy
+
+  Universal Approximation Theorem
+
+  Loss functions: MLE, univariate regression, multi-class classification, cross-entropy loss
+
+  Aspekty optymalizacyjne (gradient descent, stochastic gradient descent, momentum, adam)
+
+  Algorytm wstecznej propagacji błędu, automatyczne różniczkowanie
+
+  Regularyzacja i inicjalizacja w sieciach głębokich
+
+  Measuring performance
+
+  Convolutional networks
+
+  Residual networks
+
+  Transformers
