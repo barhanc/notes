@@ -2,8 +2,6 @@ Podstawy uczenia maszynowego
 
   CLASSIFICATION
   --------------------
-  Naive Bayes
-  kNN
   Logistic Regression
   Softmax Regression
 

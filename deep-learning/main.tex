@@ -338,11 +338,6 @@ Zmienna losowa \(\bm{X}\) ma z kolei ciągły rozkład prawdopodobieństwa, jeś
 dla dowolnej kostki \((a_1;b_1)\times\ldots\times(a_n;b_n)\).
 \end{definition}
 
-Zauważmy, że w przypadku rozkładu ciągłego zachodzi
-\[
-F(\bm{x}) = \int\limits_{-\infty}^{\bm{x}^1}\cdots\int\limits_{-\infty}^{\bm{x}^n} p(\bm{x}') \dd[n]{\bm{x}'}\,.
-\]
-
 \begin{definition}[Wartości oczekiwanej]
 Wartością oczekiwaną funkcji zmiennej losowej \(\bm{f}(\bm{X})\) nazywamy wektor
 \(\mathbb{E}[\bm{f}(\bm{x})]\) określoną wzorem
@@ -838,7 +833,7 @@ ze stanu \(\bm{x} \to \bm{y}\), którą będziemy oznaczać przez \(\pi(\bm{y} \
 (zakładamy, iż prawdopodobieństwo przejścia jest niezależne od chwili \(t\) -- łańcuch taki nazywamy
 jednorodnym). Funkcja \(\pi\) spełnia oczywiście warunek unormowania
 \[
-\int\limits_{\mathbb{R}^n} \pi(\bm{y} \mid \bm{x}) \dd[n]{\bm{y}} =\,,
+\int\limits_{\mathbb{R}^n} \pi(\bm{y} \mid \bm{x}) \dd[n]{\bm{y}} = 1\,,
 \]
 istotnie prawdopodobieństwo przejścia gdziekolwiek ze stanu \(\bm{x}\) jest równe 1. Będziemy
 zakładać dodatkowo, iż \(\forall \bm{x},\bm{y}\in\mathbb{R}^n: \pi(\bm{y} \mid \bm{x}) > 0\).
@@ -1142,14 +1137,14 @@ L(\mc{X}; \bm{w}, \lambda) = \sum_{i=1}^n \left[(q-1) r_i \theta(-r_i) + q r_i \
 \]
 gdzie
 \[
-r_i := y_i - \phi(\bm{x}_i;\bm{w})\,,
+r_i := y_i - \phi(\bm{x}_i;\bm{w})
 \]
-a \(\theta\) oznacza funkcję skokową Heaviside'a. Taką funkcję kosztu nazywamy \emph{pinball loss},
-a otrzymane zagadnienie optymalizacji -- regresją kwantylową. Modelowanie \(y(\bm{x})\) za pomocą
-rozkładu ALD pozwala nam w prosty i \enquote{robust} sposób znaleźć niepewność naszych predykcji
-punktowych, tj. dla danego zagadnienia dopasowujemy trzy modele oparte na ALD dla \(q = 0.5\)
-(estymacja punktowa, mediana, odporna na outliery) oraz np. \(q = 0.1\) i \(q = 0.9\) będące
-oszacowaniem niepewności punktowej estymaty. 
+są tzw. \emph{rezyduami}, a \(\theta\) oznacza funkcję skokową Heaviside'a. Taką funkcję kosztu
+nazywamy \emph{pinball loss}, a otrzymane zagadnienie optymalizacji -- regresją kwantylową.
+Modelowanie \(y(\bm{x})\) za pomocą rozkładu ALD pozwala nam w prosty i \enquote{robust} sposób
+znaleźć niepewność naszych predykcji punktowych, tj. dla danego zagadnienia dopasowujemy trzy modele
+oparte na ALD dla \(q = 0.5\) (estymacja punktowa, mediana, odporna na outliery) oraz np. \(q =
+0.1\) i \(q = 0.9\) będące oszacowaniem niepewności punktowej estymaty. 
 
 
 \subsection{Procesy gaussowskie}
