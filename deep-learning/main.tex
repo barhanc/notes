@@ -55,13 +55,14 @@ funkcjonał kosztu (z ang. \textit{loss function}) \(L(\mc{X}; \bm{w})\), który
 odpowiedzi modelu \(\phi\) w stosunku do znanych prawidłowych odpowiedzi \(y\) dla danych ze zbioru
 \(\mc{X}\). Najczęściej ma on postać
 \[
-L(\mc{X}; \bm{w}) = - \frac{1}{n} \sum_{i=1}^n \log p\left( y_i(\bm{x}_i) \mid \phi(\bm{x}_i; \bm{w}) \right)\,,
+L(\mc{X}; \bm{w}) = - \frac{1}{n} \sum_{i=1}^n \log p\left( y_i(\bm{x}_i) \mid \bm{w} \right)\,,
 \]
 gdzie \(p(y(\bm{x}) \mid \bm{w})\) jest warunkową gęstością prawdopodobieństwa danej obserwacji
-\(y(\bm{x})\) warunkowaną przez wartość parametrów \(\bm{w}\). Do powyższego funkcjonału możemy
-również dodawać tzw. człony regularyzujące (z ang. \textit{regularizers}). Trening modelu polega
-wówczas na znalezieniu parametrów \(\bm{w}^*\), które minimalizują funkcjonał kosztu na zbiorze
-treningowym \(\mc{X}\)
+\(y(\bm{x})\) warunkowaną przez wartość parametrów \(\bm{w}\) (oczywiście gęstość ta zależy od
+estymowanych parametrów \(\bm{w}\) przez funkcję \(\phi(\bm{x};\bm{w})\). Do powyższego funkcjonału
+możemy również dodawać tzw. człony regularyzujące (z ang. \textit{regularizers}). Trening modelu
+polega wówczas na znalezieniu parametrów \(\bm{w}^*\), które minimalizują funkcjonał kosztu na
+zbiorze treningowym \(\mc{X}\)
 \[
 \bm{w}^* = \arg\min_{\bm{w}} L(\mc{X};\bm{w})\,.
 \]
@@ -981,60 +982,61 @@ statystycznego.
 
 \subsection{Regresja liniowa}
 
-Załóżmy, iż modelujemy obserwacje postaci \((y, \bm{x})\), gdzie \(y\) to skalar zwany \emph{zmienną
-objaśnianą}, którego wartość obserwujemy, a \(\bm{x}\) to wektor zmiennych objaśniających, co do
-którego zakładamy, iż dla danego pomiaru \(y\) jest on znany dokładnie. Dodatkowo załóżmy liniowy
-model \(\hat{y}(\bm{x};\bm{w})\) postaci
-\begin{equation}
-    \hat{y}(\bm{x};\bm{w}) = \bm{x}^T\bm{w}\,,
-\end{equation}
-w którym mamy dodatkowo \emph{błąd losowy} \(\epsilon \sim \mc{N}(0, \sigma^2)\) z nieznanym
-\(\sigma\). Możemy zatem napisać model statystyczny postaci
-\begin{equation}
-    y(\bm{x}) \mid \bm{w}, \sigma \sim \mc{N}(\hat{y}(\bm{x}; \bm{w}), \sigma^2)\,,
-\end{equation}
-gdzie \(\bm{w}\), \(\sigma\) to estymowane parametry. Powiedzmy, iż mamy zbiór obserwacji i.i.d.
-\(\mc{X} = \{y_1(\bm{x}_1), \ldots, y_n(\bm{x}_n)\}\). Wiarygodność ma zatem postać
-\begin{equation}\boxed{
-    \mc{L}(\mc{X} ; \bm{w}, \sigma) = \frac{1}{(2\pi\sigma^2)^{n/2}} \prod_{i=1}^n \exp\left(-\frac{1}{2\sigma^2}\left[y_i - \hat{y}(\bm{x}_i; \bm{w})\right]^2\right)\,.
-}\end{equation}
-W przypadku regresji liniowej zamiast pełnego wnioskowania bayesowskiego często stosuje się prostsze
-podejście polegające na ograniczeniu się do znalezienia estymaty punktowej MLE. Zanegowana
-logarytmiczna funkcja wiarygodności, którą będziemy również nazywać \emph{funkcją kosztu} ma postać
-(pomijamy człony stałe, gdyż nie są one istotne przy dalszej minimalizacji)
-\begin{equation}\boxed{
-    L(\mc{X}; \bm{w}, \sigma) = n\log\sigma + \frac{1}{2\sigma^2}\sum_{i=1}^n \left[y_i - \hat{y}(\bm{x}_i; \bm{w})\right]^2 + \mathrm{const.}
-}\end{equation}
-Minimalizując funkcję \(L\) względem \(\bm{w}\) i \(\sigma\) otrzymamy estymaty MLE tych parametrów.
-Dla ustalonego stałego \(\sigma\) otrzymana funkcja \(L\) ma postać formy kwadratowej i otrzymany
-przy takim uproszczeniu problem optymalizacyjny nazywamy metodą najmniejszych kwadratów (z ang.
-\textit{Ordinary Least Squares, OLS}). W przypadku modelu liniowego estymatory można znaleźć
-analitycznie rozwiązując układ równań
-\begin{equation}
-    \begin{split}
-        &\pdv{L}{\bm{w}^j} = \frac{1}{2\sigma^2}\pdv{~}{\bm{w}^j}\sum_{i=1}^n\left[y_i - \bm{w}^T\bm{x}_i\right]^2 = -\frac{1}{\sigma^2}\sum_{i=1}^n (y_i - \bm{w}^T\bm{x}_i)\bm{x}_i^j = 0\,,\\
-        &\pdv{L}{\sigma} = \frac{n}{\sigma} - \frac{1}{\sigma^3}\sum_{i=1}^n \left[y_i - \hat{y}(\bm{x}_i; \bm{w})\right]^2 = 0\,.
-    \end{split}
-\end{equation}
-Z powyższego
-\begin{equation}
-    \begin{split}
-        &\sum_{i=1}^n y_i\bm{x}_i^j - \bm{w}_\mathrm{MLE}^T\sum_{i=1}^n\bm{x}_i\bm{x}_i^j = 0\,,\\
-        &\sigma_\mathrm{MLE}^2 = \frac{1}{n} \sum_{i=1}^n \left[y_i - \hat{y}(\bm{x}_i; \bm{w}_\mathrm{MLE})\right]^2\,.\\
-    \end{split}
-\end{equation}
-Wprowadzając wektor \(\bm{y}^i := y_i\) oraz macierz \(\bm{X}^{ij} := \bm{x}_i^j\) możemy zapisać
-pierwsze równanie jako
-\begin{equation}
-    -\bm{y}^T\bm{X} + \bm{w}^T_\mathrm{MLE} \bm{X}^T\bm{X} = 0\,,
-\end{equation}
+Rozpatrujemy teraz zagadnienie regresji tj. predykcji ciągłej wartości \(y \in \mathbb{R}\) w
+zależności od wektora cech \(\bm{x}\). Zakładamy ponadto prosty model liniowy, tj. nasze predykcje
+będą miały postać
+\[
+\phi(\bm{x}; \bm{w}) = \bm{w}^T \bm{x}
+\]
+dla pewnych estymowanych parametrów \(\bm{w}\). Zauważmy, iż taka postać modelu \(\phi\) uwzględnia
+człon stały poprzez transformację \(\bm{x} \leftarrow \mqty[\bm{x}^T & 1]^T\). W przypadku regresji
+liniowej parametry estymujemy za pomocą metody MLE dla następującego modelu statystycznego
+\[
+y(\bm{x}) \mid \bm{w} \sim \mc{N}(\phi(\bm{x}; \bm{w}), \sigma^2)\,.
+\]
+Niech \(\mc{X} = \{y_i(\bm{x}_i)\}_{i=1}^n\) będzie naszym zbiorem obserwacji i.i.d. Wiarygodność ma
+zatem postać
+\[
+\mc{L}(\mc{X} ; \bm{w}) = \frac{1}{(2\pi\sigma^2)^{n/2}} \prod_{i=1}^n \exp\left(-\frac{1}{2\sigma^2}\left[y_i - \phi(\bm{x}_i; \bm{w})\right]^2\right)\,.
+\]
+Zanegowana logarytmiczna funkcja wiarygodności (funkcjonał kosztu) ma zatem postać
+\[
+\boxed{
+L(\mc{X}; \bm{w}) = \frac{1}{2}\sum_{i=1}^n \left[y_i - \phi(\bm{x}_i; \bm{w})\right]^2\,, 
+}
+\]
+gdzie pominęliśmy multiplikatywne i addytywne człony stałe, gdyż nie wpływają one na zagadnienie
+optymalizacji. Minimalizując funkcję \(L\) względem \(\bm{w}\) otrzymamy estymatę MLE tych
+parametrów. Otrzymana funkcja \(L\) ma postać formy kwadratowej, a otrzymany problem optymalizacyjny
+nazywamy metodą najmniejszych kwadratów (z ang. \textit{Ordinary Least Squares, OLS}). Wprowadźmy
+macierz \(\bm{X}^{ij} := \bm{x}_i^j\) oraz wektory \(\bm{y}^i = y_i\), \(\bm{\phi}^i =
+\phi(\bm{x}_i; \bm{w}) = \sum_j \bm{X}^{ij} \bm{w}^j\). Wówczas możemy zapisać funkcję kosztu jako
+\[
+L(\mc{X}; \bm{w}) = \frac{1}{2}\sum_{i=1}^n \left(\bm{y}^i - \bm{\phi}^i(\bm{X}; \bm{w})\right)^2\,,
+\]
 skąd
-\begin{equation}\boxed{
-    \begin{split}
-        &\bm{w}_\mathrm{MLE} = \left(\bm{X}^T\bm{X}\right)^{-1}\bm{X}^T\bm{y} = \bm{X}^+\bm{y}\,,\\
-        &\sigma_\mathrm{MLE}^2 = \frac{1}{n}\left(\bm{y} - \bm{X}\bm{w}_\mathrm{MLE}\right)^T\left(\bm{y} - \bm{X}\bm{w}_\mathrm{MLE}\right)\,,
-    \end{split}
-}\end{equation}
+\[
+\pdv{L}{\bm{w}^a} = \sum_b \pdv{L}{\bm{\phi}^b} \pdv{\bm{\phi}^b}{\bm{w}^a}\,.
+\]
+Jednocześnie
+\[
+\pdv{L}{\bm{\phi}^b} = \bm{y}^b - \bm{\phi}^b\,,\quad \pdv{\bm{\phi}^b}{\bm{w}^a} = \bm{X}^{ba}\,,
+\]
+skąd
+\[
+\pdv{L}{\bm{w}^a} = \sum_b \bm{X}^{ba}(\bm{y}^b - \bm{\phi}^b)\,,
+\]
+co możemy zapisać w kompaktowej formie macierzowej
+\[
+\pdv{L}{\bm{w}} = \bm{X}^T(\bm{y} - \bm{\phi}) = \bm{X}^T(\bm{y} - \bm{X}\bm{w})\,.
+\]
+Przyrównując powyższe równanie do 0 otrzymujemy następujący wzór na estymatę MLE parametrów
+\(\bm{w}\)
+\[
+\boxed{
+\bm{w}_\text{MLE} = \left(\bm{X}^T\bm{X}\right)^{-1}\bm{X}^T\bm{y} = \bm{X}^+\bm{y}\,,
+}
+\]
 gdzie \(\bm{X}^+\) oznacza \emph{pseudoodwrotność Moore'a--Penrose'a}, którą można efektywnie
 obliczyć korzystając z rozkładu SVD macierzy \(\bm{X}\).
 
@@ -1044,106 +1046,110 @@ obliczyć korzystając z rozkładu SVD macierzy \(\bm{X}\).
 Regularyzacją  nazywamy proces polegający na wprowadzeniu ad hoc do zagadnienia optymalizacji
 dodatkowych członów tak, aby rozwiązanie było regularne (prostsze, nieosobliwe, jednoznaczne). W
 przypadku funkcji kosztu \(L\) najczęściej dodajemy człon penalizujący rozwiązania o dużej normie
-estymowanego parametru tj. człon postaci \(\gamma \norm{\bm{w}}\) dla pewnej normy \(\norm{\cdot}\)
-i hiperparametru \(\gamma\). W kontekście bayesowskim regularyzację można również rozumieć jako
-pewną \enquote{niechęć} (tłumienie, zachowawczość) modelu do zmiany rozkładu a priori estymowanego
-parametru.
+estymowanego parametru tj. człon postaci \(\lambda \norm{\bm{w}}\) dla pewnej normy \(\norm{\cdot}\)
+i hiperparametru \(\lambda\) zwanego \emph{siłą regularyzacji}. W kontekście bayesowskim
+regularyzację można również rozumieć jako użycie estymacji MAP zamiast MLE dla odpowiednio dobranego
+priora nad estymowanymi parametrami.
 
-W przypadku regresji liniowej jeśli zamiast poszukiwania estymaty MLE będziemy poszukiwać estymaty
-MAP (z ang. \textit{Maximum a Posteriori estimate}) z rozkładem a priori na parametr \(\bm{w}\)
-danym przez \(\bm{w} \sim \mc{N}(\bm{0}, \tau^{2}\bm{1})\), to logarytm gęstości rozkładu a
-posteriori (który również będziemy nazywać zregularyzowaną funkcją kosztu) ma postać (tutaj
-zakładamy, że \(\sigma\) jest znaną stałą)
-\begin{equation}\boxed{
-    L(\mc{X};\bm{w}) = \frac{1}{2\sigma^2}\sum_{i=1}^n\left[y_i - \hat{y}(\bm{x}_i;\bm{w})\right]^2 + \frac{1}{2\tau^2}\bm{w}^T\bm{w} + \mathrm{const.}
-}\end{equation}
-skąd możemy bez problemy wyznaczyć estymatę punktową MAP parametru \(\bm{w}\)
-\begin{equation}
-    \bm{w}_\mathrm{MAP} = \left(\gamma \bm{1} + \bm{X}^T\bm{X}\right)^{-1}\bm{X}^T\bm{y}\,,
-\end{equation}
-gdzie \(\gamma = \frac{\sigma^2}{\tau^2}\) nazywamy \emph{siłą regularyzacji}. Zagadnienie
-minimalizacji funkcji kosztu będącej formą kwadratową z dodanym członem regularyzującym w postaci
-sumy kwadratów współrzędnych wektora \(\bm{w}\) (normy L2 wektora) nazywamy \emph{regresją
-grzbietową} (z ang. \textit{ridge regression}), natomiast taką postać członu regularyzującego --
-regularyzacją L2. Zauważmy, że im większa jest wartość \(\gamma\) (mniejsza niepewność związana z
-rozkładem a priori) tym drugi człon w nawiasie staje się mniej istotny.
+Jeśli dla modelu regresji liniowej jako człon regularyzujący przyjmiemy \(\lambda \norm{\bm{w}}_2\),
+tj. normę L2 wektora estymowanych parametrów, to otrzymana funkcja kosztu ma postać
+\[
+\boxed{
+L(\mc{X}; \bm{w}) = \frac{1}{2}\sum_{i=1}^n \left[y_i - \phi(\bm{x}_i; \bm{w})\right]^2 + \lambda \norm{\bm{w}}_2\,.
+}
+\]
+Analogiczną postać można otrzymać rozważając estymatę MAP dla identycznego modelu statystycznego z
+priorem na wartości parametrów \(\bm{w}\) będącym rozkładem normalnym \(\mc{N}(0, \tau^2\bm{1})\)
+dla odpowiednio dobranego \(\tau\). Dla powyższej funkcji kosztu możemy bez problemu wyznaczyć
+wartość \(\bm{w}\), która ją minimalizuje. Istotnie korzystając z wyników dla modelu regresji
+liniowej mamy
+\[
+\bm{w}_\mathrm{MAP} = \left(\lambda \bm{1} + \bm{X}^T\bm{X}\right)^{-1}\bm{X}^T\bm{y}\,,
+\]
+Zagadnienie minimalizacji funkcji kosztu będącej formą kwadratową z dodanym członem regularyzującym
+w postaci normy L2 wektora nazywamy \emph{regresją grzbietową} (z ang. \textit{ridge regression}).
 
 Innym przykładem regularyzacji jest tzw. regularyzacja L1, która polega na dodaniu do funkcji kosztu
-członu postaci \(\gamma \sum_{j=1}^d |\bm{w}^j|\) tj. normy L1 wektora wag. Zagadnie optymalizacji
+członu postaci \(\lambda \sum_{j=1}^d |\bm{w}^j|\) tj. normy L1 wektora wag. Zagadnie optymalizacji
 formy kwadratowej z członem regularyzującym L1 nazywamy \emph{regresją LASSO}. W takim przypadku nie
 da się prosto analitycznie znaleźć estymaty punktowej MAP i trzeba używać algorytmów optymalizacji
 numerycznej. W ogólności można połączyć regularyzacje L1 i L2 tj. rozważać zregularyzowaną funkcję
-kosztu postaci (tutaj parametr \(\sigma\) nie występuje, tj. ta funkcja kosztu nie ma bezpośredniej
-interpretacji probabilistycznej jako funkcja wiarygodności)
-\begin{equation}\boxed{
-    L(\mc{X};\bm{w}) = \frac{1}{2}\sum_{i=1}^n \left[y_i - \hat{y}(\bm{x}_i;\bm{w})\right]^2 + \frac{\gamma_1}{2}\norm{\bm{w}}_1 +  \frac{\gamma_2}{2}\norm{\bm{w}}_2^2\,.
-}\end{equation}
+kosztu postaci
+\[
+\boxed{
+L(\mc{X};\bm{w}) = \frac{1}{2}\sum_{i=1}^n \left[y_i - \hat{y}(\bm{x}_i;\bm{w})\right]^2 + \lambda_1\norm{\bm{w}}_1 +  \lambda_2\norm{\bm{w}}_2^2\,.
+}
+\]
 Zagadnienie minimalizacji takiej funkcji kosztu nazywamy ElasticNet i tak jak w przypadku LASSO
 musimy korzystać z algorytmów optymalizacji numerycznej. Często wykorzystuje się tutaj algorytmy
 bezgradientowe np. coordinate descent.
 
+
 \subsection{Regresja kwantylowa}
 
 Zastanówmy się wpierw na czym tak naprawdę polega modelowanie rozkładu warunkowego \(y(\bm{x}) \mid
-\bm{w}\) za pomocą określonego rozkładu prawdopodobieństwa. Można by było pomyśleć, iż takie
-podejście wprowadza bardzo silne założenia, a co za tym idzie ograniczenia w stosowaniu naszego
-modelu. Zauważmy jednak, iż w przypadku podejścia typu \textit{likelihood} rozkład jest niejako
-wybierany w taki sposób, aby jego parametry były użyteczne. Istotnie w przypadku regresji zwykle nie
-ma jak zweryfikować rzeczywistego rozkładu \(y(\bm{x})\), gdyż mamy tylko po jednej wartości \(y\)
-dla danego \(\bm{x}\). Modelując \(y(\bm{x})\) rozkładem normalnym chodzi nam zatem raczej o to, że
-w takim modelu chcemy znaleźć parametr (prostą) taką, że punkty w zbiorze są po odpowiednich
-stronach owej prostej zgodnie z gęstością prawdopodobieństwa, która jest symetryczna i ma właśnie
-kształt dzwonu, tj. dużo masy prawdopodobieństwa jest zebrane w niewielkiej odległości od
-estymowanej prostej.
+\bm{w}\) za pomocą określonego rozkładu prawdopodobieństwa. Na pierwszy rzut oka może się wydawać,
+iż takie podejście wprowadza bardzo silne założenia, a co za tym idzie ograniczenia w stosowaniu
+naszego modelu. Zauważmy jednak, iż w przypadku podejścia typu \textit{likelihood} rozkład jest
+niejako wybierany w taki sposób, aby jego parametry były użyteczne. Istotnie w przypadku regresji
+zwykle nie ma jak zweryfikować rzeczywistego rozkładu \(y(\bm{x})\), gdyż mamy tylko po jednej
+wartości \(y\) dla danego \(\bm{x}\). Modelując \(y(\bm{x})\) rozkładem normalnym chodzi nam zatem
+raczej o to, że w takim modelu chcemy znaleźć parametr (prostą) taką, że masa prawdopodobieństwa
+punktów po obu stronach prostej jest jednakowa i większość masy jest zgromadzona w bliskiej
+odległości od prostej (wynika to z kształtu rozkładu normalnego, który nie posiada tzw. ciężkich
+ogonów)
 
 W takim ujęciu możemy zakładać różne inne rozkłady na \(y(\bm{x})\) jeśli interesują nas proste,
-które inaczej mają rozdzielać masę prawdopodobieństwa między punkty. Problemem w przypadku rozkładu
-normalnego jest jego czułość na wartości odstające, gdyż w rozkładzie normalnym ogony tego rozkładu
-mają stosunkowo niewielką masę prawdopodobieństwa. Chcielibyśmy zatem rozkład z tzw. ciężkimi
-ogonami (z ang. \textit{heavy tails}). Dodatkowo chcielibyśmy mieć rozkład, który pozwala znaleźć
-prostą, która nie rozkłada masy po równo, ale np. tak, że 90\% masy prawdopodobieństwa jest pod nią.
-Oba te problemy możemy rozwiązać modelując rozkład \(y(\bm{x})\) przez tzw. \emph{asymetryczny
-rozkład Laplace'a} (z ang. \textit{Asymmetric Laplace Distribution, ALD}).
+które inaczej mają rozdzielać masę prawdopodobieństwa między punkty lub też dopuszczać obserwacje
+leżące daleko od prostej regresji. Problemem w przypadku rozkładu normalnego jest jego czułość na
+wartości odstające, gdyż w rozkładzie normalnym ogony tego rozkładu mają stosunkowo niewielką masę
+prawdopodobieństwa. Chcielibyśmy zatem rozkład z ciężkimi ogonami (z ang. \textit{heavy tails}).
+Dodatkowo chcielibyśmy mieć rozkład, który pozwala znaleźć prostą, która nie rozkłada masy po równo,
+ale np. tak, że 90\% masy prawdopodobieństwa jest pod nią. Oba te problemy możemy rozwiązać
+modelując rozkład \(y(\bm{x})\) przez tzw. \emph{asymetryczny rozkład Laplace'a} (z ang.
+\textit{Asymmetric Laplace Distribution, ALD}).
 
 \begin{definition}[Asymetrycznego rozkładu Laplace'a]
 Mówimy, iż zmienna losowa rzeczywista \(X\) ma asymetryczny rozkład Laplace'a, tzn. \(X \sim
 \mathrm{ALD}(m, \lambda, q)\) jeśli jej gęstość wyraża się wzorem
-\begin{equation*}
-    p(x; m,\lambda,q) = \frac{q(1-q)}{\lambda}\begin{cases}
-        \e^{-\frac{q-1}{\lambda} (x - m)}\,,&x \leq m\\
-        \e^{-\frac{q}{\lambda} (x - m)}\,,&x \geq m
-    \end{cases}\quad.
-\end{equation*}
+\[
+p(x; m,\lambda,q) = \frac{q(1-q)}{\lambda}\begin{cases}
+    \e^{-\frac{q-1}{\lambda} (x - m)}\,,&x \leq m\\
+    \e^{-\frac{q}{\lambda} (x - m)}\,,&x \geq m
+\end{cases}\quad.
+\]
 \end{definition}
 Zauważmy, że dystrybuanta rozkładu ALD ma postać
-\begin{equation}
-    F(x; m,\lambda,q) = \begin{cases}
-        q \e^{\frac{1-q}{\lambda}(x - m)}\,,&x \leq m\\
-        1 - (1-q)\e^{-\frac{q}{\lambda}(x - m)}\,,&x \geq m
-    \end{cases}
-\end{equation}
+\[
+F(x; m,\lambda,q) = \begin{cases}
+    q \e^{\frac{1-q}{\lambda}(x - m)}\,,&x \leq m\\
+    1 - (1-q)\e^{-\frac{q}{\lambda}(x - m)}\,,&x \geq m
+\end{cases}
+\]
 zatem parametr \(q\) określa rząd kwantyla \(m\). W przypadku regresji możemy zatem modelować
 wartość \(y(\bm{x})\) przez rozkład ALD dla ustalonego \(q\) postaci
-\begin{equation}
-    y(\bm{x}) \mid \bm{w}, \lambda \sim \mathrm{ALD}(\hat{y}(\bm{x}; \bm{w}), \lambda, q)\,,
-\end{equation}
+\[
+y(\bm{x}) \mid \bm{w}, \lambda \sim \mathrm{ALD}(\phi(\bm{x}; \bm{w}), \lambda, q)\,,
+\]
 gdzie \(\lambda\) pełni podobną rolę jak \(\sigma\) w przypadku rozkładu normalnego. Widzimy
-wówczas, iż estymacja MLE \(\bm{w}\) daje najlepsze \(\hat{y}\) takie, że ułamek \(1-q\) masy
+wówczas, iż estymacja MLE \(\bm{w}\) daje prostą regresji taką, że ułamek \(1-q\) masy
 prawdopodobieństwa znajduje się pod prostą (estymujemy zatem warunkowy kwantyl rzędu \(q\)).
 Zanegowana logarytmiczna funkcja wiarygodności (inaczej funkcja kosztu) dla modelu ALD ma postać
-\begin{equation}\boxed{
-    L(\mc{X}; \bm{w}, \lambda) = n \log \lambda + \frac{1}{\lambda}\sum_{i=1}^n \left[(q-1)z_i\theta(-z_i) + qz_i\theta(z_i)\right]\,,
-}\end{equation}
+\[
+\boxed{
+L(\mc{X}; \bm{w}, \lambda) = \sum_{i=1}^n \left[(q-1) r_i \theta(-r_i) + q r_i \theta(r_i)\right]\,,
+}
+\]
 gdzie
-\begin{equation}
-    z_i := y_i - \hat{y}(\bm{x}_i;\bm{w})\,,
-\end{equation}
-a \(\theta\) oznacza funkcję skokową Heaviside'a. W przypadku ustalonego, stałego \(\lambda\) taką
-funkcję kosztu nazywamy \emph{pinball loss}. Modelowanie \(y(\bm{x})\) za pomocą rozkładu ALD
-pozwala nam w prosty i \enquote{robust} sposób znaleźć również niepewność naszych predykcji
+\[
+r_i := y_i - \phi(\bm{x}_i;\bm{w})\,,
+\]
+a \(\theta\) oznacza funkcję skokową Heaviside'a. Taką funkcję kosztu nazywamy \emph{pinball loss},
+a otrzymane zagadnienie optymalizacji -- regresją kwantylową. Modelowanie \(y(\bm{x})\) za pomocą
+rozkładu ALD pozwala nam w prosty i \enquote{robust} sposób znaleźć niepewność naszych predykcji
 punktowych, tj. dla danego zagadnienia dopasowujemy trzy modele oparte na ALD dla \(q = 0.5\)
-(estymacja punktowa, mediana, odporna na outliery) oraz np. \(q = 0.1\) i \(q = 0.9\) (tzw.
-\enquote{widełki}) będące oszacowaniem niepewności punktowej estymaty. 
+(estymacja punktowa, mediana, odporna na outliery) oraz np. \(q = 0.1\) i \(q = 0.9\) będące
+oszacowaniem niepewności punktowej estymaty. 
 
 
 \subsection{Procesy gaussowskie}
