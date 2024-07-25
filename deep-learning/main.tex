@@ -62,9 +62,9 @@ gdzie \(p(y(\bm{x}) \mid \bm{w})\) jest warunkową gęstością prawdopodobieńs
 również dodawać tzw. człony regularyzujące (z ang. \textit{regularizers}). Trening modelu polega
 wówczas na znalezieniu parametrów \(\bm{w}^*\), które minimalizują funkcjonał kosztu na zbiorze
 treningowym \(\mc{X}\)
-\begin{equation}
-    \bm{w}^* = \arg\min_{\bm{w}} L(\mc{X};\bm{w})\,.
-\end{equation}
+\[
+\bm{w}^* = \arg\min_{\bm{w}} L(\mc{X};\bm{w})\,.
+\]
 Zauważmy, że takie podejście ma jedną zasadniczą wadę -- istotnie nie interesuje nas tak naprawdę,
 jak model radzi sobie na zbiorze treningowym (tzn. zagadnienie uczenia jest czymś więcej niż
 numeryczną minimalizacją funkcji), tylko jak będzie radził sobie na nowych, niewidzianych wcześniej
@@ -140,71 +140,30 @@ dostępnego wcześniej zbioru treningowego. Wykorzystanie danych testowych w pro
 optymistycznym oszacowaniem jakości modelu.
 
 
-\subsubsection{Metody selekcji cech}
-
-Zwykle dane w zbiorach wykorzystywanych w uczeniu maszynowym mają dużą wymiarowość (wiele cech). Nas
-jednak najbardziej interesuje tzw. \textit{intrinsic dimensionality}, czyli podprzestrzeń, która
-jest realnie ważna dla problemu klasyfikacji lub regresji. Celem selekcji cech jest właśnie wybór
-tych cech, które są istotne. Typowo obliczamy ważność cech (z ang. \textit{feature importance}) i
-usuwamy te najmniej wartościowe. Takie podejście może pomóc nam usunąć szum z danych i poprawić
-wyniki modeli (jest to szczególne ważne dla modeli, które używają cech wprost np. kNN, Naive Bayes).
-Najczęstszymi podejściami do selekcji cech są tzw. metody \textit{filter} i \textit{embedded}.
-\begin{itemize}
-    
-    \item \emph{Metody \textit{filter}}. Waga cechy jest obliczana na podstawie pewnej ogólnej miary
-    jakości cech; są typowo oparte na pewnych statystykach (np. wariancja) i sprawdzają pojedynczą
-    zmienną naraz (tzw. metody \textit{univariate}).
-    
-    \begin{itemize}
-
-        \item \emph{\textit{Variance threshold}}. Przeskalowujemy cechy korzystajac z MinMax, aby
-        wszystkie miały ten sam zakres wartości. Obliczamy wariancję każdej cechy. Odrzucamy cechy o
-        bardzo małej wariancji, oznacza to bowiem, iż są praktycznie stałe. Próg typowo jest
-        ustalany na bardzo niski typu 0.01.
-
-        \item \emph{Korelacja cech}. Obliczamy macierz korelacji i cech, po czym z każdej pary
-        eliminujemy najmocniej skorelowane cechy, poprzez usunięcie tej o niższej wariancji lub tej,
-        która ma średnio większe korelacje z innymi cechami.
-
-        \item \emph{Korelacja ze zmienną zależną}. Obliczamy korelacje między cechami, a zmienną
-        zależną i usuwamy te o wartości bezwzględnej bliskiej 0. 
-
-    \end{itemize}
-
-    \item \emph{Metody \textit{embedded}}. W metodach embedded trenujemy jakiś parametryczny model
-    uczenia maszynowego na naszych danych i wagi tego modelu interpretujemy jako wagi cech w
-    zbiorze. Metody te wymagają dobrych modeli, zauważmy bowiem, że wagi modelu mówią tak naprawdę
-    jak ważna jest dana cecha dla predykcji tego modelu, a nie ogólnie dla zagadnienia. Jako modele
-    można wybrać proste modele liniowe, w których mamy prostą interpretację wag.
-
-\end{itemize}
-
-
 \subsubsection{Metryki do oceny regresji i klasyfikacji}
 
-Wcześniej nie wspominaliśmy nic o metodach sprawdzenia jakości modelu po wytrenowaniu. Zasadniczo,
-aby ocenić predykcje modelu używamy odpowiednich metryk, których wartości określają jak dobry jest
-model.
+Zasadniczo, aby ocenić predykcje modelu używamy odpowiednich metryk, których wartości określają jak
+dobry jest model.
 
 W przypadku regresji najczęściej używanymi metrykami są RMSE (z ang. \textit{Root Mean Squared
 Error}) oraz MAE (z ang. \textit{Mean Absolute Error}) zdefiniowane odpowiednio jako
-\begin{equation}
-    \mathrm{RMSE} := \sqrt{\frac{1}{n}\sum_{i=1}^n (y_i - \hat{y}_i)^2}\,,\quad\mathrm{MAE} := \frac{1}{n}\sum_{i=1}^n|y_i - \hat{y}_i|\,.
-\end{equation}
+\[
+\mathrm{RMSE} := \sqrt{\frac{1}{n}\sum_{i=1}^n (y_i - \hat{y}_i)^2}\,,\quad\mathrm{MAE} := \frac{1}{n}\sum_{i=1}^n|y_i - \hat{y}_i|\,.
+\]
 Metryki te mają jednakową jednostkę jak predykcje. Jeśli chcielibyśmy mieć liczbę względną
 określającą jakość modelu to mamy do dyspozycji metryki MAPE (z ang. \textit{Mean Absolute
 Percentage Error}) oraz SMAPE (z ang. \textit{Symmetric Mean Absolute Percentage Error})
 zdefiniowane odpowiednio jako
-\begin{equation}
-    \mathrm{MAPE} := \frac{1}{n}\sum_{i=1}^n\left|\frac{y_i - \hat{y}_i}{y_i}\right|\,,\quad\mathrm{SMAPE} := \frac{1}{n}\sum_{i=1}^n \frac{|y_i - \hat{y}_i|}{|y_i| + |\hat{y}_i|}\,.\\
-\end{equation}
+\[
+\mathrm{MAPE} := \frac{1}{n}\sum_{i=1}^n\left|\frac{y_i - \hat{y}_i}{y_i}\right|\,,\quad\mathrm{SMAPE} := \frac{1}{n}\sum_{i=1}^n \frac{|y_i - \hat{y}_i|}{|y_i| + |\hat{y}_i|}\,.\\
+\]
 Obie te metryki mają zakres od 0 do 1, przy czym niższa wartość oznacza lepszy model. Metryki te
 mają jednak szereg problemów, z których najpoważniejsze to: problemy, gdy wartości są bliskie 0,
 asymetryczne traktowanie predykcji za dużych oraz za małych. Z tych powodów znacznie lepszą względną
 metryką jest MASE (z ang. \textit{Mean Absolute Scaled Error})
-\begin{equation}
-    \mathrm{MASE} := \frac{\sum_{i=1}^n |y_i - \hat{y}_i|}{\sum_{i=1}^n |y_i - \overline{y}|}\,,
-\end{equation}
+\[
+\mathrm{MASE} := \frac{\sum_{i=1}^n |y_i - \hat{y}_i|}{\sum_{i=1}^n |y_i - \overline{y}|}\,,
+\]
 gdzie \(\overline{y} = \frac{1}{n}\sum_{i=1}^n y_i\). Metryka MASE jest zatem względnym błędem MAE
 jaki popełnia nasz model w stosunku do modelu naiwnego, który przewiduje zawsze wartość średnią.
 
@@ -213,28 +172,26 @@ z dwóch klas, które będziemy nazywać klasą pozytywną i negatywną. O ile w
 jakości modelu był całkiem prosty, o tyle w przypadku klasyfikacji sytuacja jest nieco bardziej
 skomplikowana. Zauważmy bowiem, iż mamy 4 możliwości odpowiedzi klasyfikatora
 \begin{itemize}
-    \item \textit{True Positive (TP)} -- poprawnie zaklasyfikowaliśmy klasę pozytywną jako pozytywną
-    \item \textit{True Negative (TN)} -- poprawnie zaklasyfikowaliśmy klasę negatywną jako negatywną
-    \item \textit{False Positive (FP)} -- niepoprawnie zaklasyfikowaliśmy klasę negatywną jako
-    pozytywną
-    \item \textit{False Negative (FN)} -- niepoprawnie zaklasyfikowaliśmy klasę pozytywną jako
-    negatywną
+\item \textit{True Positive (TP)} -- poprawnie zaklasyfikowaliśmy klasę pozytywną jako pozytywną
+\item \textit{True Negative (TN)} -- poprawnie zaklasyfikowaliśmy klasę negatywną jako negatywną
+\item \textit{False Positive (FP)} -- niepoprawnie zaklasyfikowaliśmy klasę negatywną jako pozytywną
+\item \textit{False Negative (FN)} -- niepoprawnie zaklasyfikowaliśmy klasę pozytywną jako negatywną
 \end{itemize}
 
 Na podstawie ilości TP, TN, FP i FN w zbiorze testowym możemy wykreślić tzw. \emph{macierz pomyłek}
 (z ang. \textit{confusion matrix}) pokazującą ilość każdej z możliwości. Następnie możemy obliczyć
 różne stosunki tych wartości, aby uzyskać różne metryki. Najbardziej standardowymi są
 \emph{accuracy}, \emph{precision} oraz \emph{recall} (lub inaczej sensitivity) zdefiniowane jako
-\begin{equation}
-    \mathrm{Accuracy} := \frac{\mathrm{TP} + \mathrm{TN}}{n}\,,\quad\mathrm{Precision} := \frac{\mathrm{TP}}{\mathrm{TP} + \mathrm{FP}}\,,\quad\mathrm{Recall} := \frac{\mathrm{TP}}{\mathrm{TP} + \mathrm{FN}}\,.
-\end{equation}
+\[
+\mathrm{Accuracy} := \frac{\mathrm{TP} + \mathrm{TN}}{n}\,,\quad\mathrm{Precision} := \frac{\mathrm{TP}}{\mathrm{TP} + \mathrm{FP}}\,,\quad\mathrm{Recall} := \frac{\mathrm{TP}}{\mathrm{TP} + \mathrm{FN}}\,.
+\]
 Wartość accuracy mówi po prostu jaki stosunek przykładów został poprawnie zaklasyfikowany (zauważmy
 tutaj, że \(\mathrm{TP + TN + FP + FN} = n\)). Nie jest to jednak dobra miara jakości, gdy nasz
 zbiór jest niezbalansowany, tj. zawiera więcej przykładów określonej klasy.
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=0.8\textwidth]{figs/confusionMatrix.jpg}
+    \includegraphics[width=0.8\textwidth]{figs/confmat.png}
     \label{fig:confusionMatrix}
     \caption{Macierz pomyłek oraz możliwe metryki oceny jakości klasyfikatora}
 \end{figure}
@@ -248,14 +205,14 @@ ewaluować model na obu tych metrykach i jedynie dobry wynik obu z nich mówi o 
 Oczywiście czasami chcielibyśmy określić jakość modelu za pomocą jednej liczby, a niekoniecznie
 sprawdzać zawsze macierz pomyłek (choć jest to bardzo użyteczne) lub podawać wartości dwóch metryk.
 Metryką, która łączy precision i recall jest \emph{\(F_\beta\)--score} zdefiniowany jako
-\begin{equation}
-    F_\beta := (1 + \beta^2) \frac{\mathrm{Precision} \cdot \mathrm{Recall}}{\beta^2 \cdot \mathrm{Precision} + \mathrm{Recall}}\,, 
-\end{equation}
+\[
+F_\beta := (1 + \beta^2) \frac{\mathrm{Precision} \cdot \mathrm{Recall}}{\beta^2 \cdot \mathrm{Precision} + \mathrm{Recall}}\,, 
+\]
 gdzie \(\beta\) określa ile razy bardziej ważny jest recall od precision. Typowo używa się
 \(F_1\)--score
-\begin{equation}
-    F_1 = 2\frac{\mathrm{Precision} \cdot \mathrm{Recall}}{\mathrm{Precision} + \mathrm{Recall}}\,. 
-\end{equation}
+\[
+F_1 = 2\frac{\mathrm{Precision} \cdot \mathrm{Recall}}{\mathrm{Precision} + \mathrm{Recall}}\,. 
+\]
 
 Wiele klasyfikatorów oprócz twardych predykcji zwraca również rozkład prawdopodobieństwa nad
 klasami. W przypadku klasyfikacji binarnej jest to oczywiście rozkład zero-jedynkowy z parametrem
@@ -266,9 +223,9 @@ zmienić ten próg i dokonać tzw. \textit{threshold tuning}. Wykresem, który p
 tuningu progu jest \emph{krzywa ROC} (z ang. \textit{Receiver Operatic Characteristic curve}), która
 jest krzywą parametryczną wyznaczoną przez punkty \((\mathrm{FPR}(\mathrm{threshold}),
 \mathrm{TPR}(\mathrm{threshold}))\) dla progów z zakresu \([0;1]\), gdzie
-\begin{equation}
-    \mathrm{TPR} := \frac{\mathrm{TP}}{\mathrm{TP + FN}}\,,\quad \mathrm{FPR} := \frac{\mathrm{FP}}{\mathrm{FP + TN}}\,.
-\end{equation}
+\[
+\mathrm{TPR} := \frac{\mathrm{TP}}{\mathrm{TP + FN}}\,,\quad \mathrm{FPR} := \frac{\mathrm{FP}}{\mathrm{FP + TN}}\,.
+\]
 Metryką niezależną od wybranego progu jest tzw. \emph{AUROC} (z ang. \textit{Area under ROC curve})
 zdefiniowany jako pole powierzchni pod krzywą ROC dla danego klasyfikatora. Zauważmy, że
 klasyfikator losowy, który zwraca zawsze klasę pozytywną z prawdopodobieństwem równym wartości progu
@@ -286,19 +243,19 @@ binarnej, ale wprowadzamy mikro i makro uśrednianie (z ang. \textit{micro/macro
 \(\mathrm{FP}_k\) to liczba przykładów z innych klas, które zaklasyfikowaliśmy nieprawidłowo jako
 \(k\)--tą klasę, \(\mathrm{FN}_k\) to liczba przykładów z klasy \(k\), które zaklasyfikowaliśmy jako
 inną klasę. Wówczas odpowiednie metryki mają postać
-\begin{equation}
-    \begin{split}
-        &\mathrm{MicroPrecision} := \frac{\sum_{k} \mathrm{TP}_k}{\sum_{k} \mathrm{TP}_k + \sum_{k} \mathrm{FP}_k}\,,\\
-        &\mathrm{MacroPrecision} := \frac{1}{K} \sum_{k=1}^K \frac{\mathrm{TP}_k}{\mathrm{TP}_k + \mathrm{FP}_k}
-    \end{split}
-\end{equation}
+\[
+\begin{split}
+&\mathrm{MicroPrecision} := \frac{\sum_{k} \mathrm{TP}_k}{\sum_{k} \mathrm{TP}_k + \sum_{k} \mathrm{FP}_k}\,,\\
+&\mathrm{MacroPrecision} := \frac{1}{K} \sum_{k=1}^K \frac{\mathrm{TP}_k}{\mathrm{TP}_k + \mathrm{FP}_k}
+\end{split}
+\]
 oraz
-\begin{equation}
-    \begin{split}
-        &\mathrm{MicroRecall} := \frac{\sum_{k} \mathrm{TP}_k}{\sum_{k} \mathrm{TP}_k + \sum_{k} \mathrm{FN}_k}\,,\\
-        &\mathrm{MacroRecall} := \frac{1}{K} \sum_{k=1}^K \frac{\mathrm{TP}_k}{\mathrm{TP}_k + \mathrm{FN}_k}\,.
-    \end{split}
-\end{equation}
+\[
+\begin{split}
+&\mathrm{MicroRecall} := \frac{\sum_{k} \mathrm{TP}_k}{\sum_{k} \mathrm{TP}_k + \sum_{k} \mathrm{FN}_k}\,,\\
+&\mathrm{MacroRecall} := \frac{1}{K} \sum_{k=1}^K \frac{\mathrm{TP}_k}{\mathrm{TP}_k + \mathrm{FN}_k}\,.
+\end{split}
+\]
 W przypadku klasyfikacji wieloklasowej macierz pomyłek jest macierzą wymiaru \(K \times K\), gdzie
 \(K\) jest liczbą klas.
 
@@ -344,7 +301,6 @@ wiarygodne.
 
 
 \section{Probabilistyka}
-
 
 \subsection{Zmienne losowe}
 
@@ -430,14 +386,31 @@ gdzie \(J := \det \left[\pdv{\bm{\psi}^j}{\bm{y}^i}\right]\) jest jakobianem odw
 \end{theorem}
 
 \begin{theorem}
+Dla dowolnych zmiennych losowych \(\bm{X}\), \(\bm{Y}\) zachodzi
 \[
-\begin{split}    
-p_{\bm{X}} (\bm{x}) = \int\limits_{\mathbb{R}^k} p(\bm{x}, \bm{y}) \dd[k]{\bm{y}}\quad&\text{(sum rule)}\\
-p(\bm{x}, \bm{y}) = p(\bm{x} \mid \bm{y}) p_{\bm{Y}}(\bm{y})\quad&\text{(product rule)}\\
-p(\bm{x}, \bm{y}) = p_{\bm{X}}(\bm{x}) p_{\bm{Y}}(\bm{y})\quad&\text{(independence)}\\
-p(\bm{x} \mid \bm{y}) = \frac{p(\bm{y} \mid \bm{x}) p_{\bm{X}}(\bm{x})}{ \int\limits_{\mathbb{R}^k} p(\bm{y} \mid \bm{x}) p_{\bm{X}}(\bm{x}) \dd[k]{\bm{x}} }\quad&\text{(Bayes theorem)}
-\end{split}
+p_{\bm{X}} (\bm{x}) = \int\limits_{\mathbb{R}^k} p(\bm{x}, \bm{y}) \dd[k]{\bm{y}}\quad\text{(sum rule)}
 \]
+\end{theorem}
+
+\begin{theorem}
+Dla dowolnych zmiennych losowych \(\bm{X}\), \(\bm{Y}\) zachodzi
+\[
+p(\bm{x}, \bm{y}) = p(\bm{x} \mid \bm{y}) p_{\bm{Y}}(\bm{y})\quad\text{(product rule)}
+\]
+\end{theorem}
+
+\begin{theorem}
+Zmienne losowe \(\bm{X}\) i \(\bm{Y}\) są niezależne wtedy i tylko wtedy, gdy
+\[
+p(\bm{x}, \bm{y}) = p_{\bm{X}}(\bm{x}) p_{\bm{Y}}(\bm{y})\quad\text{(independence)}
+\]    
+\end{theorem}
+
+\begin{theorem}
+Dla dowolnych zmiennych losowych \(\bm{X}\), \(\bm{Y}\) zachodzi    
+\[
+\underbrace{p(\bm{x} \mid \bm{y})}_\text{posterior} = \frac{\underbrace{p(\bm{y} \mid \bm{x})}_\text{likelihood} \underbrace{p_{\bm{X}}(\bm{x})}_\text{prior}}{ \underbrace{\int\limits_{\mathbb{R}^k} p(\bm{y} \mid \bm{x}) p_{\bm{X}}(\bm{x}) \dd[k]{\bm{x}}}_\text{evidence} }\quad\text{(Bayes theorem)}
+\]    
 \end{theorem}
 
 \begin{definition}[Warunkowej wartości oczekiwanej]
@@ -593,8 +566,21 @@ proporcjonalne do pierwiastka z wartości własnych.
 \begin{theorem}[Własności niezdegenerowanego rozkładu normalnego]\label{th:mvn} Niech \(\bm{X} \sim
 \mc{N}(\bm{\mu}, \bm{\Sigma})\) dla dodatnio określonej macierzy \(\bm{\Sigma}\), wówczas
 \begin{enumerate}
-\item Wszystkie rozkłady brzegowe i warunkowe \(\bm{X}\) są rozkładami normalnymi.
-\item Zmienne składowe \(\bm{X}_1,\ldots,\bm{X}_n\) są niezależne wtedy i tylko wtedy, gdy
+\item Wszystkie rozkłady brzegowe i warunkowe \(\bm{X}\) są rozkładami normalnymi. Istotnie jeśli
+\[
+\mqty[\bm{x} \\ \bm{y}] \sim \mathcal{N}\left(\mqty[\bm{\mu}_{\bm{x}} \\ \bm{\mu}_{\bm{y}}], \mqty[\bm{\Sigma}_{\bm{xx}} & \bm{\Sigma}_{\bm{xy}} \\ \bm{\Sigma}_{\bm{yx}} & \bm{\Sigma}_{\bm{yy}}] \right)
+\]
+to można pokazać, iż
+\[
+\bm{x} \sim \mathcal{N}(\bm{\mu}_{\bm{x}}, \bm{\Sigma}_{\bm{xx}})\,,\quad \bm{y} \sim \mathcal{N}(\bm{\mu}_{\bm{y}}, \bm{\Sigma}_{\bm{yy}})\,.
+\]
+oraz \(\bm{x} \mid \bm{y} \sim \mathcal{N}(\bm{\mu}_{\bm{x}\mid\bm{y}},
+\bm{\Sigma}_{\bm{x}\mid\bm{y}})\), gdzie
+\[
+\bm{\mu}_{\bm{x}\mid\bm{y}} = \bm{\mu}_{\bm{x}} + \bm{\Sigma}_{\bm{xy}}\bm{\Sigma}_{\bm{yy}}^{-1}(\bm{y} - \bm{\mu}_{\bm{y}})\,,\quad \bm{\Sigma}_{\bm{x}\mid\bm{y}} = \bm{\Sigma}_{\bm{xx}} - \bm{\Sigma}_{\bm{xy}}\bm{\Sigma}_{\bm{yy}}^{-1}\bm{\Sigma}_{\bm{yx}}\,.
+\]
+
+\item Zmienne składowe \(\bm{X}^1,\ldots,\bm{X}^n\) są niezależne wtedy i tylko wtedy, gdy
 \(\bm{\Sigma}\) jest macierzą diagonalną.
 \end{enumerate}
 \end{theorem}
@@ -637,46 +623,352 @@ realizacji prostej próby losowej nazywa się wartością estymatora albo estyma
 \begin{definition}[Funkcji wiarygodności]
 Funkcją wiarygodności (z ang. \textit{likelihood function}) dla modelu \(\mc{P} = \{p(\cdot \mid \bm{\theta}) :
 \bm{\theta} \in \Theta\}\) nazywamy funkcję
-
-\begin{equation*}
-    \mc{L}: \mathbb{R}^n \times \Theta \ni (\bm{x},\bm{\theta}) \mapsto \mc{L}(\bm{x};\bm{\theta}) \in [0; +\infty)
-\end{equation*}
+\[
+\mc{L}: \mathbb{R}^n \times \Theta \ni (\bm{x},\bm{\theta}) \mapsto \mc{L}(\bm{x};\bm{\theta}) \in [0; +\infty)
+\]
 wyznaczającą rozkład łączny obserwowanych danych jako funkcję parametru \(\bm{\theta}\).    
 \end{definition}
 
 Niech \(\bm{X}_1,\ldots,\bm{X}_n\) będzie prostą próbą losową. Jeśli \(p(\cdot \mid \bm{\theta})\)
 opisuje rozkład warunkowy, z którego pochodzą obserwacje, to
-\begin{equation}
-    \mc{L}(\bm{x}_1,\ldots,\bm{x}_n;\bm{\theta}) = \prod_{i=1}^n p(\bm{x}_i \mid \bm{\theta})\,.
-\end{equation}
+\[
+\mc{L}(\bm{x}_1,\ldots,\bm{x}_n;\bm{\theta}) = \prod_{i=1}^n p(\bm{x}_i \mid \bm{\theta})\,.
+\]
 Dla wygody obliczeń często rozważa się tzw. zanegowaną logarytmiczną funkcję wiarygodności (z ang.
 \textit{Negated Log-Likelihood function, NLL}), tzn.
-\begin{equation}
-    L(\bm{x};\bm{\theta}) = - \log \mc{L}(\bm{x};\bm{\theta})\,.
-\end{equation}
+\[
+L(\bm{x};\bm{\theta}) = - \log \mc{L}(\bm{x};\bm{\theta})\,.
+\]
 Wówczas dla realizacji prostej próby losowej mamy
-\begin{equation}
-    L(\bm{x}_1,\ldots,\bm{x}_n;\bm{\theta}) = -\sum_{i=1}^n \log p(\bm{x}_i \mid \bm{\theta})\,.
-\end{equation}
+\[
+L(\bm{x}_1,\ldots,\bm{x}_n;\bm{\theta}) = -\sum_{i=1}^n \log p(\bm{x}_i \mid \bm{\theta})\,.
+\]
 
 \begin{definition}[Estymatora największej wiarygodności]
 Estymatorem największej wiarygodności (z ang. \textit{Maximum Likelihood Estimator, MLE}) nazywamy
 funkcję \(\bm{\hat{\theta}}\), która przy ustalonych wartościach obserwacji (realizacji prostej
 próby losowej) \(\{\bm{x}_1,\ldots,\bm{x}_n\}\) maksymalizuje wartość funkcji wiarygodności lub, co
 równoważne, minimalizuje wartość zanegowanej logarytmicznej funkcji wiarygodności tj.
-\begin{equation*}
-    \bm{\hat \theta}(\bm{x}_1,\ldots,\bm{x}_n) = \arg \min_{\bm{\theta} \in \Theta} \left[- \sum_{i=1}^n \log p(\bm{x}_i \mid \bm{\theta})\right]\,.
-\end{equation*}
+\[
+\bm{\hat \theta}(\bm{x}_1,\ldots,\bm{x}_n) = \arg \min_{\bm{\theta} \in \Theta} \left[- \sum_{i=1}^n \log p(\bm{x}_i \mid \bm{\theta})\right]\,.
+\]
 \end{definition}
     
 Jeśli funkcja wiarygodności jest różniczkowalna względem \(\bm{\theta}\) dla dowolnych \(\bm{x}^i\),
 to MLE można czasem wyznaczyć analitycznie korzystając z warunku koniecznego optymalności, tzn.
 rozwiązując układ równań
-\begin{equation}
-    \pdv{L(\bm{x}_1,\ldots,\bm{x}_n; \bm{\theta})}{\bm{\theta}} = 0\,.
-\end{equation}
+\[
+\pdv{L(\bm{x}_1,\ldots,\bm{x}_n; \bm{\theta})}{\bm{\theta}} = 0\,.
+\]
 Jeśli MLE nie da się wyliczyć analitycznie, wyznacza się je przy użyciu algorytmów optymalizacji
 numerycznej. Estymatory MLE są asymptotycznie nieobciążone.
+
+\begin{definition}[Estymatora MAP]
+Estymatorem MAP (z ang. \textit{Maximum a Posteriori Estimator, MAP}) nazywamy funkcję
+\(\bm{\hat\theta}\), która przy ustalonych wartościach obserwacji (realizacji prostej próby losowej)
+\(\{\bm{x}_1,\ldots,\bm{x}_n\}\) maksymalizuje wartość iloczynu funkcji wiarygodności i priora nad
+wartościami parametrów lub, co równoważne, minimalizuje zregularyzowaną logarytmiczną funkcję
+wiarygodności tj.
+\[
+\bm{\hat\theta}(\bm{x}_1,\ldots,\bm{x}_n) = \arg \min_{\bm{\theta} \in \Theta} \left[ - \sum_{i=1}^n \log p(\bm{x}_i \mid \bm{\theta}) - n \log p(\bm{\theta}) \right]\,.
+\]
+\end{definition}
+
+
+\subsection{Liczby losowe w komputerze}
+
+Opiszemy jeszcze pokrótce metody generowania liczb pseudolosowych z dowolnych rozkładów
+prawdopodobieństwa w sposób algorytmiczny. Podstawowym narzędziem, którego będziemy potrzebować do
+generowania próbek z bardziej skomplikowanych rozkładów będzie prosty generator liczb z rozkładu
+jednostajnego \(\mc{U}(0,1)\). Moglibyśmy oczywiście wykorzystać jakieś fizyczne urządzenie lub
+proces, który generuje liczby prawdziwie losowe (np. detektor Geigera-Mullera, szum lamp
+elektronowych, ruletka), ale błędem byłaby rezygnacja z odtwarzalności. Poszukujemy zatem
+deterministycznej metody, która generuje sekwencje liczb, które są w przybliżeniu losowe. Podstawową
+metodą do algorytmicznego generowania liczb pseudolosowych jest tzw. \emph{liniowy generator
+kongruentny} (z ang. \textit{Linear Congruent Generator, LCG}), który jest opisany zależnością
+rekurencyjną
+\[
+I_{j+1} = (a I_j + c) \mod m\,,
+\]
+gdzie \(a, c, m\) to pewne ustalone dodatnie liczby całkowite, a \(I_0\) to tzw. ziarno (z ang.
+\textit{seed}). LCG generuje liczby całkowite, więc w dużym uproszczeniu liczby zmiennoprzecinkowe z
+rozkładu \(\mc{U}(0,1)\) otrzymujemy jako \(I_j / m\) (trzeba tutaj jednak uwzględnić problemy
+wynikające z arytmetyki zmiennoprzecinkowej).
+
+Mając już generator liczb z rozkładu jednostajnego \(\mc{U}(0,1)\) i znając jawny wzór na
+dystrybuantę \(F(x)\) innego rozkładu jednowymiarowego \(\mc{D}\) możemy generować liczby z tego
+rozkładu korzystając z tzw. \emph{metody odwrotnej dystrybuanty}. Istotnie, jeśli \(U \sim
+\mc{U}(0,1)\), to \(F^{-1}(U) \sim \mc{D}\). Istotnie
+\[
+\Pr(F^{-1}(U) \leq x) = \Pr(U \leq F(x)) = F(x)\,.
+\]
+Metoda ta ma jedną zasadniczą wadę -- musimy znać jawny wzór na dystrybuantę \(F(x)\). W przypadku
+np. tak ważnych rozkładów, jak rozkład normalny dystrybuanta nie jest funkcją elementarną i metoda
+ta nie jest najlepsza. W przypadku rozkładu normalnego znacznie lepszą metodą jest tzw. \emph{metoda
+Boxa--Mullera}. Weźmy rozkład łączny dwóch niezależnych zmiennych losowych \(X, Y\) pochodzących ze
+standardowego rozkładu normalnego
+\[
+p(x, y) = \frac{1}{2\pi}\exp(\frac{1}{2}(x^2 + y^2))\,.
+\]
+Skorzystamy ze wzoru na transformację zmiennych losowych. Istotnie niech
+\[
+X = \sqrt{Z} \cos \Phi\,,\quad Y = \sqrt{Z} \sin \Phi\,,
+\]
+dla \(0 < Z\) oraz \( 0 \leq \Phi < 2\pi\), wówczas
+\[
+q(z, \phi) = p(x(z,\phi), y(z,\phi)) \mqty| \frac{1}{2\sqrt{z}}\cos\phi & \frac{1}{2\sqrt{z}}\sin\phi \\ -\sqrt{z}\sin\phi & \sqrt{z}\cos\phi| = \frac{1}{4\pi}\e^\frac{z}{2}\,.
+\]
+Zauważmy, że otrzymaliśmy sferycznie symetryczny rozkład wykładniczy. Możemy zatem wylosować z
+rozkładu jednostajnego kąt \(\phi\) oraz z rozkładu wykładniczego wartość \(z\) korzystając z metody
+odwrotnej dystrybuanty. Wówczas wartości \(x = \sqrt{z}\cos\phi\), \(y = \sqrt{z}\sin\phi\) będą
+pochodzić ze standardowego rozkładu normalnego. Aby wygenerować próbki z ogólnego wielowymiarowego
+rozkładu normalnego, korzystamy z definicji, tj. najpierw generujemy \(n\) próbek ze standardowego
+rozkładu normalnego, a następnie korzystamy z przekształcenia afinicznego \(\bm{x} = \bm{A}\bm{z} +
+\bm{\mu}\), gdzie \(\bm{\Sigma} = \bm{A}\bm{A}^T\).
+
+
+\subsection{Monte Carlo}
+
+Umiemy już generować próbki z wielowymiarowego rozkładu normalnego. Chcemy teraz poznać metodę,
+która umożliwi generowanie próbek ze skomplikowanych, wielowymiarowych rozkładów prawdopodobieństwa,
+których gęstość znamy jedynie z dokładnością do stałej normalizującej, tj. znamy jedynie
+\(\tilde{p}(\bm{x}) = Z p(\bm{x})\). Ograniczenie to wynika z chęci próbkowania z posteriora
+\(p(\bm{x} \mid \bm{y})\) w sytuacji, gdy znamy jedynie rozkład łączny \(p(\bm{x}, \bm{y}) =
+p(\bm{y} \mid \bm{x}) p_{\bm{X}}(\bm{x})\). Okazuje się, iż znajomość rozkładu jedynie z
+dokładnością do stałej normalizującej jest wystarczająca do generowania próbek z tego rozkładu.
+Generowanie próbek z kolei wystarcza natomiast, na mocy silnego prawa wielkich liczb, do szacowania
+wartości średnich dowolnych funkcji zmiennej \(\bm{x}\). Przypomnijmy, iż na mocy silnego prawa
+wielkich liczb ciąg średnich częściowych \((\overline{\bm{X}}_n)\) ciągu zmiennych losowych
+\((\bm{X}_n)\) i.i.d. z rozkładu \(\bm{X} \sim \mathcal{D}\) jest zbieżny z prawdopodobieństwem 1 do
+wartości oczekiwanej \(\mathbb{E}[\bm{X}]\) tj.
+\[
+\Pr\left(\lim_{n \to \infty} \overline{\bm{X}}_n = \mathbb{E}[\bm{X}]\right) = 1\,.
+\]
+Wartość oczekiwaną \(\mathbb{E}[\bm{X}]\) możemy zatem przybliżyć średnią \(\overline{\bm{X}}_n\) z
+dużej ilości próbek.
+
+Pozostaje pytanie w jaki sposób generować próbki ze skomplikowanych rozkładów prawdopodobieństwa,
+których gęstości znamy jedynie z dokładnością do stałej normalizującej. Poniżej przedstawimy dwa
+algorytmy próbkowania: algorytm IS oraz Metropolisa--Hastingsa będący szczególną realizacją całej
+rodziny algorytmów próbkowania zwanych Markov Chain Monte Carlo (MCMC).
+
+
+\subsubsection{Algorytm Importance Sampling}
+
+Załóżmy, iż chcemy obliczyć wartość oczekiwaną pewnej funkcji zmiennej losowej \(\bm{x}\) względem
+skomplikowanego rozkładu prawdopodobieństwa \(p(\bm{x})\), który znamy jedynie z dokładnością do
+stałej normalizującej
+\[
+p(\bm{x}) = \frac{1}{Z_p}\tilde{p}(\bm{x})
+\]
+tj. szukamy
+\[
+\mathbb{E}_p[f(\bm{x})] = \int f(\bm{x}) p(\bm{x})\dd[n]\bm{x}\,.
+\]
+Jeśli umiemy generować próbki \(\bm{x}\) z innego (prostszego) rozkładu \(q(\bm{x})\) (np.
+wielowymiarowego rozkładu normalnego), który nazywamy rozkładem proponującym kandydatów (z ang.
+\textit{proposal distribution}) to możemy zapisać
+\[
+\begin{split}
+\mathbb{E}_p[f(\bm{x})] &= \int\limits_{\mathbb{R}^n}f(\bm{x})p(\bm{x})\dd[n]\bm{x} = \int\limits_{\mathbb{R}^n}f(\bm{x})\frac{p(\bm{x})}{q(\bm{x})}q(\bm{x})\dd[n]\bm{x}\\
+&=\mathbb{E}_q\left[f(\bm{x}) \frac{p(\bm{x})}{q(\bm{x})}\right] = \frac{Z_q}{Z_p}\mathbb{E}_q\left[f(\bm{x}) \frac{\tilde{p}(\bm{x})}{\tilde{q}(\bm{x})}\right]\,.
+\end{split}
+\]
+Zakładamy tutaj, iż nośnik rozkładu \(p\) zawiera się w nośniku \(q\) tj. \(\text{supp}\,p \subseteq
+\text{supp}\,q\). Stosunek stałych \(Z_p / Z_q\) również możemy oszacować z próbek z \(q\), gdyż
+mamy
+\[
+Z_p = \int\limits_{\mathbb{R}^n}\tilde{p}(\bm{x})\dd[n]{\bm{x}} = Z_q\int\limits_{\mathbb{R}^n}\frac{\tilde{p}(\bm{x})}{\tilde{q}(\bm{x})} q(\bm{x})\dd[n]{\bm{x}} = Z_q \mathbb{E}_q\left[\frac{\tilde{p}(\bm{x})}{\tilde{q}(\bm{x})}\right]\,,
+\]
+skąd ostatecznie
+\[
+\mathbb{E}_p[f(\bm{x})] = \frac{\mathbb{E}_q\left[f(\bm{x}) \frac{\tilde{p}(\bm{x})}{\tilde{q}(\bm{x})}\right]}{\mathbb{E}_q\left[\frac{\tilde{p}(\bm{x})}{\tilde{q}(\bm{x})}\right]}\,.
+\]
+Jeśli z rozkładu \(q\) wygenerowaliśmy próbki \(X = \left\{\bm{x}_1,\ldots,\bm{x}_m\right\}\) to na
+mocy silnego prawa wielkich liczb mamy
+\[
+\boxed{
+\mathbb{E}_p[f(\bm{x})] \approx \frac{\sum_{i=1}^m f(\bm{x}_i) \frac{\tilde{p}(\bm{x}_i)}{\tilde{q}(\bm{x}_i)}}{\sum_{j=1}^m \frac{\tilde{p}(\bm{x}_j)}{\tilde{q}(\bm{x}_j)}} = \sum_{i=1}^m \lambda_i f(\bm{x}_i)\,,
+}
+\]
+gdzie
+\[
+\boxed{
+\lambda_i = \frac{\tilde{p}(\bm{x}_i) / \tilde{q}(\bm{x}_i)}{\sum_{j=1}^m \tilde{p}(\bm{x}_j) / \tilde{q}(\bm{x}_j) }\,.
+}
+\]
+Algorytm Importance Sampling jest prostym algorytmem Monte Carlo, który ma jeden zasadniczy problem.
+W jaki sposób mamy wybrać rozkład proponujący kandydatów \(q\)? Pewną odpowiedź na to pytanie
+sugeruje analiza wariancji statystyki 
+\[
+\overline{f}_m(\bm{x}_1,\ldots,\bm{x}_m) = \frac{1}{m}\sum_{i=1}^m \frac{f(\bm{x}_i)p(\bm{x}_i)}{q(\bm{x}_i)}
+\]
+dla \(\bm{x}_i \sim q\) mamy
+\[
+\begin{split}
+\mathbb{V}[\overline{f}_m] &= \frac{1}{m}\mathbb{V}_q\left[f(\bm{x})\frac{p(\bm{x})}{q(\bm{x})}\right] = \frac{1}{m}\int\limits_{\mathbb{R}^n}\frac{(f(\bm{x})p(\bm{x}) - \mu_fq(\bm{x}))^2}{q(\bm{x})}\dd[n]{\bm{x}}\,.
+\end{split}
+\]
+Chcemy oczywiście, aby wariancja była jak najmniejsza, gdyż wówczas mała liczba próbek da dobre
+przybliżenie wartości oczekiwanej. Rozkład proponujący kandydatów powinien być zatem proporcjonalny
+do \(f(\bm{x})p(\bm{x})\), co może być trudne do praktycznego zrealizowania.
+
+
+\subsubsection{Algorytm Metropolisa--Hastingsa}
+
+Cała klasa algorytmów próbkowania MCMC opiera się na idei wyrażenia generowania próbek jako ewolucji
+pewnego łańcucha Markowa.
+
+\begin{definition}[Łańcucha Markowa]
+Łańcuchem Markowa nazwiemy ciąg zmiennych losowych \((\bm{X}_t)\) o wartościach w \(\mathbb{R}^n\)
+taki, że spełnione jest \emph{kryterium Markowa}
+\[
+\begin{split}
+\forall A \subset \mathbb{R}^n :\, &\Pr(\bm{X}_t \in A \mid \bm{X}_{t-1} = \bm{x}_{t-1}, \ldots, \bm{X}_0 = \bm{x}_0) \\
+&= \Pr(\bm{X}_t \in A \mid \bm{X}_{t-1} = \bm{x}_{t-1})\,.
+\end{split}
+\]
+Elementy ciągu nazywamy stanami łańcucha.
+\end{definition}
+
+Dany łańcuch jest zadany jednoznacznie przez podanie gęstości prawdopodobieństwa przejścia łańcucha
+ze stanu \(\bm{x} \to \bm{y}\), którą będziemy oznaczać przez \(\pi(\bm{y} \mid \bm{x})\)
+(zakładamy, iż prawdopodobieństwo przejścia jest niezależne od chwili \(t\) -- łańcuch taki nazywamy
+jednorodnym). Funkcja \(\pi\) spełnia oczywiście warunek unormowania
+\[
+\int\limits_{\mathbb{R}^n} \pi(\bm{y} \mid \bm{x}) \dd[n]{\bm{y}}\,,
+\]
+istotnie prawdopodobieństwo przejścia gdziekolwiek ze stanu \(\bm{x}\) jest równe 1. Będziemy
+zakładać dodatkowo, iż \(\forall \bm{x},\bm{y}\in\mathbb{R}^n: \pi(\bm{y} \mid \bm{x}) > 0\).
+Rozkład \(p(\bm{x})\) łańcucha Markowa (tj. rozkład prawdopodobieństwa z którego losujemy stan
+łańcucha w danej chwili \(t\)) z daną funkcją przejścia \(\pi\) nazwiemy rozkładem stacjonarnym tego
+łańcucha jeśli
+\[
+p(\bm{y}) = \int\limits_{\mathbb{R}^n} \pi(\bm{y} \mid \bm{x})p(\bm{x}) \dd[n]{\bm{x}}\,.
+\]
+Rozkład stacjonarny danego łańcucha oznaczymy przez \(p^*(\bm{x})\). Zauważmy, iż jeśli stan
+początkowy łańcucha \(\bm{X}_0\) pochodzi z rozkładu stacjonarnego \(p^*\) to każdy kolejny stan
+\(\bm{X}_t\) również pochodzi z rozkładu stacjonarnego. Jeśli z kolei stan początkowy pochodzi z
+jakiegoś innego rozkładu \(p_0\) to rozkład łańcucha w chwili \(t\) jest dany przez relację
+rekurencyjną
+\[
+p_t(\bm{y}) = \int\limits_{\mathbb{R}^n} \pi(\bm{y} \mid \bm{x})p_{t-1}(\bm{x}) \dd[n]{\bm{x}}\,,\quad\text{dla \(t > 1\).}
+\]
+Rozkładem granicznym łańcucha Markowa nazwiemy granicę w sensie zbieżności punktowej
+\[
+\lim_{t\to\infty} p_t(\bm{x})\,.
+\]
+Przy podanych wyżej założeniach istnieje twierdzenie, które mówi iż taki łańcuch Markowa posiada
+jednoznaczny rozkład stacjonarny tożsamy z rozkładem granicznym. Ponadto warunkiem wystarczającym,
+aby dany rozkład \(p(\bm{x})\) był rozkładem stacjonarnym łańcucha Markowa jest
+\[
+\forall\bm{x}, \bm{y} \in \mathbb{R}^n: \pi(\bm{y}\mid\bm{x}) p(\bm{x}) = \pi(\bm{x} \mid \bm{y}) p(\bm{y})\,,
+\]
+co wynika z scałkowania powyższego równania
+\[
+\int\limits_{\mathbb{R}^n} \pi(\bm{y}\mid\bm{x}) p(\bm{x}) \dd[n]{\bm{x}} = \int\limits_{\mathbb{R}^n} \pi(\bm{x} \mid \bm{y}) p(\bm{y}) \dd[n]{\bm{x}} = p(\bm{y}) \int\limits_{\mathbb{R}^n} \pi(\bm{x} \mid \bm{y}) \dd[n]{\bm{x}} = p(\bm{y})\,.
+\]
+Kryterium to nazywamy \emph{kryterium lokalnego balansu} (z ang. \textit{detailed balance
+condition}).
+
+Podstawowa idea wykorzystania łańcuchów Markowa do generowania próbek ze skomplikowanego rozkładu
+\(p\) jest więc następująca: tworzymy łańcuch Markowa, dla którego \(p\) jest rozkładem
+stacjonarnym, wówczas rozpoczynając w dowolnym dopuszczalnym stanie początkowym \(\bm{X}_0\) po
+wykonaniu dużej liczby kroków (etap ten nazywamy okresem przejściowym z ang. \textit{burn-in
+period}) stan \(\bm{X}_t\) (dla \(t \gg 1\)) tego łańcucha będzie w przybliżeniu pochodził z
+rozkładu granicznego \(p\) (nie jest jednak prosto stwierdzić po jak długim okresie przejściowym
+przybliżenie to jest wystarczająco dobre). Aby otrzymać z takiej procedury próbki prawdziwie i.i.d.
+każda z próbek musiałaby pochodzić z ponownego uruchomienia takiego łańcucha. Oczywiście jest to
+nieefektywne, więc w praktyce generujemy próbki z jednego łańcucha po prostu odrzucając pewne z nich
+tak aby uniknąć znaczących korelacji. Pozostaje pytanie jak skonstruować funkcję przejścia
+\(\pi(\bm{y} \mid \bm{x})\) dla danego rozkładu granicznego \(p(\bm{x})\). Podstawową konstrukcję
+podaje algorytm Metropolisa--Hastingsa.
+\begin{tcolorbox}[title=Algorytm Metropolisa--Hastingsa, breakable, boxrule=0pt]
+\begin{enumerate}
+\item Jako stan początkowy przyjmij dowolną dopuszczalną wartość \(\bm{x}_0\).
+
+\item Będąc w aktualnym stanie \(\bm{x}\) z prostego rozkładu proponującego kandydatów \(q(\bm{y}
+\mid \bm{x})\) wylosuj kandydata \(\bm{y}\) na wartość łańcucha w kolejnym stanie.
+
+\item Z prawdopodobieństwem
+\[
+r(\bm{y} \mid \bm{x}) = \min\left\{1, \frac{p(\bm{y})q(\bm{x} \mid \bm{y})}{p(\bm{x})q(\bm{y} \mid \bm{x})}\right\}
+\]
+zaakceptuj kandydata jako nowy stan i przejdź do stanu \(\bm{y}\). W przeciwnym razie pozostań w
+stanie \(\bm{x}\).
+
+\item GOTO 2.
+\end{enumerate}
+\end{tcolorbox}
+
+Funkcja przejścia ma zatem postać
+\[
+\pi_\text{MH}(\bm{y}\mid\bm{x}) = q(\bm{y} \mid \bm{x}) r(\bm{y} \mid \bm{x})\,.
+\]
+Pozostaje tylko wykazać, iż spełnione jest kryterium lokalnego balansu. Istotnie mamy
+\[
+\begin{split}
+&\pi_\text{MH}(\bm{y}\mid\bm{x})p(\bm{x}) = \min\left\{q(\bm{y}\mid\bm{x})p(\bm{x}), q(\bm{x}\mid\bm{y})p(\bm{y})\right\}\\
+&\pi_\text{MH}(\bm{x}\mid\bm{y})p(\bm{y}) = \min\left\{q(\bm{x}\mid\bm{y})p(\bm{y}), q(\bm{y}\mid\bm{x})p(\bm{x})\right\}
+\end{split}\quad,
+\]
+skąd \(\pi_\text{MH}(\bm{y}\mid\bm{x})p(\bm{x}) = \pi_\text{MH}(\bm{x}\mid\bm{y})p(\bm{y})\).
+Zauważmy, iż nie musimy znać \(p(\bm{x})\) z dokładnością do stałej normalizującej, gdyż
+\[
+\frac{p(\bm{y})}{p(\bm{x})} = \frac{\tilde{p}(\bm{y})/Z_p}{\tilde{p}(\bm{x})/Z_p} = \frac{\tilde{p}(\bm{y})}{\tilde{p}(\bm{x})}\,.
+\]
+Poza algorytmem Metropolisa--Hastingsa jest wiele innych algorytmów z rodziny MCMC. Większość z nich
+implementuje konkretny sposób generowania (zostawiając resztę struktury) tak, aby zmniejszyć
+korelację po okresie przejściowym i przyspieszyć zbieżność. Standardowo wykorzystywanymi algorytmami
+z tej klasy są algorytmy HMC (\textit{Hamiltonian Monte Carlo}) oraz NUTS (\textit{No U-Turn
+Sampler}).
+
+
+\subsection{Estymator jądrowy gęstości}
+
+W poprzednim paragrafie opisaliśmy w jaki sposób mając (nieznormalizowaną) funkcję gęstości
+prawdopodobieństwa \(\tilde{p}(\bm{x})\) generować algorytmicznie próbki z opisanego przez nią
+rozkładu. Teraz zajmiemy się problemem odwrotnym tj. mając realizację prostej próby losowej z
+pewnego rozkładu chcemy znaleźć funkcję \(\hat{p}(\bm{x})\), która estymuje gęstość rozkładu
+prawdopodobieństwa, z którego pochodzą próbki. Opiszemy tutaj jedną z najprostszych metod zwaną
+estymatorem jądrowym (z ang. \textit{Kernel Density Estimator, KDE}). Estymatorem jądrowym gęstości
+funkcji \(p\) nazywamy funkcję
+\[
+\hat{p}(\bm{x}) := \frac{1}{n}\sum_{i=1}^n K_{\bm{H}}(\bm{x} - \bm{x}_i)\,,
+\]
+gdzie \(\bm{H}\) jest symetryczną i dodatnio określoną macierzą zwaną \textit{bandwidth matrix},
+funkcja \(K_{\bm{H}}\) ma postać
+\[
+K_{\bm{H}}(\bm{x}) = (\det \bm{H})^{-1/2} K(\bm{H}^{-1/2}\bm{x})\,,
+\]
+gdzie funkcja \(K\) zwana jądrem (z ang. \textit{kernel}) jest gęstością prawdopodobieństwa pewnego
+symetrycznego rozkładu wielowymiarowego. Wybór funkcji \(K\) nie jest kluczowy ze statystycznego
+punktu widzenia, więc możemy bez problemu założyć, iż jest to gęstość wielowymiarowego rozkładu
+normalnego, tj.
+\[
+K_{\bm{H}}(\bm{x}) = \frac{1}{\sqrt{(2\pi)^m \det\bm{H}}} \exp\left(-\frac{1}{2} \bm{x}^T\bm{H}^{-1}\bm{x}\right)\,,
+\]
+gdzie zakładamy \(\bm{x} \in \mathbb{R}^m\). Większym problemem w przypadku KDE jest wybór
+odpowiedniego parametru \(\bm{H}\). Jednym z prostszych wyborów w przypadku estymatora
+\[
+\boxed{
+\hat{p}(\bm{x}) = \frac{1}{n\sqrt{(2\pi)^m \det\bm{H}}} \sum_{i=1}^n \exp\left(-\frac{1}{2} (\bm{x} - \bm{x}_i)^T\bm{H}^{-1}(\bm{x} - \bm{x}_i)\right)
+}
+\]
+jest tzw. \emph{reguła Silvermana}, która podaje następujący przepis na macierz \(\bm{H}\)
+\[
+\bm{H}^{ij} = 0\,,\quad \sqrt{\bm{H}^{ii}} = \left(\frac{4}{4 + m}\right)^\frac{1}{m + 4} n^\frac{-1}{m + 4} \sigma_i\,,
+\] 
+gdzie \(\sigma_i\) jest estymatorem wariancji \(i\)-tej współrzędnej zmiennej \(\bm{X}\). Inną
+możliwością jest tzw. \emph{reguła Scotta}
+\[
+\bm{H}^{ij} = 0\,,\quad \sqrt{\bm{H}^{ii}} = n^\frac{-1}{m+4} \sigma_i\,.
+\]
+KDE w praktycznych zastosowaniach często przyspiesza się za pomocą odpowiednich struktur danych do
+wyszukiwania najbliższych sąsiadów w przestrzeni \(\mathbb{R}^m\), tj. zamiast sumować przyczynki od
+wszystkich punktów \(\bm{x}_i\) dla danego \(\bm{x}\), znajdujemy jego \(k\) najbliższych sąsiadów
+\(\bm{x}\) ze zbioru \(\{\bm{x}_i\}_{i=1}^n\) stosując np. ANN i obliczamy przyczynki do
+\(\hat{p}(\bm{x})\) tylko od nich.
 
 
 \section{Podstawy statystycznego uczenia maszynowego}
@@ -684,138 +976,6 @@ numerycznej. Estymatory MLE są asymptotycznie nieobciążone.
 Przechodzimy teraz do zagadnień uczenia maszynowego, w których wykorzystamy przedstawioną wcześniej
 teorię rachunku prawdopodobieństwa (w szczególności teorię zmiennych losowych) oraz wnioskowania
 statystycznego.
-
-
-\subsection{Podstawy wnioskowania bayesowskiego}
-
-Niech \(\mc{X} = \{\bm{x}_1,\ldots,\bm{x}_n\}\) będzie realizacją prostej próby losowej, czyli
-inaczej zbiorem obserwacji i.i.d. Zakładamy, że obserwacje te pochodzą z pewnego parametrycznego
-modelu statystycznego \(\mc{P}\) z parametrami \(\bm{\theta} \in \Theta\). Wcześniej \(\bm{\theta}\)
-miał jedynie rangę parametru. We wnioskowaniu bayesowskim uznajemy, że parametry \(\bm{\theta}\) są
-również zmiennymi losowymi, a model statystyczny modeluje warunkowy rozkład prawdopodobieństwa
-obserwacji pod warunkiem parametru. Mamy zatem rodzinę gęstości prawdopodobieństwa \(p(\bm{x} \mid
-\bm{\theta})\) i chcemy wnioskować o parametrze \(\bm{\theta}\) na podstawie obserwacji \(\mc{X}\).
-Jeśli znamy rozkład a priori (inaczej \emph{prior}) parametru \(\bm{\theta}\) opisany przez
-\(p(\bm{\theta})\), to z twierdzenia Bayesa rozkład a posteriori (\emph{posterior}) jest dany przez
-\begin{equation}
-    p(\bm{\theta} \mid \mc{X}) = \frac{p(\mc{X} \mid \bm{\theta}) p(\bm{\theta})}{p(\mc{X})} = \frac{p(\mc{X} \mid \bm{\theta}) p(\bm{\theta})}{\sum_{\bm{\theta}' \in \Theta} p(\mc{X} \mid \bm{\theta}') p(\bm{\theta}')}
-\end{equation}
-Nie jesteśmy tutaj zbyt formalni z notacją, gdyż używamy \(p\) bardziej jakby był to rozkład
-prawdopodobieństwa (miara probabilistyczna), a w rzeczywistości jest to gęstość lub funkcja
-prawdopodobieństwa, więc powinniśmy używać indeksów dolnych określających zmienną losową, której
-rozkład jest opisany danym \(p\), aby rozróżnić człony od siebie. Zapis taki jest jednak niezwykle
-wygodny i dość czytelny. Należy jedynie pamiętać, iż nazwa argumentu funkcji \(p\) określa teraz z
-jakiego wzoru powinniśmy skorzystać aby obliczyć jej wartość. Człon w mianowniku postaci
-\begin{equation}
-     Z = \sum_{\bm{\theta}' \in \Theta} p(\mc{X} \mid \bm{\theta}') p (\bm{\theta}') \approxeq \int\limits_\Theta p(\mc{X} \mid \bm{\theta}') p (\bm{\theta}') \dd[n]{\bm{\theta}'}
-\end{equation}
-jest tzw. \emph{czynnikiem normalizacyjnym} (czyli po prostu liczbą, często oznaczaną przez \(Z\)),
-który zapewnia, iż \(p(\bm{\theta} \mid \mc{X})\) sumuje / całkuje się do \(1\).
-
-Ponieważ założyliśmy, iż obserwacje ze zbioru \(\mc{X}\) są warunkowo niezależne względem parametru
-\(\bm{\theta}\) oraz pochodzą z tego samego rozkładu opisanego przez \(p(\bm{x} \mid \bm{\theta})\),
-więc człon \(p(\mc{X} \mid \bm{\theta})\) zwany \emph{wiarygodnością} możemy zapisać jako
-\begin{equation}
-    p(\mc{X} \mid \bm{\theta}) = \prod_{i=1}^n p(\bm{x}_i \mid \bm{\theta})\,.    
-\end{equation}
-Całe wnioskowanie bayesowskie opiera się na wyznaczeniu rozkładu a posteriori dla danego zbioru
-obserwacji \(\mc{X}\), który wyraża naszą wiedzę o estymowanym parametrze \(\bm{\theta}\). Na
-podstawie tego rozkładu możemy wyznaczyć estymatę punktową MAP maksymalizującą gęstość
-prawdopodobieństwa a posteriori, 
-\begin{equation}
-    \bm{\hat \theta}_\mathrm{MAP}(\mc{X}) = \arg \max_{\bm{\theta} \in \Theta} p(\bm{\theta} \mid \mc{X})\,,
-\end{equation}
-jak również niepewność związaną z wyznaczeniem tej estymaty np. poprzez wyznaczenie przedziału
-wiarygodności (nie należy mylić z przedziałem ufności). Możemy również skonstruować rozkład
-predykcyjny (z ang. \textit{posterior predictive distribution}) określający prawdopodobieństwo
-uzyskania nowej obserwacji \(\bm{t}\)\
-\begin{equation}
-    p(\bm{t} \mid \mc{X}) = \int\limits_\Theta p(\bm{t} \mid \bm{\theta}) p(\bm{\theta} \mid \mc{X}) \dd[k]{\bm{\theta}}\,.
-\end{equation}
-
-Znając rozkład a posteriori estymowanego parametru \(\bm{\theta}\) możemy nie tylko wyznaczyć
-estymaty punktowe, wartości oczekiwane i przedziały wiarygodności, ale również znaleźć estymator
-Bayesa (z ang. \textit{Bayes estimator}), który minimalizuje wartość oczekiwaną pewnej funkcji
-straty (z ang. \textit{loss function}) \(L(\bm{\theta}, \bm{\hat \theta})\) po wszystkich
-estymatorach \(\bm{\hat \theta}\)
-\begin{equation}
-    \bm{\hat \theta}_\mathrm{Bayes}(\mc{X}) = \arg\min_{\bm{\hat \theta} \in \Theta} \int\limits_{\Theta} L(\bm{\theta}, \bm{\hat \theta}) p(\bm{\theta} \mid \mc{X}) \dd[k]{\bm{\theta}}\,.
-\end{equation}
-Całkę w powyższym wzorze nazywa się również funkcją ryzyka (z ang. \textit{risk function})
-\(R(\bm{\hat \theta})\), która określa oczekiwaną stratę spowodowaną wykorzystaniem danego
-estymatora parametru.
-
-Są dwa zasadnicze problemy we wnioskowaniu bayesowskim: pierwszym jest potrzeba znania rozkładu a
-priori estymowanego parametru, drugim -- problem z obliczeniem czynnika normalizującego, który może
-być skomplikowaną całką lub sumą po wykładniczo-wielu elementach. Oba te problemy można czasami
-rozwiązać wprowadzając tzw. \emph{prior sprzężony do wiarygodności}, tzn. zakładamy taki rozkład a
-priori, aby dla danej wiarygodności rozkład a posteriori miał znaną postać (np. rozkładu normalnego,
-rozkładu beta), wówczas nie musimy obliczać czynnika normalizującego, gdyż jest on po prostu znany.
-
-
-\subsection{Modele gaussowskie i liniowe modele gaussowskie}
-
-Zajmiemy się teraz wnioskowaniem bayesowskim w modelach, w których potrafimy analitycznie znaleźć
-postać rozkład a posteriori. Jak już wspomnieliśmy (Tw. \ref{th:mvn}) gdy zmienna losowa \(\bm{X}\)
-ma wielowymiarowy rozkład normalny z wartością oczekiwaną \(\bm{\mu}\) i dodatnio określoną macierzą
-kowariancji \(\bm{\Sigma}\) to wszystkie rozkłady warunkowe i brzegowe są rozkładami normalnymi.
-Poniżej wyznaczymy parametry tych rozkładów.
-
-\begin{theorem}\label{th:gauss_model} Niech zmienne losowe \(\bm{x} \in \mathbb{R}^{n-k}\) i
-\(\bm{y} \in \mathbb{R}^k\) mają łącznie wielowymiarowy rozkład normalny
-\begin{equation*}
-    \mqty[\bm{x} \\ \bm{y}] \sim \mc{N}\left(\mqty[\bm{\mu}_{\bm{x}} \\ \bm{\mu}_{\bm{y}}], \mqty[\bm{\Sigma}_{\bm{xx}} & \bm{\Sigma}_{\bm{xy}} \\ \bm{\Sigma}_{\bm{yx}} & \bm{\Sigma}_{\bm{yy}}] \right)\,.
-\end{equation*} 
-Wówczas
-\begin{enumerate}
-    
-    \item Zmienne losowe \(\bm{x}\) i \(\bm{y}\) mają odpowiednio rozkłady
-    \begin{equation*}
-        \bm{x} \sim \mc{N}(\bm{\mu}_{\bm{x}}, \bm{\Sigma}_{\bm{xx}})\,,\quad \bm{y} \sim \mc{N}(\bm{\mu}_{\bm{y}}, \bm{\Sigma}_{\bm{yy}})\,.
-    \end{equation*}
-
-    \item Rozkład warunkowy \(\bm{x} \mid \bm{y}\) jest rozkładem normalnym \(\bm{x} \mid \bm{y}
-    \sim \mc{N}(\bm{\mu}_{\bm{x}\mid\bm{y}}, \bm{\Sigma}_{\bm{x}\mid\bm{y}})\) o parametrach
-    \begin{equation*}
-        \bm{\mu}_{\bm{x}\mid\bm{y}} = \bm{\mu}_{\bm{x}} + \bm{\Sigma}_{\bm{xy}}\bm{\Sigma}_{\bm{yy}}^{-1}(\bm{y} - \bm{\mu}_{\bm{y}})\,,\quad \bm{\Sigma}_{\bm{x}\mid\bm{y}} = \bm{\Sigma}_{\bm{xx}} - \bm{\Sigma}_{\bm{xy}}\bm{\Sigma}_{\bm{yy}}^{-1}\bm{\Sigma}_{\bm{yx}}\,.
-    \end{equation*}
-\end{enumerate}
-\end{theorem}
-Powyższe własności normalnych rozkładów łącznych pozwalają jawnie wnioskować w tzw. liniowych
-modelach gaussowskich (z ang. \textit{Linear Gaussian Models}). Załóżmy, iż nasze obserwacje są
-modelowane zmienną losową \(\bm{y}\) o rozkładzie normalnym z estymowanym parametrem \(\bm{x}\) i
-znanymi parametrami \(\bm{A}, \bm{b}, \bm{\Sigma}_{\bm{y}}\) tak, że wiarygodność ma postać
-\begin{equation}
-    \bm{y} \mid \bm{x} \sim \mc{N}(\bm{A}\bm{x} + \bm{b}, \bm{\Sigma}_{\bm{y}})\,,
-\end{equation}
-gdzie \(\bm{A}\) jest w ogólności macierzą prostokątną. Jeśli jako prior na \(\bm{x}\) przyjmiemy
-również rozkład normalny
-\begin{equation}
-    \bm{x} \sim \mc{N}(\bm{\mu}_{\bm{x}}, \bm{\Sigma}_{\bm{x}})
-\end{equation}
-to rozkład a posteriori jest również rozkładem normalnym. W szczególności załóżmy, że mamy zbiór
-obserwacji i.i.d. \(\mc{X} = \{\bm{y}^1, \ldots, \bm{y}^n\}\). Wówczas wiarygodność ma postać
-\begin{equation}
-    p(\mc{X} \mid \bm{x}) \propto \prod_{i=1}^n \exp\left(-\frac{1}{2}(\bm{y}^i - (\bm{Ax}+\bm{b}))^T\bm{\Sigma}_{\bm{y}}^{-1}(\bm{y}^i - (\bm{Ax}+\bm{b}))\right)\,,
-\end{equation}
-a rozkład a posteriori
-\begin{equation}
-    p(\bm{x} \mid \mc{X}) \propto p(\mc{X} \mid \bm{x}) \exp\left(-\frac{1}{2}(\bm{x} - \bm{\mu}_{\bm{x}})^T\bm{\Sigma}_{\bm{x}}^{-1}(\bm{x} - \bm{\mu}_{\bm{x}})\right)\,.
-\end{equation}
-Rozpisując wszystkie czynniki i pomijając czynnik stałe otrzymujemy
-\begin{equation}
-    \begin{split}
-        \log p(\bm{x} \mid \mc{X}) &\propto -\frac{1}{2}\bm{x}^T\left(\bm{\Sigma}_{\bm{x}}^{-1} + n\bm{A}^T\bm{\Sigma}_{\bm{y}}^{-1}\bm{A}\right)\bm{x}\\
-        & + \bm{x}^T\left(\bm{\Sigma}_{\bm{x}}^{-1}\bm{\mu}_{\bm{x}} + \bm{A}^T\bm{\Sigma}_{\bm{y}}^{-1}\left[\sum_{i=1}^n\bm{y}^i - n\bm{b}\right]\right)
-    \end{split}
-\end{equation}
-skąd widzimy, iż rozkład \(\bm{x} \mid \mc{X}\) jest rozkładem normalnym o parametrach
-\begin{equation}\label{eq:linear_gauss}\boxed{
-    \begin{split}
-        &\bm{\mu}_{\bm{x} \mid \mc{X}} = \bm{\Sigma}_{\bm{x} \mid \mc{X}} \left(\bm{\Sigma}_{\bm{x}}^{-1}\bm{\mu}_{\bm{x}} + \bm{A}^T\bm{\Sigma}_{\bm{y}}^{-1}\left[\sum_{i=1}^n\bm{y}^i - n\bm{b}\right]\right) \,,\\
-        &\bm{\Sigma}_{\bm{x} \mid \mc{X}} = \left(\bm{\Sigma}_{\bm{x}}^{-1} + n\bm{A}^T\bm{\Sigma}_{\bm{y}}^{-1}\bm{A}\right)^{-1}\,.
-    \end{split}
-}\end{equation}
 
 
 \subsection{Regresja liniowa}
@@ -921,7 +1081,7 @@ Zagadnienie minimalizacji takiej funkcji kosztu nazywamy ElasticNet i tak jak w 
 musimy korzystać z algorytmów optymalizacji numerycznej. Często wykorzystuje się tutaj algorytmy
 bezgradientowe np. coordinate descent.
 
-\subsection{Robust regression}
+\subsection{Regresja kwantylowa}
 
 Zastanówmy się wpierw na czym tak naprawdę polega modelowanie rozkładu warunkowego \(y(\bm{x}) \mid
 \bm{w}\) za pomocą określonego rozkładu prawdopodobieństwa. Można by było pomyśleć, iż takie
@@ -1100,7 +1260,7 @@ procesu Gaussowskiego, więc rozkład łączny \(\bm{f}_X\) i \(\bm{f}_Y\) jest 
 \begin{equation}
     \mqty[\bm{f}_X \\ \bm{f}_Y] \sim \mc{N}\left(\bm{0}, \mqty[k(X,X) & k(X,Y) \\ k(Y,X) & k(Y,Y)]\right)\,.
 \end{equation}
-Zauważmy, iż jest to instancja modelu gaussowskiego (Tw. \ref{th:gauss_model}), więc rozkład
+Zauważmy, iż z twierdzenia o własnościach niezdegenerowanego rozkładu normalnego wnioskujemy, iż
 warunkowy \(\bm{f}_Y\mid \bm{f}_X\) jest również rozkładem normalnym o parametrach
 \begin{equation}
     \begin{split}
@@ -1217,47 +1377,6 @@ zbiorów danych skalujących się wykładniczo wraz z liczbą cech \(d\). Człon
 natomiast prosto oszacować jako stosunek przykładów danej klasy w zbiorze \(\mc{X}\).
 
 
-\subsection{Estymator jądrowy gęstości}
-
-Załóżmy, że mamy zbiór obserwacji i.i.d. \(\{\bm{x}_1, \ldots, \bm{x}_n\}\) taki, że \(\bm{x} \sim
-\mc{D}\) dla pewnego \(d\)--wymiarowego ciągłego rozkładu prawdopodobieństwa \(\mc{D}\) z nieznaną
-gęstością prawdopodobieństwa \(p(\bm{x})\). Chcemy znaleźć estymator \(\hat{p}(\bm{x})\) tej
-funkcji. Estymatorem jądrowym gęstości funkcji \(p\) (z ang. \textit{kernel density estimator})
-nazywamy funkcję
-\begin{equation}\boxed{
-    \hat{p}(\bm{x}) := \frac{1}{mh^d}\sum_{i=1}^n K\left(\frac{\bm{x} - \bm{x}_i}{h}\right)\,,
-}\end{equation}
-gdzie \(h \in \mathbb{R}\) jest pewnym hiperparametrem zwanym \textit{bandwidth}, a \(K:
-\mathbb{R}^d \mapsto [0; \infty)\) to tzw. funkcja jądrowa będąca parzystą funkcją posiadającą w 0
-maksimum globalne oraz spełniającą warunek unormowania
-\begin{equation}
-    \int\limits_{\mathbb{R}^d} K(\bm{x}) \dd[d]{\bm{x}}= 1\,.
-\end{equation}
-Ze statystycznego punktu widzenia, postać jądra nie ma istotnego znaczenia i wybór funkcji  \(K\)
-może być arbitralny, uwzględniający przede wszystkim pożądane własności otrzymanego estymatora, na
-przykład klasę jego regularności (ciągłość, różniczkowalność itp.). W przypadku jednowymiarowym jako
-funkcję \(K\) przyjmuje się klasyczne postacie gęstości rozkładów probabilistycznych, na przykład
-gęstość rozkładu normalnego. W przypadku wielowymiarowym stosuje się tzw. jądro radialne tj. dla
-jądra jednowymiarowego \(K\) wielowymiarowe jądro radialne definiujemy jako
-\begin{equation}
-    K(\bm{x}) = K(\norm{\bm{x}})
-\end{equation}
-dla pewnej normy (typowo normy euklidesowej) \(\norm{\cdot}\).
-
-KDE w praktycznych zastosowaniach często przyspiesza się za pomocą struktur danych analogicznych jak
-w przypadku kNN, tj. zamiast sumować przyczynki od wszystkich punktów \(\bm{x}_i\) dla danego
-\(\bm{x}\), znajdujemy \(k\) najbliższych sąsiadów \(\bm{x}\) ze zbioru \(\{\bm{x}_i\}_{i=1}^n\)
-stosując np. ANN i obliczamy przyczynki do \(\hat{p}(\bm{x})\) tylko od nich.
-
-Jedynym większym problemem w przypadku KDE jest wybór odpowiedniej wartości parametru \(h\). Jeśli
-używamy jądra gaussowskiego to \emph{reguła Silvermana}, która podaje prosty przepis na szerokość
-kernela, przy założeniu, iż rozkład jest unimodalny
-\begin{equation}
-    h_\mathrm{Silverman} = \left(\frac{4}{d + 2}\right)n^{\frac{-1}{d + 4}}\sigma\,,
-\end{equation}
-gdzie \(\sigma\) to odchylenie standardowe, \(n\) to liczba próbek, a \(d\) -- liczba wymiarów.
-
-
 \subsection{Wieloklasowa regresja logistyczna}
 
 Powróćmy do zagadnienia klasyfikacji, w którym mamy zbiór obserwacji i.i.d. \(\mc{X} =
@@ -1362,188 +1481,4 @@ co również możemy zapisać w zwartej postaci macierzowej
 }\end{equation}
 
 
-\subsection{Próbkowanie Monte Carlo łańcuchami Markowa}
-
-Okazuje się, iż do generowania próbek ze skomplikowanego rozkładu \(p(\bm{x})\) wystarcza znajomość
-tego rozkładu z dokładnością do stałej normalizującej, a zatem wystarczy znać rozkład łączny
-\(\tilde{p}(\bm{x}) = Z_p p(\bm{x})\). Generowanie próbek z kolei wystarcza natomiast, na mocy
-silnego prawa wielkich liczb, do szacowania wartości średnich dowolnych funkcji estymowanego
-parametru \(\theta\). Przypomnijmy, iż na mocy silnego prawa wielkich liczb ciąg średnich
-częściowych \((\overline{X}_n)\) ciągu zmiennych losowych \((X_n)\) i.i.d. z rozkładu \(X \sim
-\mc{D}\) jest zbieżny z prawdopodobieństwem 1 do wartości oczekiwanej \(\mathbb{E}[X]\) tj.
-\begin{equation}
-    \Pr\left(\lim_{n \to \infty} \overline{X}_n = \mathbb{E}[X]\right) = 1\,.
-\end{equation}
-Wartość oczekiwaną \(\mathbb{E}[X]\) możemy zatem przybliżyć średnią \(\overline{X}_n\) z dużej
-ilości próbek.
-
-Pozostaje pytanie w jaki sposób generować próbki ze skomplikowanych rozkładów prawdopodobieństwa,
-których gęstości znamy jedynie z dokładnością do stałej normalizującej. Poniżej przedstawimy dwa
-algorytmy próbkowania: algorytm IS oraz Metropolisa--Hastingsa będący szczególną realizacją całej
-rodziny algorytmów próbkowania zwanych Markov Chain Monte Carlo (MCMC).
-
-\subsubsection{Algorytm Importance Sampling}
-
-Załóżmy, iż chcemy obliczyć wartość oczekiwaną pewnej funkcji zmiennej losowej \(\bm{x}\) względem
-skomplikowanego rozkładu prawdopodobieństwa \(p(\bm{x})\), który znamy jedynie z dokładnością do
-stałej normalizującej
-\begin{equation}
-    p(\bm{x}) = \frac{1}{Z_p}\tilde{p}(\bm{x})
-\end{equation}
-tj. szukamy
-\begin{equation}
-    \mathbb{E}_p[f(\bm{x})] = \int f(\bm{x}) p(\bm{x})\dd[n]\bm{x}\,.
-\end{equation}
-Jeśli umiemy generować próbki \(\bm{x}\) z innego (prostszego) rozkładu \(q(\bm{x})\), który
-nazywamy rozkładem proponującym kandydatów (z ang. \textit{proposal distribution}) to możemy zapisać
-\begin{equation}
-    \begin{split}
-        \mathbb{E}_p[f(\bm{x})] &= \int\limits_{\mathbb{R}^n}f(\bm{x})p(\bm{x})\dd[n]\bm{x} = \int\limits_{\mathbb{R}^n}f(\bm{x})\frac{p(\bm{x})}{q(\bm{x})}q(\bm{x})\dd[n]\bm{x}\\
-         &=\mathbb{E}_q\left[f(\bm{x}) \frac{p(\bm{x})}{q(\bm{x})}\right] = \frac{Z_q}{Z_p}\mathbb{E}_q\left[f(\bm{x}) \frac{\tilde{p}(\bm{x})}{\tilde{q}(\bm{x})}\right]\,.
-    \end{split}
-\end{equation}
-Zakładamy tutaj, iż nośnik rozkładu \(p\) zawiera się w nośniku \(q\) tj. \(\text{supp}\,p \subseteq
-\text{supp}\,q\). Stosunek stałych \(Z_p / Z_q\) również możemy oszacować z próbek z \(q\), gdyż
-mamy
-\begin{equation}
-    Z_p = \int\limits_{\mathbb{R}^n}\tilde{p}(\bm{x})\dd[n]{\bm{x}} = Z_q\int\limits_{\mathbb{R}^n}\frac{\tilde{p}(\bm{x})}{\tilde{q}(\bm{x})} q(\bm{x})\dd[n]{\bm{x}} = Z_q \mathbb{E}_q\left[\frac{\tilde{p}(\bm{x})}{\tilde{q}(\bm{x})}\right]\,,
-\end{equation}
-skąd ostatecznie
-\begin{equation}
-    \mathbb{E}_p[f(\bm{x})] = \frac{\mathbb{E}_q\left[f(\bm{x}) \frac{\tilde{p}(\bm{x})}{\tilde{q}(\bm{x})}\right]}{\mathbb{E}_q\left[\frac{\tilde{p}(\bm{x})}{\tilde{q}(\bm{x})}\right]}\,.
-\end{equation}
-Jeśli z rozkładu \(q\) wygenerowaliśmy próbki \(X = \left\{\bm{x}_1,\ldots,\bm{x}_m\right\}\) to na
-mocy silnego prawa wielkich liczb mamy
-\begin{equation}\boxed{
-    \mathbb{E}_p[f(\bm{x})] \approx \frac{\sum_{i=1}^m f(\bm{x}_i) \frac{\tilde{p}(\bm{x}_i)}{\tilde{q}(\bm{x}_i)}}{\sum_{j=1}^m \frac{\tilde{p}(\bm{x}_j)}{\tilde{q}(\bm{x}_j)}} = \sum_{i=1}^m \lambda_i f(\bm{x}_i)\,,
-}\end{equation}
-gdzie
-\begin{equation}\boxed{
-    \lambda_i = \frac{\tilde{p}(\bm{x}_i) / \tilde{q}(\bm{x}_i)}{\sum_{j=1}^m \tilde{p}(\bm{x}_j) / \tilde{q}(\bm{x}_j) }\,.
-}\end{equation}
-
-Algorytm Importance Sampling jest prostym algorytmem Monte Carlo, który ma jeden zasadniczy problem.
-W jaki sposób mamy wybrać rozkład proponujący kandydatów \(q\)? Pewną odpowiedź na to pytanie
-sugeruje analiza wariancji statystyki 
-\begin{equation}
-    \overline{f}_m(\bm{x}_1,\ldots,\bm{x}_m) = \frac{1}{m}\sum_{i=1}^m \frac{f(\bm{x}_i)p(\bm{x}_i)}{q(\bm{x}_i)}
-\end{equation}
-dla \(\bm{x}_i \sim q\) mamy
-\begin{equation}
-    \begin{split}
-        \mathbb{V}[\overline{f}_m] &= \frac{1}{m}\mathbb{V}_q\left[f(\bm{x})\frac{p(\bm{x})}{q(\bm{x})}\right] = \frac{1}{m}\int\limits_{\mathbb{R}^n}\frac{(f(\bm{x})p(\bm{x}) - \mu_fq(\bm{x}))^2}{q(\bm{x})}\dd[n]{\bm{x}}\,.
-    \end{split}
-\end{equation}
-Chcemy oczywiście, aby wariancja była jak najmniejsza, gdyż wówczas mała liczba próbek da dobre
-przybliżenie wartości oczekiwanej. Rozkład proponujący kandydatów powinien być zatem proporcjonalny
-do \(f(\bm{x})p(\bm{x})\), co może być trudne do praktycznego zrealizowania.
-
-
-\subsubsection{Algorytm Metropolisa--Hastingsa}
-
-Cała klasa algorytmów próbkowania MCMC opiera się na idei wyrażenia generowania próbek jako ewolucji
-pewnego łańcucha Markowa.
-
-\begin{definition}[Łańcucha Markowa]
-Łańcuchem Markowa nazwiemy ciąg zmiennych losowych \((\bm{X}_t)\) o wartościach w \(\mathbb{R}^n\)
-taki, że spełnione jest \emph{kryterium Markowa}
-\begin{equation*}
-    \begin{split}
-        \forall A \subset \mathbb{R}^n :\, &\Pr(\bm{X}_t \in A \mid \bm{X}_{t-1} = \bm{x}_{t-1}, \ldots, \bm{X}_0 = \bm{x}_0) \\
-        &= \Pr(\bm{X}_t \in A \mid \bm{X}_{t-1} = \bm{x}_{t-1})\,.
-    \end{split}
-\end{equation*}
-Elementy ciągu nazywamy stanami łańcucha.
-\end{definition}
-
-Dany łańcuch jest zadany jednoznacznie przez podanie gęstości prawdopodobieństwa przejścia łańcucha
-ze stanu \(\bm{x} \to \bm{y}\), którą będziemy oznaczać przez \(\pi(\bm{y} \mid \bm{x})\)
-(zakładamy, iż prawdopodobieństwo przejścia jest niezależne od chwili \(t\) -- łańcuch taki nazywamy
-jednorodnym). Funkcja \(\pi\) spełnia oczywiście warunek unormowania
-\begin{equation}
-    \int\limits_{\mathbb{R}^n} \pi(\bm{y} \mid \bm{x}) \dd[n]{\bm{y}}\,,
-\end{equation} 
-istotnie prawdopodobieństwo przejścia gdziekolwiek ze stanu \(\bm{x}\) jest równe 1. Będziemy
-zakładać dodatkowo, iż \(\forall \bm{x},\bm{y}\in\mathbb{R}^n: \pi(\bm{y} \mid \bm{x}) > 0\).
-Rozkład \(p(\bm{x})\) łańcucha Markowa (tj. rozkład prawdopodobieństwa z którego losujemy stan
-łańcucha w danej chwili \(t\)) z daną funkcją przejścia \(\pi\) nazwiemy rozkładem stacjonarnym tego
-łańcucha jeśli
-\begin{equation}
-    p(\bm{y}) = \int\limits_{\mathbb{R}^n} \pi(\bm{y} \mid \bm{x})p(\bm{x}) \dd[n]{\bm{x}}\,.
-\end{equation}
-Rozkład stacjonarny danego łańcucha oznaczymy przez \(p^*(\bm{x})\). Zauważmy, iż jeśli stan
-początkowy łańcucha \(\bm{X}_0\) pochodzi z rozkładu stacjonarnego \(p^*\) to każdy kolejny stan
-\(\bm{X}_t\) również pochodzi z rozkładu stacjonarnego. Jeśli z kolei stan początkowy pochodzi z
-jakiegoś innego rozkładu \(p_0\) to rozkład łańcucha w chwili \(t\) jest dany przez relację
-rekurencyjną
-\begin{equation}
-    p_t(\bm{y}) = \int\limits_{\mathbb{R}^n} \pi(\bm{y} \mid \bm{x})p_{t-1}(\bm{x}) \dd[n]{\bm{x}}\,,\quad\text{dla \(t > 1\).}
-\end{equation}
-Rozkładem granicznym łańcucha Markowa nazwiemy granicę w sensie zbieżności punktowej
-\begin{equation}
-    \lim_{t\to\infty} p_t(\bm{x})\,.
-\end{equation}
-Przy podanych wyżej założeniach istnieje twierdzenie, które mówi iż taki łańcuch Markowa posiada
-jednoznaczny rozkład stacjonarny tożsamy z rozkładem granicznym. Ponadto warunkiem wystarczającym,
-aby dany rozkład \(p(\bm{x})\) był rozkładem stacjonarnym łańcucha Markowa jest
-\begin{equation}
-    \forall\bm{x}, \bm{y} \in \mathbb{R}^n: \pi(\bm{y}\mid\bm{x}) p(\bm{x}) = \pi(\bm{x} \mid \bm{y}) p(\bm{y})\,,
-\end{equation}
-co wynika z scałkowania powyższego równania
-\begin{equation}
-    \int\limits_{\mathbb{R}^n} \pi(\bm{y}\mid\bm{x}) p(\bm{x}) \dd[n]{\bm{x}} = \int\limits_{\mathbb{R}^n} \pi(\bm{x} \mid \bm{y}) p(\bm{y}) \dd[n]{\bm{x}} = p(\bm{y}) \int\limits_{\mathbb{R}^n} \pi(\bm{x} \mid \bm{y}) \dd[n]{\bm{x}} = p(\bm{y})\,.
-\end{equation}
-Kryterium to nazywamy \emph{kryterium lokalnego balansu} (z ang. \textit{detailed balance
-condition}).
-
-Podstawowa idea wykorzystania łańcuchów Markowa do generowania próbek ze skomplikowanego rozkładu
-\(p\) jest więc następująca: tworzymy łańcuch Markowa, dla którego \(p\) jest rozkładem
-stacjonarnym, wówczas rozpoczynając w dowolnym dopuszczalnym stanie początkowym \(\bm{X}^0\) po
-wykonaniu dużej liczby kroków (etap ten nazywamy okresem przejściowym z ang. \textit{burn-in
-period}) stan \(\bm{X}^t\) (dla \(t \gg 1\)) tego łańcucha będzie w przybliżeniu pochodził z
-rozkładu granicznego \(p\) (nie jest jednak prosto stwierdzić po jak długim okresie przejściowym
-przybliżenie to jest wystarczająco dobre). Aby otrzymać z takiej procedury próbki prawdziwie i.i.d.
-każda z próbek musiałaby pochodzić z ponownego uruchomienia takiego łańcucha. Oczywiście jest to
-nieefektywne, więc w praktyce generujemy próbki z jednego łańcucha po prostu odrzucając pewne z nich
-tak aby uniknąć znaczących korelacji. Pozostaje pytanie jak skonstruować funkcję przejścia
-\(\pi(\bm{y} \mid \bm{x})\) dla danego rozkładu granicznego \(p(\bm{x})\). Podstawową konstrukcję
-podaje algorytm Metropolisa--Hastingsa.
-\begin{tcolorbox}[title=Algorytm Metropolisa--Hastingsa, breakable, boxrule=0pt]
-\begin{enumerate}
-\item Jako stan początkowy przyjmij dowolną dopuszczalną wartość \(\bm{x}_0\).
-\item Będąc w aktualnym stanie \(\bm{x}\) z prostego rozkładu proponującego kandydatów \(q(\bm{y}
-    \mid \bm{x})\) wylosuj kandydata \(\bm{y}\) na wartość łańcucha w kolejnym stanie.
-\item Z prawdopodobieństwem
-    \begin{equation*}
-        r(\bm{y} \mid \bm{x}) = \min\left\{1, \frac{p(\bm{y})q(\bm{x} \mid \bm{y})}{p(\bm{x})q(\bm{y} \mid \bm{x})}\right\}
-    \end{equation*}
-    zaakceptuj kandydata jako nowy stan i przejdź do stanu \(\bm{y}\). W przeciwnym razie pozostań w
-    stanie \(\bm{x}\).
-\item GOTO 2.
-\end{enumerate}
-\end{tcolorbox}
-
-Funkcja przejścia ma zatem postać
-\begin{equation}
-    \pi_\text{MH}(\bm{y}\mid\bm{x}) = q(\bm{y} \mid \bm{x}) r(\bm{y} \mid \bm{x})\,.
-\end{equation}
-Pozostaje tylko wykazać, iż spełnione jest kryterium lokalnego balansu. Istotnie mamy
-\begin{equation}
-    \begin{split}
-        &\pi_\text{MH}(\bm{y}\mid\bm{x})p(\bm{x}) = \min\left\{q(\bm{y}\mid\bm{x})p(\bm{x}), q(\bm{x}\mid\bm{y})p(\bm{y})\right\}\\
-        &\pi_\text{MH}(\bm{x}\mid\bm{y})p(\bm{y}) = \min\left\{q(\bm{x}\mid\bm{y})p(\bm{y}), q(\bm{y}\mid\bm{x})p(\bm{x})\right\}
-    \end{split}\quad,
-\end{equation}
-skąd \(\pi_\text{MH}(\bm{y}\mid\bm{x})p(\bm{x}) = \pi_\text{MH}(\bm{x}\mid\bm{y})p(\bm{y})\).
-Zauważmy, iż nie musimy znać \(p(\bm{x})\) z dokładnością do stałej normalizującej, gdyż
-\begin{equation}
-    \frac{p(\bm{y})}{p(\bm{x})} = \frac{\tilde{p}(\bm{y})/Z_p}{\tilde{p}(\bm{x})/Z_p} =  \frac{\tilde{p}(\bm{y})}{\tilde{p}(\bm{x})}\,.
-\end{equation}
-Poza algorytmem Metropolisa--Hastingsa jest wiele innych algorytmów z rodziny MCMC. Większość z nich
-implementuje konkretny sposób generowania (zostawiając resztę struktury) tak, aby zmniejszyć
-korelację po okresie przejściowym i przyspieszyć zbieżność. Standardowo wykorzystywanymi algorytmami
-z tej klasy są algorytmy HMC (\textit{Hamiltonian Monte Carlo}) oraz NUTS (\textit{No U-Turn
-Sampler}).
-
-    
 \end{document}

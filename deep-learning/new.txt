@@ -1,24 +1,3 @@
-Rachunek prawdopodobieństwa
-
-  Zmienne losowe wielowymiarowe (dystrybuanta, wartość oczekiwana, transformacja zmiennych)
-
-  Sum rule, Product rule, Bayes theorem, Independence, Warunkowa wartość oczekiwana
-
-  Ważne rozkłady jednowymiarowe (Dwupunktowy, Bernoulliego, Geometryczny, Poissona, Uniform, Wykładniczy, Normalny)
-
-  MVN
-
-  Metoda MLE oraz MAP
-
-  Generatory pseudolosowe LCG
-
-  Metoda odwrotnej dystrybuanty i Box-Muller
-
-  MCMC i Algorytm Metropolisa-Hastingsa
-
-  KDE
-
-
 Podstawy uczenia maszynowego
 
   REGRESSION
