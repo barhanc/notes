@@ -838,7 +838,7 @@ ze stanu \(\bm{x} \to \bm{y}\), którą będziemy oznaczać przez \(\pi(\bm{y} \
 (zakładamy, iż prawdopodobieństwo przejścia jest niezależne od chwili \(t\) -- łańcuch taki nazywamy
 jednorodnym). Funkcja \(\pi\) spełnia oczywiście warunek unormowania
 \[
-\int\limits_{\mathbb{R}^n} \pi(\bm{y} \mid \bm{x}) \dd[n]{\bm{y}}\,,
+\int\limits_{\mathbb{R}^n} \pi(\bm{y} \mid \bm{x}) \dd[n]{\bm{y}} =\,,
 \]
 istotnie prawdopodobieństwo przejścia gdziekolwiek ze stanu \(\bm{x}\) jest równe 1. Będziemy
 zakładać dodatkowo, iż \(\forall \bm{x},\bm{y}\in\mathbb{R}^n: \pi(\bm{y} \mid \bm{x}) > 0\).
@@ -1156,33 +1156,33 @@ oszacowaniem niepewności punktowej estymaty.
 
 Jak już wspomnieliśmy macierz kowariancji \(n\)--wymiarowej zmiennej losowej \(\bm{x}\) o wartości
 oczekiwanej \(\bm{\mu}\) jest zdefiniowana jako
-\begin{equation}
-    \bm{\Sigma} = \mathbb{E}\left[(\bm{x} - \bm{\mu})(\bm{x} - \bm{\mu})^T\right]\,.
-\end{equation}
+\[
+\bm{\Sigma} = \mathbb{E}\left[(\bm{x} - \bm{\mu})(\bm{x} - \bm{\mu})^T\right]\,.
+\]
 Wiemy również, iż macierz ta jest nieujemnie określona. Pokażemy teraz, iż dla każdej nieujemnie
 określonej macierzy symetrycznej \(\bm{K}\) wymiaru \(n\times n\) istnieje \(n\)--wymiarowa zmienna
 losowa o wielowymiarowym rozkładzie normalnym, dla której \(\bm{K}\) jest macierzą kowariancji.
 Istotnie dla każdej nieujemnie określonej macierzy symetrycznej istnieje macierz \(\bm{L}\) taka, że
-\begin{equation}
-    \bm{K} = \bm{L}\bm{L}^T\,,
-\end{equation}
+\[
+\bm{K} = \bm{L}\bm{L}^T\,,
+\]
 jest to tzw. \emph{dekompozycja Choleskiego}. Niech \(\bm{z} \sim \mc{N}(\bm{0}, \bm{1})\), wówczas
 zmienna losowa \(\bm{L}\bm{z}\) ma rozkład o zerowej wartości oczekiwanej i macierzy kowariancji
-\begin{equation}
-    \mathbb{E}\left[(\bm{L}\bm{z})(\bm{L}\bm{z})^T\right] = \mathbb{E}\left[\bm{L}\bm{z}\bm{z}^T\bm{L}^T\right] = \bm{L}\mathbb{E}[\bm{z}\bm{z}^T]\bm{L}^T = \bm{L}\bm{1}\bm{L}^T = \bm{K}\,.
-\end{equation}
+\[
+\mathbb{E}\left[(\bm{L}\bm{z})(\bm{L}\bm{z})^T\right] = \mathbb{E}\left[\bm{L}\bm{z}\bm{z}^T\bm{L}^T\right] = \bm{L}\mathbb{E}[\bm{z}\bm{z}^T]\bm{L}^T = \bm{L}\bm{1}\bm{L}^T = \bm{K}\,.
+\]
 Powyższe własności wskazują, iż macierze kowariancji można w pewnym sensie utożsamiać z nieujemnie
 określonymi macierzami symetrycznymi.
 
 \begin{definition}[Funkcji kowariancji]
 Funkcję \(k: \mathbb{R}^n\times\mathbb{R}^n\mapsto\mathbb{R}\) taką, że \(\forall m\in\mathbb{N} :
 \forall X = \{\bm{x}_1,\ldots,\bm{x}_m\} \subset \mathbb{R}^n\) macierz
-\begin{equation*}
-    k(X,X) = \mqty[k(\bm{x}_1, \bm{x}_1) & k(\bm{x}_1, \bm{x}_2) & \cdots & k(\bm{x}_1, \bm{x}_m)\\
-    k(\bm{x}_2, \bm{x}_1) & k(\bm{x}_2, \bm{x}_2) & \cdots & k(\bm{x}_2, \bm{x}_m)\\
-    \vdots & \vdots & \ddots & \vdots\\
-    k(\bm{x}_m, \bm{x}_1) & k(\bm{x}_m, \bm{x}_2) & \cdots & k(\bm{x}_m, \bm{x}_m)\\]
-\end{equation*}
+\[
+k(X,X) = \mqty[k(\bm{x}_1, \bm{x}_1) & k(\bm{x}_1, \bm{x}_2) & \cdots & k(\bm{x}_1, \bm{x}_m)\\
+k(\bm{x}_2, \bm{x}_1) & k(\bm{x}_2, \bm{x}_2) & \cdots & k(\bm{x}_2, \bm{x}_m)\\
+\vdots & \vdots & \ddots & \vdots\\
+k(\bm{x}_m, \bm{x}_1) & k(\bm{x}_m, \bm{x}_2) & \cdots & k(\bm{x}_m, \bm{x}_m)\\]
+\]
 jest dodatnio określoną macierzą symetryczną nazywamy funkcją kowariancji, jądrem dodatnio
 określonym (z ang. \textit{positive definite kernel}) lub \emph{jądrem Mercera}.
 \end{definition}
@@ -1190,36 +1190,36 @@ określonym (z ang. \textit{positive definite kernel}) lub \emph{jądrem Mercera
 Dla dwóch zbiorów punktów \(X = \{\bm{x}_1,\ldots,\bm{x}_m\} \subset \mathbb{R}^n\) i \(Y =
 \{\bm{y}_1,\ldots,\bm{y}_s\} \subset \mathbb{R}^n\) i funkcji kowariancji \(k\) wprowadzimy
 oznaczenie
-\begin{equation}
-    k(X,Y) := \mqty[k(\bm{x}_1, \bm{y}_1) & k(\bm{x}_1, \bm{y}_2) & \cdots & k(\bm{x}_1, \bm{y}_s)\\
-    k(\bm{x}_2, \bm{y}_1) & k(\bm{x}_2, \bm{y}_2) & \cdots & k(\bm{x}_2, \bm{y}_s)\\
-    \vdots & \vdots & \ddots & \vdots\\
-    k(\bm{x}_m, \bm{y}_1) & k(\bm{x}_m, \bm{y}_2) & \cdots & k(\bm{x}_m, \bm{y}_s)\\]\,.
-\end{equation}
+\[
+k(X,Y) := \mqty[k(\bm{x}_1, \bm{y}_1) & k(\bm{x}_1, \bm{y}_2) & \cdots & k(\bm{x}_1, \bm{y}_s)\\
+k(\bm{x}_2, \bm{y}_1) & k(\bm{x}_2, \bm{y}_2) & \cdots & k(\bm{x}_2, \bm{y}_s)\\
+\vdots & \vdots & \ddots & \vdots\\
+k(\bm{x}_m, \bm{y}_1) & k(\bm{x}_m, \bm{y}_2) & \cdots & k(\bm{x}_m, \bm{y}_s)\\]\,.
+\]
 Poniżej podajemy kilka przykładów funkcji kowariancji
 \begin{itemize}
     \item \textit{Gaussian kernel} dla normy \(\norm{\cdot}\) i hiper-parametrów \(a,l\) (amplituda
     i skala długości)
-    \begin{equation}
-        k(\bm{x}, \bm{y}) = a^2\exp\left\{-\frac{1}{2l^2}\norm{\bm{x} - \bm{y}}^2\right\}
-    \end{equation}
+    \[
+    k(\bm{x}, \bm{y}) = a^2\exp\left\{-\frac{1}{2l^2}\norm{\bm{x} - \bm{y}}^2\right\}
+    \]
     
     \item \textit{Periodic kernel} dla normy \(\norm{\cdot}\) i hiper-parametrów \(a, l, p\)
     (amplituda, skala długości, okres zmienności)
-    \begin{equation}
-        k(\bm{x},\bm{y}) = a^2\exp\left\{-\frac{2}{l^2}\sin^2\left(\frac{\pi}{p}\norm{\bm{x} - \bm{y}}\right)\right\}
-    \end{equation}
-
+    \[
+    k(\bm{x},\bm{y}) = a^2\exp\left\{-\frac{2}{l^2}\sin^2\left(\frac{\pi}{p}\norm{\bm{x} - \bm{y}}\right)\right\}
+    \]
+    
     \item \textit{White noise kernel} dla hiper-parametru \(\sigma\)
-    \begin{equation}
-        k(\bm{x},\bm{y}) = \sigma^2 \delta_{\bm{x},\bm{y}}
-    \end{equation}
-
+    \[
+    k(\bm{x},\bm{y}) = \sigma^2 \delta_{\bm{x},\bm{y}}
+    \]
+    
     \item \textit{Mat\'ern kernel} dla normy \(\norm{\cdot}\) i hiper-parametrów \(a, l, \nu\)
     (amplituda, skala długości, regularność)
-    \begin{equation}
-        k(\bm{x},\bm{y}) = a^2 \frac{2^{1-\nu}}{\Gamma(\nu)}\left(\frac{\sqrt{2\nu}}{l}\norm{\bm{x} - \bm{y}}\right)^\nu K_\nu\left(\frac{\sqrt{2\nu}}{l}\norm{\bm{x} - \bm{y}}\right)\,,
-    \end{equation}
+    \[
+    k(\bm{x},\bm{y}) = a^2 \frac{2^{1-\nu}}{\Gamma(\nu)}\left(\frac{\sqrt{2\nu}}{l}\norm{\bm{x} - \bm{y}}\right)^\nu K_\nu\left(\frac{\sqrt{2\nu}}{l}\norm{\bm{x} - \bm{y}}\right)\,,
+    \]
     gdzie \(\Gamma(x)\) to funkcja gamma Eulera, a \(K_\nu(x)\) to zmodyfikowana funkcja Bessela
     2-go rodzaju rzędu \(\nu\).
 
@@ -1233,23 +1233,23 @@ nieujemnych współczynnikach jest również funkcją kowariancji.
 \begin{definition}[Procesu gaussowskiego]
 Procesem Gaussowskim (z ang. \textit{Gaussian Process}) nazywamy rodzinę skalarnych zmiennych
 losowych indeksowanych przez punkty \(\bm{x} \in \mathbb{R}^n\)
-\begin{equation*}
-    \mc{GP} = \left\{f_{\bm{x}} \mid \bm{x} \in \mathbb{R}^n\right\}
-\end{equation*}
+\[
+\mc{GP} = \left\{f_{\bm{x}} \mid \bm{x} \in \mathbb{R}^n\right\}
+\]
 taką że każdy skończony podzbiór \(\mc{GP}\) ma łącznie wielowymiarowy rozkład normalny tj. dla
 dowolnego zbioru \(X = \{\bm{x}_1, \ldots, \bm{x}_m\} \subset \mathbb{R}^n\) zachodzi
-\begin{equation*}
-    \mqty[f_{\bm{x}_1} \\ \vdots \\ f_{\bm{x}_m}] \sim \mc{N}(\bm{\mu}_X, \bm{\Sigma}_{X})\,.
-\end{equation*}
+\[
+\mqty[f_{\bm{x}_1} \\ \vdots \\ f_{\bm{x}_m}] \sim \mc{N}(\bm{\mu}_X, \bm{\Sigma}_{X})\,.
+\]
 \end{definition}
 
 Zauważmy, iż proces Gaussowski możemy jednoznacznie zdefiniować podając przepisy na parametry
 \(\bm{\mu}_X\) i \(\bm{\Sigma}_X\) dla dowolnego zbioru \(X\). W praktyce często przyjmujemy
 \(\bm{\mu}_X = \bm{0}\), natomiast przepisem na macierz kowariancji może być zdefiniowana wyżej
 funkcja kowariancji \(k(X,X)\) tj.
-\begin{equation}
-    \mqty[f_{\bm{x}_1} \\ \vdots \\ f_{\bm{x}_m}] \sim \mc{N}(\bm{0}, k(X,X))\,.
-\end{equation}
+\[
+\mqty[f_{\bm{x}_1} \\ \vdots \\ f_{\bm{x}_m}] \sim \mc{N}(\bm{0}, k(X,X))\,.
+\]
 Process Gaussowski daje nam w praktyce rozkład prawdopodobieństwa nad funkcjami
 \(f:\mathbb{R}^n\mapsto\mathbb{R}\), których charakter jest określony przez jądro \(k\) (np. funkcja
 gładka dla jądra Gaussowskiego, okresowa dla jądra periodycznego, itp.). Zauważmy, że nie
@@ -1258,38 +1258,40 @@ interesuje nas jedynie rozkład predykcyjny. Załóżmy, iż w dokładnie znanyc
 \{\bm{x}_1,\bm{x}_2,\ldots,\bm{x}_m\}\) zaobserwowaliśmy wartości pewnej funkcji, o których
 zakładamy, iż pochodzą z procesu Gaussowskiego zadanego jądrem \(k\), które wyraża nasze założenia a
 priori co do charakteru badanej funkcji
-\begin{equation}
-    \bm{f}_X = \mqty[f_{\bm{x}_1} \\ \vdots \\ f_{\bm{x}_m}] \sim \mc{N}(\bm{0}, k(X,X))\,.
-\end{equation}
+\[
+\bm{f}_X = \mqty[f_{\bm{x}_1} \\ \vdots \\ f_{\bm{x}_m}] \sim \mc{N}(\bm{0}, k(X,X))\,.
+\]
 Powiedzmy, iż chcemy znać wartości \(\bm{f}_Y\) tej funkcji w zadanych punktach \(Y =
 \{\bm{y}_1,\bm{y}_2,\ldots,\bm{y}_s\}\). Ponieważ założyliśmy, iż wartości funkcji pochodzą z
 procesu Gaussowskiego, więc rozkład łączny \(\bm{f}_X\) i \(\bm{f}_Y\) jest rozkładem normalnym
-\begin{equation}
-    \mqty[\bm{f}_X \\ \bm{f}_Y] \sim \mc{N}\left(\bm{0}, \mqty[k(X,X) & k(X,Y) \\ k(Y,X) & k(Y,Y)]\right)\,.
-\end{equation}
+\[
+\mqty[\bm{f}_X \\ \bm{f}_Y] \sim \mc{N}\left(\bm{0}, \mqty[k(X,X) & k(X,Y) \\ k(Y,X) & k(Y,Y)]\right)\,.
+\]
 Zauważmy, iż z twierdzenia o własnościach niezdegenerowanego rozkładu normalnego wnioskujemy, iż
 warunkowy \(\bm{f}_Y\mid \bm{f}_X\) jest również rozkładem normalnym o parametrach
-\begin{equation}
-    \begin{split}
-        &\bm{\mu} = k(Y,X)k^{-1}(X,X)\bm{f}_X\\
-        &\bm{\Sigma} = k(Y,Y) - k(Y,X)k^{-1}(X,X)k(X,Y)
-    \end{split}\quad.
-\end{equation}
+\[
+\begin{split}
+&\bm{\mu} = k(Y,X)k^{-1}(X,X)\bm{f}_X\\
+&\bm{\Sigma} = k(Y,Y) - k(Y,X)k^{-1}(X,X)k(X,Y)
+\end{split}\quad.
+\]
 Dodatkową niepewność związaną z pomiarem wartości \(\bm{f}_X\) możemy uchwycić zmieniając postać
 jądra 
-\begin{equation}
-    k(\bm{x},\bm{y}) \leftarrow k(\bm{x},\bm{y}) + \mc{I}_X(\bm{x})\sigma^2\delta_{\bm{x},\bm{y}}\,,
-\end{equation}
+\[
+k(\bm{x},\bm{y}) \leftarrow k(\bm{x},\bm{y}) + \mc{I}_X(\bm{x})\sigma^2\delta_{\bm{x},\bm{y}}\,,
+\]
 gdzie \(\sigma\) jest hiper-parametrem określającym precyzję pomiaru. Oczywiście \(k\) jest dalej
 funkcją kowariancji, gdyż takie podstawienie powoduje jedynie dodanie dodatnich członów do pewnych
 elementów diagonalnych macierzy kowariancji, więc macierz ta jest nadal symetryczna i dodatnio
 określona. Wówczas rozkład predykcyjny ma parametry
-\begin{equation}\boxed{
-    \begin{split}
-        &\bm{\mu} = k(Y,X)\left[k(X,X) + \sigma^2\bm{1}\right]^{-1}\bm{f}_X\\
-        &\bm{\Sigma} = k(Y,Y) - k(Y,X)\left[k(X,X) + \sigma^2\bm{1}\right]^{-1}k(X,Y)
-    \end{split}\quad.
-}\end{equation}
+\[
+\boxed{
+\begin{split}
+&\bm{\mu} = k(Y,X)\left[k(X,X) + \sigma^2\bm{1}\right]^{-1}\bm{f}_X\\
+&\bm{\Sigma} = k(Y,Y) - k(Y,X)\left[k(X,X) + \sigma^2\bm{1}\right]^{-1}k(X,Y)
+\end{split}\quad.
+}
+\]
 
 
 \subsection{Klasyfikator najbliższych sąsiadów}

@@ -1,12 +1,5 @@
 Podstawy uczenia maszynowego
 
-  REGRESSION
-  --------------------
-  Regresja liniowa
-  Regularyzacja
-  Robust regression
-  Gaussian processes
-
   CLASSIFICATION
   --------------------
   Naive Bayes
