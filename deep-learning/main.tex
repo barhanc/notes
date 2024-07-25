@@ -687,7 +687,7 @@ proces, który generuje liczby prawdziwie losowe (np. detektor Geigera-Mullera, 
 elektronowych, ruletka), ale błędem byłaby rezygnacja z odtwarzalności. Poszukujemy zatem
 deterministycznej metody, która generuje sekwencje liczb, które są w przybliżeniu losowe. Podstawową
 metodą do algorytmicznego generowania liczb pseudolosowych jest tzw. \emph{liniowy generator
-kongruentny} (z ang. \textit{Linear Congruent Generator, LCG}), który jest opisany zależnością
+kongruentny} (z ang. \textit{Linear Congruential Generator, LCG}), który jest opisany zależnością
 rekurencyjną
 \[
 I_{j+1} = (a I_j + c) \mod m\,,
@@ -1294,54 +1294,89 @@ określona. Wówczas rozkład predykcyjny ma parametry
 \]
 
 
+\subsection{Naiwny klasyfikator bayesowski}
+
+Przechodzimy teraz do zagadnienia klasyfikacji, tj. predykcji zmiennej \(t\) pochodzącej ze
+skończonego zbioru kategorii (inaczej klas) dla danego wektora cech \(\bm{x}\). Będziemy rozważać
+jedynie modele probabilistyczne, których wyjściem jest zbiór prawdopodobieństw \(p_i(\bm{x})\) dla
+\(i = 1,\ldots,k\), gdzie \(k\) jest liczbą klas, a \(p_i(\bm{x})\) określa prawdopodobieństwo, iż
+prawidłową klasą dla wektora \(\bm{x}\) jest \(i\)-ta klasa. Oczywiście musi zachodzić
+\[
+\sum_j p_j(\bm{x}) = 1
+\]
+dla dowolnego \(\bm{x}\). Przewidywaną klasą zostaje następnie ta z największym prawdopodobieństwem.
+W przypadku klasyfikacji binarnej są natomiast możliwe inne reguły, np. przewidywaną klasą jest 0
+jeśli \(p_0 \geq p_\text{threshold}\) dla pewnego ustalonego progu niekoniecznie równego \(0.5\).
+
+Pierwszym modelem, który rozważymy będzie bardzo prosty model bayesowski. Korzystając z twierdzenia
+Bayesa możemy zapisać
+\[
+p_i(\bm{x}) = p(c_i \mid \bm{x}) \frac{ p(\bm{x} \mid c_i) p(c_i) }{ \sum_j p(\bm{x} \mid c_j) p(c_j) }\,.
+\]
+Jeśli \(\mc{X} = \{t_i(\bm{x}_i)\}_{i=1}^n\) oznacza nasz zbiór obserwacji i.i.d. to gęstości
+prawdopodobieństwa \(p(\bm{x} \mid c_i)\) i \(p(c_i)\) możemy oszacować z danych \(\mc{X}\). W
+przypadku drugiego członu możemy go prosto oszacować jako
+\[
+p(c_i) = \frac{\#\{t \mid t = c_i, t \in \mc{X}\}}{\#\mc{X}}\,.
+\]
+W przypadku pierwszego członu sytuacja jest bardziej skomplikowana. Możemy założyć pewien rozkład
+parametryczny dla rozkładu warunkowego \(p(\bm{x} \mid c_i)\) dla każdej klasy i następnie oszacować
+parametry tego rozkładu z danych. Możemy również wykorzystać KDE i estymować rozkłady w sposób
+nieparametryczny. Oba te podejścia mają jednak problem związany z tzw. \emph{klątwą wymiaru} (z ang.
+\textit{curse of dimensionality}). Istotnie przestrzenie o dużej liczbie wymiarów są bardzo
+\enquote{puste}, tj. aby wyczerpująco wypróbkować taką przestrzeń potrzebujemy wykładniczo wielu
+punktów. Jedną z możliwości poradzenia sobie z klątwą jest wprowadzenie naiwnego założenia o
+warunkowej niezależności cech w wektorze \(\bm{x} = \mqty[x_1, \ldots, x_d]^T\). Wówczas gęstości
+prawdopodobieństw \(p(\bm{x} \mid c_i)\) można zapisać jako
+\[
+p(\bm{x} \mid c_i) = p(x_1, \ldots, x_d \mid c_i) = \prod_{j=1}^d p(x_j \mid c_i)\,.
+\]
+Teraz estymacja rozkładów warunkowych \(p(x_j \mid c_i)\) dla każdej z klasy jest o wiele prostsza i
+możemy wykorzystać jedno ze wspomnianych podejść, tj. albo estymację parametrów pewnego rozkładu,
+albo KDE. Przewidywaną klasą dla wektora cech zostaje więc
+\[
+t(\bm{x}) = \arg\max_{c_i = c_1,\ldots,c_k} p_i(\bm{x}) = \arg\max_{c_i=c_1,\ldots,c_k} p(c_i) \prod_{j=1}^d p(\bm{x}^j \mid c_i)\,.
+\]
+
+
 \subsection{Klasyfikator najbliższych sąsiadów}
 
-Do tej pory zajmowaliśmy się problemami regresji ciągłej zmiennej skalarnej. Przechodzimy teraz do
-metod uczenia maszynowego wykorzystywanych dla problemów klasyfikacji. Jako pierwszy rozważmy jeden
-z najprostszych (ale bardzo mocnych) modeli -- klasyfikator \(k\) najbliższych sąsiadów (z ang.
-\textit{k Nearest Neighbors, kNN}). Załóżmy, iż mamy zbiór obserwacji i.i.d. postaci \(\mc{X} =
-\{y_i(\bm{x}_i)\}_{i=1}^n\) przy czym \(y\) może być zarówno skalarną zmienną ciągłą jak i elementem
-skończonego zbioru klas. Zakładamy, że wektory cech \(\bm{x} \in \mathbb{R}^d\), a \(\mathsf{d}:
-\mathbb{R}^d \times \mathbb{R}^d \mapsto I \subseteq \mathbb{R}\) jest metryką, półmetryką lub pewną
-miarą podobieństwa między punktami \(\mathbb{R}^d\). Reguła decyzyjna klasyfikatora \(k\)
-najbliższych sąsiadów polega na znalezieniu dla nowego wektora cech \(\bm{t}\), \(k\) najbliższych
-względem funkcji \(\mathsf{d}\) punktów ze zbioru \(\{\bm{x}_1,\ldots,\bm{x}_n\}\) i zwróceniu
-najczęstszej klasy dla tych sąsiadów. Metodę najbliższych sąsiadów można również wykorzystać do
-regresji, gdzie zwracamy wartość średnią arytmetyczną wartości \(y\) dla znalezionych \(k\)
-najbliższych sąsiadów (powoduje to, że model taki potrafi tylko interpolować wartości, więc nie jest
-dobrym modelem dla regresji). W przypadku klasyfikacji możemy natomiast zwracać również rozkład
-prawdopodobieństwa klas dla nowego wektora cech \(\bm{t}\) przez podanie stosunków występowania
-danej klasy wśród \(k\) najbliższych sąsiadów do \(k\).
+Klasyfikator najbliższych sąsiadów (z ang. \textit{k Nearest Neighbors}) jest jednym z najprostszych
+klasyfikatorów, w którym prawdopodobieństwo \(p_i(\bm{x})\) jest dane wzorem
+\[
+p_i(\bm{x}) = \frac{1}{\kappa} \sum_{\bm{x}' \in N(\bm{x}; \kappa, d)} [t(\bm{x}') = c_i]\,,
+\]
+gdzie \(N(\bm{x}; \kappa, d)\) jest zbiorem \(\kappa\) najbliższych sąsiadów punktu \(\bm{x}\) ze
+zbioru obserwacji \(\mc{X}\) względem ustalonej metryki, półmetryki lub podobieństwa \(d\), a
+\([\cdot]\) oznacza nawias Iversona. Metodę najbliższych sąsiadów można również wykorzystać do
+regresji, gdzie zamiast sumowania wartości nawiasów Iversona, sumujemy wartości zmiennej objaśnianej
+dla sąsiadów punktu \(\bm{x}\) ze zbioru \(\mc{X}\) (powoduje to, że model taki potrafi tylko
+interpolować wartości, więc nie jest dobrym modelem dla regresji).
 
 Klasyfikator kNN jest bardzo elastycznym modelem z nieliniową granicą decyzyjną. Jakość klasyfikacji
-silnie zależy od lokalnej gęstości punktów w przestrzeni \(\mathbb{R}^d\) oraz wybranej wartości
-\(k\), będącej hiperparametrem tego modelu. Ogólnie niskie \(k\) powoduje, że kNN ma duży variance i
-dość \enquote{poszarpaną} granicę decyzyjną, natomiast wysokie \(k\) powoduje, że kNN ma duży bias i
-\enquote{gładką} granicę decyzyjną. Typowo wykorzystywane funkcje \(\mathsf{d}\) to
+silnie zależy od lokalnej gęstości punktów w przestrzeni oraz wybranej wartości \(\kappa\), będącej
+hiperparametrem tego modelu. Ogólnie małe \(\kappa\) powoduje, że kNN ma duży variance i dość
+\enquote{poszarpaną} granicę decyzyjną, natomiast duże \(\kappa\) powoduje, że kNN ma duży bias i
+\enquote{gładką} granicę decyzyjną. Typowo wykorzystywane funkcje \(d\) to
 \begin{itemize}
-    \item metryka euklidesowa \(\mathsf{d}(\bm{x},\bm{y}) = \sqrt{(\bm{x} - \bm{y})^T(\bm{x} -
-    \bm{y})}\);
-
-    \item pół-metryka euklidesowa \(\mathsf{d}(\bm{x},\bm{y}) = (\bm{x} - \bm{y})^T(\bm{x} -
-    \bm{y})\);
-
-    \item metryka Manhattan \(\mathsf{d}(\bm{x}, \bm{y}) = \sum_{i=1}^d |\bm{x}^i - \bm{y}^i|\);
-    
-    \item podobieństwo cosinusowe \(\mathsf{d}(\bm{x}, \bm{y}) =
-    \frac{\bm{x}^T\bm{y}}{\norm{\bm{x}}_2 \norm{\bm{y}}_2}\)
+\item metryka euklidesowa,
+\item metryka Manhattan,
+\item podobieństwo cosinusowe.
 \end{itemize}
 
 Jedną z modyfikacji klasyfikatora kNN, który może polepszyć wyniki w przypadku, gdy w naszej
 przestrzeni istnieją obszary, w których mamy małą gęstość punktów ze zbioru \(\mc{X}\) jest
-\emph{ważenie sąsiadów}, które polega na tym, iż prawdopodobieństwa danej klasy wśród \(k\) sąsiadów
-obliczamy teraz jako średnią ważoną, gdzie wagą jest odwrotność odległości danego sąsiada od nowego
-wektora cech \(w(\bm{t}, \bm{x}) = 1 / \mathsf{d}(\bm{t}, \bm{x})\).
-
+\emph{ważenie sąsiadów}, które polega na tym, iż prawdopodobieństwa danej klasy wśród \(\kappa\)
+sąsiadów obliczamy teraz jako średnią ważoną, gdzie wagą jest odwrotność odległości danego sąsiada
+od nowego wektora cech \(w(\bm{x}, \bm{x}') = 1 / d(\bm{x}, \bm{x}')\), tj.
+\[
+p_i(\bm{x}) = \frac{ \sum_{\bm{x}' \in N(\bm{x}; \kappa, d)} w(\bm{x}, \bm{x}') [t(\bm{x}') = c_i]}{\sum_{\bm{x}' \in N(\bm{x}; \kappa, d)} w(\bm{x}, \bm{x}') }\,.
+\]
 W przypadku naiwnego kNN podczas treningu zapamiętujemy jedynie zbiór \(\mc{X}\) natomiast naiwna
-implementacja predykcji ma złożoność czasową \(O(knd)\), przy założeniu, że złożoność obliczenia
-funkcji \(\mathsf{d}\) dla pary punktów ma złożoność \(O(d)\). Jest to nieakceptowalna złożoność,
-gdyż zwykle chcemy używać klasyfikatora kNN do setek milionów punktów. Dwa podejścia, które stosuje
-się zwykle do rozwiązania tego problemu to: 
+implementacja predykcji ma złożoność czasową \(O(\kappa n m)\), gdzie \(m\) jest wymiarem wektora
+cech, przy założeniu, że złożoność obliczenia funkcji \(d\) dla pary punktów ma złożoność \(O(m)\).
+Jest to nieakceptowalna złożoność, gdyż zwykle chcemy używać klasyfikatora kNN do setek milionów
+punktów. Dwa podejścia, które stosuje się zwykle do rozwiązania tego problemu to: 
 \begin{itemize}
 
     \item zbudowanie odpowiedniej struktury danych w fazie treningu, aby w czasie predykcji można
@@ -1358,35 +1393,12 @@ językowych do wyszukiwania kontekstów dla danych zapytań (z ang. \textit{Retr
 Generation}).
 
 
-\subsection{Naiwny klasyfikator bayesowski}
-
-Rozważamy dalej problem klasyfikacji, w którym mamy zbiór przykładów i.i.d. postaci \(\mc{X} =
-\{y_i(\bm{x}_i)\}_{i=1}^n\), gdzie \(y \in \{c_1, \ldots, c_K\} \) oraz \(\bm{x} \in \mathbb{R}^d\).
-W ogólności mamy rozkład warunkowy danej klasy pod warunkiem wektora cech, który jest dany przez
-gęstość prawdopodobieństwa \(p(c_k \mid \bm{x})\). Korzystając z twierdzenia Bayesa możemy zapisać
-\begin{equation}
-    p(c_k \mid \bm{x}) = \frac{p(\bm{x} \mid c_k) p(c_k)}{p(\bm{x})}\,.
-\end{equation}
-Jeśli umiemy obliczyć licznik wyrażenia po prawej stronie, to korzystając z \emph{reguły decyzyjnej
-MAP} klasę dla nowego wektora cech wybieramy jako
-\begin{equation}
-    \arg\max_{c_k \in \{c_1, \ldots, c_K\}} p(\bm{x} \mid c_k) p(c_k)\,.
-\end{equation}
-Powstaje pytanie jak obliczyć to wyrażenie przy tak luźnych założeniach. Wprowadzamy naiwne
-założenie warunkowej niezależności cech względem danej klasy tj.
-\begin{equation}
-    p(\bm{x} \mid c_k) = p(\bm{x}^1, \ldots, \bm{x}^d \mid c_k) = \prod_{j=1}^d p(\bm{x}^j \mid c_k)\,.
-\end{equation}
-Teraz jednowymiarowe rozkłady warunkowe \(p(\bm{x}^j \mid c_k)\) możemy estymować z danych
-\(\mc{X}\) np. korzystając z jądrowego estymatora gęstości lub zakładając konkretny model
-parametryczny (np. jednowymiarowy rozkład normalny, rozkład dwumianowy) i estymując jego parametry
-dla każdej z klas osobno. Naiwne założenie warunkowej niezależności pozwala złagodzić problemy
-wynikające z przekleństwa wymiarowości (z ang. \textit{curse of dimensionality}), takie jak potrzeba
-zbiorów danych skalujących się wykładniczo wraz z liczbą cech \(d\). Człon \(p(c_k)\) można
-natomiast prosto oszacować jako stosunek przykładów danej klasy w zbiorze \(\mc{X}\).
+\subsection{Regresja logistyczna}
 
 
-\subsection{Wieloklasowa regresja logistyczna}
+
+
+\subsection{Regresja softmax}
 
 Powróćmy do zagadnienia klasyfikacji, w którym mamy zbiór obserwacji i.i.d. \(\mc{X} =
 \{y_i(\bm{x}_i)\}_{i=1}^n\), gdzie \(y \in \{c_1,\ldots,c_K\}\) i \(\bm{x} \in \mathbb{R}^d\).
