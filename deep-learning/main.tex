@@ -55,7 +55,7 @@ funkcjonał kosztu (z ang. \textit{loss function}) \(L(\mc{X}; \bm{w})\), który
 odpowiedzi modelu \(\phi\) w stosunku do znanych prawidłowych odpowiedzi \(y\) dla danych ze zbioru
 \(\mc{X}\). Najczęściej ma on postać
 \[
-L(\mc{X}; \bm{w}) = - \frac{1}{n} \sum_{i=1}^n \log p\left( y_i(\bm{x}_i) \mid \bm{w} \right)\,,
+L(\mc{X}; \bm{w}) = - \frac{1}{n} \sum_{i=1}^n \log p\left( y_i(\bm{x}_i) \mid \phi(\bm{x}_i; \bm{w}) \right)\,,
 \]
 gdzie \(p(y(\bm{x}) \mid \bm{w})\) jest warunkową gęstością prawdopodobieństwa danej obserwacji
 \(y(\bm{x})\) warunkowaną przez wartość parametrów \(\bm{w}\). Do powyższego funkcjonału możemy
