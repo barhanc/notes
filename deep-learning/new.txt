@@ -27,3 +27,14 @@ Uczenie głębokie i sieci neuronowe
   Residual networks
 
   Transformers
+
+  Generative models
+
+
+NLP
+
+  ...
+
+Computer Vision
+
+  ...
