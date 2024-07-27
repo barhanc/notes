@@ -2,7 +2,6 @@ Podstawy uczenia maszynowego
 
   CLASSIFICATION
   --------------------
-  Logistic Regression
   Softmax Regression
 
 

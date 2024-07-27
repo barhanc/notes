@@ -1046,11 +1046,12 @@ i hiperparametru \(\lambda\) zwanego \emph{siłą regularyzacji}. W kontekście 
 regularyzację można również rozumieć jako użycie estymacji MAP zamiast MLE dla odpowiednio dobranego
 priora nad estymowanymi parametrami.
 
-Jeśli dla modelu regresji liniowej jako człon regularyzujący przyjmiemy \(\lambda \norm{\bm{w}}_2\),
-tj. normę L2 wektora estymowanych parametrów, to otrzymana funkcja kosztu ma postać
+Jeśli dla modelu regresji liniowej jako człon regularyzujący przyjmiemy \(\lambda
+\norm{\bm{w}}_2^2\), tj. kwadrat normy L2 wektora estymowanych parametrów, to otrzymana funkcja
+kosztu ma postać
 \[
 \boxed{
-L(\mc{X}; \bm{w}) = \frac{1}{2}\sum_{i=1}^n \left[y_i - \phi(\bm{x}_i; \bm{w})\right]^2 + \lambda \norm{\bm{w}}_2\,.
+L(\mc{X}; \bm{w}) = \frac{1}{2}\sum_{i=1}^n \left[y_i - \phi(\bm{x}_i; \bm{w})\right]^2 + \lambda \norm{\bm{w}}_2^2\,.
 }
 \]
 Analogiczną postać można otrzymać rozważając estymatę MAP dla identycznego modelu statystycznego z
@@ -1072,7 +1073,7 @@ numerycznej. W ogólności można połączyć regularyzacje L1 i L2 tj. rozważa
 kosztu postaci
 \[
 \boxed{
-L(\mc{X};\bm{w}) = \frac{1}{2}\sum_{i=1}^n \left[y_i - \hat{y}(\bm{x}_i;\bm{w})\right]^2 + \lambda_1\norm{\bm{w}}_1 +  \lambda_2\norm{\bm{w}}_2^2\,.
+L(\mc{X};\bm{w}) = \frac{1}{2}\sum_{i=1}^n \left[y_i - \phi(\bm{x}_i;\bm{w})\right]^2 + \lambda_1\norm{\bm{w}}_1 +  \lambda_2\norm{\bm{w}}_2^2\,.
 }
 \]
 Zagadnienie minimalizacji takiej funkcji kosztu nazywamy ElasticNet i tak jak w przypadku LASSO
@@ -1144,7 +1145,10 @@ nazywamy \emph{pinball loss}, a otrzymane zagadnienie optymalizacji -- regresją
 Modelowanie \(y(\bm{x})\) za pomocą rozkładu ALD pozwala nam w prosty i \enquote{robust} sposób
 znaleźć niepewność naszych predykcji punktowych, tj. dla danego zagadnienia dopasowujemy trzy modele
 oparte na ALD dla \(q = 0.5\) (estymacja punktowa, mediana, odporna na outliery) oraz np. \(q =
-0.1\) i \(q = 0.9\) będące oszacowaniem niepewności punktowej estymaty. 
+0.1\) i \(q = 0.9\) będące oszacowaniem niepewności punktowej estymaty. Minimalizację powyższej
+funkcji kosztu można przedstawić jako zagadnienie programowania liniowego i efektywnie rozwiązać
+korzystając z odpowiednich solverów. Można również dodać człon regularyzujący w postaci normy L1
+wektora estymowanych parametrów.
 
 
 \subsection{Procesy gaussowskie}
@@ -1306,7 +1310,7 @@ jeśli \(p_0 \geq p_\text{threshold}\) dla pewnego ustalonego progu niekonieczni
 Pierwszym modelem, który rozważymy będzie bardzo prosty model bayesowski. Korzystając z twierdzenia
 Bayesa możemy zapisać
 \[
-p_i(\bm{x}) = p(c_i \mid \bm{x}) \frac{ p(\bm{x} \mid c_i) p(c_i) }{ \sum_j p(\bm{x} \mid c_j) p(c_j) }\,.
+p_i(\bm{x}) = p(c_i \mid \bm{x}) = \frac{ p(\bm{x} \mid c_i) p(c_i) }{ \sum_j p(\bm{x} \mid c_j) p(c_j) }\,.
 \]
 Jeśli \(\mc{X} = \{t_i(\bm{x}_i)\}_{i=1}^n\) oznacza nasz zbiór obserwacji i.i.d. to gęstości
 prawdopodobieństwa \(p(\bm{x} \mid c_i)\) i \(p(c_i)\) możemy oszacować z danych \(\mc{X}\). W
@@ -1330,7 +1334,7 @@ Teraz estymacja rozkładów warunkowych \(p(x_j \mid c_i)\) dla każdej z klasy 
 możemy wykorzystać jedno ze wspomnianych podejść, tj. albo estymację parametrów pewnego rozkładu,
 albo KDE. Przewidywaną klasą dla wektora cech zostaje więc
 \[
-t(\bm{x}) = \arg\max_{c_i = c_1,\ldots,c_k} p_i(\bm{x}) = \arg\max_{c_i=c_1,\ldots,c_k} p(c_i) \prod_{j=1}^d p(\bm{x}^j \mid c_i)\,.
+t(\bm{x}) = \arg\max_{c_i \in \{c_1,\ldots,c_k\} } p_i(\bm{x}) = \arg\max_{c_i \in \{c_1,\ldots,c_k\} } p(c_i) \prod_{j=1}^d p(\bm{x}^j \mid c_i)\,.
 \]
 
 
@@ -1352,12 +1356,8 @@ Klasyfikator kNN jest bardzo elastycznym modelem z nieliniową granicą decyzyjn
 silnie zależy od lokalnej gęstości punktów w przestrzeni oraz wybranej wartości \(\kappa\), będącej
 hiperparametrem tego modelu. Ogólnie małe \(\kappa\) powoduje, że kNN ma duży variance i dość
 \enquote{poszarpaną} granicę decyzyjną, natomiast duże \(\kappa\) powoduje, że kNN ma duży bias i
-\enquote{gładką} granicę decyzyjną. Typowo wykorzystywane funkcje \(d\) to
-\begin{itemize}
-\item metryka euklidesowa,
-\item metryka Manhattan,
-\item podobieństwo cosinusowe.
-\end{itemize}
+\enquote{gładką} granicę decyzyjną. Typowo wykorzystywane funkcje \(d\) to metryka euklidesowa,
+półmetryka euklidesowa, metryka Manhattan i podobieństwo cosinusowe.
 
 Jedną z modyfikacji klasyfikatora kNN, który może polepszyć wyniki w przypadku, gdy w naszej
 przestrzeni istnieją obszary, w których mamy małą gęstość punktów ze zbioru \(\mc{X}\) jest
@@ -1390,8 +1390,73 @@ Generation}).
 
 \subsection{Regresja logistyczna}
 
-
-
+Rozpatrzymy teraz problem klasyfikacji binarnej z perspektywy estymacji MLE parametrów. Niech
+\(\mc{X} = \{t_i(\bm{x}_i)\}_{i=1}^n\) będzie zbiorem obserwacji i.i.d., gdzie zakładamy, iż \(t \in
+\{0,1\}\). Jako model statystyczny przyjmiemy, iż klasa \(t(\bm{x})\) pochodzi z rozkładu
+Bernoulliego z parametrem \(p(\bm{x}; \bm{w})\) (prawdopodobieństwem klasy pozytywnej, zwanym
+również funkcją wiążącą, z ang. \textit{link function}) zależnym od estymowanych parametrów \(\bm{w}\)
+\[
+t(\bm{x}) \mid \bm{w} \sim \mathrm{Ber}(p(\bm{x}; \bm{w}))\,.
+\]
+W przypadku regresji logistycznej jako funkcję \(p(\bm{x}; \bm{w})\) przyjmiemy
+\(\sigma(\phi(\bm{x}; \bm{w}))\), gdzie
+\[
+\sigma(z) = \frac{1}{1 + \e^{-z}}
+\]
+to tzw. \emph{funkcja logistyczna} (będąca szczególnym przypadkiem funkcji sigmoidalnej), natomiast
+\(\phi(\bm{x}; \bm{w})\) może być dowolną funkcją wykorzystywaną do zagadnienia regresji. W
+przypadku regresji logistycznej przyjmujemy prosty model liniowy
+\[
+\phi(\bm{x}; \bm{w}) = \bm{w}^T \bm{x}\,.
+\]
+Ponownie zauważmy, iż taka postać uwzględnia człon stały poprzez podstawienie \(\bm{x} \leftarrow
+\mqty[\bm{x}^T & 1]^T\). Funkcja wiarygodności dla powyższego modelu statystycznego ma postać
+\[
+\mc{L}(\mc{X}; \bm{w}) = \prod_{i=1}^n p(\bm{x}_i;\bm{w})^{t_i} (1 - p(\bm{x}_i;\bm{w}))^{1 - t_i}\,,
+\]
+skąd funkcja kosztu
+\[
+\boxed{
+\begin{split}
+L(\mc{X}; \bm{w}) &= - \sum_{i=1}^n \left[ t_i \log p(\bm{x}_i; \bm{w}) + (1 - t_i) \log (1 - p(\bm{x}_i; \bm{w})) \right]\\
+                  &= - \sum_{i=1}^n \left[ t_i \log \sigma(\phi(\bm{x}_i; \bm{w})) + (1 - t_i) \log (1 - \sigma(\phi(\bm{x}_i; \bm{w}))) \right]
+\end{split}\quad.
+}
+\]
+Taką funkcję kosztu nazywamy \emph{entropią krzyżową} (z ang. \textit{cross-entropy function}).
+Niestety dla takiej postaci funkcji kosztu nie można znaleźć minimum w postaci analitycznej, dlatego
+musimy wykorzystywać algorytmy optymalizacji numerycznej, które najczęściej wykorzystują pierwsze
+pochodne funkcji kosztu po parametrach. Wyznaczymy więc jeszcze pochodną funkcji \(L\) po
+parametrach \(\bm{w}\). Wprowadzając macierz \(\bm{X}^{ij} = \bm{x}_i^j\) oraz wektory \(\bm{t}^i =
+t_i\), \(\bm{\phi}^i = \phi(\bm{x}_i; \bm{w}) = \sum_j \bm{X}^{ij} \bm{w}^j\), \(\bm{\sigma}^i =
+\sigma(\bm{\phi}^i)\) możemy zapisać
+\[
+L(\mc{X}; \bm{w}) = - \sum_{i=1}^n \left[ \bm{t}^i \log \bm{\sigma}^i + (1 - \bm{t}^i) \log(1 - \bm{\sigma}^i) \right]\,.
+\]
+W takim razie mamy
+\[
+\pdv{L}{\bm{\phi}^a} = \sum_b \pdv{L}{\bm{\sigma}^b} \pdv{\bm{\sigma}^b}{\bm{\phi}^a}\,,
+\]
+gdzie
+\[
+\pdv{L}{\bm{\sigma}^b} = -\sum_i \left[\frac{\bm{t}^i}{\bm{\sigma}^i} \delta_{ib} - \frac{1 - \bm{t}^i}{1 - \bm{\sigma}^i} \delta_{ib}\right] = \frac{1 - \bm{t}^b}{1 - \bm{\sigma}^b} - \frac{\bm{t}^b}{\bm{\sigma}^b}
+\]
+oraz
+\[
+\pdv{\bm{\sigma}^b}{\bm{\phi}^a} = \sigma'(\bm{\phi}^b) \delta_{ab}\,,\quad \sigma'(z) = \frac{\e^{-z}}{(1 + \e^{-z})^2} = \sigma(z)(1 - \sigma(z))
+\]
+zatem
+\[
+\pdv{L}{\bm{\phi}^a} = \left(\frac{1 - \bm{t}^a}{1 - \bm{\sigma}^a} - \frac{\bm{t}^a}{\bm{\sigma}^a}\right)\bm{\sigma}^a(1 - \bm{\sigma}^a) = \bm{\sigma}^a - \bm{t}^a\,.
+\]
+W takim razie, z powyższego mamy
+\[
+\pdv{L}{\bm{w}^a} = \sum_b \pdv{L}{\bm{\phi}^b} \pdv{\bm{\phi}^b}{\bm{w}^a} = \sum_b \bm{X}^{ba}(\bm{\sigma}^b - \bm{t}^b)\,,
+\]
+co możemy zapisać w zwartej postaci macierzowej
+\[
+\pdv{L}{\bm{w}} = \bm{X}^T (\bm{\sigma} - \bm{t})\,.
+\]
 
 \subsection{Regresja softmax}
 
