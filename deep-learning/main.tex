@@ -192,9 +192,10 @@ zbiór jest niezbalansowany, tj. zawiera więcej przykładów określonej klasy.
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=0.8\textwidth]{figs/confmat.png}
+    \includegraphics[width=0.9\textwidth]{figs/confmat.png}
     \label{fig:confusionMatrix}
-    \caption{Macierz pomyłek oraz możliwe metryki oceny jakości klasyfikatora}
+    \caption{Macierz pomyłek oraz możliwe metryki oceny jakości klasyfikatora. Źródło:
+    \href{https://en.wikipedia.org/wiki/Confusion_matrix}{en.wikipedia.org/wiki/Confusion\_matrix}}
 \end{figure}
 
 Wartość precision określa jak pewny jest klasyfikator przy wykrywaniu klasy pozytywnej, natomiast
@@ -1393,12 +1394,12 @@ Generation}).
 Rozpatrzymy teraz problem klasyfikacji binarnej z perspektywy estymacji MLE parametrów. Niech
 \(\mc{X} = \{t_i(\bm{x}_i)\}_{i=1}^n\) będzie zbiorem obserwacji i.i.d., gdzie zakładamy, iż \(t \in
 \{0,1\}\). Jako model statystyczny przyjmiemy, iż klasa \(t(\bm{x})\) pochodzi z rozkładu
-Bernoulliego z parametrem \(p(\bm{x}; \bm{w})\) (prawdopodobieństwem klasy pozytywnej, zwanym
+Bernoulliego z parametrem \(\pi(\bm{x}; \bm{w})\) (prawdopodobieństwem klasy pozytywnej, zwanym
 również funkcją wiążącą, z ang. \textit{link function}) zależnym od estymowanych parametrów \(\bm{w}\)
 \[
-t(\bm{x}) \mid \bm{w} \sim \mathrm{Ber}(p(\bm{x}; \bm{w}))\,.
+t(\bm{x}) \mid \bm{w} \sim \mathrm{Ber}(\pi(\bm{x}; \bm{w}))\,.
 \]
-W przypadku regresji logistycznej jako funkcję \(p(\bm{x}; \bm{w})\) przyjmiemy
+W przypadku regresji logistycznej jako funkcję \(\pi(\bm{x}; \bm{w})\) przyjmiemy
 \(\sigma(\phi(\bm{x}; \bm{w}))\), gdzie
 \[
 \sigma(z) = \frac{1}{1 + \e^{-z}}
@@ -1412,13 +1413,13 @@ przypadku regresji logistycznej przyjmujemy prosty model liniowy
 Ponownie zauważmy, iż taka postać uwzględnia człon stały poprzez podstawienie \(\bm{x} \leftarrow
 \mqty[\bm{x}^T & 1]^T\). Funkcja wiarygodności dla powyższego modelu statystycznego ma postać
 \[
-\mc{L}(\mc{X}; \bm{w}) = \prod_{i=1}^n p(\bm{x}_i;\bm{w})^{t_i} (1 - p(\bm{x}_i;\bm{w}))^{1 - t_i}\,,
+\mc{L}(\mc{X}; \bm{w}) = \prod_{i=1}^n \pi(\bm{x}_i;\bm{w})^{t_i} (1 - \pi(\bm{x}_i;\bm{w}))^{1 - t_i}\,,
 \]
 skąd funkcja kosztu
 \[
 \boxed{
 \begin{split}
-L(\mc{X}; \bm{w}) &= - \sum_{i=1}^n \left[ t_i \log p(\bm{x}_i; \bm{w}) + (1 - t_i) \log (1 - p(\bm{x}_i; \bm{w})) \right]\\
+L(\mc{X}; \bm{w}) &= - \sum_{i=1}^n \left[ t_i \log \pi(\bm{x}_i; \bm{w}) + (1 - t_i) \log (1 - \pi(\bm{x}_i; \bm{w})) \right]\\
                   &= - \sum_{i=1}^n \left[ t_i \log \sigma(\phi(\bm{x}_i; \bm{w})) + (1 - t_i) \log (1 - \sigma(\phi(\bm{x}_i; \bm{w}))) \right]
 \end{split}\quad.
 }
@@ -1460,106 +1461,85 @@ co możemy zapisać w zwartej postaci macierzowej
 
 \subsection{Regresja softmax}
 
-Powróćmy do zagadnienia klasyfikacji, w którym mamy zbiór obserwacji i.i.d. \(\mc{X} =
-\{y_i(\bm{x}_i)\}_{i=1}^n\), gdzie \(y \in \{c_1,\ldots,c_K\}\) i \(\bm{x} \in \mathbb{R}^d\).
-Pokażemy teraz podejście oparte na estymacji MLE podobnie jak w przypadku regresji. Założymy, że
-obserwacje \(y(\bm{x})\) pochodzą z rozkładu kategorialnego (wielopunktowego) zależnego od
-parametrów \(\bm{W}\) jako
-\begin{equation}
-    y(\bm{x}) \mid \bm{W} \sim \mathrm{Cat}\left(\bm{\pi}^1(\bm{\phi}(\bm{x}; \bm{W})), \ldots, \bm{\pi}^K(\bm{\phi}(\bm{x}; \bm{W}))\right)\,,
-\end{equation}
-gdzie funkcja \(\bm{\pi}: \mathbb{R}^K \mapsto [0;1]^K\) musi spełniać warunek unormowania
-\begin{equation*}
-    \forall \bm{z}\in\mathbb{R}^K: \sum_{j=1}^K \bm{\pi}^j(\bm{z}) = 1\,,
-\end{equation*}
-aby jej składowe były odpowiadały prawdopodobieństwom danej klasy, Funkcja \(\bm{\phi}: \mathbb{R}^d
-\mapsto \mathbb{R}^K\) jest natomiast dowolną funkcją przekształcającą wektor cech na rzeczywisty
-wektor wymiaru \(K\). W szczególności przyjmiemy następującą postać funkcji \(\bm{\pi}\) zwaną
-\emph{funkcją softmax}
-\begin{equation}\boxed{
-    \bm{\pi}^j(\bm{z}) = \frac{\exp\left(\bm{z}^j\right)}{\sum_{k=1}^K \exp\left(\bm{z}^k\right)}\,.
-}\end{equation}
-W przypadku wieloklasowej regresji logistycznej (zwanej również \emph{regresją softmax}) jako
-funkcję \(\bm{\phi}\) przyjmiemy proste przekształcenie liniowe
-\begin{equation}
-    \bm{\phi}(\bm{x}; \bm{W}) = \bm{W}\bm{x}\,,
-\end{equation} 
-gdzie \(\bm{W}\) jest macierzą estymowanych parametrów wymiaru \(K \times d\). Wyprowadzimy teraz
-wzór na funkcję kosztu przy takim modelu statystycznym. Zauważmy wpierw, iż wiarygodność
-pojedynczego przykładu ze zbioru \(\mc{X}\) możemy zapisać jako
-\begin{equation}
-    p(y_i(\bm{x}_i) \mid \bm{W}) = \prod_{j=1}^K \bm{\pi}^j\left(\bm{\phi}(\bm{x}_i; \bm{W})\right)^{[y_i = c_j]}\,,
-\end{equation}
-gdzie \([\ldots]\) oznacza nawias Iversona. W takim razie wiarygodność całego zbioru \(\mc{X}\) ma
-postać
-\begin{equation}
-    \mc{L}(\mc{X}; \bm{W}) = \prod_{i=1}^n \prod_{j=1}^K \bm{\pi}^j\left(\bm{\phi}(\bm{x}_i; \bm{W})\right)^{[y_i = c_j]}\,,
-\end{equation}
-skąd funkcja kosztu ma postać
-\begin{equation}
-    L(\mc{X}; \bm{W}) = - \sum_{i=1}^n \sum_{j=1}^K [y_i = c_j] \log \left[ \bm{\pi}^j\left(\bm{\phi}(\bm{x}_i; \bm{W})\right)\right]\,.
-\end{equation}
-Wprowadzając macierze 
-\begin{equation*}
-    \begin{split}
-        &\bm{X}^{ij} = \bm{x}_j^i\,,\quad \bm{X} = \mqty[\bm{x}_1 & \ldots & \bm{x_n}]\\
-        &\bm{T}^{ij} = [y_j = c_i]\\
-        &\bm{\Phi}^{ij}(\bm{X}; \bm{W}) = \bm{\phi}^i(\bm{x}_j;\bm{W}) = \sum_{k=1}^d \bm{W}^{ik}\bm{X}^{kj}\,,\quad \bm{\Phi}(\bm{X};\bm{W}) = \bm{W}\bm{X}\\
-        &\bm{\Pi}^{ij}(\bm{\Phi}) = \bm{\pi}^i\left(\bm{\phi}(\bm{x}_j;\bm{W})\right) = \frac{\exp\bm{\Phi}^{ij}}{\sum_{k=1}^K \exp \bm{\Phi}^{kj}}
-    \end{split}
-\end{equation*}
-gdzie każda kolumna macierzy \(\bm{X}\) jest wektorem cech danego przykładu; każda kolumna
-\(\bm{T}\) jest tzw. \emph{wektorem one--hot} dla danego przykładu tj. wektorem binarnym, w którym
-dokładnie na jednej pozycji jest wartość 1 i pozycja ta odpowiada prawidłowej klasie dla danego
-przykładu; każda kolumna macierzy \(\bm{\Phi}\) jest wektorem \emph{mlogitów} tj. liczb
-rzeczywistych, które po zastosowaniu funkcji softmax dają wartości prawdopodobieństwa każdej klasy;
-możemy zapisać
-\begin{equation}\boxed{
-    L(\mc{X}; \bm{W}) = -\sum_{j=1}^n\sum_{i=1}^K \bm{T}^{ij} \log \left[ \bm{\Pi}^{ij}(\bm{\Phi}(\bm{X}; \bm{W})) \right]\,.
-}\end{equation}
-
-Niestety dla tak zdefiniowanej funkcji kosztu nie można znaleźć wzoru na minimum w postaci
-analitycznej (jak w przypadku regresji liniowej), dlatego do znalezienia estymaty MLE wykorzystujemy
-algorytmy optymalizacji numerycznej, w tym przypadku zwykle algorytmy gradientowe. Wyprowadzimy więc
-jeszcze wzór na pochodną funkcji kosztu po parametrach \(\bm{W}\). Obliczmy najpierw pochodną \(L\)
-po \(\bm{\Phi}^{ij}\) (dla przejrzystości zapisu nie piszemy granic sumowania -- wynikają one
-naturalnie z wymiarów macierzy)
-\begin{equation}
-    \pdv{L}{\bm{\Phi}^{pq}} = -\sum_{i,j,r,s} \frac{\bm{T}^{ij}}{\bm{\Pi}^{rs}}\delta_{ir}\delta_{js}\pdv{\bm{\Pi}^{rs}}{\bm{\Phi}^{pq}} = - \sum_{i,j} \frac{\bm{T}^{ij}}{\bm{\Pi}^{ij}}\pdv{\bm{\Pi}^{ij}}{\bm{\Phi}^{pq}}\,.
-\end{equation}
-Jednocześnie
-\begin{equation}
-    \pdv{\bm{\Pi}^{ij}}{\bm{\Phi}^{pq}} = \frac{\delta_{pi}\delta_{qj}\exp\bm{\Phi}^{ij}\left[\sum_k \exp\bm{\Phi}^{kj}\right] - \delta_{qj} \exp\bm{\Phi}^{ij} \exp\bm{\Phi}^{pj}}{\left[\sum_k \exp\bm{\Phi}^{kj}\right]^2}\,,
-\end{equation}
+Regresję logistyczną możemy w prosty sposób uogólnić na przypadek klasyfikacji jednej z \(k\) klas.
+Zakładamy teraz, iż zbiór obserwacji i.i.d. ma postać \(\mc{X} = \{t_i(\bm{x}_i)\}_{i=1}^n\) dla \(t
+\in \{1,\ldots,k\}\). Nasz model statystyczny uogólnimy do postaci rozkładu kategorialnego (z ang.
+\textit{categorical distribution} lub \textit{multinomial distribution}) z parametrem
+\(\bm{\pi}(\bm{x}; \bm{W})\) (wektorem prawdopodobieństw każdej klasy) zależnym od estymowanych
+parametrów \(\bm{W}\)
+\[
+t(\bm{x}) \mid \bm{W} \sim \mathrm{Cat}(\bm{\pi}(\bm{x}; \bm{W}))\,.
+\]
+W przypadku regresji softmax jako funkcję \(\bm{\pi}: \mathbb{R}^k \mapsto [0;1]^k\) przyjmiemy
+funkcję \(\bm{\sigma}(\bm{\phi}(\bm{x}; \bm{W}))\), gdzie \(\bm{\sigma}: \mathbb{R}^k \mapsto
+[0;1]^k\)
+\[
+\bm{\sigma}^i(\bm{z}) = \frac{\exp(\bm{z}^i)}{ \sum_{j=1}^k \exp(\bm{z}^j)}
+\]
+to tzw. \emph{funkcja softmax}, natomiast \(\bm{\phi}: \mathbb{R}^m \mapsto \mathbb{R}^k\), to
+dowolna funkcja. W przypadku regresji softmax przyjmiemy prosty model liniowy
+\[
+\bm{\phi}(\bm{x}; \bm{W}) = \bm{W}\bm{x}\,.
+\]
+Funkcja wiarygodności dla powyższego modelu ma postać
+\[
+\mc{L}(\mc{X}; \bm{W}) = \prod_{i=1}^n \prod_{j=1}^k \bm{\pi}^j(\bm{x}_i; \bm{W})^{[t_i = j]}\,,
+\]
 skąd
-\begin{equation}
-    \frac{1}{\bm{\Pi}^{ij}}\pdv{\bm{\Pi}^{ij}}{\bm{\Phi}^{pq}} = \delta_{pi}\delta_{qj} - \delta_{qj}\bm{\Pi}^{pj}\,.
-\end{equation}
-Z powyższego zatem
-\begin{equation}
-    \pdv{L}{\bm{\Phi}^{pq}} = -\sum_{i,j} \bm{T}^{ij}\delta_{pi}\delta_{qj} + \sum_{i,j}\bm{T}^{ij}\delta_{qj}\bm{\Pi}^{pj} = \bm{\Pi}^{pq} - \bm{T}^{pq}\,,
-\end{equation}
-gdzie skorzystaliśmy z faktu, iż z konstrukcji dla dowolnej kolumny \(q\) macierzy \(\bm{T}\)
-zachodzi \(\sum_{i}\bm{T}^{iq} = 1\). Możemy zapisać powyższy wzór w eleganckiej postaci macierzowej
-\begin{equation}\boxed{
-    \pdv{L}{\bm{\Phi}} = \bm{\Pi} - \bm{T}\,.
-}\end{equation}
-Pochodną funkcji kosztu po parametrach \(\bm{W}\) możemy zatem obliczyć jako
-\begin{equation}
-    \pdv{L}{\bm{W}^{rs}} = \sum_{p,q}\pdv{L}{\bm{\Phi}^{pq}}\pdv{\bm{\Phi}^{pq}}{\bm{W}^{rs}}\,,
-\end{equation}
+\[
+\boxed{
+\begin{split}
+L(\mc{X}; \bm{W}) &= - \sum_{i=1}^n \sum_{j=1}^k [t_i = j] \log \bm{\pi}^j(\bm{x}_i; \bm{W})\\
+                    &= - \sum_{i=1}^n \sum_{j=1}^k [t_i = j] \log \bm{\sigma}^j(\bm{\phi}(\bm{x}_i; \bm{W}))
+\end{split}\quad.
+}
+\]
+Niestety dla takiej postaci funkcji kosztu nie można znaleźć minimum w postaci analitycznej, dlatego
+musimy wykorzystywać algorytmy optymalizacji numerycznej. Wyznaczymy więc jeszcze pierwsze pochodne
+funkcji \(L\) po parametrach \(\bm{W}\). Wprowadźmy macierze
+\[
+\begin{split}
+&\bm{T}^{ij} = [t_i = j]\\
+&\bm{X}^{ij} = \bm{x}_i^j \\
+&\bm{\Phi}^{ij} = \bm{\phi}^j(\bm{x}_i; \bm{W}) = \sum_l \bm{W}^{jl} \bm{X}^{il}\\
+&\bm{\Sigma}^{ij} = \bm{\sigma}^j(\bm{\phi}(\bm{x}_i; \bm{W})) = \frac{\exp(\bm{\Phi}^{ij})}{\sum_{l=1}^k \exp(\bm{\Phi}^{il})}
+\end{split}\quad,
+\]
+gdzie każdy wiersz macierzy \(\bm{X}\) jest wektorem cech danego przykładu; każdy wiersz \(\bm{T}\)
+jest tzw. \emph{wektorem one--hot} dla danego przykładu tj. wektorem binarnym, w którym dokładnie na
+jednej pozycji jest wartość 1 i pozycja ta odpowiada prawidłowej klasie dla danego przykładu; każdy
+wiersz macierzy \(\bm{\Phi}\) jest wektorem \emph{mlogitów} tj. liczb rzeczywistych, które po
+zastosowaniu funkcji softmax dają wartości prawdopodobieństwa każdej klasy. Wówczas
+\[
+L(\mc{X}; \bm{W}) = - \sum_{i=1}^n \sum_{j=1}^k \bm{T}^{ij} \log \bm{\Sigma}^{ij}\,,
+\]
+skąd
+\[
+\pdv{L}{\bm{\Phi}^{ab}} = \sum_{c,d} \pdv{L}{\bm{\Sigma}^{cd}}\pdv{\bm{\Sigma}^{cd}}{\bm{\Phi}^{ab}}\,,
+\]
 gdzie
-\begin{equation}
-    \pdv{\bm{\Phi}^{pq}}{\bm{W}^{rs}} = \sum_t \delta_{rp} \delta_{st} \bm{X}^{tq} = \delta_{rp}\bm{X}^{sq}\,,
-\end{equation}
-skąd
-\begin{equation}
-    \pdv{L}{\bm{W}^{rs}} = \sum_{q} (\bm{\Pi}^{rq} - \bm{T}^{rq}) \bm{X}^{sq}\,,
-\end{equation}
-co również możemy zapisać w zwartej postaci macierzowej
-\begin{equation}\boxed{
-    \pdv{L}{\bm{W}} = (\bm{\Pi} - \bm{T}) \bm{X}^T\,.
-}\end{equation}
-
+\[
+\pdv{L}{\bm{\Sigma}^{cd}} = - \sum_{i,j} \frac{\bm{T}^{ij}}{\bm{\Sigma}^{ij}} \delta_{ic} \delta_{jd} = -\frac{\bm{T}^{cd}}{\bm{\Sigma}^{cd}}
+\]
+oraz
+\[
+\begin{split}
+\pdv{\bm{\Sigma}^{cd}}{\bm{\Phi}^{ab}} &= \exp(\bm{\Phi}^{cd}) \frac{ \delta_{ac} \delta_{bd} \left[\sum_l \exp(\bm{\Phi}^{cl})\right] - \delta_{ac} \exp(\bm{\Phi}^{cb})}{\left[\sum_l \exp(\bm{\Phi}^{cl})\right]^2}\\
+                                       &= \bm{\Sigma}^{cd} \delta_{ac} \delta_{bd} - \delta_{ac} \bm{\Sigma}^{cd} \bm{\Sigma}^{cb} 
+\end{split}\quad.
+\]
+Z powyższego
+\[
+\pdv{L}{\bm{\Phi}^{ab}} = \sum_{c,d} \frac{\bm{T}^{cd}}{\bm{\Sigma}^{cd}} \left( \delta_{ac} \bm{\Sigma}^{cd} \bm{\Sigma}^{cb} - \bm{\Sigma}^{cd} \delta_{ac} \delta_{bd} \right) = \bm{\Sigma}^{ab} - \bm{T}^{ab}\,,
+\]
+gdzie skorzystaliśmy z faktu, iż z konstrukcji dla dowolnego wiersza \(a\) macierzy \(\bm{T}\)
+zachodzi \(\sum_{d}\bm{T}^{ad} = 1\). W takim razie
+\[
+\pdv{L}{\bm{W}^{ab}} = \sum_{c,d} \pdv{L}{\bm{\Phi}^{cd}} \pdv{\bm{\Phi}^{cd}}{\bm{W}^{ab}} = \sum_c \left(\bm{\Sigma}^{ca} - \bm{T}^{ca}\right) \bm{X}^{cb} \,,
+\]
+co możemy zapisać w zwartej postaci macierzowej
+\[
+\pdv{L}{\bm{W}} = \left(\bm{\Sigma} - \bm{T}\right)^T \bm{X}\,.
+\]
 
 \end{document}
