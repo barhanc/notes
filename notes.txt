@@ -86,7 +86,7 @@
     min_{s in S_nc} sum_{k=0,..,nc-1} sum_{l=0,..,nc-1} D[k,s(k),l,s(l)]
 
     gdzie D[i,j,k,l] := abs(M_E1[i,k] - M_E2[j,l]), a M_E oznacza macierz wymiaru |C|x|C|, której
-    element (i,j) określa liczbę głosów po rządkowych, w których kandydat i-ty znajduje się przed
+    element (i,j) określa liczbę głosów porządkowych, w których kandydat i-ty znajduje się przed
     kandydatem j-tym i stosujemy konwencję M_E[i,i] = 0.
 
     - k-Kemeny score TODO: Nie moja działka
@@ -371,61 +371,112 @@
 
     cost[i,j] >= sum_{k=1,..,n'} d(i,j,k,s(k)) + min sum_{k=n'+1,..,nc} d(i,j,k,s*(k)) = lcost[i,j]
 
-    gdzie minimalizujemy po przyporządkowaniach pozostałych nc-n' elementów, oczywiście zauważmy, że jest to problem
-    LAP, więc możemy go rozwiązać w czasie O(nc**3).
+    gdzie minimalizujemy po przyporządkowaniach pozostałych nc-n' elementów, oczywiście zauważmy, że 
+    jest to problem LAP, więc możemy go rozwiązać w czasie O(nc**3).
+
     Ponieważ dla każdych i,j zachodzi cost[i,j] >= lcost[i,j], więc
     
     min_{v in S_nv} sum_{i=1,..,nv} cost[i,v(i)] >= min_{v' in S_nv} sum_{i=1,..,nv} lcost[i,v'(i)]
 
     zatem rozwiązując problem LAP dla macierzy kosztu lcost[i,j] otrzymujemy poszukiwany lower bound.
 
-===========================================================
-TODO
+2024-08-02
 
-  -> (!!!) wrapper do mapela
+    Poprawiłem implementację algorytmu FAQ dla problemu QAP, w szczególności implementację fragmentu
+    algorytmu Franka-Wolfe'a. Algorytm FAQ działa w następujący sposób: poszukujemy rozwiązania
+    zrelaksowanego problemu QAP, tj.
+
+    min f(P)
+    
+    f(P) = sum_{i,j,k,l} d(i,j,k,l) P_ij P_kl
+
+    gdzie P jest podwójnie stochastyczną (doubly stochastic) macierzą. Standardowym algorytmem, który
+    tutaj wykorzystujemy jest algorytm Franka-Wolfe'a.
+
+    1. Inicjalizujemy P^i
+
+    2. Obliczamy gradient funkcji f w pnkcie P_i
+
+    ∂f / ∂P_ab = sum_{i,j,k,l} [ d(i,j,k,l) P_kl δ_ai δ_bj + d(i,j,k,l) P_ij δ_ak δ_bl ]
+               = sum_{k,l} d(a,b,k,l) P_kl + sum_{i,j} d(i,j,a,b) P_ij
+               = sum_{i,j} [d(a,b,i,j) + d(i,j,a,b)] P_ij
+
+    3. Następnie znajdujemy punkt (macierz podwójnie stochastyczną) Q, który minimalizuje rozwinięcie
+    Taylora funkcji f(P) w pobliżu P^i
+
+    f(P) ≈ f(P^i) + ∂f / ∂P_ab (P^i) (P - P^i)
+
+    Q = arg min [ f(P^i) + ∂f / ∂P (P^i) (P - P^i) ] = arg min  ∂f / ∂P (P^i) P
+
+    Uzyskany problem to po prostu LAP, więc możemy bez problemu znaleźć punkt Q. Następnie na odcinku
+    PQ znajdujemy, który minimalizuje f, tj. inaczej szukamy
+
+    α = arg min f(P + α (Q - P))
+
+    0 <= α <= 1 
+
+    Jest to funkcja kwadratowa postaci f(α) = a α^2 + b α + c, której minimum znajdujemy w standardowy
+    sposób tj. jeśli a > 0 to minimum globalne jest dane przez x-ową współrzędną wierzchołka paraboli, 
+    czyli -b/2a. Jeśli 0 <= -b/2a <= 1 to jest to poszukiwane minimum. W przeciwnym razie funkcja f(α)
+    jest funkcją ściśle monotoniczną w przedziale [0;1], więc wystarczy porównać wartości na krańcach
+    tego przedziału f(0) = c i f(1) = a + b + c. Zauważmy tutaj, iż nie musimy obliczać właściwie
+    współczynnika c. Współczynniki a i b są natomiast dane odpowiednio przez
+
+    R_ij = Q_ij - P_ij
+    
+    a = sum_{i,j,k,l} d(i,j,k,l) R_ij R_kl
+
+    b = sum_{i,j,k,l} d(i,j,k,l) (R_ij P_kl + R_kl P_ij)
+
+    4. P^i = P^i + α (Q - P^i) = (1 - α) P^i + α Q
+
+    5. Powyższe powtarzamy przez ustaloną liczbę iteracji lub do osiągnięcia zbieżności.
+
+    Otrzymaliśmy zatem rozwiązanie zrelaksowanego problemu QAP (relaxed QAP, rQAP). Aby teraz otrzymać
+    rozwiązanie problemu QAP (którym jest macierz permutacji) rozwiązujemy problem LAP dla macierzy
+    kosztu równej P^i.
+
+    ---
+
+    Zaimplementowałem również wrapper dla odległości pairwise, która jest tak naprawdę problemem
+    QAP (uogólnionym, tzw. Lawler QAP w odróżnieniu od Koopmans-Beckmann QAP) dla tablicy kosztu
+
+    d(i,j,k,l) = abs( M_U[i,k] - M_V[j,l] ) .
+
+
+ 2024-08-04
+
+    ....
+
+=====================================================================================================
+ TODO
+-----------------------------------------------------------------------------------------------------
 
   -> US Air Force lap() solver
 
-  -> korzystając z GCC Vector Extensions zoptymalizować bap() i swap()
-     konkretnie:
-     
-     * bap_aa()
-     * swap_bf()
+  -> korzystając z GCC Vector Extensions zoptymalizować:
      * swap_bf_mem()
      * swap_aa()
-    
-     korzystając z SIMD + jakieś inne optymalizacje (cache optimization,
-     basically jak mamy już speed up czysto algorytmicznie i dla standardowych optymalizacji to
-     możemy próbować bardziej chirurgiczne zmiany)
+
+  -> wrappers for Mapel + experiments with generating maps
+
+  -> create testing framework and perform tests
 
   -> Finish all TODOs in every file of mine
 
-
-  -> [FD] k-Kemeny based distances
-
-  -> [PJ] FAQ-QAP-based heuristic for swap distance
-
-  -> [PJ] Pairwise wrapper
-
-  -> [MW] BB for swap distance
-
-  -> [  ] create testing framework and perform tests
-
-===========================================================
+=====================================================================================================
 
 [v] 1. Isomorphic Swap
+
 [v] 2. Isomorphic Spearman
+
 [v] 3. Isomorphic Hamming
+
 [v] 4. Pairwise distance
+
 [x] 5. Polarization/Diversity/Agreement
 
-[v] 1. Swap brute-force + Idea for nice heuristic
-[v] 2. Bilinear Assignment Problem (BAP)
-[v] 3. Bilinear Assignment Problem (BAP)
-[v] 4. Quadratic Assignment Problem (QAP)
-[x] 5. All require computing  k-Kemeny score <=> k-Median Problem
-
-===========================================================
+=====================================================================================================
 
 
 

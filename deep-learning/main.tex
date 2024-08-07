@@ -1542,4 +1542,124 @@ co możemy zapisać w zwartej postaci macierzowej
 \pdv{L}{\bm{W}} = \left(\bm{\Sigma} - \bm{T}\right)^T \bm{X}\,.
 \]
 
+
+\section{Uczenie głębokie i sieci neuronowe}
+
+Artificial intelligence, or AI, is concerned with building systems that simulate intelligent
+behavior. It encompasses a wide range of approaches, including those based on logic, search, and
+probabilistic reasoning. Machine learning is a subset of AI that learns to make decisions by fitting
+mathematical models to observed data. This area has seen explosive growth and is now (incorrectly)
+almost synonymous with the term AI.
+
+A deep neural network is a type of machine learning model, and when it is fitted to data, this is
+referred to as deep learning.
+
+
+\subsection{Matematyczny model neuronu. Sieć w pełni połączona.}
+
+Neuron modelujemy jako obiekt realizujący przekształcenie \(f: \mathbb{R}^n \mapsto \mathbb{R}\)
+\[
+f(\bm{x}; \bm{w}, b) = a\left( \bm{w}^T\bm{x} + b \right)\,,
+\]
+gdzie \(a: \mathbb{R} \mapsto \mathbb{R}\) jest pewnym nieliniowym przekształceniem. Model ten ma
+raczej niewiele wspólnego ze współczesnymi modelami matematycznymi biologicznych neuronów, ale jest
+o nie w luźny sposób oparty. W szczególności wyjście neuronu zależy od kombinacji liniowej wejść
+\(\bm{x}\) (tzw. \textit{preaktywacji}) oraz odpowiedniej nieliniowej funkcji aktywacji (z ang.
+\textit{activation function}). Jako funkcje \(a\) najczęściej przyjmujemy funkcje ReLU (z ang.
+\textit{Rectified Linear Unit}) lub podobne -- SiLU (z ang. \textit{Sigmoid Linear Unit}), GELU (z
+ang. \textit{Gaussian Error Linear Unit})
+\[
+\mathrm{ReLU}(x) = \max(0, x) = x\theta(x)\,,\quad \mathrm{SiLU}(x) = x \sigma(x)\,,\quad \mathrm{GELU}(x) = x \Phi(x)\,,
+\]
+gdzie \(\theta(x)\) jest funkcją skokową Heaviside'a, \(\sigma(x)\) jest logistyczną funkcją
+sigmoidalną, a \(\Phi(x)\) jest dystrybuantą standardowego rozkładu normalnego.
+
+Neurony łączymy następnie w sieci, w których wyjście danego neuronu jest wejściem innego. Sieci
+takie realizują pewne przekształcenia \(\bm{\phi}: \mathbb{R}^{n_\text{in}} \mapsto
+\mathbb{R}^{n_\text{out}}\), które są parametryzowane przez \emph{wagi} \(w\) na krawędziach
+łączących neurony oraz obciążenia \(b\) (z ang. \textit{bias}). Sieć taka reprezentuje zatem pewien
+graf obliczeń. 
+
+Najprostszą siecią, którą najpierw opiszemy będzie sieć w pełni połączona (z ang. \textit{fully
+connected network, FCN}) zwana również ze względów historycznych perceptronem wielowarstwowym (z
+ang. \textit{Multilayer Perceptron, MLP}). W sieci takiej neurony ułożone są w warstwy, przy czym
+połączenia występują tylko między neuronami w sąsiednich warstwach i nie ma połączeń między
+neuronami w tej samej warstwie (warstwy takie nazywamy w pełni połączonym -- \textit{fully connected
+layer, FC}). Przykładową sieć w pełni połączoną przedstawiono na rysunku \ref{fig:fcn}. Na rysunku
+krawędzie grafu reprezentują wagi sieci, a wierzchołki reprezentują wartości funkcji aktywacji.
+Wierzchołki w pierwszej i ostatniej warstwie zawierają wartości odpowiednio danych wejściowych i
+wyjściowych i zakładamy, iż dla nich funkcja aktywacji jest funkcją identycznościową. Warstwy te
+nazywamy \emph{warstwami widocznymi}, natomiast pozostałe -- \emph{warstwami ukrytymi} (z ang.
+\textit{hidden layers}). 
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figs/fcn.png}
+    \caption{Przykładowa sieć w pełni połączona}
+    \label{fig:fcn}
+\end{figure}
+
+Niech \(\bm{L}: \mathbb{R}^{n} \mapsto \mathbb{R}^{m}\) oznacza przekształcenie afiniczne postaci
+\[
+\bm{L}^\mu(\bm{x}; \bm{W}, \bm{b}) = \bm{b}^\mu + \sum_{\nu=1}^{n} \bm{W}^{\mu\nu}\bm{x}^\nu\,,
+\]
+gdzie \(\bm{W} \in \mathbb{R}^{m \times n}, \bm{b} \in \mathbb{R}^m\). Dodatkowo przez złożenie
+funkcji skalarnej \(a: \mathbb{R} \mapsto \mathbb{R}\) z funkcją \(\bm{L}\) będziemy rozumieć
+funkcję \(a \circ \bm{L} : \mathbb{R}^n \mapsto \mathbb{R}^m\)
+\[
+(a \circ \bm{L})^\mu (\bm{x}) = a\left(\bm{L}^\mu(\bm{x})\right) = a\left(\bm{b}^\mu + \sum_{\nu=1}^{n} \bm{W}^{\mu\nu}\bm{x}^\nu\right)\,.
+\]
+Sieć w pełni połączona złożona z \(k+2\) warstw o rozmiarach \(n_\text{in}, n_1, \ldots, n_k,
+n_\text{out}\) realizuje zatem przekształcenie \(\bm{\phi}: \mathbb{R}^{n_\text{in}} \mapsto
+\mathbb{R}^{n_\text{out}}\)
+\[
+\boxed
+{
+\bm{\phi}\left(\bm{x}; \left\{(\bm{W}_i, \bm{b}_i)\right\}_{i=1}^{k+1}\right) = \left( \bm{L}_{k+1} \circ a \circ \bm{L}_k \ldots a \circ \bm{L}_2 \circ a \circ \bm{L}_1 \right) (\bm{x}) \,,
+}
+\]
+gdzie \(\bm{L}_i : \mathbb{R}^{n_{i-1}} \mapsto \mathbb{R}^{n_i}\) (przy czym \(n_0 = n_\text{in}\)
+i \(n_{k+1} = n_\text{out}\))
+\[
+\boxed
+{
+\bm{L}_i^\mu \left(\bm{x}; \bm{W}_i, \bm{b}_i\right) = \bm{b}_i^\mu + \sum_{\nu=1}^{n_{i-1}} \bm{W}_i^{\mu\nu}\bm{x}^\nu\,,
+}
+\]
+\(\bm{W}_i \in \mathbb{R}^{n_i \times n_{i-1}}, \bm{b}_i \in \mathbb{R}^{n_i}\). W następnym
+paragrafie pokażemy, iż taka postać rodziny funkcji parametryzowanych przez wagi i obciążenia
+\(\bm{W}, \bm{b}\) potrafi aproksymować niemal dowolną funkcję (\textit{Universal Approximation
+Theorem}), zatem jest to niemal uniwersalny aproksymator, który możemy zastosować do wszelkich
+omawianych wcześniej zagadnień regresji i klasyfikacji. Zauważmy, iż już wcześniej rozwinęliśmy
+teorię w sposób dość ogólny wyprowadzając większość wyników dla pewnej dowolnej funkcji
+\(\bm{\phi}(\bm{x}; \bm{W})\) i jedynie na końcu znajdując dokładne rozwiązania dla prostego
+odwzorowania liniowego \(\bm{W}\bm{x}\) (na marginesie takie proste odwzorowanie odpowiada płytkiej
+sieci neuronowej o \(k=0\) warstwach ukrytych).
+
+% \subsection{Universal Approximation Theorem}
+
+% \subsection{Loss functions: MLE, univariate regression, multi-class classification, cross-entropy loss}
+
+% \subsection{Aspekty optymalizacyjne (gradient descent, stochastic gradient descent, momentum, adam)}
+
+% \subsection{Algorytm wstecznej propagacji błędu, automatyczne różniczkowanie}
+
+% \subsection{Regularyzacja i inicjalizacja w sieciach głębokich}
+
+% \subsection{Measuring performance}
+
+% \subsection{Convolutional networks}
+
+% \subsection{Residual networks}
+
+% \subsection{Transformers}
+
+
+% \section{Nautral Language Processing}
+
+
+% \section{Reinforcement Learning}
+
+
+
 \end{document}
