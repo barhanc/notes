@@ -1501,7 +1501,7 @@ funkcji \(L\) po parametrach \(\bm{W}\). Wprowadźmy macierze
 &\bm{T}^{ij} = [t_i = j]\\
 &\bm{X}^{ij} = \bm{x}_i^j \\
 &\bm{\Phi}^{ij} = \bm{\phi}^j(\bm{x}_i; \bm{W}) = \sum_l \bm{W}^{jl} \bm{X}^{il}\\
-&\bm{\Sigma}^{ij} = \bm{\sigma}^j(\bm{\phi}(\bm{x}_i; \bm{W})) = \frac{\exp(\bm{\Phi}^{ij})}{\sum_{l=1}^k \exp(\bm{\Phi}^{il})}
+&\bm{S}^{ij} = \bm{\sigma}^j(\bm{\phi}(\bm{x}_i; \bm{W})) = \frac{\exp(\bm{\Phi}^{ij})}{\sum_{l=1}^k \exp(\bm{\Phi}^{il})}
 \end{split}\quad,
 \]
 gdzie każdy wiersz macierzy \(\bm{X}\) jest wektorem cech danego przykładu; każdy wiersz \(\bm{T}\)
@@ -1510,35 +1510,35 @@ jednej pozycji jest wartość 1 i pozycja ta odpowiada prawidłowej klasie dla d
 wiersz macierzy \(\bm{\Phi}\) jest wektorem \emph{mlogitów} tj. liczb rzeczywistych, które po
 zastosowaniu funkcji softmax dają wartości prawdopodobieństwa każdej klasy. Wówczas
 \[
-L(\mc{X}; \bm{W}) = - \sum_{i=1}^n \sum_{j=1}^k \bm{T}^{ij} \log \bm{\Sigma}^{ij}\,,
+L(\mc{X}; \bm{W}) = - \sum_{i=1}^n \sum_{j=1}^k \bm{T}^{ij} \log \bm{S}^{ij}\,,
 \]
 skąd
 \[
-\pdv{L}{\bm{\Phi}^{ab}} = \sum_{c,d} \pdv{L}{\bm{\Sigma}^{cd}}\pdv{\bm{\Sigma}^{cd}}{\bm{\Phi}^{ab}}\,,
+\pdv{L}{\bm{\Phi}^{ab}} = \sum_{c,d} \pdv{L}{\bm{S}^{cd}}\pdv{\bm{S}^{cd}}{\bm{\Phi}^{ab}}\,,
 \]
 gdzie
 \[
-\pdv{L}{\bm{\Sigma}^{cd}} = - \sum_{i,j} \frac{\bm{T}^{ij}}{\bm{\Sigma}^{ij}} \delta_{ic} \delta_{jd} = -\frac{\bm{T}^{cd}}{\bm{\Sigma}^{cd}}
+\pdv{L}{\bm{S}^{cd}} = - \sum_{i,j} \frac{\bm{T}^{ij}}{\bm{S}^{ij}} \delta_{ic} \delta_{jd} = -\frac{\bm{T}^{cd}}{\bm{S}^{cd}}
 \]
 oraz
 \[
 \begin{split}
-\pdv{\bm{\Sigma}^{cd}}{\bm{\Phi}^{ab}} &= \exp(\bm{\Phi}^{cd}) \frac{ \delta_{ac} \delta_{bd} \left[\sum_l \exp(\bm{\Phi}^{cl})\right] - \delta_{ac} \exp(\bm{\Phi}^{cb})}{\left[\sum_l \exp(\bm{\Phi}^{cl})\right]^2}\\
-                                       &= \bm{\Sigma}^{cd} \delta_{ac} \delta_{bd} - \delta_{ac} \bm{\Sigma}^{cd} \bm{\Sigma}^{cb} 
+\pdv{\bm{S}^{cd}}{\bm{\Phi}^{ab}} &= \exp(\bm{\Phi}^{cd}) \frac{ \delta_{ac} \delta_{bd} \left[\sum_l \exp(\bm{\Phi}^{cl})\right] - \delta_{ac} \exp(\bm{\Phi}^{cb})}{\left[\sum_l \exp(\bm{\Phi}^{cl})\right]^2}\\
+                                       &= \bm{S}^{cd} \delta_{ac} \delta_{bd} - \delta_{ac} \bm{S}^{cd} \bm{S}^{cb} 
 \end{split}\quad.
 \]
 Z powyższego
 \[
-\pdv{L}{\bm{\Phi}^{ab}} = \sum_{c,d} \frac{\bm{T}^{cd}}{\bm{\Sigma}^{cd}} \left( \delta_{ac} \bm{\Sigma}^{cd} \bm{\Sigma}^{cb} - \bm{\Sigma}^{cd} \delta_{ac} \delta_{bd} \right) = \bm{\Sigma}^{ab} - \bm{T}^{ab}\,,
+\pdv{L}{\bm{\Phi}^{ab}} = \sum_{c,d} \frac{\bm{T}^{cd}}{\bm{S}^{cd}} \left( \delta_{ac} \bm{S}^{cd} \bm{S}^{cb} - \bm{S}^{cd} \delta_{ac} \delta_{bd} \right) = \bm{S}^{ab} - \bm{T}^{ab}\,,
 \]
 gdzie skorzystaliśmy z faktu, iż z konstrukcji dla dowolnego wiersza \(a\) macierzy \(\bm{T}\)
 zachodzi \(\sum_{d}\bm{T}^{ad} = 1\). W takim razie
 \[
-\pdv{L}{\bm{W}^{ab}} = \sum_{c,d} \pdv{L}{\bm{\Phi}^{cd}} \pdv{\bm{\Phi}^{cd}}{\bm{W}^{ab}} = \sum_c \left(\bm{\Sigma}^{ca} - \bm{T}^{ca}\right) \bm{X}^{cb} \,,
+\pdv{L}{\bm{W}^{ab}} = \sum_{c,d} \pdv{L}{\bm{\Phi}^{cd}} \pdv{\bm{\Phi}^{cd}}{\bm{W}^{ab}} = \sum_c \left(\bm{S}^{ca} - \bm{T}^{ca}\right) \bm{X}^{cb} \,,
 \]
 co możemy zapisać w zwartej postaci macierzowej
 \[
-\pdv{L}{\bm{W}} = \left(\bm{\Sigma} - \bm{T}\right)^T \bm{X}\,.
+\pdv{L}{\bm{W}} = \left(\bm{S} - \bm{T}\right)^T \bm{X}\,.
 \]
 
 
@@ -1693,6 +1693,9 @@ the network depth for networks with ReLU activations.
 
 % \section{Reinforcement Learning}
 
+
+
 \bibliographystyle{plain}
 \bibliography{refs} % Entries are in the refs.bib file
+
 \end{document}
