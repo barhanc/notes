@@ -6,7 +6,6 @@
 \begin{document}
 {\footnotesize \tableofcontents}
 
-
 \section{Wstęp}
 
 Celem tych notatek jest zwięzłe przedstawienie kompletu zagadnień związanych z szeroko pojętym
@@ -1545,6 +1544,7 @@ co możemy zapisać w zwartej postaci macierzowej
 
 \section{Uczenie głębokie i sieci neuronowe}
 
+\begin{quote}[\textit{Introduction, Ch. 1} \cite{prince2023understanding}]
 Artificial intelligence, or AI, is concerned with building systems that simulate intelligent
 behavior. It encompasses a wide range of approaches, including those based on logic, search, and
 probabilistic reasoning. Machine learning is a subset of AI that learns to make decisions by fitting
@@ -1553,7 +1553,7 @@ almost synonymous with the term AI.
 
 A deep neural network is a type of machine learning model, and when it is fitted to data, this is
 referred to as deep learning.
-
+\end{quote}
 
 \subsection{Matematyczny model neuronu. Sieć w pełni połączona.}
 
@@ -1636,6 +1636,39 @@ teorię w sposób dość ogólny wyprowadzając większość wyników dla pewnej
 odwzorowania liniowego \(\bm{W}\bm{x}\) (na marginesie takie proste odwzorowanie odpowiada płytkiej
 sieci neuronowej o \(k=0\) warstwach ukrytych).
 
+\begin{quote}[\textit{Notes, Ch. 4} \cite{prince2023understanding}]
+\begin{itemize}
+\item \textbf{Deep learning}: It has long been understood that it is possible to build more complex
+functions by composing shallow neural networks or developing networks with more than one hidden
+layer. Indeed, the term “deep learning” was first used by Dechter (1986). However, interest was
+limited due to practical concerns; it was not possible to train such networks well. The modern era
+of deep learning was kick-started by startling improvements in image classification reported by
+[Alex] Krizhevsky et al. (2012) [AlexNet moment]. This sudden progress was arguably due to the
+confluence of four factors: larger training datasets, improved processing power for training, the
+use of the ReLU activation function, and the use of stochastic gradient descent.
+
+\item \textbf{Depth efficiency}: Several results show that there are functions that can be realized
+by deep networks but not by any shallow network whose capacity is bounded above exponentially. In
+other words, it would take an exponentially larger number of units in a shallow network to describe
+these functions accurately. This is known as the depth efficiency of neural networks.
+
+\item \textbf{Width efficiency}: Lu et al. (2017) investigate whether there are wide shallow
+networks (i.e., shallow networks with lots of hidden units) that cannot be realized by narrow
+networks whose depth is not substantially larger. They show that there exist classes of wide,
+shallow networks that can only be expressed by narrow networks with polynomial depth. This is known
+as the width efficiency of neural networks. This polynomial lower bound on width is less restrictive
+than the exponential lower bound on depth, suggesting that depth is more important. Vardi et al.
+(2022) subsequently showed that the price for making the width small is only a linear increase in
+the network depth for networks with ReLU activations.
+\end{itemize}
+\end{quote}
+
+
+
+
+
+
+
 % \subsection{Universal Approximation Theorem}
 
 % \subsection{Loss functions: MLE, univariate regression, multi-class classification, cross-entropy loss}
@@ -1660,6 +1693,6 @@ sieci neuronowej o \(k=0\) warstwach ukrytych).
 
 % \section{Reinforcement Learning}
 
-
-
+\bibliographystyle{plain}
+\bibliography{refs} % Entries are in the refs.bib file
 \end{document}
