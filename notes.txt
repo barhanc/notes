@@ -452,15 +452,12 @@
  TODO
 -----------------------------------------------------------------------------------------------------
 
-  -> US Air Force lap() solver
-
   -> korzystając z GCC Vector Extensions zoptymalizować:
      * swap_bf_mem()
      * swap_aa()
-
-  -> wrappers for Mapel + experiments with generating maps
-
-  -> create testing framework and perform tests
+     * lap()
+     
+  -> create testing framework and perform tests and experiments with generating maps
 
   -> Finish all TODOs in every file of mine
 
