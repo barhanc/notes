@@ -1626,15 +1626,15 @@ i \(n_{k+1} = n_\text{out}\))
 \bm{L}_i^\mu \left(\bm{x}; \bm{W}_i, \bm{b}_i\right) = \bm{b}_i^\mu + \sum_{\nu=1}^{n_{i-1}} \bm{W}_i^{\mu\nu}\bm{x}^\nu\,,
 }
 \]
-\(\bm{W}_i \in \mathbb{R}^{n_i \times n_{i-1}}, \bm{b}_i \in \mathbb{R}^{n_i}\). W następnym
-paragrafie pokażemy, iż taka postać rodziny funkcji parametryzowanych przez wagi i obciążenia
-\(\bm{W}, \bm{b}\) potrafi aproksymować niemal dowolną funkcję (\textit{Universal Approximation
-Theorem}), zatem jest to niemal uniwersalny aproksymator, który możemy zastosować do wszelkich
-omawianych wcześniej zagadnień regresji i klasyfikacji. Zauważmy, iż już wcześniej rozwinęliśmy
-teorię w sposób dość ogólny wyprowadzając większość wyników dla pewnej dowolnej funkcji
-\(\bm{\phi}(\bm{x}; \bm{W})\) i jedynie na końcu znajdując dokładne rozwiązania dla prostego
-odwzorowania liniowego \(\bm{W}\bm{x}\) (na marginesie takie proste odwzorowanie odpowiada płytkiej
-sieci neuronowej o \(k=0\) warstwach ukrytych).
+\(\bm{W}_i \in \mathbb{R}^{n_i \times n_{i-1}}, \bm{b}_i \in \mathbb{R}^{n_i}\). Okazuje się, iż
+taka postać rodziny funkcji parametryzowanych przez wagi i obciążenia \(\bm{W}, \bm{b}\) potrafi
+aproksymować niemal dowolną funkcję (\textit{Universal Approximation Theorem}), zatem jest to niemal
+uniwersalny aproksymator, który możemy zastosować do wszelkich omawianych wcześniej zagadnień
+regresji i klasyfikacji. Zauważmy, iż już wcześniej rozwinęliśmy teorię w sposób dość ogólny
+wyprowadzając większość wyników dla pewnej dowolnej funkcji \(\bm{\phi}(\bm{x}; \bm{W})\) i jedynie
+na końcu znajdując dokładne rozwiązania dla prostego odwzorowania liniowego \(\bm{W}\bm{x}\) (na
+marginesie takie proste odwzorowanie odpowiada płytkiej sieci neuronowej o \(k=0\) warstwach
+ukrytych).
 
 \begin{quote}[\textit{Notes, Ch. 4} \cite{prince2023understanding}]
 \begin{itemize}
@@ -1663,8 +1663,6 @@ the network depth for networks with ReLU activations.
 \end{itemize}
 \end{quote}
 
-
-% \subsection{Universal Approximation Theorem}
 
 % \subsection{Loss functions: MLE, univariate regression, multi-class classification, cross-entropy loss}
 
