@@ -1664,7 +1664,82 @@ the network depth for networks with ReLU activations.
 \end{quote}
 
 
-% \subsection{Loss functions: MLE, univariate regression, multi-class classification, cross-entropy loss}
+\subsection{Funkcje kosztu}
+
+Tak jak zauważyliśmy wyżej wyprowadzoną wcześniej teorię można bezpośrednio zaaplikować dla
+przypadku sieci neuronowych. Wartości parametrów \(\bm{W}, \bm{b}\) znajdujemy zatem w sposób
+analogiczny jak dla modeli klasycznych (tj. nie głębokich) minimalizując odpowiednią funkcję kosztu.
+Wymienione wcześniej funkcje kosztu dla zagadnień regresji, klasyfikacji binarnej oraz wieloklasowej
+możemy zatem bezpośrednio wykorzystać uwzględniając jednak, iż odwzorowanie \(\bm{\phi}(\bm{x};
+\bm{W}, \bm{b})\) definiujące parametry określonego rozkładu prawdopodobieństwa jest teraz
+odpowiednią siecią neuronową. Nie ma tutaj więc żadnej zmiany jeśli chodzi o tworzenie modeli
+matematycznych rozważanych zagadnień w postaci odpowiednich parametrycznych modeli statystycznych,
+to co się zmienia to większa ekspresywność takich modeli dzięki wykorzystaniu sieci neuronowej jako
+uniwersalnego aproksymatora dla parametrów modelowanych rozkładów.
+
+Wcześniej wyprowadziliśmy funkcje kosztu (jako zanegowaną logarytmiczną funkcję wiarygodności) dla
+typowych zagadnień regresji i klasyfikacji -- odpowiednio błąd średniokwadratowy oraz entropię
+krzyżową i wieloklasową entropię krzyżową. Poniżej zamieszczamy tabelę zawierającą możliwe rozkłady
+prawdopodobieństwa, które można wykorzystać do skonstruowania funkcji kosztu dla mniej typowych
+zagadnień uczenia maszynowego.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{*5l}
+\toprule
+\textit{Domain} & \textit{Distribution} & \textit{Use} \\
+\midrule
+\(y \in \mathbb{R}\)            & univariate normal         & regression                \\ 
+\(y \in \mathbb{R}\)            & Laplace or t-distribution & robust regression         \\ 
+\(y \in \mathbb{R}\)            & mixture of gaussians      & multimodal regression     \\ 
+\(y \in \mathbb{R}_+\)          & exponential or gamma      & predicting magnitude      \\ 
+\(y \in [0;1]\)                 & beta                      & predicting proportion     \\ 
+\(\bm{y} \in \mathbb{R}^d\)     & multivariate normal       & multivariate regression   \\ 
+\(y \in (-\pi; +\pi]\)          & von Mises                 & predicting direction      \\ 
+\(y \in \{0,1\}\)               & Bernoulli                 & binary classification     \\ 
+\(y \in \{1,2,\ldots, K\}\)     & categorical               & multicalss classification \\ 
+\(y \in \{0,1,2,3,\ldots\}\)    & Poisson                   & predicting event counts   \\ 
+\(\bm{y} \in \mathrm{Perm}(n)\) & Plackett--Luce            & ranking                   \\ 
+\bottomrule
+\hline
+\end{tabular}
+\caption{\textit{Figure 5.11, Ch. 5, \cite{prince2023understanding}}}
+\end{table}
+
+\begin{quote}[\textit{Multiple outputs, Ch. 5,} \cite{prince2023understanding}]
+To make two or more prediction types simultaneously, we similarly assume the errors in each are
+independent. For example, to predict wind direction and strength, we might choose the von Mises
+distribution (defined on circular domains) for the direction and the exponential distribution
+(defined on positive real numbers) for the strength. The independence assumption implies that the
+joint likelihood of the two predictions is the product of individual likelihoods. These terms will
+become additive when we compute the negative log-likelihood.
+\end{quote}
+
+\begin{quote}[\textit{Notes, Ch. 5,} \cite{prince2023understanding}]
+\begin{itemize}
+\item \textbf{Class imbalance and focal loss}: Lin et al. (2017c) address data imbalance in
+classification problems. If the number of examples for some classes is much greater than for others,
+then the standard maximum likelihood loss does not work well; the model may concentrate on becoming
+more confident about well-classified examples from the dominant classes and classify less well-
+represented classes poorly. Lin et al. (2017c) introduce focal loss, which adds a single extra
+parameter that down-weights the effect of well-classified examples to improve performance.
+
+\item \textbf{Learning to rank}: Cao et al. (2007), Xia et al. (2008), and Chen et al. (2009) all
+used the Plackett--Luce model in loss functions for learning to rank data. This is the listwise
+approach to learning to rank as the model ingests an entire list of objects to be ranked at once.
+Alternative approaches are the pointwise approach, in which the model ingests a single object, and
+the pairwise approach, where the model ingests pairs of objects.
+
+\item \textbf{Non-probabilistic approaches}: It is not strictly necessary to adopt the probabilistic
+approach discussed in this chapter, but this has become the default in recent years; any loss
+function that aims to reduce the distance between the model output and the training outputs will
+suffice, and distance can be defined in any way that seems sensible. There are several well-known
+non-probabilistic machine learning models for classification, including support vector machines,
+which use hinge loss and AdaBoost, which uses exponential loss.
+\end{itemize}
+\end{quote}
+
+% TODO: Actually derive loss functions for all the above
 
 % \subsection{Aspekty optymalizacyjne (gradient descent, stochastic gradient descent, momentum, adam)}
 

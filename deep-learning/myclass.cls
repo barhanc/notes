@@ -10,7 +10,7 @@
             csquotes, graphicx, fancyhdr, ulem, 
             bm}
 \usepackage[breakable]{tcolorbox}
-\usepackage{pgfplots}
+\usepackage{pgfplots, booktabs}
 
 % ******* Page style *******
 \pagestyle{fancy}
