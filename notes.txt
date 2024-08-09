@@ -1,16 +1,18 @@
- *  Przejrzałem następujące papery dotyczące naszego tematu pracy tj. obliczania odległości między
-    wyborami. - How similar are two elections? - How to sample approval elections? - Understanding
-    distance measures between Elections. - Diversity, Agreement and Polarization in Elections.
+Przejrzałem następujące papery dotyczące naszego tematu pracy tj. obliczania odległości między
+wyborami. 
+- How similar are two elections? 
+- How to sample approval elections? 
+- Understanding distance measures between Elections. 
+- Diversity, Agreement and Polarization in Elections.
 
-    Przedstawię tutaj krótkie streszczenie wymaganej teorii.
+Przedstawię tutaj krótkie streszczenie wymaganej teorii.
 
-    Wyborami porządkowymi (Ordinal Election) nazwiemy parę E = (C, V), gdzie C jest zbiorem
-    kandydatów, a V jest zbiorem głosów, gdzie każdy v in V ma postać |C|-krotki określającej
-    porządek w jakim dany wyborca v szereguje kandydatów (przy czym pierwszy kandydat oznacza tego
-    najlepszego). Dane wybory możemy reprezentować jako macierz E  wymiaru |V| x |C|, której kolejne
-    wiersze określają kolejne głosy, a dany wiersz zawiera numery kandydatów w kolejności
-    preferencji danego wyborcy, przykładowo dla C = {0,1,2,3} i 4 głosów następująca macierz może
-    reprezentować wybory
+Wyborami porządkowymi (Ordinal Election) nazwiemy parę E = (C, V), gdzie C jest zbiorem kandydatów,
+a V jest zbiorem głosów, gdzie każdy v in V ma postać |C|-krotki określającej porządek w jakim dany
+wyborca v szereguje kandydatów (przy czym pierwszy kandydat oznacza tego najlepszego). Dane wybory
+możemy reprezentować jako macierz E  wymiaru |V| x |C|, której kolejne wiersze określają kolejne
+głosy, a dany wiersz zawiera numery kandydatów w kolejności preferencji danego wyborcy, przykładowo
+dla C = {0,1,2,3} i 4 głosów następująca macierz może reprezentować wybory
     
     E = 
     0 1 2 3 
@@ -18,10 +20,10 @@
     3 0 2 1 
     0 1 3 2
 
-    Inną możliwą i często bardziej użyteczną reprezentacją jest reprezentacja w postaci macierzy
-    pozycji pos_E wymiaru |V| x |C|, której wiersze określają kolejne głosy, ale dany wiersz zawiera
-    teraz numery pozycji, na których znajdują się kolejni kandydaci, przykładowo dla wyborów E
-    reprezentowanych przez powyższą macierz macierz pos_E ma postać
+Inną możliwą i często bardziej użyteczną reprezentacją jest reprezentacja w postaci macierzy pozycji
+pos_E wymiaru |V| x |C|, której wiersze określają kolejne głosy, ale dany wiersz zawiera teraz
+numery pozycji, na których znajdują się kolejni kandydaci, przykładowo dla wyborów E
+reprezentowanych przez powyższą macierz macierz pos_E ma postać
 
     pos_E = 
     0 1 2 3 
@@ -29,12 +31,12 @@
     1 3 2 0 
     0 1 3 2
 
-    Wyborami aprobatowymi (Approval Election) nazwiemy z kolei parę E = (C, V), gdzie C jest zbiorem
-    kandydatów, a V jest zbiorem głosów, gdzie każdy v in V jest pewnym podzbiorem C określającym
-    kandydatów, którzy dla danego wyborcy są "wystarczająco dobrzy". Dane wybory aprobatowe możemy
-    wygodnie reprezentować jako binarną macierz E wymiaru |V| x |C|, której element E_ij = 1 iff
-    j-ty kandydat znajduje się w i-tym głosie. Przykładowo dla wyborów C = {0,1,2,3}, V = {{0,1},
-    {2}, {}, {1,2,3}} możemy je reprezentować jako macierz
+Wyborami aprobatywnymi (Approval Election) nazwiemy z kolei parę E = (C, V), gdzie C jest zbiorem
+kandydatów, a V jest zbiorem głosów, gdzie każdy v in V jest pewnym podzbiorem C określającym
+kandydatów, którzy dla danego wyborcy są "wystarczająco dobrzy". Dane wybory aprobatywne możemy
+wygodnie reprezentować jako binarną macierz E wymiaru |V| x |C|, której element E_ij = 1 iff j-ty
+kandydat znajduje się w i-tym głosie. Przykładowo dla wyborów C = {0,1,2,3}, V = {{0,1}, {2}, {},
+{1,2,3}} możemy je reprezentować jako macierz
 
     E = 
     1 1 0 0 
@@ -42,76 +44,77 @@
     0 0 0 0 
     0 1 1 1
 
-    Pomiędzy wyborami (zarówno porządkowymi jak i aprobatowymi) można wprowadzić miary odległości
-    (metryki lub półmetryki), które dla dwóch różnych wyborów E1, E2 zawierających tę samą liczbę
-    głosów i kandydatów mierzą stopień podobieństwa między nimi. W naszej pracy zajmujemy się
-    odległościami o udowodnionej przynależności do klasy NP-hard. Wymienię tutaj 5 odległości, dla
-    których implementujemy zoptymalizowane algorytmu typu brute-force oraz heurystyki
+Pomiędzy wyborami (zarówno porządkowymi jak i aprobatywnymi) można wprowadzić miary odległości
+(metryki lub półmetryki), które dla dwóch różnych wyborów E1, E2 zawierających tę samą liczbę głosów
+i kandydatów mierzą stopień podobieństwa między nimi. W naszej pracy zajmujemy się odległościami o
+udowodnionej przynależności do klasy NP-hard. Wymienię tutaj 5 odległości, dla których
+implementujemy zoptymalizowane algorytmu typu brute-force oraz heurystyki
 
-    - Isomorphic swap distance. Tą odległość można zdefiniować jako następujący problem
-    optymalizacji kombinatorycznej
+- **Isomorphic swap distance**. Tą odległość można zdefiniować jako następujący problem
+optymalizacji kombinatorycznej
 
     min_{v in S_nv} min_{s in S_nc} sum_{i=0,..,nv-1} sum_{k=0,..,nc-1} sum_{l=0,..,nc-1} D[i,v(i),k,l,s(k),s(l)]
     
-    gdzie 
+gdzie 
     
     D[i,j,k,l,m,n] := 1/2 *  { (pos_E1[i,k] - pos_E1[i,l]) * (pos_E2[j,m] - pos_E2[j,n]) < 0 },
     
-    a { . } oznacza nawias Iversona. S_n oznacza z kolei zbiór wszystkich permutacji zbioru [n].
-    Zauważmy, iż taki sposób obliczania tablicy D[...] nie jest optymalny, gdyż zgodnie z tym co
-    można wyczytać na Wikipedii swap distance (inaczej Kendall tau distance) między dwoma głosami
-    porządkowymi v1, v2 można obliczyć w złożoności O(n log n) gdzie |v1|=|v2|=n, a nawet O(n
-    sqrt(log n)). Powyższe sformułowanie dopuszcza jednak ciekawą heurystykę, o której później.
+a { . } oznacza nawias Iversona. S_n oznacza z kolei zbiór wszystkich permutacji zbioru [n].
+Zauważmy, iż taki sposób obliczania tablicy D[...] nie jest optymalny, gdyż zgodnie z tym co można
+wyczytać na Wikipedii swap distance (inaczej Kendall tau distance) między dwoma głosami porządkowymi
+v1, v2 można obliczyć w złożoności O(n log n) gdzie |v1|=|v2|=n, a nawet O(n sqrt(log n)). Powyższe
+sformułowanie dopuszcza jednak ciekawą heurystykę, o której później.
 
-    - Isomorphic Spearman distance. Tą odległość można zdefiniować jako problem BAP (Bilinear
-    Assignment Problem)
+
+- **Isomorphic Spearman distance**. Tą odległość można zdefiniować jako problem BAP (Bilinear
+Assignment Problem)
 
     min_{v in S_nv} min_{s in S_nc} sum_{i=0,..,nv-1} sum_{k=0,..,nc-1} D[i,v(i),k,s(k)]
     
-    gdzie D[i,j,k,l] := abs(pos_E1[i,k] - pos_E2[j,l]). Dla problemu BAP istnieje literatura, w
-    której opisano i sprawdzono eksperymentalnie różne heurystykji do rozwiązywania tego problemu.
-    Więcej opisano poniżej.
+gdzie D[i,j,k,l] := abs(pos_E1[i,k] - pos_E2[j,l]). Dla problemu BAP istnieje literatura, w której
+opisano i sprawdzono eksperymentalnie różne heurystyki do rozwiązywania tego problemu. Więcej
+opisano poniżej.
 
-    - Isomorphic Hamming distance. Również tę odległość można zdefiniować jako BAP, przy czym jest
-    to odległość dla wyborów aprobatowych.
+
+- **Isomorphic Hamming distance**. Również tę odległość można zdefiniować jako BAP, przy czym jest
+to odległość dla wyborów aprobatowych.
 
     min_{v in S_nv} min_{s in S_nc} sum_{i=0,..,nv-1} sum_{k=0,..,nc-1} D[i,v(i),k,s(k)]
 
-    gdzie D[i,j,k,l] := E1[i,k] xor E2[j,l].
+gdzie D[i,j,k,l] := E1[i,k] xor E2[j,l].
 
-    - Pairwise Distance. Odległość tą można zdefiniować jako problem QAP (Quadratic Assignment
-    Problem), dla którego istnieje bardzo dużo literatury dotyczącej szybkich heurystyk i algorytmów
-    dokładnych
+
+- **Pairwise Distance**. Odległość tą można zdefiniować jako problem QAP (Quadratic Assignment Problem),
+dla którego istnieje bardzo dużo literatury dotyczącej szybkich heurystyk i algorytmów dokładnych
 
     min_{s in S_nc} sum_{k=0,..,nc-1} sum_{l=0,..,nc-1} D[k,s(k),l,s(l)]
 
-    gdzie D[i,j,k,l] := abs(M_E1[i,k] - M_E2[j,l]), a M_E oznacza macierz wymiaru |C|x|C|, której
-    element (i,j) określa liczbę głosów porządkowych, w których kandydat i-ty znajduje się przed
-    kandydatem j-tym i stosujemy konwencję M_E[i,i] = 0.
+gdzie D[i,j,k,l] := abs(M_E1[i,k] - M_E2[j,l]), a M_E oznacza macierz wymiaru |C|x|C|, której
+element (i,j) określa liczbę głosów porządkowych, w których kandydat i-ty znajduje się przed
+kandydatem j-tym i stosujemy konwencję M_E[i,i] = 0.
 
-    - k-Kemeny score TODO: Nie moja działka
 
-    =======================================================
+- k-Kemeny score TODO
     
-    Mając już wprowadzoną wymaganą teorię (oczywiście w paperach to jest tylko mały fragment, ale
-    nam potrzebne jest tylko to) zacznę opisywać, co do tej pory zrobiliśmy.
+Mając już wprowadzoną wymaganą teorię (oczywiście w artykułach to jest tylko mały fragment, ale nam
+potrzebne jest tylko to) zacznę opisywać, co do tej pory zrobiliśmy.
+
 
 2024-04-24
 
    ->  Zająłem się na początku odległościami Spearman i Hamming. Na początku zaimplementowałem
-    proste brute-forcy w Pythonie, aby sprawdzić swoje zrozumienie podanych definicji oraz
-    poprawność redukcji do problemu BAP i porównałem wyniki z istniejącą implementacją w Mapelu.
-    Wyniki były poprawne, ale oczywiście brute-force w Python jest niezwykle wolny.
+    proste algorytmy typu brute-force w Pythonie, aby sprawdzić swoje zrozumienie podanych definicji
+    oraz poprawność redukcji do problemu BAP i porównałem wyniki z istniejącą implementacją w
+    Mapelu. Wyniki były poprawne, ale oczywiście brute-force w Python jest niezwykle wolny.
 
    -> Następnie zaimplementowałem programy ILP rozwiązujące opisane problemy optymalizacyjne
     korzystając z bardzo wygodnego frameworku CVXPY. Zaimplementowałem dwie redukcje do ILP: jedną
     wziętą wprost z pracy "How similar are two elections?", natomiast drugą oparłem o paper "An
-    algorithm for the quadratic assignment problem using Benders' decomposition", L.Kaufman,
-    F.Broeckx który co prawda opisuje problem QAP, ale metodę tam zaprezentowaną łatwo było
-    przełożyć na problem BAP. Niestety obie redukcje były znacznie wolniejsze niż istniejąca w
-    Mapelu implementacja brute-force'a dlatego porzuciłem używanie biblioteki CVXPY (dodatkowo
-    biblioteka ta sprawa pewne problemy przy instalowaniu, dlatego nie byłaby dobrym wyborem w
-    ogólności)
+    algorithm for the quadratic assignment problem using Benders' decomposition", L.Kaufman, F.
+    Broeckx który co prawda opisuje problem QAP, ale metodę tam zaprezentowaną łatwo było przełożyć
+    na problem BAP. Niestety obie redukcje były znacznie wolniejsze niż istniejąca w Mapelu
+    implementacja brute-force'a dlatego porzuciłem używanie biblioteki CVXPY (dodatkowo biblioteka
+    ta sprawa pewne problemy przy instalowaniu, dlatego nie byłaby dobrym wyborem w ogólności)
 
    -> Następnie zająłem się implementacją zoptymalizowanego brute-force'a w C, który byłby szybszy
     od istniejącej implementacji w C++. Poniżej podaj, krótki opis bf
@@ -121,7 +124,7 @@
     rozwiązywać. Idea bf to po prostu przeglądanie wszystkich permutacji zbioru S_min(nv,nc) i dla
     każdej permutacji rozwiązanie LAP aby znaleźć optymalną permutację zbioru S_max(nv,nc) (jest to
     już niewielki improvement nad implementacją w Mapelu, która zawsze przegląda permutacje
-    kandydatów niewykorzystując symetrii problemu). Do rozwiązania LAP użyłem bardzo efektywnej
+    kandydatów nie wykorzystując symetrii problemu). Do rozwiązania LAP użyłem bardzo efektywnej
     implementacji algorytmu J-V, która jest dostępna pod licencją MIT. PJ pracuje obecnie nad
     przyspieszeniem tej implementacji wykorzystując instrukcje SIMD. Dodatkowym usprawnieniem mojej
     implementacji bf nad implementacją w Mapelu było wykorzystanie odpowiedniego porządku
@@ -240,8 +243,9 @@
                  + {(pos_U[i,p] - pos_U[i,q]) * (pos_V[j,s(p)] - pos_V[j,s(q)]) > 0}
 
 
-    W przypadku funkcji swap_bf_mem() opieramy się na innej postaci odległości swap dla dwóch wektorów. Do tej pory odległość
-    tą wyrażaliśmy (dla ustalonej permutacji kandydatów s i ustalonych i,j) jako podwójną sumę
+    W przypadku funkcji swap_bf_mem() opieramy się na innej postaci odległości swap dla dwóch
+    wektorów. Do tej pory odległość tę wyrażaliśmy (dla ustalonej permutacji kandydatów s i
+    ustalonych i,j -- tj. aby obliczyć element i,j macierzy kosztu do LAPa) jako podwójną sumę
 
     sum_{k=0,..,nc-1} sum_{l=0,..,nc-1} 1/2 * {(pos_U[i,k] - pos_U[i,l]) * (pos_V[j,s(k)] - pos_V[j,s(l)]) < 0}
 
@@ -253,6 +257,7 @@
     niezmiennicza względem permutacji tj. dla dowolnej permutacji pi zachodzi
 
     sum_{k=0,..,nc-1} sum_{l=0,..,nc-1} 1/2 * {(pos_U[i,k] - pos_U[i,l]) * (pos_V[j,s(k)] - pos_V[j,s(l)]) < 0}
+        
         = sum_{k=0,..,nc-1} sum_{l=0,..,nc-1} 1/2 * {(pos_U[i,pi(k)] - pos_U[i,pi(l)]) * (pos_V[j,s( pi(k) )] - pos_V[j,s( pi(l) )]) < 0}
     
     gdyż w obu przypadkach sumujemy wyrażenie 
@@ -266,6 +271,7 @@
     Zauważmy, iż w szczególności biorąc pi = U[i,:] otrzymujemy
 
     sum_{k=0,..,nc-1} sum_{l=0,..,nc-1} 1/2 * {(k - l) * (pos_V[j,s( U[i,k] )] - pos_V[j,s( U[i,l] )]) < 0}
+    
     = sum_{k=0,..,nc-1} sum_{l=k+1,..,nc-1} {pos_V[j,s( U[i,k] )] < pos_V[j,s( U[i,l] )]}
 
     czyli szukamy liczby inwersji (tj. par elementów niebędących w poprawnej kolejności) w
@@ -299,7 +305,7 @@
     We właściwej implementacji używamy systemu dziesiątkowego niezależnie od n (zakładając
     oczywiście n<=10) i używamy tylko n-1 pierwszych elementów permutacji do kodowania (gdyż
     jednoznacznie identyfikują one permutację), dlatego do powyższego wyrażenia rekurencyjnego
-    należy dołożyć jeszcze if-y, które sprawdzają, czy n a,b <= n-2.
+    należy dołożyć jeszcze if-y, które sprawdzają, czy a,b <= n-2.
 
 
 2024-05-10
@@ -342,11 +348,11 @@
     
     sum_{k=1,..,nc} k! * (nc choose k)
 
-    zamiast jedynie nc! razy. Wynika to zfektu, iż "landscape" naszej funkcji kosztu (odległości) jest
-    dla typowych kultur wyborów (ic, euclidean) dość płaski, więc nie możemy wcześnie przycinać drzewa.
-    Dla pojedynczych kultur (urn) algorytm ten działał lepiej, ale dla nich heurystyka najczęściej
-    znajduje rozwiązanie dokładne. Być może zmiana sposobu przeszukiwania z BFS na DFS lub Best-FS
-    by pomogła. Przede wszystkim trzeba zrobić lepszy bound (!!!).
+    zamiast jedynie nc! razy. Wynika to z efektu, iż "landscape" naszej funkcji kosztu (odległości)
+    jest dla typowych kultur wyborów (ic, euclidean) dość płaski, więc nie możemy wcześnie przycinać
+    drzewa. Dla pojedynczych kultur (urn) algorytm ten działał lepiej, ale dla nich heurystyka
+    najczęściej znajduje rozwiązanie dokładne. Być może zmiana sposobu przeszukiwania z BFS na DFS
+    lub Best-FS by pomogła. Przede wszystkim trzeba zrobić lepszy bound (!!!).
  
 
 2024-05-24
@@ -415,12 +421,12 @@
 
     0 <= α <= 1 
 
-    Jest to funkcja kwadratowa postaci f(α) = a α^2 + b α + c, której minimum znajdujemy w standardowy
-    sposób tj. jeśli a > 0 to minimum globalne jest dane przez x-ową współrzędną wierzchołka paraboli, 
-    czyli -b/2a. Jeśli 0 <= -b/2a <= 1 to jest to poszukiwane minimum. W przeciwnym razie funkcja f(α)
-    jest funkcją ściśle monotoniczną w przedziale [0;1], więc wystarczy porównać wartości na krańcach
-    tego przedziału f(0) = c i f(1) = a + b + c. Zauważmy tutaj, iż nie musimy obliczać właściwie
-    współczynnika c. Współczynniki a i b są natomiast dane odpowiednio przez
+    Jest to funkcja kwadratowa postaci f(α) = a α^2 + b α + c, której minimum znajdujemy w
+    standardowy sposób tj. jeśli a > 0 to minimum globalne jest dane przez x-ową współrzędną
+    wierzchołka paraboli, czyli -b/2a. Jeśli 0 <= -b/2a <= 1 to jest to poszukiwane minimum. W
+    przeciwnym razie funkcja f(α) przyjmuje wartości minimalne na krańcach przedziału [0;1], więc
+    wystarczy porównać wartości f(0) = c i f(1) = a + b + c. Zauważmy tutaj, iż nie musimy obliczać
+    właściwie współczynnika c. Współczynniki a i b są natomiast dane odpowiednio przez
 
     R_ij = Q_ij - P_ij
     
@@ -432,9 +438,9 @@
 
     5. Powyższe powtarzamy przez ustaloną liczbę iteracji lub do osiągnięcia zbieżności.
 
-    Otrzymaliśmy zatem rozwiązanie zrelaksowanego problemu QAP (relaxed QAP, rQAP). Aby teraz otrzymać
-    rozwiązanie problemu QAP (którym jest macierz permutacji) rozwiązujemy problem LAP dla macierzy
-    kosztu równej P^i.
+    Otrzymaliśmy zatem rozwiązanie zrelaksowanego problemu QAP (relaxed QAP, rQAP). Aby teraz
+    otrzymać rozwiązanie problemu QAP (którym jest macierz permutacji) rozwiązujemy problem LAP dla
+    macierzy kosztu równej P^i.
 
     ---
 
@@ -447,6 +453,7 @@
  2024-08-04
 
     ....
+    
 
 =====================================================================================================
  TODO
@@ -456,12 +463,7 @@
      * swap_bf_mem()
      * swap_aa()
      * lap()
-     
-  -> create testing framework and perform tests and experiments with generating maps
 
-  -> Finish all TODOs in every file of mine
-
-=====================================================================================================
 
 [v] 1. Isomorphic Swap
 
