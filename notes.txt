@@ -459,11 +459,7 @@ potrzebne jest tylko to) zacznę opisywać, co do tej pory zrobiliśmy.
  TODO
 -----------------------------------------------------------------------------------------------------
 
-  -> korzystając z GCC Vector Extensions zoptymalizować:
-     * swap_bf_mem()
-     * swap_aa()
-     * lap()
-
+-> korzystając z GCC Vector Extensions zoptymalizować lap()
 
 [v] 1. Isomorphic Swap
 
