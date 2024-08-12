@@ -1,9 +1,10 @@
 Przejrzałem następujące papery dotyczące naszego tematu pracy tj. obliczania odległości między
 wyborami. 
-- How similar are two elections? 
-- How to sample approval elections? 
-- Understanding distance measures between Elections. 
-- Diversity, Agreement and Polarization in Elections.
+
+ - How similar are two elections? 
+ - How to sample approval elections? 
+ - Understanding distance measures between Elections. 
+ - Diversity, Agreement and Polarization in Elections.
 
 Przedstawię tutaj krótkie streszczenie wymaganej teorii.
 
@@ -454,27 +455,6 @@ potrzebne jest tylko to) zacznę opisywać, co do tej pory zrobiliśmy.
 
     ....
     
-
-=====================================================================================================
- TODO
------------------------------------------------------------------------------------------------------
-
--> korzystając z GCC Vector Extensions zoptymalizować lap()
-
-[v] 1. Isomorphic Swap
-
-[v] 2. Isomorphic Spearman
-
-[v] 3. Isomorphic Hamming
-
-[v] 4. Pairwise distance
-
-[x] 5. Polarization/Diversity/Agreement
-
-=====================================================================================================
-
-
-
 
 
 

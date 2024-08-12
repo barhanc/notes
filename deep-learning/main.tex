@@ -1697,7 +1697,7 @@ zagadnień uczenia maszynowego.
 \(\bm{y} \in \mathbb{R}^d\)     & multivariate normal       & multivariate regression   \\ 
 \(y \in (-\pi; +\pi]\)          & von Mises                 & predicting direction      \\ 
 \(y \in \{0,1\}\)               & Bernoulli                 & binary classification     \\ 
-\(y \in \{1,2,\ldots, K\}\)     & categorical               & multicalss classification \\ 
+\(y \in \{1,2,\ldots, K\}\)     & categorical               & multiclass classification \\ 
 \(y \in \{0,1,2,3,\ldots\}\)    & Poisson                   & predicting event counts   \\ 
 \(\bm{y} \in \mathrm{Perm}(n)\) & Plackett--Luce            & ranking                   \\ 
 \bottomrule
@@ -1705,6 +1705,8 @@ zagadnień uczenia maszynowego.
 \end{tabular}
 \caption{\textit{Figure 5.11, Ch. 5, \cite{prince2023understanding}}}
 \end{table}
+
+% TODO: Actually derive loss functions for all the above
 
 \begin{quote}[\textit{Multiple outputs, Ch. 5,} \cite{prince2023understanding}]
 To make two or more prediction types simultaneously, we similarly assume the errors in each are
@@ -1739,7 +1741,6 @@ which use hinge loss and AdaBoost, which uses exponential loss.
 \end{itemize}
 \end{quote}
 
-% TODO: Actually derive loss functions for all the above
 
 % \subsection{Aspekty optymalizacyjne (gradient descent, stochastic gradient descent, momentum, adam)}
 
