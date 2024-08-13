@@ -880,24 +880,19 @@ nieefektywne, więc w praktyce generujemy próbki z jednego łańcucha po prostu
 tak aby uniknąć znaczących korelacji. Pozostaje pytanie jak skonstruować funkcję przejścia
 \(\pi(\bm{y} \mid \bm{x})\) dla danego rozkładu granicznego \(p(\bm{x})\). Podstawową konstrukcję
 podaje algorytm Metropolisa--Hastingsa.
-\begin{tcolorbox}[title=Algorytm Metropolisa--Hastingsa, breakable, boxrule=0pt]
-\begin{enumerate}
-\item Jako stan początkowy przyjmij dowolną dopuszczalną wartość \(\bm{x}_0\).
 
-\item Będąc w aktualnym stanie \(\bm{x}\) z prostego rozkładu proponującego kandydatów \(q(\bm{y}
-\mid \bm{x})\) wylosuj kandydata \(\bm{y}\) na wartość łańcucha w kolejnym stanie.
-
-\item Z prawdopodobieństwem
-\[
-r(\bm{y} \mid \bm{x}) = \min\left\{1, \frac{p(\bm{y})q(\bm{x} \mid \bm{y})}{p(\bm{x})q(\bm{y} \mid \bm{x})}\right\}
-\]
-zaakceptuj kandydata jako nowy stan i przejdź do stanu \(\bm{y}\). W przeciwnym razie pozostań w
-stanie \(\bm{x}\).
-
-\item GOTO 2.
-\end{enumerate}
-\end{tcolorbox}
-
+\begin{lstlisting}[language=Python, escapeinside={(*}{*)}]
+# Metropolis-Hastings
+# --------------------
+# Initialize state (*$\bm{x}$*) using any admissable value.
+for i in range(max_iter):
+    # Step 1. Sample candidate (*$\bm{y}$*) from the conditional 
+    # proposal distribution (*$q(\bm{y}\mid\bm{x})$*).
+    
+    # Step 2. Accept new candidate with probability
+    (*$r(\bm{y} \mid \bm{x}) = \min\left\{1, \frac{p(\bm{y})q(\bm{x}\mid\bm{y})}{p(\bm{x})q(\bm{y}\mid\bm{x})}\right\}$*)
+    # and change state to (*$\bm{y}$*), otherwise stay in state (*$\bm{x}$*). 
+\end{lstlisting}
 Funkcja przejścia ma zatem postać
 \[
 \pi_\text{MH}(\bm{y}\mid\bm{x}) = q(\bm{y} \mid \bm{x}) r(\bm{y} \mid \bm{x})\,.
@@ -1469,7 +1464,7 @@ parametrów \(\bm{W}\)
 \[
 t(\bm{x}) \mid \bm{W} \sim \mathrm{Cat}(\bm{\pi}(\bm{x}; \bm{W}))\,.
 \]
-W przypadku regresji softmax jako funkcję \(\bm{\pi}: \mathbb{R}^k \mapsto [0;1]^k\) przyjmiemy
+W przypadku regresji softmax jako funkcję \(\bm{\pi}: \mathbb{R}^m \mapsto [0;1]^k\) przyjmiemy
 funkcję \(\bm{\sigma}(\bm{\phi}(\bm{x}; \bm{W}))\), gdzie \(\bm{\sigma}: \mathbb{R}^k \mapsto
 [0;1]^k\)
 \[
@@ -1791,11 +1786,11 @@ algorytmach optymalizacji pierwszego rzędu (z ang. \textit{first order methods}
 # Initialize heuristically parameters (*$\bm{W}$*) of the neural net.
 for epoch in range(max_epochs):
     # Step 1. Compute derivatives of the loss function with respect 
-    # to the parameters of neural net (*$\pdv{L(\mc{X}; \bm{W})}{\bm{W}}$*)
+    # to the parameters of neural net (*$\pdv{L(\mc{X}; \bm{W})}{\bm{W}}$*).
 
     # Step 2. Update parameters of the neural net according to
     (*$\bm{W} \gets \bm{W} - \lambda \pdv{L(\mc{X}; \bm{W})}{\bm{W}} $*)
-    # where (*$\lambda > 0$*) is a positive constant called 'learning rate'
+    # where (*$\lambda > 0$*) is a positive constant called 'learning rate'.
 \end{lstlisting}
 
 % \subsection{Algorytm wstecznej propagacji błędu, automatyczne różniczkowanie}
