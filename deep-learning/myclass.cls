@@ -10,7 +10,7 @@
             csquotes, graphicx, fancyhdr, ulem, 
             bm}
 \usepackage[breakable]{tcolorbox}
-\usepackage{pgfplots, booktabs}
+\usepackage{pgfplots, booktabs, listings}
 
 % ******* Page style *******
 \pagestyle{fancy}
@@ -38,3 +38,26 @@
 \theoremstyle{definition}
 \newtheorem{theorem}{Twierdzenie}[section]
 \tcolorboxenvironment{theorem}{colframe=black,boxrule=0.5pt,colback=white,breakable,before skip=10pt,after skip=10pt }
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+
+\lstdefinestyle{mystyle}{   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+\lstset{style=mystyle}

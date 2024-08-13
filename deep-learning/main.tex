@@ -1316,7 +1316,7 @@ Jeśli \(\mc{X} = \{t_i(\bm{x}_i)\}_{i=1}^n\) oznacza nasz zbiór obserwacji i.i
 prawdopodobieństwa \(p(\bm{x} \mid c_i)\) i \(p(c_i)\) możemy oszacować z danych \(\mc{X}\). W
 przypadku drugiego członu możemy go prosto oszacować jako
 \[
-p(c_i) = \frac{\#\{t \mid t = c_i, t \in \mc{X}\}}{\#\mc{X}}\,.
+p(c_i) = \frac{\left|\{t \mid t = c_i, t \in \mc{X}\}\right|}{|\mc{X}|}\,.
 \]
 W przypadku pierwszego członu sytuacja jest bardziej skomplikowana. Możemy założyć pewien rozkład
 parametryczny dla rozkładu warunkowego \(p(\bm{x} \mid c_i)\) dla każdej klasy i następnie oszacować
@@ -1626,8 +1626,10 @@ i \(n_{k+1} = n_\text{out}\))
 \bm{L}_i^\mu \left(\bm{x}; \bm{W}_i, \bm{b}_i\right) = \bm{b}_i^\mu + \sum_{\nu=1}^{n_{i-1}} \bm{W}_i^{\mu\nu}\bm{x}^\nu\,,
 }
 \]
-\(\bm{W}_i \in \mathbb{R}^{n_i \times n_{i-1}}, \bm{b}_i \in \mathbb{R}^{n_i}\). Okazuje się, iż
-taka postać rodziny funkcji parametryzowanych przez wagi i obciążenia \(\bm{W}, \bm{b}\) potrafi
+\(\bm{W}_i \in \mathbb{R}^{n_i \times n_{i-1}}, \bm{b}_i \in \mathbb{R}^{n_i}\) (dla uproszczenia
+zapisu w miejscach, gdzie nie prowadzi to do niejasności będziemy oznaczać zbiór parametrów sieci
+\(\left\{(\bm{W}_i, \bm{b}_i)\right\}_{i=1}^{k+1}\) po prostu jako \(\bm{W}\)). Okazuje się, iż taka
+postać rodziny funkcji parametryzowanych przez wagi i obciążenia \(\bm{W}_i, \bm{b}_i\) potrafi
 aproksymować niemal dowolną funkcję (\textit{Universal Approximation Theorem}), zatem jest to niemal
 uniwersalny aproksymator, który możemy zastosować do wszelkich omawianych wcześniej zagadnień
 regresji i klasyfikacji. Zauważmy, iż już wcześniej rozwinęliśmy teorię w sposób dość ogólny
@@ -1635,6 +1637,33 @@ wyprowadzając większość wyników dla pewnej dowolnej funkcji \(\bm{\phi}(\bm
 na końcu znajdując dokładne rozwiązania dla prostego odwzorowania liniowego \(\bm{W}\bm{x}\) (na
 marginesie takie proste odwzorowanie odpowiada płytkiej sieci neuronowej o \(k=0\) warstwach
 ukrytych).
+
+W powyższej postaci sieć MLP przetwarza pojedynczo każdy wektor \(\bm{x}\) należący do zbioru danych
+\(\mc{X} = \{y_i(\bm{x}_i)\}_{i=1}^n\), a najbardziej kosztowną operacją jest mnożenie wektora przez
+macierz. Jest to jednak dość nieefektywne, gdyż na współczesnym sprzęcie mamy bardzo dobrze
+zoptymalizowane implementacje mnożenia macierzy przez siebie. Możemy jednak rozszerzyć odwzorowania
+\(\bm{L}\) i \(\bm{\phi}\) w taki sposób, aby sieć przetwarzała od razu cały \textit{batch} (tj.
+pewien podzbiór \(\mc{X} \supseteq \mc{B} = \{y_\beta(\bm{x}_\beta)\}\)) przykładów uczących
+reprezentowany przez macierz \(\bm{X}^{\beta \mu} = \bm{x}_\beta^\mu\) (stosujemy tutaj tzw.
+konwencję \textit{batch first} zgodnie z którą pierwszy indeks odpowiada kolejnym przykładom z
+batcha). Możemy zatem uogólnić postać przekształcenia \(\bm{\phi}\) jakie realizuje sieć do postaci
+\(\bm{\Phi}: \mathbb{R}^{B \times n_\text{in}} \mapsto \mathbb{R}^{B \times n_\text{out}}\), gdzie
+\(B = |\mc{B}|\)
+\[
+\bm{\Phi}\left(\bm{X}; \left\{(\bm{W}_i, \bm{b}_i)\right\}_{i=1}^{k+1}\right) = (\bm{L}_{k+1} \circ a \circ \bm{L}_k \ldots a \circ \bm{L}_2 \circ a \circ \bm{L}_1)(\bm{X})\,,
+\]
+gdzie \(\bm{L}_i: \mathbb{R}^{B \times n_{i-1}} \mapsto \mathbb{R}^{B \times n_i}\)
+\[
+\bm{L}_i^{\beta\mu}(\bm{X}; \bm{W}_i, \bm{b}_i) = \bm{b}_i^\mu + \sum_{\nu=1}^{n_{i-1}} \bm{W}_i^{\mu\nu} \bm{X}^{\beta\nu}\,,
+\]
+\(\bm{W}_i \in \mathbb{R}^{n_i \times n_{i-1}}, \bm{b}_i \in \mathbb{R}^{n_i}\). Przez złożenie
+funkcji skalarnej \(a: \mathbb{R} \mapsto \mathbb{R}\) z funkcją \(\bm{L}\) nadal rozumiemy
+\[
+(a \circ \bm{L})^{\beta\mu}(\bm{X}) = a(\bm{L}^{\beta\mu}(\bm{X}))\,.
+\]
+Widzimy zatem, iż tak naprawdę w takim sformułowaniu sieć przetwarza \(B\) przykładów równolegle
+zamiast przetwarzać je sekwencyjnie pojedynczo, co nie zmienia nic koncepcyjnie, a jedynie sprawia,
+iż sieć przetwarza dane bardziej efektywnie.
 
 \begin{quote}[\textit{Notes, Ch. 4} \cite{prince2023understanding}]
 \begin{itemize}
@@ -1667,14 +1696,17 @@ the network depth for networks with ReLU activations.
 \subsection{Funkcje kosztu}
 
 Tak jak zauważyliśmy wyżej wyprowadzoną wcześniej teorię można bezpośrednio zaaplikować dla
-przypadku sieci neuronowych. Wartości parametrów \(\bm{W}, \bm{b}\) znajdujemy zatem w sposób
-analogiczny jak dla modeli klasycznych (tj. nie głębokich) minimalizując odpowiednią funkcję kosztu.
-Wymienione wcześniej funkcje kosztu dla zagadnień regresji, klasyfikacji binarnej oraz wieloklasowej
-możemy zatem bezpośrednio wykorzystać uwzględniając jednak, iż odwzorowanie \(\bm{\phi}(\bm{x};
-\bm{W}, \bm{b})\) definiujące parametry określonego rozkładu prawdopodobieństwa jest teraz
-odpowiednią siecią neuronową. Nie ma tutaj więc żadnej zmiany jeśli chodzi o tworzenie modeli
-matematycznych rozważanych zagadnień w postaci odpowiednich parametrycznych modeli statystycznych,
-to co się zmienia to większa ekspresywność takich modeli dzięki wykorzystaniu sieci neuronowej jako
+przypadku sieci neuronowych. Wartości parametrów \(\bm{W}\) znajdujemy zatem w sposób analogiczny
+jak dla modeli klasycznych (tj. nie głębokich) minimalizując odpowiednią funkcję kosztu \(L(\mc{X};
+\bm{W})\) zależną od zbioru treningowego \(\mc{X}\) i parametrów sieci \(\bm{W}\), przy czym w
+czasie treningu \(\mc{X}\) jest ustalone, a dostosowujemy parametry \(\bm{W}\), natomiast w czasie
+inferencji wagi \(\bm{W}\) są ustalone (wytrenowane), a do sieci podajemy nowe przykłady. Wymienione
+wcześniej funkcje kosztu dla zagadnień regresji, klasyfikacji binarnej oraz wieloklasowej możemy
+zatem bezpośrednio wykorzystać uwzględniając jednak, iż odwzorowanie \(\bm{\phi}(\bm{x}; \bm{W})\)
+definiujące parametry określonego rozkładu prawdopodobieństwa jest teraz odpowiednią siecią
+neuronową. Nie ma tutaj więc żadnej zmiany jeśli chodzi o tworzenie modeli matematycznych
+rozważanych zagadnień w postaci odpowiednich parametrycznych modeli statystycznych, to co się
+zmienia to większa ekspresywność takich modeli dzięki wykorzystaniu sieci neuronowej jako
 uniwersalnego aproksymatora dla parametrów modelowanych rozkładów.
 
 Wcześniej wyprowadziliśmy funkcje kosztu (jako zanegowaną logarytmiczną funkcję wiarygodności) dla
@@ -1742,7 +1774,29 @@ which use hinge loss and AdaBoost, which uses exponential loss.
 \end{quote}
 
 
-% \subsection{Aspekty optymalizacyjne (gradient descent, stochastic gradient descent, momentum, adam)}
+\subsection{Aspekty optymalizacyjne}
+
+Przedstawimy teraz algorytmy optymalizacji numerycznej najczęściej używane przy treningu głębokich
+sieci neuronowych. Jest oczywiste, iż nie jest możliwe znalezienie wartości wag sieci neuronowej
+minimalizujących funkcję kosztu \(L(\mc{X}; \bm{W})\) w sposób analityczny. Dodatkowo ze względu na
+ogromną liczbę parametrów współczesnych sieci (rzędu \(10^9\)) jakiekolwiek wyrafinowane algorytmy
+optymalizacji numerycznej (np. wykorzystujące drugie pochodne) również nie wchodzą w grę ze względu
+na zbyt duże wymagania pamięciowe. Biorąc pod uwagę wymienione ograniczenia skupimy się na prostych
+algorytmach optymalizacji pierwszego rzędu (z ang. \textit{first order methods}).
+
+\begin{lstlisting}[language=Python, escapeinside={(*}{*)}]
+# Gradient descent
+# ----------------
+# Let (*$\mc{X}$*) be the whole training set.
+# Initialize heuristically parameters (*$\bm{W}$*) of the neural net.
+for epoch in range(max_epochs):
+    # Step 1. Compute derivatives of the loss function with respect 
+    # to the parameters of neural net (*$\pdv{L(\mc{X}; \bm{W})}{\bm{W}}$*)
+
+    # Step 2. Update parameters of the neural net according to
+    (*$\bm{W} \gets \bm{W} - \lambda \pdv{L(\mc{X}; \bm{W})}{\bm{W}} $*)
+    # where (*$\lambda > 0$*) is a positive constant called 'learning rate'
+\end{lstlisting}
 
 % \subsection{Algorytm wstecznej propagacji błędu, automatyczne różniczkowanie}
 
