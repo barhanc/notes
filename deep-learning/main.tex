@@ -1779,19 +1779,91 @@ optymalizacji numerycznej (np. wykorzystujące drugie pochodne) również nie wc
 na zbyt duże wymagania pamięciowe. Biorąc pod uwagę wymienione ograniczenia skupimy się na prostych
 algorytmach optymalizacji pierwszego rzędu (z ang. \textit{first order methods}).
 
+Podstawowym algorytmem jest metoda spadku wzdłuż gradientu (z ang. \textit{gradient descent}).
+Polega ona iteracyjnym aktualizowaniu wartości parametrów \(\bm{W}\) zgodnie z kierunkiem
+najszybszego spadku wyznaczonego przez zanegowany gradient funkcji kosztu \(-\pdv{L(\mc{X};
+\bm{W})}{\bm{W}}\). Wielkość kroków jakie wykonujemy w każdej iteracji jest zdeterminowana przez
+stałą \(\lambda > 0\) nazywaną \emph{stałą uczącą} (z ang. \textit{learning rate}).
+
 \begin{lstlisting}[language=Python, escapeinside={(*}{*)}]
 # Gradient descent
 # ----------------
 # Let (*$\mc{X}$*) be the whole training set.
 # Initialize heuristically parameters (*$\bm{W}$*) of the neural net.
 for epoch in range(max_epochs):
-    # Step 1. Compute derivatives of the loss function with respect 
-    # to the parameters of neural net (*$\pdv{L(\mc{X}; \bm{W})}{\bm{W}}$*).
+    # Step 1. Compute derivatives of the loss function with
+    # respect to the parameters of neural net (*$\pdv{L(\mc{X}; \bm{W})}{\bm{W}}$*).
 
     # Step 2. Update parameters of the neural net according to
     (*$\bm{W} \gets \bm{W} - \lambda \pdv{L(\mc{X}; \bm{W})}{\bm{W}} $*)
     # where (*$\lambda > 0$*) is a positive constant called 'learning rate'.
 \end{lstlisting}
+
+\begin{quote}[\textit{Gradient descent variants}, \cite{ruder2017overviewgradientdescentoptimization}]
+There are three variants of gradient descent, which differ in how much data we use to compute the
+gradient of the objective function. Depending on the amount of data, we make a trade-off between the
+accuracy of the parameter update and the time it takes to perform an update.
+\end{quote}
+
+Podstawowe modyfikacje powyższego algorytmu (zwanego również \textit{full-batch gradient descent})
+są związane z ograniczeniem zbioru treningowego dla którego obliczamy gradient. Podejście takie
+wynika z faktu, iż dla bardzo dużych zbiorów treningowych \(\mc{X}\) obliczane tensory mogą nie
+mieścić się w pamięci. Dodatkowo modyfikacja wprowadza losowość przy aktualizacji parametrów sieci,
+co pozwola na ucieczkę z lokalnych minimów funkcji kosztu. Aby rozwiązać ten problem dzielimy zbiór
+\(\mc{X}\) w każdej epoce na rozłączne \textit{batche} \(\mc{B}\) o tej samej wielkości \(B\)
+składające się z losowych przykładów ze zbioru \(\mc{X}\) (losowane bez zwracania i każdorazowo przy
+rozpoczęciu nowej epoki). Algorytm taki nazywamy \textit{batch gradient descent} lub
+\textit{mini-batch gradient descent}.
+
+\begin{lstlisting}[language=Python, escapeinside={(*}{*)}]
+# Mini-batch gradient descent
+# ---------------------------
+# Let (*$\mc{X}$*) be the whole training set.
+# Initialize heuristically parameters (*$\bm{W}$*) of the neural net.
+for epoch in range(max_epochs):
+    
+    random_shuffle((*$\mc{X}$*))
+    
+    for (*$\mc{B}$*) in get_batches((*$\mc{X}$*), batch_size=(*$B$*)):
+        # Step 1. Compute derivatives of the loss function with 
+        # respect to the parameters of neural net (*$\pdv{L(\mc{B}; \bm{W})}{\bm{W}}$*).
+
+        # Step 2. Update parameters of the neural net according to
+        (*$\bm{W} \gets \bm{W} - \lambda \pdv{L(\mc{B}; \bm{W})}{\bm{W}} $*)
+        # where (*$\lambda > 0$*) is a positive constant called 'learning rate'.
+\end{lstlisting}
+
+W szczególności gdy \(B = 1\), tj. każdy batch składa się z pojedynczego, losowo wybranego przykładu
+uczącego, to taki algorytm nazywamy \emph{stochastycznym spadkiem wzdłuż gradientu} (z ang.
+\textit{stochastic gradient descent, SGD}).
+
+\begin{quote}[\textit{Stochastic gradient descent}, \cite{ruder2017overviewgradientdescentoptimization}]
+Gradient descent performs redundant computations for large datasets, as it recomputes gradients for
+similar examples before each parameter update. SGD does away with this redundancy by performing one
+update at a time. It is therefore usually much faster and can also be used to learn online. SGD
+performs frequent updates with a high variance that cause the objective function to fluctuate
+heavily.
+
+While gradient descent converges to the minimum of the basin the parameters are placed in, SGD's
+fluctuation, on the one hand, enables it to jump to new and potentially better local minima. On the
+other hand, this ultimately complicates convergence to the exact minimum, as SGD will keep
+overshooting. However, it has been shown that when we slowly decrease the learning rate, SGD shows
+the same convergence behavior as batch gradient descent, almost certainly converging to a local or
+the global minimum for non-convex and convex optimization respectively.
+\end{quote}
+
+\begin{quote}[\textit{Mini-batch gradient descent}, \cite{ruder2017overviewgradientdescentoptimization}]
+Mini-batch gradient descent finally takes the best of both worlds and performs an update for every
+mini-batch of training examples. This way, it 
+\begin{itemize}
+    \item reduces the variance of the parameter updates, which can lead to more stable convergence;
+    \item can make use of highly optimized matrix optimizations common to state-of-the-art deep
+    learning libraries that make computing the gradient w.r.t. a mini-batch very efficient.
+\end{itemize}
+Common mini-batch sizes range between 50 and 256, but can vary for different applications.
+Mini-batch gradient descent is typically the algorithm of choice when training a neural network and
+the term SGD usually is employed also when mini-batches are used.
+\end{quote}
 
 % \subsection{Algorytm wstecznej propagacji błędu, automatyczne różniczkowanie}
 
