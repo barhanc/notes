@@ -2006,7 +2006,11 @@ gdzie oznaczamy \(\bm{A}_0 = \bm{X}\). Jednocześnie zauważmy, że
 \]
 oraz
 \[
-\pdv{L}{\bm{A}_i^{\nu_1\nu_2}} = \sum_{\gamma} \bm{\Delta}_{i+1}^{\nu_1\gamma}\bm{W}_{i+1}^{\gamma\nu_2}\,,\quad \pdv{\bm{A}_i^{\nu_1\nu_2}}{\bm{L}_i^{\mu_1\mu_2}} = a'(\bm{L}_i^{\nu_1\nu_2}) \delta_{\mu_1\nu_1} \delta_{\mu_2\nu_2}\,,
+\pdv{L}{\bm{A}_i^{\nu_1\nu_2}} = \sum_{\gamma_1,\gamma_2} \pdv{L}{\bm{L}_{i+1}^{\gamma_1\gamma_2}}\pdv{\bm{L}_{i+1}^{\gamma_1\gamma_2}}{\bm{A}_i^{\nu_1\nu_2}} = \sum_{\gamma} \bm{\Delta}_{i+1}^{\nu_1\gamma}\bm{W}_{i+1}^{\gamma\nu_2}
+\]
+i
+\[
+\pdv{\bm{A}_i^{\nu_1\nu_2}}{\bm{L}_i^{\mu_1\mu_2}} = a'(\bm{L}_i^{\nu_1\nu_2}) \delta_{\mu_1\nu_1} \delta_{\mu_2\nu_2}\,,
 \]
 skąd
 \[
@@ -2020,7 +2024,43 @@ Powyższe wyniki możemy zapisać w zwartych postaciach macierzowych
 }
 \]
 gdzie \(\bm{A}_0 = \bm{X}\) oraz \(\bm{\Delta}_{k+1} = \pdv{L}{\bm{\Phi}}\) (zauważmy tutaj, iż
-człon ten wyznaczyliśmy już powyżej dla typowych funkcji kosztu).
+człon ten wyznaczyliśmy już powyżej dla typowych funkcji kosztu). Powyższy przykład to wyprowadzenie
+algorytmu wstecznej propagacji błędu dla typowej sieci w pełni połączonej (reprezentowanej przez
+graf obliczeń \ref{fig:compgraph} z powielonymi warstwami ukrytymi -- na rysunku przedstawiono sieć
+z jedną warstwą ukrytą). Algorytm obliczania pochodnych możemy zatem zapisać następująco.
+
+\begin{lstlisting}[language=Python, escapeinside={(*}{*)}]
+# Backpropagation through MLP
+# ---------------------------
+# Let k be the number of hidden layers of the MLP network.
+
+# Step 1. For given batch (*$\bm{X}$*) perform a forward pass 
+# by computing and memorizing arrays (*$\bm{L}_i, \bm{A}_i$*).
+
+(*$\bm{A}_0 = \bm{X}$*)
+
+for (*$i$*) in range(1, k+2):
+    # Compute and memorize
+    (*$\bm{L}_i = \bm{A}_{i-1} \bm{W}_i^T + \bm{b}_i$*)
+    (*$\bm{A}_i = a(\bm{L}_i)$*)
+
+# Compute loss (*$L(\mc{B}; \bm{W})$*) for the output (*$\bm{\Phi} = \bm{L}_{k+1}$*).
+
+# Step 2. Perform backpropagation
+
+# Initialize seed
+(*$\bm{\Delta}_{k+1} = \pdv{L(\mc{B}; \bm{W})}{\bm{\Phi}}$*)
+
+for (*$i$*) in range((*$k$*)+1, 0, -1):
+    # Compute gradients
+    (*$\pdv{L}{\bm{W}_i} = \bm{\Delta}_i^T \bm{A}_{i-1}\,,\quad \pdv{L}{\bm{b}_i} = \bm{\Delta}_i^T \bm{1}$*)
+    
+    # Update seed
+    if (*$i$*) > 1:
+        (*$\bm{\Delta}_{i-1} = a'(\bm{L}_{i-1}) \odot \left(\bm{\Delta}_{i} \bm{W}_{i}\right)$*)
+
+
+\end{lstlisting}
 
 % \subsection{Regularyzacja i inicjalizacja w sieciach głębokich}
 
