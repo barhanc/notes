@@ -190,11 +190,11 @@ tutaj, że \(\mathrm{TP + TN + FP + FN} = n\)). Nie jest to jednak dobra miara j
 zbiór jest niezbalansowany, tj. zawiera więcej przykładów określonej klasy.
 
 \begin{figure}[ht]
-    \centering
-    \includegraphics[width=0.9\textwidth]{figs/confmat.png}
-    \label{fig:confusionMatrix}
-    \caption{Macierz pomyłek oraz możliwe metryki oceny jakości klasyfikatora. Źródło:
-    \href{https://en.wikipedia.org/wiki/Confusion_matrix}{en.wikipedia.org/wiki/Confusion\_matrix}}
+\centering
+\includegraphics[width=0.9\textwidth]{figs/confmat.png}
+\label{fig:confusionMatrix}
+\caption{Macierz pomyłek oraz możliwe metryki oceny jakości klasyfikatora. Źródło:
+\href{https://en.wikipedia.org/wiki/Confusion_matrix}{en.wikipedia.org/wiki/Confusion\_matrix}}
 \end{figure}
 
 Wartość precision określa jak pewny jest klasyfikator przy wykrywaniu klasy pozytywnej, natomiast
@@ -1588,10 +1588,10 @@ nazywamy \emph{warstwami widocznymi}, natomiast pozostałe -- \emph{warstwami uk
 \textit{hidden layers}). 
 
 \begin{figure}[ht]
-    \centering
-    \includegraphics[width=0.9\textwidth]{figs/fcn.png}
-    \caption{Przykładowa sieć w pełni połączona}
-    \label{fig:fcn}
+\centering
+\includegraphics[width=0.9\textwidth]{figs/fcn.png}
+\caption{Przykładowa sieć w pełni połączona}
+\label{fig:fcn}
 \end{figure}
 
 Niech \(\bm{L}: \mathbb{R}^{n} \mapsto \mathbb{R}^{m}\) oznacza przekształcenie afiniczne postaci
@@ -1958,6 +1958,12 @@ and it is common to train many models with different hyperparameters and choose 
 is known as \textit{hyperparameter search}.
 \end{quote}
 
+\begin{quote}[\textit{Adam}, \cite{ruder2017overviewgradientdescentoptimization}]
+The authors propose default values of 0.9 for \(\beta_1\), 0.999 for \(\beta_2\), and \(10^{-8}\)
+for \(\epsilon\). They show empirically that Adam works well in practice and compares favorably to
+other adaptive learning-method algorithms.
+\end{quote}
+
 
 \subsection{Algorytm wstecznej propagacji błędu}
 
@@ -1968,6 +1974,53 @@ szczegółów: 1) jak właściwie obliczać gradient funkcji kosztu po parametra
 zajmujemy się pierwszym z wymienionych problemów, natomiast w następnym poruszamy kwestie
 regularyzacji oraz inicjalizacji głębokich sieci neuronowych.
 
+Sieć neuronowa (przetwarzająca od razu cały batch przykładów reprezentowany przez tablicę
+\(\bm{X}\)) jest tak naprawdę pewnym skierowanym, acyklicznym grafem (z ang. \textit{Directed
+Acyclic Graph, DAG}), zwanym \emph{grafem obliczeń}. Przykładowy graf obliczeń reprezentujący prostą
+sieć MLP z jedną warstwą ukrytą przedstawiono na rysunku \ref{fig:compgraph}.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.85\textwidth]{figs/compgraph.png}
+\caption{Graf obliczeń reprezentujący prostą sieć MLP z jedną warstwą ukrytą}
+\label{fig:compgraph}
+\end{figure}
+
+Chcemy w sposób automatyczny z dokładnością do epsilon maszynowego obliczyć wartości pochodnych
+\(\pdv{L(\mc{X}; \bm{W})}{\bm{W}_i}\), \(\pdv{L(\mc{X}; \bm{W})}{\bm{b}_i}\). Zauważmy, iż zgodnie z
+regułą łańcuchową oznaczając
+\[
+\bm{\Delta}_i^{\mu_1\mu_2} = \pdv{L}{\bm{L}_i^{\mu_1\mu_2}}
+\]
+mamy
+\[
+\pdv{L}{\bm{W}_i^{\mu_1\mu_2}} = \sum_{\nu_1, \nu_2} \bm{\Delta}_i^{\nu_1\nu_2} \pdv{\bm{L}_i^{\nu_1\nu_2}}{\bm{W}_i^{\mu_1\mu_2}} = \sum_{\nu_1} \bm{\Delta}_i^{\nu_1\mu_1} \bm{A}_{i-1}^{\nu_1\mu_2}
+\]
+oraz
+\[
+\pdv{L}{\bm{b}_i^\mu} = \sum_\nu \bm{\Delta}_i^{\nu\mu}\,,
+\]
+gdzie oznaczamy \(\bm{A}_0 = \bm{X}\). Jednocześnie zauważmy, że
+\[
+\bm{\Delta}_i^{\mu_1\mu_2} = \sum_{\nu_1,\nu_2} \pdv{L}{\bm{A}_i^{\nu_1\nu_2}}\pdv{\bm{A}_i^{\nu_1\nu_2}}{\bm{L}_i^{\mu_1\mu_2}}
+\]
+oraz
+\[
+\pdv{L}{\bm{A}_i^{\nu_1\nu_2}} = \sum_{\gamma} \bm{\Delta}_{i+1}^{\nu_1\gamma}\bm{W}_{i+1}^{\gamma\nu_2}\,,\quad \pdv{\bm{A}_i^{\nu_1\nu_2}}{\bm{L}_i^{\mu_1\mu_2}} = a'(\bm{L}_i^{\nu_1\nu_2}) \delta_{\mu_1\nu_1} \delta_{\mu_2\nu_2}\,,
+\]
+skąd
+\[
+\bm{\Delta}_i^{\mu_1\mu_2} = a'(\bm{L}_i^{\mu_1\mu_2}) \sum_\gamma \bm{\Delta}_{i+1}^{\mu_1\gamma}\bm{W}_{i+1}^{\gamma\mu_2}\,.
+\]
+Powyższe wyniki możemy zapisać w zwartych postaciach macierzowych
+\[
+\boxed
+{
+\pdv{L}{\bm{W}_i} = \bm{\Delta}_i^T \bm{A}_{i-1}\,,\quad \pdv{L}{\bm{b}_i} = \bm{\Delta}_i^T \bm{1}\,,\quad \bm{\Delta}_i = a'(\bm{L}_i) \odot \left(\bm{\Delta}_{i+1} \bm{W}_{i+1}\right)\,,
+}
+\]
+gdzie \(\bm{A}_0 = \bm{X}\) oraz \(\bm{\Delta}_{k+1} = \pdv{L}{\bm{\Phi}}\) (zauważmy tutaj, iż
+człon ten wyznaczyliśmy już powyżej dla typowych funkcji kosztu).
 
 % \subsection{Regularyzacja i inicjalizacja w sieciach głębokich}
 
