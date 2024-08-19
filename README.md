@@ -10,4 +10,4 @@
   Single and Multivariate Calculus.
 
 * [[link](https://barhanc.github.io/notes/handwritten-notes/alg.pdf)] (Polish) Handwritten notes on
-  Linear Algebra.
+  Linear Algebra and Geometry.
