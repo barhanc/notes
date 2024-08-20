@@ -2213,9 +2213,9 @@ parametrów sieci, w algorytmie wstecznej propagacji błędu mnożymy elementwis
 przez tensor \(\bm{P}\), którego każdy element może być równy \(0\) z prawdopodobieństwem \(p\) lub
 1 z prawdopodobieństwem \(1-p\)). Mechanizmu dropout używamy tylko w procesie treningu. W przypadku
 inferencji wyjście neuronu jest z kolei mnożone przez następujący stosunek
-\begin{equation*}
-    1 - \frac{\# \text{wyłączeń neuronu}}{\# \text{liczba aktualizacji parametrów sieci}}\,.
-\end{equation*}
+\[
+    1 - \frac{\text{liczba wyłączeń neuronu}}{\text{liczba aktualizacji parametrów sieci}}\,.
+\]
 Typowo usuwa się dość sporo neuronów w warstwach ukrytych, np. 50\%. Dzięki dropoutowi można używać
 dość dużych stałych uczących oraz współczynników pędu, a także trenować znacznie większe i głębsze
 sieci. Okazuje się, iż w praktyce takie duże, mocno trenowane sieci z regularyzacją uczą się lepiej
