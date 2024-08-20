@@ -2020,7 +2020,7 @@ Powyższe wyniki możemy zapisać w zwartych postaciach macierzowych
 \[
 \boxed
 {
-\pdv{L}{\bm{W}_i} = \bm{\Delta}_i^T \bm{A}_{i-1}\,,\quad \pdv{L}{\bm{b}_i} = \bm{\Delta}_i^T \bm{1}\,,\quad \bm{\Delta}_i = a'(\bm{L}_i) \odot \left(\bm{\Delta}_{i+1} \bm{W}_{i+1}\right)\,,
+\pdv{L}{\bm{W}_i} = \bm{\Delta}_i^T \bm{A}_{i-1}\,,\quad \pdv{L}{\bm{b}_i} = \bm{\Delta}_i^T \bm{1}\,,\quad \bm{\Delta}_i = a'(\bm{L}_i) \ast \left(\bm{\Delta}_{i+1} \bm{W}_{i+1}\right)\,,
 }
 \]
 gdzie \(\bm{A}_0 = \bm{X}\) oraz \(\bm{\Delta}_{k+1} = \pdv{L}{\bm{\Phi}}\) (zauważmy tutaj, iż
@@ -2039,7 +2039,7 @@ z jedną warstwą ukrytą). Algorytm obliczania pochodnych możemy zatem zapisa�
 
 (*$\bm{A}_0 = \bm{X}$*)
 
-for (*$i$*) in range(1, k+2):
+for (*$i$*) in range(1, (*$k$*)+2):
     # Compute and memorize
     (*$\bm{L}_i = \bm{A}_{i-1} \bm{W}_i^T + \bm{b}_i$*)
     (*$\bm{A}_i = a(\bm{L}_i)$*)
@@ -2057,10 +2057,55 @@ for (*$i$*) in range((*$k$*)+1, 0, -1):
     
     # Update seed
     if (*$i$*) > 1:
-        (*$\bm{\Delta}_{i-1} = a'(\bm{L}_{i-1}) \odot \left(\bm{\Delta}_{i} \bm{W}_{i}\right)$*)
-
+        (*$\bm{\Delta}_{i-1} = a'(\bm{L}_{i-1}) \ast \left(\bm{\Delta}_{i} \bm{W}_{i}\right)$*)
 
 \end{lstlisting}
+
+
+Powyższy algorytm jest specjalnie dostosowany do sieci w pełni połączonej. Możemy go jednak prosto
+uogólnić do dowolnego acyklicznego i skierowanego grafu obliczeń. Załóżmy, iż rozpatrujemy warstwę
+(wierzchołek w grafie zaznaczony zaokrąglonym kwadratem) \(\bm{F}\) zależną od pewnych parametrów
+\(\bm{W}\) (w szczególności warstwa może nie mieć żadnych parametrów). Dla dowolnej warstwy
+\(\bm{F}\) przez \(\dot{\bm{F}}\) oznaczymy pochodną \(\dot{\bm{F}} = \pdv{L}{\bm{F}}\). Wówczas z
+reguły łańcuchowej
+\[
+\pdv{L}{\bm{W}^{\mu_1..\mu_k}} = \sum_{\nu_1..\nu_l} \dot{\bm{F}}^{\nu_1..\nu_l} \pdv{\bm{F}^{\nu_1..\nu_l}}{\bm{W}^{\mu_1..\mu_k}}\,.
+\]
+Niech \(\mathrm{succ}(\bm{F})\) oznacza zbiór następników wierzchołka \(\bm{F}\), tj. warstw
+(wierzchołków w grafie zaznaczonych zaokrąglonym kwadratem) do których istnieje skierowana krawędź
+od warstwy \(\bm{F}\). Wówczas
+\[
+\dot{\bm{F}}^{\mu_1..\mu_k} = \pdv{L}{\bm{F}^{\mu_1..\mu_k}} = \sum_{\bm{H} \in \mathrm{succ}(\bm{F})} \sum_{\nu_1..\nu_l} \dot{\bm{H}}^{\nu_1..\nu_l} \pdv{\bm{H}^{\nu_1..\nu_l}}{\bm{F}^{\mu_1..\mu_k}}\,.
+\]
+Z powyższego zatem widzimy, iż możemy obliczać wielkości \(\dot{\bm{F}}\) w sposób iteracyjny
+przechodząc po warstwach w kolejności odwrotnej do ich porządku topologicznego (z ang.
+\textit{reversed topological order}) i zapamiętywać wartości \(\dot{\bm{F}}\). Wówczas dla każdej
+warstwy pochodne \(\dot{\bm{H}}\) jej następników będą już obliczone i będziemy mogli obliczyć
+\(\dot{\bm{F}}\). Naiwna implementacja powyższego schematu będzie wymagać bardzo dużo pamięci, gdyż
+dla każdej warstwy musimy przechowywać oprócz jej wartości \(\bm{F}\) również wartość pochodnej
+\(\dot{\bm{F}}\). Zauważmy, iż w przypadku algorytmu wstecznej propagacji błędu dla sieci MLP nie
+musimy przechowywać pochodnych funkcji kosztu po wartościach warstw, a jedynie dynamicznie obliczamy
+i przekazujemy wstecz tzw. \emph{ziarno} (z ang. \textit{seed}) \(\bm{\Delta}\). Wynika to
+oczywiście z faktu, iż w przypadku sieci MLP warstwy tworzą skierowaną ścieżkę, czyli najprostszy
+DAG. W przypadku innych architektur sieci neuronowych tak nie musi być i wówczas każdą grupę warstw
+w obrębie której warstwy nie tworzą ścieżki należy oddzielnie przeanalizować pod kątem wykorzystania
+pamięci.
+
+\begin{quote}[\textit{Notes, Ch.7}, \cite{prince2023understanding}]
+\begin{itemize}
+    \item \textbf{Reducing memory requirements}: Training neural networks is memory intensive. We
+    must store both the model parameters and the pre-activations at the hidden units for every
+    member of the batch during the forward pass. Two methods that decrease memory requirements are
+    gradient checkpointing (Chen et al., 2016a) and micro-batching (Huang et al., 2019). In gradient
+    checkpointing, the activations are only stored every N layers during the forward pass. During
+    the backward pass, the intermediate missing activations are recalculated from the nearest check-
+    point. In this manner, we can drastically reduce the memory requirements at the computational
+    cost of performing the forward pass twice. In micro-batching, the batch is sub- divided into
+    smaller parts, and the gradient updates are aggregated from each sub-batch before being applied
+    to the network.
+\end{itemize}
+
+\end{quote}
 
 % \subsection{Regularyzacja i inicjalizacja w sieciach głębokich}
 
