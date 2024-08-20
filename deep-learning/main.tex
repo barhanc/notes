@@ -2104,10 +2104,37 @@ pamięci.
     smaller parts, and the gradient updates are aggregated from each sub-batch before being applied
     to the network.
 \end{itemize}
-
 \end{quote}
 
-% \subsection{Regularyzacja i inicjalizacja w sieciach głębokich}
+
+\subsection{Inicjalizacja}
+
+Jak zaznaczyliśmy wyżej ten paragraf poświęcimy zagadnieniu inicjalizacji parametrów sieci
+neuronowej, który jest wymaganym elementem opisanych algorytmów minimalizacji numerycznej.
+
+
+\subsection{Regularyzacja}
+
+Jak wspomnieliśmy we wstępie ważnym pojęciem w uczeniu maszynowym jest pojemność modeli. Model o
+dużej pojemności (czyli na przykład właśnie głęboka sieć neuronowa) może nastręczać poważnych
+problemów w trakcie uczenia przez zjawisko overfittingu. Model o dużej pojemności może perfekcyjne
+dopasować się do zbioru trenującego. Równocześnie może on zignorować strukturę, której wykrycie było
+w istocie celem uczenia. Przyczyną przeuczenia jest fakt, że każdy zbiór trenujący jest skończony:
+1) jest skończoną próbą obserwacji z zagadnienia, które jest celem uczenia; 2) każdy zbiór trenujący
+opisuje więc problem uczenia w sposób niepełny; 3) model przeucza, gdy jego pojemność pozwala mu
+dopasować się do konkretnego zbioru trenującego w sposób uniemożliwiający uogólnianie na nowe
+przypadki. Problem ten jest tym istotniejszy, im mniejszy jest zbiór trenujący. Algorytmy i techniki
+służące do kontroli pojemności modelu nazywamy metodami regularyzacji (z ang.\textit{regularization
+methods}).
+
+\subsubsection{Metoda wczesnego stopu}
+
+\subsection{Koszt wag}
+
+\subsection{Regularyzacja normą wektora wag}
+
+\subsection{Dropout}
+
 
 % \subsection{Measuring performance}
 
