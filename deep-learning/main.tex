@@ -2112,6 +2112,43 @@ pamięci.
 Jak zaznaczyliśmy wyżej ten paragraf poświęcimy zagadnieniu inicjalizacji parametrów sieci
 neuronowej, który jest wymaganym elementem opisanych algorytmów minimalizacji numerycznej.
 
+\begin{quote}[\textit{Parameter initialization, Ch.7}, \cite{prince2023understanding}]
+The backpropagation algorithm computes the derivatives that are used by stochastic gradient descent
+and Adam to train the model. We now address how to initialize the parameters before we start
+training. To see why this is crucial, consider that during the forward pass, each set of
+pre-activations \(\bm{L}_i\) is computed as:
+\[
+\bm{L}_i = \bm{b}_i + a(\bm{L}_{i-1})\bm{W}_i^T
+\]
+Imagine that we initialize all the biases to zero and the elements of \(\bm{W}\) according to a
+normal distribution with mean zero and variance \(\sigma^2\). Consider two scenarios:
+\begin{itemize}
+    \item If the variance is very small (e.g., \(10^{-5}\)), then each element of \(\bm{L}_i\) will
+    be a weighted sum of \(\bm{A}_{i-1}\) where the weights are very small; the result will likely
+    have a smaller magnitude than the input. In addition, the ReLU function clips values less than
+    zero, so the range of \(\bm{A}_i\) will be half that of \(\bm{L}_i\). Consequently, the
+    magnitudes of the pre-activations at the hidden layers will get smaller and smaller as we
+    progress through the network.
+
+    \item If the variance is very large (e.g., \(10^5\)), then each element of \(\bm{L}_i\) will be
+    a weighted sum of \(\bm{A}_{i-1}\) where the weights are very large; the result is likely to
+    have a much larger magnitude than the input. The ReLU function halves the range of the inputs,
+    but if variance is large enough, the magnitudes of the pre-activations will still get larger as
+    we progress through the network.
+\end{itemize}
+In these two situations, the values at the pre-activations can become so small or so large that they
+cannot be represented with finite precision floating point arithmetic.
+
+Even if the forward pass is tractable, the same logic applies to the backward pass. Each gradient
+update consists of multiplying by \(\bm{W}_i\). If the values of \(\bm{W}_i\) are not initialized
+sensibly, then the gradient magnitudes may decrease or increase un- controllably during the backward
+pass. These cases are known as the \textit{vanishing gradient problem} and the \textit{exploding
+gradient problem}, respectively. In the former case, updates to the model become vanishingly small.
+In the latter case, they become unstable.
+\end{quote}
+
+% TODO:...
+
 
 \subsection{Regularyzacja}
 
@@ -2129,11 +2166,62 @@ methods}).
 
 \subsubsection{Metoda wczesnego stopu}
 
-\subsection{Koszt wag}
+Najprostszym, a zarazem powszechnie stosowanym sposobem regularyzacji sieci neuronowych jest metoda
+wczesnego stopu (z ang. \textit{early stopping}). Polega ona na podziale zbioru \emph{treningowego}
+na mniejszy zbiór treningowy i tzw. \emph{zbiór walidacyjny}. W trakcie treningu monitorujemy błąd
+popełniany przez model na zbiorze walidacyjnym (ale do treningu używamy tylko zbioru treningowego).
+Przerywamy uczenie, gdy błąd na zbiorze walidacyjnym zaczyna rosnąć lub nie maleje przez wybraną
+liczbę epok. Dlaczego postęp uczenia monitorowany jest na zbiorze walidacyjnym (wydzielonym ze
+zbioru trenującego) a nie na zbiorze testowym? Monitorując przebieg uczenia na zbiorze testowym
+dobieralibyśmy parametry uczenia (np. ilość epok) tak, by dawały dobry wynik na zbiorze testowym.
+Wówczas wynik na zbiorze testowym mógłby być wyraźnie lepszy niż faktyczna skuteczność sieci w
+docelowym zastosowaniu. Nie możemy dobierać parametrów modelu wprost pod zbiór, na którym będziemy
+oceniać jego docelową skuteczność. Celem zbioru testowego jest ocena skuteczności modelu dla nowych
+obserwacji (niedostępnych w czasie uczenia).
 
-\subsection{Regularyzacja normą wektora wag}
+Takie podejście wymaga dość dużego zbioru danych, z których musimy wydzielić trzy zbiory: zbiór
+treningowy (na którym uczymy model), zbiór walidacyjny (na którym ewaluujemy model przy procedurze
+early stopingu) oraz zbiór testowy (na którym ewaluujemy model po treningu). Okres, przez który
+czekamy na uzyskanie lepszego wyniku, to cierpliwość (z ang. \textit{patience}). Im mniejsze, tym
+mocniejszy jest ten rodzaj regularyzacji, ale trzeba z tym uważać, bo łatwo jest przesadzić i zbyt
+szybko przerywać trening. Niektóre implementacje uwzględniają tzw. \textit{grace period}, czyli
+gwarantowaną minimalną liczbę epok, przez którą będziemy trenować sieć, niezależnie od wybranej
+cierpliwości.
 
-\subsection{Dropout}
+\subsubsection{Regularyzacja normą wektora wag}
+
+Możemy oczywiście dodać standardowy człon regularyzujący do funkcji kosztu, który nakłada
+ograniczenia na wartości poszczególnych wag, tak jak robiliśmy my to dla płytkich modeli uczenia
+maszynowego. W takim podejściu jednak każda waga jest ograniczana w sposób niezależny od pozostałych
+wag. Amplituda wagi nie jest więc wprost powiązana z amplitudami innych wag w sieci. Metodą
+regularyzacji, która wymusza konkurencję pomiędzy wagami, tak aby ważne wagi rosły kosztem wag
+nieistotnych jest regularyzacja normą wektora wag, która wprowadza limit na normę wektora wag.
+
+
+\subsubsection{Dropout}
+
+Dobrym sposobem regularyzacji metod uczenia maszynowego jest uśrednianie odpowiedzi wielu modeli
+popełniających różne błędy. Chcemy więc uczyć wiele modeli (rozwiązujących ten sam problem) w taki
+sposób, by modele te różniły się między sobą. Jest to tzw. uczenie zespołowe (z ang.
+\textit{ensemble learning}). Jak zapewnić, by wyuczone modele się między sobą różniły? Jednym ze
+sposobów budowy modelu zespołowego jest \emph{bagging} (od bootstrap aggregating). Oczywiście w
+przypadku obliczeniowo kosztownych modeli jak sieci neuronowe zaimplementowanie takiego schematu
+wprost jest nieefektywne. Metodą, która efektywnie realizuje właśnie uczenie zespołowe na
+pojedynczej sieci neuronowej jest dropout. dropout polegający na tym, iż w procesie treningu ze z
+góry zadanym prawdopodobieństwem ,,wyłączamy'' wyjście neuronu (tj. dla każdej aktualizacji wartości
+parametrów sieci, w algorytmie wstecznej propagacji błędu mnożymy wyjście \(\bm{A}_i\) przez tensor
+\(\bm{P}\), którego każdy element może być równy \(0\) z prawdopodobieństwem \(p\) lub 1 z
+prawdopodobieństwem \(1-p\)). Mechanizmu dropout używamy tylko w procesie treningu. W przypadku
+inferencji wyjście neuronu jest z kolei mnożone przez następujący stosunek
+\begin{equation*}
+    1 - \frac{\# \text{wyłączeń neuronu}}{\# \text{liczba aktualizacji parametrów sieci}}\,.
+\end{equation*}
+Typowo usuwa się dość sporo neuronów w warstwach ukrytych, np. 50\%. Dzięki dropoutowi można używać
+dość dużych stałych uczących oraz współczynników pędu, a także trenować znacznie większe i głębsze
+sieci. Okazuje się, iż w praktyce takie duże, mocno trenowane sieci z regularyzacją uczą się lepiej
+niż mniejsze, które by tej regularyzacji nie potrzebowały. Jeśli sieć nie przeucza na zbiorze
+trenującym to najpewniej lepsze wyniki uzyskamy ucząc większą sieć (która normalnie mogłaby
+przeuczyć) i stosując dropout.
 
 
 % \subsection{Measuring performance}
