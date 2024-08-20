@@ -2200,7 +2200,7 @@ nieistotnych jest regularyzacja normą wektora wag, która wprowadza limit na no
 
 \subsubsection{Dropout}
 
-Dobrym sposobem regularyzacji metod uczenia maszynowego jest uśrednianie odpowiedzi wielu modeli
+Dobrym sposobem regularyzacji modeli uczenia maszynowego jest uśrednianie odpowiedzi wielu modeli
 popełniających różne błędy. Chcemy więc uczyć wiele modeli (rozwiązujących ten sam problem) w taki
 sposób, by modele te różniły się między sobą. Jest to tzw. uczenie zespołowe (z ang.
 \textit{ensemble learning}). Jak zapewnić, by wyuczone modele się między sobą różniły? Jednym ze
@@ -2209,9 +2209,9 @@ przypadku obliczeniowo kosztownych modeli jak sieci neuronowe zaimplementowanie 
 wprost jest nieefektywne. Metodą, która efektywnie realizuje właśnie uczenie zespołowe na
 pojedynczej sieci neuronowej jest dropout. dropout polegający na tym, iż w procesie treningu ze z
 góry zadanym prawdopodobieństwem ,,wyłączamy'' wyjście neuronu (tj. dla każdej aktualizacji wartości
-parametrów sieci, w algorytmie wstecznej propagacji błędu mnożymy wyjście \(\bm{A}_i\) przez tensor
-\(\bm{P}\), którego każdy element może być równy \(0\) z prawdopodobieństwem \(p\) lub 1 z
-prawdopodobieństwem \(1-p\)). Mechanizmu dropout używamy tylko w procesie treningu. W przypadku
+parametrów sieci, w algorytmie wstecznej propagacji błędu mnożymy elementwise wyjście \(\bm{A}_i\)
+przez tensor \(\bm{P}\), którego każdy element może być równy \(0\) z prawdopodobieństwem \(p\) lub
+1 z prawdopodobieństwem \(1-p\)). Mechanizmu dropout używamy tylko w procesie treningu. W przypadku
 inferencji wyjście neuronu jest z kolei mnożone przez następujący stosunek
 \begin{equation*}
     1 - \frac{\# \text{wyłączeń neuronu}}{\# \text{liczba aktualizacji parametrów sieci}}\,.
