@@ -1783,7 +1783,10 @@ Podstawowym algorytmem jest metoda spadku wzdłuż gradientu (z ang. \textit{gra
 Polega ona na iteracyjnym aktualizowaniu wartości parametrów \(\bm{W}\) zgodnie z kierunkiem
 najszybszego spadku wyznaczonego przez zanegowany gradient funkcji kosztu \(-\pdv{L(\mc{X};
 \bm{W})}{\bm{W}}\). Wielkość kroków jakie wykonujemy w każdej iteracji jest zdeterminowana przez
-stałą \(\lambda > 0\) nazywaną \emph{stałą uczącą} (z ang. \textit{learning rate}).
+stałą \(\lambda > 0\) nazywaną \emph{stałą uczącą} (z ang. \textit{learning rate}). Tutaj należy
+dodać iż w implementacji wartość funkcji kosztu jest mnożona przez liczbę przykładów, w taki sposób,
+iż obliczamy tak naprawdę średni koszt na przykład, czyli \(L \gets \frac{1}{|\mc{X}|}L\). W
+przeciwnym wypadku wartość stałej uczącej należałoby dostosowywać do liczby przykładów w zbiorze.
 
 \begin{lstlisting}[language=Python, escapeinside={(*}{*)}]
 # Gradient descent
@@ -2147,7 +2150,50 @@ gradient problem}, respectively. In the former case, updates to the model become
 In the latter case, they become unstable.
 \end{quote}
 
-% TODO:...
+Najprostszym pomysłem inicjalizacji parametrów sieci neuronowych jest przyjęcie wartości 0 dla
+obciążeń \(\bm{b}_i\) i wylosowanie elementów macierzy wag \(\bm{W}_i\) niezależnie z rozkładu
+normalnego \(\mc{N}(0, \sigma^2)\). Powstaje pytanie jaka powinna być wartość wariancji
+\(\sigma^2\). Pewną odpowiedź na to pytanie sugeruje analiza wariancji elementów aktywacji w
+kolejnych warstwach
+\[
+\bm{L}_{i+1}^{\beta\mu} = \bm{b}_i^{\mu} + \sum_{\nu=1}^{n_{i-1}} \bm{A}_i^{\beta\nu} \bm{W}_i^{\mu\nu}\,.
+\]
+W przypadku inicjalizacji mamy \(\bm{b}_i^\mu = 0\) oraz \(\bm{W}_i^{\mu\nu} \sim \mc{N}(0,
+\sigma_{W_i}^2)\), zatem
+\[
+\mathbb{E}\left[\bm{L}_{i+1}^{\beta\mu}\right] = \sum_{\nu=1}^{n_{i-1}} \mathbb{E}\left[\bm{A}_i^{\beta\nu}\right] \cdot \mathbb{E}\left[\bm{W}_i^{\mu\nu}\right] = 0
+\]
+oraz
+\[
+\mathbb{V}\left[\bm{L}_{i+1}^{\beta\mu}\right] = \mathbb{E}\left[(\bm{L}_{i+1}^{\beta\mu})^2\right] - \mathbb{E}\left[\bm{L}_{i+1}^{\beta\mu}\right]^2 = \sum_{\nu=1}^{n_{i-1}} \mathbb{V}\left[\bm{A}_i^{\beta\nu}\right] \cdot \sigma_{W_i}^2\,.
+\]
+Zakładając, iż wariancje składowych aktywacji są równe \(\sigma_{A_i}^2\) oraz pochodzą z rozkładu
+symetrycznego wokół 0 mamy (dla funkcji aktywacji ReLU)
+\[
+\sigma_{A_{i+1}}^2 = \sum_{\nu=1}^{n_{i-1}} \frac{1}{2}\sigma_{W_i}^2 \sigma_{A_i}^2 = \frac{n_{i-1}}{2}\sigma_{W_i}^2 \sigma_{A_i}^2\,.
+\]
+Widzimy zatem, iż jeśli chcemy aby rozrzut wartości kolejnych aktywacji był podobny do poprzednich
+musi zachodzić
+\[
+\sigma_{W_i}^2 = \frac{2}{n_{i-1}}\,.
+\]
+Otrzymujemy zatem następującą heurystykę inicjalizacji
+\[
+\boxed
+{
+\bm{b}_i = \bm{0}\,,\quad \bm{W}_i^{\mu\nu} \sim \mc{N}\left(0, \frac{2}{n_{i-1}}\right)
+}
+\]
+zwaną \emph{inicjalizacją He}. Analogiczna analiza dla propagacji wstecznej, gdzie aktualizujemy
+\(\bm{\Delta}\) sugeruje z kolei przyjęcie
+\[
+\sigma_{W_i}^2 = \frac{2}{n_i}\,.
+\]
+Jeśli \(n_i \neq n_{i-1}\), tj. macierz \(\bm{W}_i\) nie jest kwadratowa, to jedną z możliwości jest
+przyjęcie średniej arytmetycznej
+\[
+\sigma_{W_i}^2 = \frac{4}{n_{i-1} + n_i}\,.
+\]
 
 
 \subsection{Regularyzacja}
@@ -2163,6 +2209,21 @@ dopasować się do konkretnego zbioru trenującego w sposób uniemożliwiający 
 przypadki. Problem ten jest tym istotniejszy, im mniejszy jest zbiór trenujący. Algorytmy i techniki
 służące do kontroli pojemności modelu nazywamy metodami regularyzacji (z ang.\textit{regularization
 methods}).
+
+\subsubsection{Weight decay}
+
+Analogicznie jak w przypadku prostych modeli liniowych jedną z możliwości regularyzacji jest
+dodanie do funkcji kosztu \(L\) czynnika regularyzującego zawierającego odpowiednią sumę norm
+poszczególnych parametrów sieci
+\[
+L^* = L + \frac{\gamma_2}{2}\sum_{i=1}^{k+1}\sum_{\mu,\nu} (\bm{W}_{i}^{\mu\nu})^2+ \gamma_1\sum_{i=1}^{k+1}\sum_{\mu,\nu} |\bm{W}_i^{\mu\nu}|\,.
+\]
+Różnica między regularyzacją \(L^2\) i \(L^1\) jest taka, że norma \(L^2\) ,,zachęca” sieć do
+wybierania małych wag, ale nie dokładnie będących 0, natomiast \(L^1\) zmniejsza wagi, ale w
+szczególności prowadzi do wag wynoszących dokładnie 0. W związku z tym regularyzacja \(L^1\)
+przeprowadza selekcję cech - “wyłączy” te, które są mało ważne. Zwykle człony regularyzujące
+wprowadza się jedynie dla wag sieci, a nie dla obciążeń, skąd nazwa tej metody regularyzacji --
+\textit{weight decay}.
 
 \subsubsection{Metoda wczesnego stopu}
 
@@ -2188,41 +2249,64 @@ szybko przerywać trening. Niektóre implementacje uwzględniają tzw. \textit{g
 gwarantowaną minimalną liczbę epok, przez którą będziemy trenować sieć, niezależnie od wybranej
 cierpliwości.
 
-\subsubsection{Regularyzacja normą wektora wag}
-
-Możemy oczywiście dodać standardowy człon regularyzujący do funkcji kosztu, który nakłada
-ograniczenia na wartości poszczególnych wag, tak jak robiliśmy my to dla płytkich modeli uczenia
-maszynowego. W takim podejściu jednak każda waga jest ograniczana w sposób niezależny od pozostałych
-wag. Amplituda wagi nie jest więc wprost powiązana z amplitudami innych wag w sieci. Metodą
-regularyzacji, która wymusza konkurencję pomiędzy wagami, tak aby ważne wagi rosły kosztem wag
-nieistotnych jest regularyzacja normą wektora wag, która wprowadza limit na normę wektora wag.
-
-
 \subsubsection{Dropout}
 
 Dobrym sposobem regularyzacji modeli uczenia maszynowego jest uśrednianie odpowiedzi wielu modeli
 popełniających różne błędy. Chcemy więc uczyć wiele modeli (rozwiązujących ten sam problem) w taki
 sposób, by modele te różniły się między sobą. Jest to tzw. uczenie zespołowe (z ang.
 \textit{ensemble learning}). Jak zapewnić, by wyuczone modele się między sobą różniły? Jednym ze
-sposobów budowy modelu zespołowego jest \emph{bagging} (od bootstrap aggregating). Oczywiście w
+sposobów budowy modelu zespołowego jest \emph{bagging} (od bootstrap aggregating) polegający na
+trenowaniu modeli na losowo wybranych (ze zwracaniem) podzbiorach zbioru treningowego, odpowiedzią
+modelu będzie średnia z odpowiedzi wszystkich wyuczonych w taki sposób modeli. Oczywiście w
 przypadku obliczeniowo kosztownych modeli jak sieci neuronowe zaimplementowanie takiego schematu
 wprost jest nieefektywne. Metodą, która efektywnie realizuje właśnie uczenie zespołowe na
-pojedynczej sieci neuronowej jest dropout. dropout polegający na tym, iż w procesie treningu ze z
-góry zadanym prawdopodobieństwem ,,wyłączamy'' wyjście neuronu (tj. dla każdej aktualizacji wartości
+pojedynczej sieci neuronowej jest dropout. Polega on na tym, iż w procesie treningu ze z góry
+zadanym prawdopodobieństwem ,,wyłączamy'' wyjście neuronu (tj. dla każdej aktualizacji wartości
 parametrów sieci, w algorytmie wstecznej propagacji błędu mnożymy elementwise wyjście \(\bm{A}_i\)
-przez tensor \(\bm{P}\), którego każdy element może być równy \(0\) z prawdopodobieństwem \(p\) lub
-1 z prawdopodobieństwem \(1-p\)). Mechanizmu dropout używamy tylko w procesie treningu. W przypadku
-inferencji wyjście neuronu jest z kolei mnożone przez następujący stosunek
-\[
-    1 - \frac{\text{liczba wyłączeń neuronu}}{\text{liczba aktualizacji parametrów sieci}}\,.
-\]
-Typowo usuwa się dość sporo neuronów w warstwach ukrytych, np. 50\%. Dzięki dropoutowi można używać
-dość dużych stałych uczących oraz współczynników pędu, a także trenować znacznie większe i głębsze
-sieci. Okazuje się, iż w praktyce takie duże, mocno trenowane sieci z regularyzacją uczą się lepiej
-niż mniejsze, które by tej regularyzacji nie potrzebowały. Jeśli sieć nie przeucza na zbiorze
-trenującym to najpewniej lepsze wyniki uzyskamy ucząc większą sieć (która normalnie mogłaby
-przeuczyć) i stosując dropout.
+przez tensor \(\bm{D}_i\), którego każdy element może być równy \(0\) z prawdopodobieństwem \(p_i\)
+lub \(1\) z prawdopodobieństwem \(1-p_i\)). Mechanizmu dropout używamy tylko w procesie treningu. W
+przypadku inferencji wyjście warstwy \(\bm{A}_i\) jest z kolei mnożone przez \(1 - p_i\), czyli
+prawdopodobieństwo pozostania neuronu w sieci (\emph{weight scaling inference rule}). Typowo usuwa
+się dość sporo neuronów w warstwach ukrytych, np. 50\%. Dzięki dropoutowi można używać dość dużych
+stałych uczących oraz współczynników pędu, a także trenować znacznie większe i głębsze sieci.
+Okazuje się, iż w praktyce takie duże, mocno trenowane sieci z regularyzacją uczą się lepiej niż
+mniejsze, które by tej regularyzacji nie potrzebowały. Jeśli sieć nie przeucza na zbiorze trenującym
+to najpewniej lepsze wyniki uzyskamy ucząc większą sieć (która normalnie mogłaby przeuczyć) i
+stosując dropout. Obecnie dropout jest powszechnie stosowanym sposobem regularyzacji warstw w pełni
+połączonych (np. ostatnich warstw w niektórych sieciach konwolucyjnych).
 
+\subsubsection{Transfer learning}
+
+\begin{quote}[\textit{Transfer learning and multi-task learning, Ch.9}, \cite{prince2023understanding}]
+When training data are limited, other datasets can be exploited to improve performance. In transfer
+learning, the network is pre-trained to perform a related secondary task for which data are more
+plentiful. The resulting model is then adapted to the original task. This is typically done by
+removing the last layer and adding one or more layers that produce a suitable output. The main model
+may be fixed, and the new layers trained for the original task, or we may fine-tune the entire
+model. The principle is that the network will build a good internal representation of the data from
+the secondary task, which can subsequently be exploited for the original task. Equivalently,
+transfer learning can be viewed as initializing most of the parameters of the final network in a
+sensible part of the space that is likely to produce a good solution.
+\end{quote}
+
+\subsubsection{Augmentation}
+
+Metoda data augmentation polega na dodaniu do zbioru treningowego replik przykładów z tego zbioru
+poddanych pewnym transformacjom względem których oczekujemy, iż odpowiedzi sieci będą niezmienione.
+
+\begin{quote}[\textit{Notes, Ch. 9}, \cite{prince2023understanding}]
+\begin{itemize}
+\item \textbf{Finding wider minima}: It is thought that wider minima generalize better. Here,
+the exact values of the weights are less important, so performance should be robust to errors in
+their estimates. One of the reasons that applying noise to parts of the network during training
+is effective is that it encourages the network to be indifferent to their exact values. Keskar
+et al. (2017) showed that SGD finds wider minima as the batch size is reduced. This may be
+because of the batch variance term that results from implicit regularization by SGD. Ishida et
+al. (2020) use a technique named flooding, in which they intentionally prevent the training loss
+from becoming zero. This encourages the solution to perform a random walk over the loss
+landscape and drift into a flatter area with better generalization.
+\end{itemize}
+\end{quote}
 
 % \subsection{Measuring performance}
 
