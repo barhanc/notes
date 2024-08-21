@@ -2190,9 +2190,9 @@ zwaną \emph{inicjalizacją He}. Analogiczna analiza dla propagacji wstecznej, g
 \sigma_{W_i}^2 = \frac{2}{n_i}\,.
 \]
 Jeśli \(n_i \neq n_{i-1}\), tj. macierz \(\bm{W}_i\) nie jest kwadratowa, to jedną z możliwości jest
-przyjęcie średniej arytmetycznej
+przyjęcie średniej arytmetycznej \(\overline{n} = \frac{n_{i-1} + n_i}{2}\)
 \[
-\sigma_{W_i}^2 = \frac{4}{n_{i-1} + n_i}\,.
+\sigma_{W_i}^2 = \frac{2}{\overline{n}} = \frac{4}{n_{i-1} + n_i}\,.
 \]
 
 
@@ -2210,13 +2210,12 @@ przypadki. Problem ten jest tym istotniejszy, im mniejszy jest zbiór trenujący
 służące do kontroli pojemności modelu nazywamy metodami regularyzacji (z ang.\textit{regularization
 methods}).
 
-\subsubsection{Weight decay}
-
-Analogicznie jak w przypadku prostych modeli liniowych jedną z możliwości regularyzacji jest
-dodanie do funkcji kosztu \(L\) czynnika regularyzującego zawierającego odpowiednią sumę norm
-poszczególnych parametrów sieci
+\begin{itemize}
+\item \textbf{Weight decay}. Analogicznie jak w przypadku prostych modeli liniowych jedną z
+możliwości regularyzacji jest dodanie do funkcji kosztu \(L\) czynnika regularyzującego
+zawierającego odpowiednią sumę norm poszczególnych parametrów sieci
 \[
-L^* = L + \frac{\gamma_2}{2}\sum_{i=1}^{k+1}\sum_{\mu,\nu} (\bm{W}_{i}^{\mu\nu})^2+ \gamma_1\sum_{i=1}^{k+1}\sum_{\mu,\nu} |\bm{W}_i^{\mu\nu}|\,.
+L^*(\mc{X}; \bm{W}) = L(\mc{X}; \bm{W}) + \frac{\gamma_2}{2}\sum_{i=1}^{k+1}\sum_{\mu,\nu} (\bm{W}_{i}^{\mu\nu})^2+ \gamma_1\sum_{i=1}^{k+1}\sum_{\mu,\nu} |\bm{W}_i^{\mu\nu}|\,.
 \]
 Różnica między regularyzacją \(L^2\) i \(L^1\) jest taka, że norma \(L^2\) ,,zachęca” sieć do
 wybierania małych wag, ale nie dokładnie będących 0, natomiast \(L^1\) zmniejsza wagi, ale w
@@ -2225,20 +2224,19 @@ przeprowadza selekcję cech - “wyłączy” te, które są mało ważne. Zwykl
 wprowadza się jedynie dla wag sieci, a nie dla obciążeń, skąd nazwa tej metody regularyzacji --
 \textit{weight decay}.
 
-\subsubsection{Metoda wczesnego stopu}
-
-Najprostszym, a zarazem powszechnie stosowanym sposobem regularyzacji sieci neuronowych jest metoda
-wczesnego stopu (z ang. \textit{early stopping}). Polega ona na podziale zbioru \emph{treningowego}
-na mniejszy zbiór treningowy i tzw. \emph{zbiór walidacyjny}. W trakcie treningu monitorujemy błąd
-popełniany przez model na zbiorze walidacyjnym (ale do treningu używamy tylko zbioru treningowego).
-Przerywamy uczenie, gdy błąd na zbiorze walidacyjnym zaczyna rosnąć lub nie maleje przez wybraną
-liczbę epok. Dlaczego postęp uczenia monitorowany jest na zbiorze walidacyjnym (wydzielonym ze
-zbioru trenującego) a nie na zbiorze testowym? Monitorując przebieg uczenia na zbiorze testowym
-dobieralibyśmy parametry uczenia (np. ilość epok) tak, by dawały dobry wynik na zbiorze testowym.
-Wówczas wynik na zbiorze testowym mógłby być wyraźnie lepszy niż faktyczna skuteczność sieci w
-docelowym zastosowaniu. Nie możemy dobierać parametrów modelu wprost pod zbiór, na którym będziemy
-oceniać jego docelową skuteczność. Celem zbioru testowego jest ocena skuteczności modelu dla nowych
-obserwacji (niedostępnych w czasie uczenia).
+\item \textbf{Metoda wczesnego stopu}. Najprostszym, a zarazem powszechnie stosowanym sposobem
+regularyzacji sieci neuronowych jest metoda wczesnego stopu (z ang. \textit{early stopping}). Polega
+ona na podziale zbioru \emph{treningowego} na mniejszy zbiór treningowy i tzw. \emph{zbiór
+walidacyjny}. W trakcie treningu monitorujemy błąd popełniany przez model na zbiorze walidacyjnym
+(ale do treningu używamy tylko zbioru treningowego). Przerywamy uczenie, gdy błąd na zbiorze
+walidacyjnym zaczyna rosnąć lub nie maleje przez wybraną liczbę epok. Dlaczego postęp uczenia
+monitorowany jest na zbiorze walidacyjnym (wydzielonym ze zbioru trenującego) a nie na zbiorze
+testowym? Monitorując przebieg uczenia na zbiorze testowym dobieralibyśmy parametry uczenia (np.
+ilość epok) tak, by dawały dobry wynik na zbiorze testowym. Wówczas wynik na zbiorze testowym mógłby
+być wyraźnie lepszy niż faktyczna skuteczność sieci w docelowym zastosowaniu. Nie możemy dobierać
+parametrów modelu wprost pod zbiór, na którym będziemy oceniać jego docelową skuteczność. Celem
+zbioru testowego jest ocena skuteczności modelu dla nowych obserwacji (niedostępnych w czasie
+uczenia).
 
 Takie podejście wymaga dość dużego zbioru danych, z których musimy wydzielić trzy zbiory: zbiór
 treningowy (na którym uczymy model), zbiór walidacyjny (na którym ewaluujemy model przy procedurze
@@ -2249,17 +2247,15 @@ szybko przerywać trening. Niektóre implementacje uwzględniają tzw. \textit{g
 gwarantowaną minimalną liczbę epok, przez którą będziemy trenować sieć, niezależnie od wybranej
 cierpliwości.
 
-\subsubsection{Dropout}
-
-Dobrym sposobem regularyzacji modeli uczenia maszynowego jest uśrednianie odpowiedzi wielu modeli
-popełniających różne błędy. Chcemy więc uczyć wiele modeli (rozwiązujących ten sam problem) w taki
-sposób, by modele te różniły się między sobą. Jest to tzw. uczenie zespołowe (z ang.
-\textit{ensemble learning}). Jak zapewnić, by wyuczone modele się między sobą różniły? Jednym ze
-sposobów budowy modelu zespołowego jest \emph{bagging} (od bootstrap aggregating) polegający na
-trenowaniu modeli na losowo wybranych (ze zwracaniem) podzbiorach zbioru treningowego, odpowiedzią
-modelu będzie średnia z odpowiedzi wszystkich wyuczonych w taki sposób modeli. Oczywiście w
-przypadku obliczeniowo kosztownych modeli jak sieci neuronowe zaimplementowanie takiego schematu
-wprost jest nieefektywne. Metodą, która efektywnie realizuje właśnie uczenie zespołowe na
+\item \textbf{Dropout}. Dobrym sposobem regularyzacji modeli uczenia maszynowego jest uśrednianie
+odpowiedzi wielu modeli popełniających różne błędy. Chcemy więc uczyć wiele modeli (rozwiązujących
+ten sam problem) w taki sposób, by modele te różniły się między sobą. Jest to tzw. uczenie zespołowe
+(z ang. \textit{ensemble learning}). Jak zapewnić, by wyuczone modele się między sobą różniły?
+Jednym ze sposobów budowy modelu zespołowego jest \emph{bagging} (od bootstrap aggregating)
+polegający na trenowaniu modeli na losowo wybranych (ze zwracaniem) podzbiorach zbioru treningowego,
+odpowiedzią modelu będzie średnia z odpowiedzi wszystkich wyuczonych w taki sposób modeli.
+Oczywiście w przypadku obliczeniowo kosztownych modeli jak sieci neuronowe zaimplementowanie takiego
+schematu wprost jest nieefektywne. Metodą, która efektywnie realizuje właśnie uczenie zespołowe na
 pojedynczej sieci neuronowej jest dropout. Polega on na tym, iż w procesie treningu ze z góry
 zadanym prawdopodobieństwem ,,wyłączamy'' wyjście neuronu (tj. dla każdej aktualizacji wartości
 parametrów sieci, w algorytmie wstecznej propagacji błędu mnożymy elementwise wyjście \(\bm{A}_i\)
@@ -2275,24 +2271,23 @@ to najpewniej lepsze wyniki uzyskamy ucząc większą sieć (która normalnie mo
 stosując dropout. Obecnie dropout jest powszechnie stosowanym sposobem regularyzacji warstw w pełni
 połączonych (np. ostatnich warstw w niektórych sieciach konwolucyjnych).
 
-\subsubsection{Transfer learning}
-
-\begin{quote}[\textit{Transfer learning and multi-task learning, Ch.9}, \cite{prince2023understanding}]
-When training data are limited, other datasets can be exploited to improve performance. In transfer
-learning, the network is pre-trained to perform a related secondary task for which data are more
-plentiful. The resulting model is then adapted to the original task. This is typically done by
-removing the last layer and adding one or more layers that produce a suitable output. The main model
-may be fixed, and the new layers trained for the original task, or we may fine-tune the entire
-model. The principle is that the network will build a good internal representation of the data from
-the secondary task, which can subsequently be exploited for the original task. Equivalently,
-transfer learning can be viewed as initializing most of the parameters of the final network in a
-sensible part of the space that is likely to produce a good solution.
+\item \textbf{Transfer learning}. 
+\begin{quote}[\textit{Transfer learning and multi-task learning, Ch.9},
+\cite{prince2023understanding}] When training data are limited, other datasets can be exploited to
+improve performance. In transfer learning, the network is pre-trained to perform a related secondary
+task for which data are more plentiful. The resulting model is then adapted to the original task.
+This is typically done by removing the last layer and adding one or more layers that produce a
+suitable output. The main model may be fixed, and the new layers trained for the original task, or
+we may fine-tune the entire model. The principle is that the network will build a good internal
+representation of the data from the secondary task, which can subsequently be exploited for the
+original task. Equivalently, transfer learning can be viewed as initializing most of the parameters
+of the final network in a sensible part of the space that is likely to produce a good solution.
 \end{quote}
 
-\subsubsection{Augmentation}
-
-Metoda data augmentation polega na dodaniu do zbioru treningowego replik przykładów z tego zbioru
-poddanych pewnym transformacjom względem których oczekujemy, iż odpowiedzi sieci będą niezmienione.
+\item \textbf{Augmentation}. Metoda data augmentation polega na dodaniu do zbioru treningowego
+replik przykładów z tego zbioru poddanych pewnym transformacjom względem których oczekujemy, iż
+odpowiedzi sieci będą niezmienione.
+\end{itemize}
 
 \begin{quote}[\textit{Notes, Ch. 9}, \cite{prince2023understanding}]
 \begin{itemize}
@@ -2308,7 +2303,11 @@ landscape and drift into a flatter area with better generalization.
 \end{itemize}
 \end{quote}
 
-% \subsection{Measuring performance}
+
+\subsection{Measuring performance}
+
+W tym paragrafie skupiamy się na zagadnieniu ewaluacji głębokich modeli neuronowych już po ich
+wytrenowaniu.
 
 % \subsection{Convolutional networks}
 
