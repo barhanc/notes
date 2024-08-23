@@ -1536,6 +1536,25 @@ co możemy zapisać w zwartej postaci macierzowej
 \pdv{L}{\bm{W}} = \left(\bm{S} - \bm{T}\right)^T \bm{X}\,.
 \]
 
+% TODO
+% ---------
+
+% \subsection{SVM i Kernel SVM} !!!
+
+% \subsection{Drzewa decyzyjne i lasy losowe} !!!
+
+% \subsection{Ensemble learning. Boosting i bagging} !!!
+
+% **** Unsupervised learning ****
+
+% \subsection{Klasteryzacja}
+
+% \subsection{Redukcja wymiarowości (PCA, t-SNE, UMAP)}
+
+% \subsection{Selekcja cech} ???
+
+% \subsection{Szeregi czasowe} !!!
+
 
 \section{Uczenie głębokie i sieci neuronowe}
 
@@ -2207,7 +2226,7 @@ w istocie celem uczenia. Przyczyną przeuczenia jest fakt, że każdy zbiór tre
 opisuje więc problem uczenia w sposób niepełny; 3) model przeucza, gdy jego pojemność pozwala mu
 dopasować się do konkretnego zbioru trenującego w sposób uniemożliwiający uogólnianie na nowe
 przypadki. Problem ten jest tym istotniejszy, im mniejszy jest zbiór trenujący. Algorytmy i techniki
-służące do kontroli pojemności modelu nazywamy metodami regularyzacji (z ang.\textit{regularization
+służące do kontroli pojemności modelu nazywamy metodami regularyzacji (z ang. \textit{regularization
 methods}).
 
 \begin{itemize}
@@ -2291,23 +2310,54 @@ odpowiedzi sieci będą niezmienione.
 
 \begin{quote}[\textit{Notes, Ch. 9}, \cite{prince2023understanding}]
 \begin{itemize}
-\item \textbf{Finding wider minima}: It is thought that wider minima generalize better. Here,
-the exact values of the weights are less important, so performance should be robust to errors in
-their estimates. One of the reasons that applying noise to parts of the network during training
-is effective is that it encourages the network to be indifferent to their exact values. Keskar
-et al. (2017) showed that SGD finds wider minima as the batch size is reduced. This may be
-because of the batch variance term that results from implicit regularization by SGD. Ishida et
-al. (2020) use a technique named flooding, in which they intentionally prevent the training loss
-from becoming zero. This encourages the solution to perform a random walk over the loss
-landscape and drift into a flatter area with better generalization.
+\item \textbf{Finding wider minima}: It is thought that wider minima generalize better. Here, the
+exact values of the weights are less important, so performance should be robust to errors in their
+estimates. One of the reasons that applying noise to parts of the network during training is
+effective is that it encourages the network to be indifferent to their exact values. Keskar et al.
+(2017) showed that SGD finds wider minima as the batch size is reduced. This may be because of the
+batch variance term that results from implicit regularization by SGD. Ishida et al. (2020) use a
+technique named flooding, in which they intentionally prevent the training loss from becoming zero.
+This encourages the solution to perform a random walk over the loss landscape and drift into a
+flatter area with better generalization.
 \end{itemize}
 \end{quote}
 
 
-\subsection{Measuring performance}
+\subsection{Dobór hiperparametrów}
 
-W tym paragrafie skupiamy się na zagadnieniu ewaluacji głębokich modeli neuronowych już po ich
-wytrenowaniu.
+\begin{quote}[\textit{Choosing hyperparameters, Ch.8}, \cite{prince2023understanding}]
+For a deep network, the model capacity depends on the numbers of hidden layers and hidden units per
+layer as well as other aspects of architecture that we have yet to introduce. Furthermore, the
+choice of learning algorithm and any associated parameters (learning rate, etc.) also affects the
+test performance. These elements are collectively termed hyperparameters. The process of finding the
+best hyperparameters is termed hyperparameter search or (when focused on network structure) neural
+architecture search.
+
+Hyperparameters are typically chosen empirically; we train many models with different
+hyperparameters on the same training set, measure their performance, and retain the best model.
+However, we do not measure their performance on the test set; this would admit the possibility that
+these hyperparameters just happen to work well for the test set but don't generalize to further
+data. Instead, we introduce a third dataset known as a validation set. For every choice of
+hyperparameters, we train the associated model using the training set and evaluate performance on
+the validation set. Finally, we select the model that worked best on the validation set and measure
+its performance on the test set. In principle, this should give a reasonable estimate of the true
+performance. 
+
+The hyperparameter space is generally smaller than the parameter space but still too
+large to try every combination exhaustively. Unfortunately, many hyperparameters are discrete (e.g.,
+the number of hidden layers), and others may be conditional on one another (e.g., we only need to
+specify the number of hidden units in the tenth hidden layer if there are ten or more layers).
+Hence, we cannot rely on gradient descent methods as we did for learning the model parameters.
+Hyperparameter optimization algorithms intelligently sample the space of hyperparameters, contingent
+on previous results. This procedure is computationally expensive since we must train an entire model
+and measure the validation performance for each combination of hyperparameters.    
+\end{quote}
+
+
+\subsection{Zjawisko double descent}
+
+
+
 
 % \subsection{Convolutional networks}
 
@@ -2315,9 +2365,9 @@ wytrenowaniu.
 
 % \subsection{Transformers}
 
-
+% 
 % \section{Reinforcement Learning}
-
+% 
 
 
 \bibliographystyle{plain}
