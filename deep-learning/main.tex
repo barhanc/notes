@@ -1536,8 +1536,10 @@ co możemy zapisać w zwartej postaci macierzowej
 \pdv{L}{\bm{W}} = \left(\bm{S} - \bm{T}\right)^T \bm{X}\,.
 \]
 
+
+% ---------------------------------------------------------------
 % TODO
-% ---------
+% ---------------------------------------------------------------
 
 % \subsection{SVM i Kernel SVM} !!!
 
@@ -1545,15 +1547,13 @@ co możemy zapisać w zwartej postaci macierzowej
 
 % \subsection{Ensemble learning. Boosting i bagging} !!!
 
-% **** Unsupervised learning ****
+% UNSUPERVISED LEARNING
 
 % \subsection{Klasteryzacja}
 
 % \subsection{Redukcja wymiarowości (PCA, t-SNE, UMAP)}
 
-% \subsection{Selekcja cech} ???
-
-% \subsection{Szeregi czasowe} !!!
+% ---------------------------------------------------------------
 
 
 \section{Uczenie głębokie i sieci neuronowe}
@@ -2356,15 +2356,62 @@ and measure the validation performance for each combination of hyperparameters.
 
 \subsection{Zjawisko double descent}
 
+Zjawisko double descent polega na nieoczekiwanym zachowaniu wartości błędów popełnianych przez model
+uczenia maszynowego przy zwiększaniu liczby jego parametrów. Zgodnie z bias-variance tradeoff
+oczekiwalibyśmy bowiem iż w miarę zwiększania liczby parametrów będziemy coraz bardziej przeuczać
+model (dopasowywać go wprost do danych treningowych), a przez to zmniejszać jego zdolność
+generalizacji, co przekładałoby się na gorszy wynik na zbiorze testowym. Okazuje się jednak, iż
+krzywa błędu na zbiorze testowym w zależności od liczby parametrów początkowo spada, następnie
+(zgodnie z oczekiwaniami) gdy liczba parametrów jest rzędu liczności zbioru treningowego błąd
+rośnie, ale (co niespodziewane) gdy liczba parametrów jest znacznie większa od liczności zbioru
+treningowego, błąd testowy znowu spada.
+
+\begin{quote}[\textit{Double descent, Ch.8}, \cite{prince2023understanding}]
+This phenomenon is known as double descent. For some datasets like MNIST, it is present with the
+original data. For others, like MNIST-1D and CIFAR-100, it emerges or becomes more prominent when we
+add noise to the labels. The first part of the curve is referred to as the \emph{classical} or
+\emph{under-parameterized regime}, and the second part as the \emph{modern} or
+\emph{over-parameterized regime}. The central part where the error increases is termed the critical
+regime.
+\end{quote}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.8\textwidth]{figs/double_descent.png}
+\caption{Przykładowa krzywa wartości błędu na zbiorze testowym w zależności od liczby parametrów modelu wykazująca efekt double descent}
+\label{fig:double-descent}
+\end{figure}
+
+\begin{quote}[\textit{Double descent, Ch. 8}, \cite{prince2023understanding}]
+To understand why performance continues to improve as we add more parameters, note that once the
+model has enough capacity to drive the training loss to near zero, the model fits the training data
+almost perfectly. This implies that further capacity cannot help the model fit the training data any
+better; any change must occur between the training points. The tendency of a model to prioritize one
+solution over another as it extrapolates between data points is known as its inductive bias.
+
+The putative explanation for double descent is that as we add capacity to the model, it interpolates
+between the nearest data points increasingly smoothly. In the absence of information about what
+happens between the training points, assuming smoothness is sensible and will probably generalize
+reasonably to new data.
+
+However, this does not explain why over-parameterized models should produce smooth functions. The
+answer to this question is uncertain, but there are two likely possibilities. First, the network
+initialization may encourage smoothness, and the model never departs from the sub-domain of smooth
+function during the training process. Second, the training algorithm may somehow “prefer” to
+converge to smooth functions. Any factor that biases a solution toward a subset of equivalent
+solutions is known as a regularizer, so one possibility is that the training algorithm acts as an
+implicit regularizer.    
+\end{quote}
 
 
+\subsection{Convolutional networks}
 
-% \subsection{Convolutional networks}
+
 
 % \subsection{Residual networks}
-
+% 
 % \subsection{Transformers}
-
+% 
 % 
 % \section{Reinforcement Learning}
 % 
