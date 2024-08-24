@@ -1537,9 +1537,13 @@ co możemy zapisać w zwartej postaci macierzowej
 \]
 
 
-% ---------------------------------------------------------------
+% ---------------------------------------------------------
 % TODO
-% ---------------------------------------------------------------
+% ---------------------------------------------------------
+
+% ***************************
+% * SUPERVISED LEARNING     *
+% ***************************
 
 % \subsection{SVM i Kernel SVM} !!!
 
@@ -1547,13 +1551,18 @@ co możemy zapisać w zwartej postaci macierzowej
 
 % \subsection{Ensemble learning. Boosting i bagging} !!!
 
-% UNSUPERVISED LEARNING
+% ***************************
+
+% ***************************
+% * UNSUPERVISED LEARNING   *
+% ***************************
 
 % \subsection{Klasteryzacja}
 
 % \subsection{Redukcja wymiarowości (PCA, t-SNE, UMAP)}
 
-% ---------------------------------------------------------------
+% ***************************
+% ---------------------------------------------------------
 
 
 \section{Uczenie głębokie i sieci neuronowe}
@@ -1569,7 +1578,7 @@ A deep neural network is a type of machine learning model, and when it is fitted
 referred to as deep learning.
 \end{quote}
 
-\subsection{Matematyczny model neuronu. Sieć w pełni połączona.}
+\subsection{Sieci w pełni połączone}
 
 Neuron modelujemy jako obiekt realizujący przekształcenie \(f: \mathbb{R}^n \mapsto \mathbb{R}\)
 \[
@@ -1894,11 +1903,11 @@ algorytm utyka w lokalny minimum lub w punkcie siodłowym funkcji. Standardowy a
 posiada żadnych mechanizmów pozwalających na ucieczkę z tych punktów. Podstawowym ulepszeniem
 algorytmu SGD jest wprowadzenie tzw. pędu (z ang. \textit{momentum}) tj. członu postaci
 \[
-\bm{V}_t = \gamma \bm{V}_{t-1} + \lambda \pdv{L(\mc{B}; \bm{W})}{\bm{W}}\Big|_{\bm{W}}\,,\quad \bm{V}_0 = \bm{0}
+\bm{V}_t = \gamma \bm{V}_{t-1} - \lambda \pdv{L(\mc{B}; \bm{W})}{\bm{W}}\Big|_{\bm{W}}\,,\quad \bm{V}_0 = \bm{0}
 \]
 i aktualizację parametrów sieci zgodnie z
 \[
-\bm{W} \gets \bm{W} - \bm{V}_t\,,
+\bm{W} \gets \bm{W} + \bm{V}_t\,,
 \]
 gdzie \(t\) jest numerem iteracji, a \(\gamma\) to tzw. \textit{momentum term}, którego wartość
 typowo przyjmuje się równą \(0.9\).
@@ -1920,15 +1929,15 @@ would like to have a smarter ball, a ball that has a notion of where it is going
 slow down before the hill slopes up again.
 
 Nesterov accelerated gradient is a way to give our momentum term this kind of prescience. We know
-that we will use our momentum term \(\gamma \bm{v}_{t-1}\) to move the parameters \(\bm{W}\).
-Computing \(\bm{W} - \gamma \bm{V}_{t-1}\) thus gives us an approximation of the next position of
+that we will use our momentum term \(\gamma \bm{V}_{t-1}\) to move the parameters \(\bm{W}\).
+Computing \(\bm{W} + \gamma \bm{V}_{t-1}\) thus gives us an approximation of the next position of
 the parameters (the gradient is missing for the full update), a rough idea where our parameters are
 going to be. We can now effectively look ahead by calculating the gradient not at our current
 parameters \(\bm{W}\) but at the approximate future position of our parameters:
 \[
 \begin{split}
-&\bm{V}_t = \gamma \bm{V}_{t-1} + \lambda \pdv{L(\mc{B}; \bm{W})}{\bm{W}}\Big|_{\bm{W} - \gamma \bm{V}_{t-1}}\,,\quad \bm{V}_0 = \bm{0}\,,\\
-&\bm{W} \gets \bm{W} - \bm{V}_t\,.
+&\bm{V}_t = \gamma \bm{V}_{t-1} - \lambda \pdv{L(\mc{B}; \bm{W})}{\bm{W}}\Big|_{\bm{W} + \gamma \bm{V}_{t-1}}\,,\quad \bm{V}_0 = \bm{0}\,,\\
+&\bm{W} \gets \bm{W} + \bm{V}_t\,.
 \end{split}
 \]
 \end{quote}
@@ -2042,7 +2051,7 @@ Powyższe wyniki możemy zapisać w zwartych postaciach macierzowych
 \[
 \boxed
 {
-\pdv{L}{\bm{W}_i} = \bm{\Delta}_i^T \bm{A}_{i-1}\,,\quad \pdv{L}{\bm{b}_i} = \bm{\Delta}_i^T \bm{1}\,,\quad \bm{\Delta}_i = a'(\bm{L}_i) \ast \left(\bm{\Delta}_{i+1} \bm{W}_{i+1}\right)\,,
+\pdv{L}{\bm{W}_i} = \bm{\Delta}_i^T \bm{A}_{i-1}\,,\quad \pdv{L}{\bm{b}_i} = \bm{\Delta}_i^T \bm{1}\,,\quad \bm{\Delta}_i = a'(\bm{L}_i) \odot \left(\bm{\Delta}_{i+1} \bm{W}_{i+1}\right)\,,
 }
 \]
 gdzie \(\bm{A}_0 = \bm{X}\) oraz \(\bm{\Delta}_{k+1} = \pdv{L}{\bm{\Phi}}\) (zauważmy tutaj, iż
@@ -2079,7 +2088,7 @@ for (*$i$*) in range((*$k$*)+1, 0, -1):
     
     # Update seed
     if (*$i$*) > 1:
-        (*$\bm{\Delta}_{i-1} = a'(\bm{L}_{i-1}) \ast \left(\bm{\Delta}_{i} \bm{W}_{i}\right)$*)
+        (*$\bm{\Delta}_{i-1} = a'(\bm{L}_{i-1}) \odot \left(\bm{\Delta}_{i} \bm{W}_{i}\right)$*)
 
 \end{lstlisting}
 
@@ -2323,38 +2332,40 @@ flatter area with better generalization.
 \end{quote}
 
 
-\subsection{Dobór hiperparametrów}
+\subsection{Hiperparametry}
+
+\subsubsection{Dobór hiperparametrów}
 
 \begin{quote}[\textit{Choosing hyperparameters, Ch.8}, \cite{prince2023understanding}]
-For a deep network, the model capacity depends on the numbers of hidden layers and hidden units per
-layer as well as other aspects of architecture that we have yet to introduce. Furthermore, the
-choice of learning algorithm and any associated parameters (learning rate, etc.) also affects the
-test performance. These elements are collectively termed hyperparameters. The process of finding the
-best hyperparameters is termed hyperparameter search or (when focused on network structure) neural
-architecture search.
-
-Hyperparameters are typically chosen empirically; we train many models with different
-hyperparameters on the same training set, measure their performance, and retain the best model.
-However, we do not measure their performance on the test set; this would admit the possibility that
-these hyperparameters just happen to work well for the test set but don't generalize to further
-data. Instead, we introduce a third dataset known as a validation set. For every choice of
-hyperparameters, we train the associated model using the training set and evaluate performance on
-the validation set. Finally, we select the model that worked best on the validation set and measure
-its performance on the test set. In principle, this should give a reasonable estimate of the true
-performance. 
-
-The hyperparameter space is generally smaller than the parameter space but still too
-large to try every combination exhaustively. Unfortunately, many hyperparameters are discrete (e.g.,
-the number of hidden layers), and others may be conditional on one another (e.g., we only need to
-specify the number of hidden units in the tenth hidden layer if there are ten or more layers).
-Hence, we cannot rely on gradient descent methods as we did for learning the model parameters.
-Hyperparameter optimization algorithms intelligently sample the space of hyperparameters, contingent
-on previous results. This procedure is computationally expensive since we must train an entire model
-and measure the validation performance for each combination of hyperparameters.    
+    For a deep network, the model capacity depends on the numbers of hidden layers and hidden units per
+    layer as well as other aspects of architecture that we have yet to introduce. Furthermore, the
+    choice of learning algorithm and any associated parameters (learning rate, etc.) also affects the
+    test performance. These elements are collectively termed hyperparameters. The process of finding the
+    best hyperparameters is termed hyperparameter search or (when focused on network structure) neural
+    architecture search.
+    
+    Hyperparameters are typically chosen empirically; we train many models with different
+    hyperparameters on the same training set, measure their performance, and retain the best model.
+    However, we do not measure their performance on the test set; this would admit the possibility that
+    these hyperparameters just happen to work well for the test set but don't generalize to further
+    data. Instead, we introduce a third dataset known as a validation set. For every choice of
+    hyperparameters, we train the associated model using the training set and evaluate performance on
+    the validation set. Finally, we select the model that worked best on the validation set and measure
+    its performance on the test set. In principle, this should give a reasonable estimate of the true
+    performance. 
+    
+    The hyperparameter space is generally smaller than the parameter space but still too
+    large to try every combination exhaustively. Unfortunately, many hyperparameters are discrete (e.g.,
+    the number of hidden layers), and others may be conditional on one another (e.g., we only need to
+    specify the number of hidden units in the tenth hidden layer if there are ten or more layers).
+    Hence, we cannot rely on gradient descent methods as we did for learning the model parameters.
+    Hyperparameter optimization algorithms intelligently sample the space of hyperparameters, contingent
+    on previous results. This procedure is computationally expensive since we must train an entire model
+    and measure the validation performance for each combination of hyperparameters.    
 \end{quote}
 
 
-\subsection{Zjawisko double descent}
+\subsubsection{Zjawisko double descent}
 
 Zjawisko double descent polega na nieoczekiwanym zachowaniu wartości błędów popełnianych przez model
 uczenia maszynowego przy zwiększaniu liczby jego parametrów. Zgodnie z bias-variance tradeoff
@@ -2404,7 +2415,7 @@ implicit regularizer.
 \end{quote}
 
 
-\subsection{Convolutional networks}
+\subsection{Sieci konwolucyjne}
 
 
 
