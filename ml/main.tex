@@ -1551,6 +1551,10 @@ co możemy zapisać w zwartej postaci macierzowej
 
 % \subsection{Ensemble learning. Boosting i bagging} !!!
 
+% \subsection{Nonlinear regression}
+
+% \subsection{Survival analysis}
+
 % ***************************
 
 
@@ -1560,7 +1564,7 @@ co możemy zapisać w zwartej postaci macierzowej
 
 % \subsection{Klasteryzacja}
 
-% \subsection{Redukcja wymiarowości (PCA, t-SNE, UMAP)}
+% \subsection{Redukcja wymiarowości}
 
 % ***************************
 % ---------------------------------------------------------
@@ -2421,7 +2425,7 @@ implicit regularizer.
 Przechodzimy teraz do opisy konkretnych architektur sieci neuronowych innych niż sieci w pełni
 połączone. Pierwszą architekturą, którą opiszemy będą sieci konwolucyjne. Sieci konwolucyjne (z ang.
 \emph{Convolutional Neural Networks, CNN}) to architektura sieci neuronowych przystosowana do
-przetwarzania danych posiadających pewne zależności "przestrzenne", przez co rozumiemy, iż jeśli
+przetwarzania danych posiadających pewne zależności przestrzenne, przez co rozumiemy, iż jeśli
 \(\bm{X}^{\mu_1..\mu_k}\) jest tensorem wejściowym to zależności występują między wartościami
 sąsiednimi \(\bm{X}^{\mu_1..\mu_k}, \bm{X}^{\mu_1+\delta_1,..,\mu_k+\delta_k}\) dla niewielkich
 \(\delta_i\). Przykładem takich danych są oczywiście obrazy. Przetwarzanie takich danych przez sieć
@@ -2474,11 +2478,15 @@ skąd
 h_\text{out} = \left\lfloor \frac{h_\text{in} - 1 - d_h (h_f - 1)}{s_h} + 1\right\rfloor\,,\quad w_\text{out} = \left\lfloor \frac{w_\text{in} - 1 - d_w (w_f - 1)}{s_w} + 1\right\rfloor\,.
 \]
 
-\subsection{Sieci rezydualne}
+% ---------------------------------------------------------
+% TODO:
+% ---------------------------------------------------------
 
+% \subsection{Sieci transformer}
 
-\subsection{Sieci transformer}
+% \section{Uczenie ze wzmocnieniem}
 
+% ---------------------------------------------------------
 
 
 

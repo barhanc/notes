@@ -5,9 +5,3 @@
 
 * [[link](https://barhanc.github.io/notes/phys/main.pdf)] (Polish) LaTeX notes on
   classical physics for Polish Physics Olympiad training.
-
-* [[link](https://barhanc.github.io/notes/math/am.pdf)] (Polish) Handwritten notes on
-  Single and Multivariate Calculus.
-
-* [[link](https://barhanc.github.io/notes/math/alg.pdf)] (Polish) Handwritten notes on
-  Linear Algebra and Geometry.
