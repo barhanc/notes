@@ -7,7 +7,7 @@
 % ******* Packages *******
 \usepackage{amssymb, amsmath, amsfonts, amsthm, 
             mathrsfs, physics, xcolor, lipsum,
-            csquotes, graphicx, fancyhdr, bm}
+            csquotes, graphicx, fancyhdr, bm, stmaryrd}
 \usepackage[breakable]{tcolorbox}
 \usepackage{pgfplots, booktabs, listings}
 

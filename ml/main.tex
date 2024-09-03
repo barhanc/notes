@@ -1541,32 +1541,16 @@ co możemy zapisać w zwartej postaci macierzowej
 % TODO
 % ---------------------------------------------------------
 
-% ***************************
-% * SUPERVISED LEARNING     *
-% ***************************
-
-% \subsection{SVM i Kernel SVM} !!!
-
-% \subsection{Drzewa decyzyjne i lasy losowe} !!!
-
-% \subsection{Ensemble learning. Boosting i bagging} !!!
-
 % \subsection{Nonlinear regression}
+
+% \subsection{Drzewa decyzyjne i lasy losowe. Ensemble learning. Boosting, bagging}
+
+% \subsection{SVM}
 
 % \subsection{Survival analysis}
 
-% ***************************
+% \subsection{Unsupervised learning}
 
-
-% ***************************
-% * UNSUPERVISED LEARNING   *
-% ***************************
-
-% \subsection{Klasteryzacja}
-
-% \subsection{Redukcja wymiarowości}
-
-% ***************************
 % ---------------------------------------------------------
 
 
@@ -2450,12 +2434,13 @@ realizuje następujące przekształcenie (zakładamy, iż indeksy zaczynają si�
 \end{split}
 }
 \]
-Tensor \(\bm{W} \in \mathbb{R}^{c_\text{out}\times h_f \times w_f \times
-c_\text{in}}\) nazywamy \emph{mapą konwolucyjną}, a tensor \(\bm{W}^{\mu_3,:,:,:}\) dla ustalonego
-\(\mu_3\) -- \emph{filtrem konwolucyjnym}. Formalnie opisane przekształcenie nie jest konwolucją,
-tylko \emph{korelacją skrośną}, ale dla nas rozróżnienie między obiema operacjami nie jest istotne.
+Tensor \(\bm{W} \in \mathbb{R}^{c_\text{out}\times h_f \times w_f \times c_\text{in}}\) nazywamy
+\emph{mapą konwolucyjną}, a tensor \(\bm{W}^{\mu_3,:,:,:}\) dla ustalonego \(\mu_3\) --
+\emph{filtrem konwolucyjnym}. Formalnie opisane przekształcenie nie jest konwolucją, tylko
+\emph{korelacją skrośną}, ale dla nas rozróżnienie między obiema operacjami nie jest istotne.
 Wielkości \(s_h, s_w, d_h, d_w\) są ustalonymi stałymi dla danej warstwy konwolucyjnej zwanymi
 odpowiednio \emph{stride} i \emph{dilation}.
+
 Warstwę konwolucyjną charakteryzuje szereg parametrów:
 \begin{itemize}
 \item liczba kanałów wejściowych \(c_\text{in}\)
@@ -2475,19 +2460,34 @@ s_h(h_\text{out} - 1) + d_h (h_f - 1) \leq h_\text{in} - 1\,,\quad s_w(w_\text{o
 \]
 skąd
 \[
-h_\text{out} = \left\lfloor \frac{h_\text{in} - 1 - d_h (h_f - 1)}{s_h} + 1\right\rfloor\,,\quad w_\text{out} = \left\lfloor \frac{w_\text{in} - 1 - d_w (w_f - 1)}{s_w} + 1\right\rfloor\,.
+h_\text{out} = \left\lfloor \frac{h_\text{in} - 1 - d_h (h_f - 1)}{s_h} + 1 \right\rfloor\,,\quad w_\text{out} = \left\lfloor \frac{w_\text{in} - 1 - d_w (w_f - 1)}{s_w} + 1 \right\rfloor\,.
 \]
+
+\newcommand{\at}[1]{^{#1}}
+% \newcommand{\at}[1]{\left[ #1 \right]}
+\newcommand{\eLL}{\cal{L}}
+
+\[
+\begin{split}
+&\bm{\bar{X}} := \pdv{\eLL}{\bm{X}}\\
+&\bm{\bar{F}}\at{i_1,..,i_n} = \sum_{\bm{S} \in \text{succ}(\bm{F})} \sum_{j_1,..,j_m} \bm{\bar{S}}\at{j_1,..,j_m} \pdv{\bm{S}\at{j_1,..,j_m}}{\bm{F}\at{i_1,..,i_n}}\\
+&\bm{\bar{W}}\at{i_1,..,i_n} = \sum_{j_1,..,j_m} \bm{\bar{F}}\at{j_1,..,j_m} \pdv{\bm{F}\at{j_1,..,j_m}}{\bm{W}\at{i_1,..,i_n}} 
+\end{split}
+\]
+
 
 % ---------------------------------------------------------
 % TODO:
 % ---------------------------------------------------------
 
-% \subsection{Sieci transformer}
+% Finish convolutional layers
+% Deconvolutional layers
+% Residual connections
+% Batch norm and layer norm layers
 
-% \section{Uczenie ze wzmocnieniem}
+% \subsection{Transformer}
 
 % ---------------------------------------------------------
-
 
 
 \bibliographystyle{plain}
