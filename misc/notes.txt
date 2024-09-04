@@ -451,6 +451,51 @@ potrzebne jest tylko to) zacznę opisywać, co do tej pory zrobiliśmy.
     d(i,j,k,l) = abs( M_U[i,k] - M_V[j,l] ) .
 
 
- 2024-08-04
+ 2024-09-04
 
-    ....
+    Eksperymentowałem dzisiaj z algorytmem BnB dla problemu BAP i ostatecznie lekko zmodyfikowałem
+    implementację, w szczególności zamieniając kolejkę FIFO na LIFO. Niestety ten algorytm chyba
+    nie będzie działał dobrze w ogólności, a jedynie dla małych instancji nv =~ nc << 100 jest
+    szybszy od czystego brute-force'a.
+
+    Dodałem również możliwość ustawiania seed'a do algorytmów, które wykorzystują generator liczb
+    losowych.
+
+    Zmieniłem implementację inicjalizacji w qap_faq() na bardziej elegancką wersję random_doubly_stochastic()
+    Dodałem również prostą implementację algorytmu qap_aa(), który rozwiązuje heurystycznie problem
+    QAP przez redukcję do BAP i Alternating Algorithm. Oba algorytmy tj FAQ i AA działają bardzo 
+    dobrze przy użyciu wielokkrotnego restartu (resamplowania punktów początkowych) i nie różnią
+    się dużo od siebie (POTRZEBA WIĘCEJ TESTÓW)
+
+    Znalazłem również prosty sposób na sprawdzenie przy kompilowaniu plików .c za pomocą setuptools()
+    jak sprawdzić czy na danym sprzęcie jest wsparcie dla AVX2 / Neon / ....
+    Wystarczy użyć Numpy (ofc, a ja szukałem jakiś wymyślnych rzeczy...)
+
+    >>> from numpy.core._multiarray_umath import __cpu_features__ as cpu_have
+    >>> cpu_have
+    
+    {'MMX': True, 'SSE': True, 'SSE2': True, 'SSE3': True, 'SSSE3': True, 'SSE41': True, 'POPCNT': True, 
+     'SSE42': True, 'AVX': True, 'F16C': True, 'XOP': False, 'FMA4': False, 'FMA3': True, 'AVX2': True, 
+     'AVX512F': False, 'AVX512CD': False, 'AVX512ER': False, 'AVX512PF': False, 'AVX5124FMAPS': False, 
+     'AVX5124VNNIW': False, 'AVX512VPOPCNTDQ': False, 'AVX512VL': False, 'AVX512BW': False, 'AVX512DQ': False, 
+     'AVX512VNNI': False, 'AVX512IFMA': False, 'AVX512VBMI': False, 'AVX512VBMI2': False, 'AVX512BITALG': False, 
+     'AVX512FP16': False, 'AVX512_KNL': False, 'AVX512_KNM': False, 'AVX512_SKX': False, 'AVX512_CLX': False, 
+     'AVX512_CNL': False, 'AVX512_ICL': False, 'AVX512_SPR': False, 'VSX': False, 'VSX2': False, 'VSX3': False,
+      'VSX4': False, 'VX': False, 'VXE': False, 'VXE2': False, 'NEON': False, 'NEON_FP16': False, 
+      'NEON_VFPV4': False, 'ASIMD': False, 'FPHP': False, 'ASIMDHP': False, 'ASIMDDP': False, 'ASIMDFHM': False}
+
+    ----------------------------------
+    
+
+ TODO:
+
+ -> AVX2 correct support
+ 
+ -> faq based heuristic for swap
+
+ -> return candidates' permutation
+
+ -> 2opt swap heuristic
+
+
+
