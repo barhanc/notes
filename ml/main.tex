@@ -1537,17 +1537,6 @@ co możemy zapisać w zwartej postaci macierzowej
 \]
 
 
-% ---------------------------------------------------------
-% TODO
-% ---------------------------------------------------------
-
-% \subsection{Drzewa decyzyjne i lasy losowe. Ensemble learning. Boosting, bagging}
-% \subsection{Survival analysis}
-% \subsection{SVM} ?
-
-% ---------------------------------------------------------
-
-
 \section{Uczenie głębokie i sieci neuronowe}
 
 \begin{quote}[\textit{Introduction, Ch. 1} \cite{prince2023understanding}]
@@ -2457,27 +2446,35 @@ skąd
 h_\text{out} = \left\lfloor \frac{h_\text{in} - 1 - d_h (h_f - 1)}{s_h} + 1 \right\rfloor\,,\quad w_\text{out} = \left\lfloor \frac{w_\text{in} - 1 - d_w (w_f - 1)}{s_w} + 1 \right\rfloor\,.
 \]
 
-\newcommand{\at}[1]{^{#1}}
-% \newcommand{\at}[1]{\left[ #1 \right]}
-\newcommand{\eLL}{\cal{L}}
 
-\[
-\begin{split}
-&\bm{\bar{X}} := \pdv{\eLL}{\bm{X}}\\
-&\bm{\bar{F}}\at{i_1,..,i_n} = \sum_{\bm{S} \in \text{succ}(\bm{F})} \sum_{j_1,..,j_m} \bm{\bar{S}}\at{j_1,..,j_m} \pdv{\bm{S}\at{j_1,..,j_m}}{\bm{F}\at{i_1,..,i_n}}\\
-&\bm{\bar{W}}\at{i_1,..,i_n} = \sum_{j_1,..,j_m} \bm{\bar{F}}\at{j_1,..,j_m} \pdv{\bm{F}\at{j_1,..,j_m}}{\bm{W}\at{i_1,..,i_n}} 
-\end{split}
-\]
+% \newcommand{\at}[1]{^{#1}}
+% \[
+% \begin{split}
+% &\bm{\bar{F}} := \pdv{E}{\bm{F}}\\
+% &\bm{\bar{F}}\at{i...j}      = \sum_{\bm{S} \in \text{succ}(\bm{F})} \sum_{k...l} \bm{\bar{S}}\at{k...l} \pdv{\bm{S}\at{k...l}}{\bm{F}\at{i...j}}\\
+% &\bm{\bar{\theta}}\at{i...j} = \sum_{k...l} \bm{\bar{F}}\at{k...l} \pdv{\bm{F}\at{k...l}}{\bm{\theta}\at{i...j}}
+% \end{split}
+% \]
 
 
 % ---------------------------------------------------------
 % TODO:
 % ---------------------------------------------------------
 
-% Finish convolutional layers
+% \subsection{Drzewa decyzyjne i lasy losowe. Ensemble learning. Boosting, bagging}
+
+% \subsection{Survival analysis}
+
+% Cyclic graph backprop and other
+
+% Finish convolutional layers (convolution implementation as matmul and fft)
+
 % Deconvolutional layers
+
 % Residual connections
+
 % Batch norm and layer norm layers
+
 % Autoencoders
 
 % \subsection{Transformer}
