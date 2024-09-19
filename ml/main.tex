@@ -2453,6 +2453,19 @@ propagacja błędu (począwszy od obrazowanej warstwy) dla funkcji kosztu propor
 efekcie wejściowy obraz jest modyfikowany w taki sposób, by w obrazowanej warstwie wzrosła
 amplituda.
 
+\subsection{Połączenia rezydualne}
+
+W przypadku klasycznej (sekwencyjnej) architektury CNN przy pewnej liczbie warstw ukrytych
+skuteczność ulega wysyceniu. Dalsze zwiększanie głębokości sieci prowadzi do zjawiska degradacji.
+Czy można zapobiec zjawisku degradacji w głębokiej sieci konwolucyjnej? Tak! Jedną z architektur, w
+której zjawisko degradacji nie występuje są sieci rezydualne (ResNety). Architektura sieci
+rezydualnych wywodzi się z heurystycznej/eksperymentalnej obserwacji, wedle której modelowanie
+nieliniowego przekształcenia \(\bm{f}(\bm{x})\) jest nierzadko trudniejsze, niż modelowanie
+przekształcenia rezydualnego \(\bm{f}(\bm{x}) + \bm{x}\). Podstawową jednostką funkcjonalną w sieciach
+ResNet są więc bloki rezydualne, które propagują aktywacje dwoma ścieżkami: poprzez sekwencję
+konwolucji i funkcji aktywacji oraz drugą ścieżką poprzez funkcję identycznościową. Sygnały na końcu
+tych ścieżek są sumowane.
+
 
 
 
@@ -2466,11 +2479,9 @@ amplituda.
 
 % ---------------------------------------------------------
 
-% Convolutional layers (convolution implementation, pooling, upsampling)
-
 % Attention layers
 
-% Autoencoders
+% [[Autoencoders]]
 
 % ---------------------------------------------------------
 % ---------------------------------------------------------
