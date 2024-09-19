@@ -2069,24 +2069,24 @@ Powyższy algorytm jest specjalnie dostosowany do sieci w pełni połączonej. M
 uogólnić do dowolnego acyklicznego i skierowanego grafu obliczeń. Załóżmy, iż rozpatrujemy warstwę
 (wierzchołek w grafie zaznaczony zaokrąglonym kwadratem) \(\bm{F}\) zależną od pewnych parametrów
 \(\bm{W}\) (w szczególności warstwa może nie mieć żadnych parametrów). Dla dowolnej warstwy
-\(\bm{F}\) przez \(\dot{\bm{F}}\) oznaczymy pochodną \(\dot{\bm{F}} = \pdv{L}{\bm{F}}\). Wówczas z
+\(\bm{F}\) przez \({\bm{\bar{F}}}\) oznaczymy pochodną \({\bm{\bar{F}}} = \pdv{L}{\bm{F}}\). Wówczas z
 reguły łańcuchowej
 \[
-\pdv{L}{\bm{W}^{\mu_1..\mu_k}} = \sum_{\nu_1..\nu_l} \dot{\bm{F}}^{\nu_1..\nu_l} \pdv{\bm{F}^{\nu_1..\nu_l}}{\bm{W}^{\mu_1..\mu_k}}\,.
+\pdv{L}{\bm{W}^{\mu_1..\mu_k}} = \sum_{\nu_1..\nu_l} {\bm{\bar{F}}}^{\nu_1..\nu_l} \pdv{\bm{F}^{\nu_1..\nu_l}}{\bm{W}^{\mu_1..\mu_k}}\,.
 \]
 Niech \(\mathrm{succ}(\bm{F})\) oznacza zbiór następników wierzchołka \(\bm{F}\), tj. warstw
 (wierzchołków w grafie zaznaczonych zaokrąglonym kwadratem) do których istnieje skierowana krawędź
 od warstwy \(\bm{F}\). Wówczas
 \[
-\dot{\bm{F}}^{\mu_1..\mu_k} = \pdv{L}{\bm{F}^{\mu_1..\mu_k}} = \sum_{\bm{H} \in \mathrm{succ}(\bm{F})} \sum_{\nu_1..\nu_l} \dot{\bm{H}}^{\nu_1..\nu_l} \pdv{\bm{H}^{\nu_1..\nu_l}}{\bm{F}^{\mu_1..\mu_k}}\,.
+\bm{\bar{F}}^{\mu_1..\mu_k} = \pdv{L}{\bm{F}^{\mu_1..\mu_k}} = \sum_{\bm{S} \in \mathrm{succ}(\bm{F})} \sum_{\nu_1..\nu_l} \bm{\bar{S}}^{\nu_1..\nu_l} \pdv{\bm{S}^{\nu_1..\nu_l}}{\bm{F}^{\mu_1..\mu_k}}\,.
 \]
-Z powyższego zatem widzimy, iż możemy obliczać wielkości \(\dot{\bm{F}}\) w sposób iteracyjny
+Z powyższego zatem widzimy, iż możemy obliczać wielkości \(\bm{\bar{F}}\) w sposób iteracyjny
 przechodząc po warstwach w kolejności odwrotnej do ich porządku topologicznego (z ang.
-\textit{reversed topological order}) i zapamiętywać wartości \(\dot{\bm{F}}\). Wówczas dla każdej
-warstwy pochodne \(\dot{\bm{H}}\) jej następników będą już obliczone i będziemy mogli obliczyć
-\(\dot{\bm{F}}\). Naiwna implementacja powyższego schematu będzie wymagać bardzo dużo pamięci, gdyż
+\textit{reversed topological order}) i zapamiętywać wartości \({\bm{\bar{F}}}\). Wówczas dla każdej
+warstwy pochodne \(\bm{\bar{S}}\) jej następników będą już obliczone i będziemy mogli obliczyć
+\({\bm{\bar{F}}}\). Naiwna implementacja powyższego schematu będzie wymagać bardzo dużo pamięci, gdyż
 dla każdej warstwy musimy przechowywać oprócz jej wartości \(\bm{F}\) również wartość pochodnej
-\(\dot{\bm{F}}\). Zauważmy, iż w przypadku algorytmu wstecznej propagacji błędu dla sieci MLP nie
+\({\bm{\bar{F}}}\). Zauważmy, iż w przypadku algorytmu wstecznej propagacji błędu dla sieci MLP nie
 musimy przechowywać pochodnych funkcji kosztu po wartościach warstw, a jedynie dynamicznie obliczamy
 i przekazujemy wstecz tzw. \emph{ziarno} (z ang. \textit{seed}) \(\bm{\Delta}\). Wynika to
 oczywiście z faktu, iż w przypadku sieci MLP warstwy tworzą skierowaną ścieżkę, czyli najprostszy
@@ -2114,42 +2114,6 @@ pamięci.
 
 Jak zaznaczyliśmy wyżej ten paragraf poświęcimy zagadnieniu inicjalizacji parametrów sieci
 neuronowej, który jest wymaganym elementem opisanych algorytmów minimalizacji numerycznej.
-
-\begin{quote}[\textit{Parameter initialization, Ch.7}, \cite{prince2023understanding}]
-The backpropagation algorithm computes the derivatives that are used by stochastic gradient descent
-and Adam to train the model. We now address how to initialize the parameters before we start
-training. To see why this is crucial, consider that during the forward pass, each set of
-pre-activations \(\bm{L}_i\) is computed as:
-\[
-\bm{L}_i = \bm{b}_i + a(\bm{L}_{i-1})\bm{W}_i^T
-\]
-Imagine that we initialize all the biases to zero and the elements of \(\bm{W}\) according to a
-normal distribution with mean zero and variance \(\sigma^2\). Consider two scenarios:
-\begin{itemize}
-    \item If the variance is very small (e.g., \(10^{-5}\)), then each element of \(\bm{L}_i\) will
-    be a weighted sum of \(\bm{A}_{i-1}\) where the weights are very small; the result will likely
-    have a smaller magnitude than the input. In addition, the ReLU function clips values less than
-    zero, so the range of \(\bm{A}_i\) will be half that of \(\bm{L}_i\). Consequently, the
-    magnitudes of the pre-activations at the hidden layers will get smaller and smaller as we
-    progress through the network.
-
-    \item If the variance is very large (e.g., \(10^5\)), then each element of \(\bm{L}_i\) will be
-    a weighted sum of \(\bm{A}_{i-1}\) where the weights are very large; the result is likely to
-    have a much larger magnitude than the input. The ReLU function halves the range of the inputs,
-    but if variance is large enough, the magnitudes of the pre-activations will still get larger as
-    we progress through the network.
-\end{itemize}
-In these two situations, the values at the pre-activations can become so small or so large that they
-cannot be represented with finite precision floating point arithmetic.
-
-Even if the forward pass is tractable, the same logic applies to the backward pass. Each gradient
-update consists of multiplying by \(\bm{W}_i\). If the values of \(\bm{W}_i\) are not initialized
-sensibly, then the gradient magnitudes may decrease or increase un- controllably during the backward
-pass. These cases are known as the \textit{vanishing gradient problem} and the \textit{exploding
-gradient problem}, respectively. In the former case, updates to the model become vanishingly small.
-In the latter case, they become unstable.
-\end{quote}
-
 Najprostszym pomysłem inicjalizacji parametrów sieci neuronowych jest przyjęcie wartości 0 dla
 obciążeń \(\bm{b}_i\) i wylosowanie elementów macierzy wag \(\bm{W}_i\) niezależnie z rozkładu
 normalnego \(\mc{N}(0, \sigma^2)\). Powstaje pytanie jaka powinna być wartość wariancji
@@ -2289,20 +2253,6 @@ replik przykładów z tego zbioru poddanych pewnym transformacjom względem któ
 odpowiedzi sieci będą niezmienione.
 \end{itemize}
 
-\begin{quote}[\textit{Notes, Ch. 9}, \cite{prince2023understanding}]
-\begin{itemize}
-\item \textbf{Finding wider minima}: It is thought that wider minima generalize better. Here, the
-exact values of the weights are less important, so performance should be robust to errors in their
-estimates. One of the reasons that applying noise to parts of the network during training is
-effective is that it encourages the network to be indifferent to their exact values. Keskar et al.
-(2017) showed that SGD finds wider minima as the batch size is reduced. This may be because of the
-batch variance term that results from implicit regularization by SGD. Ishida et al. (2020) use a
-technique named flooding, in which they intentionally prevent the training loss from becoming zero.
-This encourages the solution to perform a random walk over the loss landscape and drift into a
-flatter area with better generalization.
-\end{itemize}
-\end{quote}
-
 
 \subsection{Hiperparametry}
 
@@ -2393,14 +2343,12 @@ Przechodzimy teraz do opisy konkretnych architektur sieci neuronowych innych ni�
 połączone. Pierwszą architekturą, którą opiszemy będą sieci konwolucyjne. Sieci konwolucyjne (z ang.
 \emph{Convolutional Neural Networks, CNN}) to architektura sieci neuronowych przystosowana do
 przetwarzania danych posiadających pewne zależności przestrzenne, przez co rozumiemy, iż jeśli
-\(\bm{X}^{\mu_1..\mu_k}\) jest tensorem wejściowym to zależności występują między wartościami
-sąsiednimi \(\bm{X}^{\mu_1..\mu_k}, \bm{X}^{\mu_1+\delta_1,..,\mu_k+\delta_k}\) dla niewielkich
-\(\delta_i\). Przykładem takich danych są oczywiście obrazy. Przetwarzanie takich danych przez sieć
-MLP byłoby niezwykle nieefektywne, gdyż połączenia każdy z każdym oznaczałyby iż przykładowo dla
-obrazu w skali szarości o rozdzielczości \(512 \times 512\) mielibyśmy rzędu \(10^9\) parametrów dla
-jednej warstwy ukrytej. Dodatkowo sieć MLP szukałaby powiązań między odległymi pikselami, pomiędzy
-którymi takich zależności nie ma. Sieć CNN robi to znacznie efektywniej wykorzystując warstwy
-konwolucyjne. 
+\(\bm{X}^{i...j}\) jest tensorem wejściowym to zależności występują między wartościami sąsiednimi.
+Przykładem takich danych są oczywiście obrazy. Przetwarzanie takich danych przez sieć MLP byłoby
+niezwykle nieefektywne, gdyż połączenia każdy z każdym oznaczałyby iż przykładowo dla obrazu w skali
+szarości o rozdzielczości \(512 \times 512\) mielibyśmy rzędu \(10^9\) parametrów dla jednej warstwy
+ukrytej. Dodatkowo sieć MLP szukałaby powiązań między odległymi pikselami, pomiędzy którymi takich
+zależności nie ma. Sieć CNN robi to znacznie efektywniej wykorzystując warstwy konwolucyjne. 
 
 Załóżmy, iż przetwarzamy cały batch obrazów rozmiaru, z których każdy jest reprezentowany przez
 3-tensor (tj. tensor o 3 osiach) o wymiarach \((h, w, c)\), gdzie \(h\) to wysokość, \(w\) to
@@ -2413,16 +2361,16 @@ realizuje następujące przekształcenie (zakładamy, iż indeksy zaczynają si�
 {
 \begin{split} 
 &\bm{C}: \mathbb{R}^{b \times h_\text{in} \times w_\text{in} \times c_\text{in}} \mapsto \mathbb{R}^{b \times h_\text{out} \times w_\text{out} \times c_\text{out}}\\
-&\bm{C}^{\mu_0\mu_1\mu_2\mu_3}(\bm{X}) = \bm{b}^{\mu_3} + \sum_{\nu_1 = 0}^{h_f-1} \sum_{\nu_2 = 0}^{w_f-1} \sum_{\nu_3 = 0}^{c_\text{in}-1} \bm{W}^{\mu_3\nu_1\nu_2\nu_3}\bm{X}^{\mu_0, s_h\mu_1 + d_h\nu_1, s_w\mu_2 + d_w\nu_2 ,\nu_3}
+&\bm{C}^{ijkl}(\bm{X}) = \bm{b}^{l} + \sum_{p = 0}^{h_f-1} \sum_{q = 0}^{w_f-1} \sum_{r = 0}^{c_\text{in}-1} \bm{W}^{lpqr} \bm{X}^{i, s_h j + d_h p, s_w k + d_w q, r}
 \end{split}
 }
 \]
 Tensor \(\bm{W} \in \mathbb{R}^{c_\text{out}\times h_f \times w_f \times c_\text{in}}\) nazywamy
-\emph{mapą konwolucyjną}, a tensor \(\bm{W}^{\mu_3,:,:,:}\) dla ustalonego \(\mu_3\) --
-\emph{filtrem konwolucyjnym}. Formalnie opisane przekształcenie nie jest konwolucją, tylko
-\emph{korelacją skrośną}, ale dla nas rozróżnienie między obiema operacjami nie jest istotne.
-Wielkości \(s_h, s_w, d_h, d_w\) są ustalonymi stałymi dla danej warstwy konwolucyjnej zwanymi
-odpowiednio \emph{stride} i \emph{dilation}.
+\emph{mapą konwolucyjną}, a tensor \(\bm{W}^{l,:,:,:}\) dla ustalonego \(l\) -- \emph{filtrem
+konwolucyjnym}. Formalnie opisane przekształcenie nie jest konwolucją, tylko \emph{korelacją
+skrośną}, ale dla nas rozróżnienie między obiema operacjami nie jest istotne. Wielkości \(s_h, s_w,
+d_h, d_w\) są ustalonymi stałymi dla danej warstwy konwolucyjnej zwanymi odpowiednio \emph{stride} i
+\emph{dilation}.
 
 Warstwę konwolucyjną charakteryzuje szereg parametrów:
 \begin{itemize}
@@ -2433,7 +2381,6 @@ Warstwę konwolucyjną charakteryzuje szereg parametrów:
 możemy przyjąć różne wartości \(s_h, s_w\). Parametr ten określa o ile przesuwamy pole odbiorcze w
 każdym kroku.
 \item \textit{dilation rate} \(d\), ponownie zwykle jednakowy dla obu wymiarów chociaż w ogólności
-możemy przyjąć różne wartości \(d_h, d_w\).
 \end{itemize}
 
 Podanie powyższych parametrów warstwy konwolucyjnej jednoznacznie wyznacza wymiary obrazu tensora po
@@ -2445,40 +2392,87 @@ skąd
 \[
 h_\text{out} = \left\lfloor \frac{h_\text{in} - 1 - d_h (h_f - 1)}{s_h} + 1 \right\rfloor\,,\quad w_\text{out} = \left\lfloor \frac{w_\text{in} - 1 - d_w (w_f - 1)}{s_w} + 1 \right\rfloor\,.
 \]
+Do algorytmu wstecznej propagacji błędu potrzebujemy oczywiście znać jeszcze pochodne
+\(\pdv{\bm{C}}{\bm{X}}\) oraz \(\pdv{\bm{C}}{\bm{W}}\), które można w łatwy sposób wyznaczyć
+\[
+\begin{split}
+\pdv{\bm{C}^{ijkl}}{\bm{X}^{abcd}} &= \sum_{p = 0}^{h_f-1} \sum_{q = 0}^{w_f-1} \sum_{r = 0}^{c_\text{in}-1} \bm{W}^{lpqr} \cdot \delta_{i,a} \cdot \delta_{s_h j + d_h p, b} \cdot \delta_{s_w k + d_w q, c} \cdot \delta_{r, d}\\
+&= \bm{W}^{l, b/d_h - s_h j/d_h, c/d_w - s_w k/d_w, d} \delta_{i,a}\\
+\pdv{\bm{C}^{ijkl}}{\bm{W}^{abcd}} &= \sum_{p = 0}^{h_f-1} \sum_{q = 0}^{w_f-1} \sum_{r = 0}^{c_\text{in}-1} \bm{X}^{i, s_h j + d_h p, s_w k + d_w q, r} \delta_{l,a} \delta_{p,b} \delta_{q,c} \delta_{r,d}\\
+&= \bm{X}^{i, s_h j + d_h b, s_w k + d_w c, d} \delta_{l,a}
+\end{split}
+\]
+
+Opiszmy jeszcze pokrótce jak implementowane zwykle są warstwy konwolucyjne. Zwykle nie implementuje
+się ich bezpośrednio z definicji tylko korzysta z tzw. transformacji \emph{im2col}, która zamienia
+3-tensor (np. zdjęcie) w macierz, której kolumny to spłaszczone pola odbiorcze po których będzie
+przechodził filtr, natomiast pojedynczy filtr jest przekształcany do wektora wierszowego.
+Poszczególne filtry z mapy konwolucyjnej są potem łączone w macierz i wykonujemy zwykłe mnożenie
+macierzowe między macierzą filtrów oraz macierzą im2col. Takie podejście pozwala wykorzystać bardzo
+wydajne procedury do mnożenia macierzy. Poniżej na rysunku \ref{fig:conv} przedstawiono prostą
+wizualizację opisanej procedury dla przypadku \(c_\text{in} = 3\), \(c_\text{out} = 4\),
+\(h_\text{in} = w_\text{in} = 6\), \(h_f = w_f = s_h = s_w = 2\), \(d_h = d_w = 1\). Dla ułatwienia
+wizualizacji przyjęliśmy \(d_h = d_w = 1\) oraz \(s_h = h_f\) i \(s_w = w_f\), w przeciwnym wypadku
+pola odbiorcze na siebie zachodzą i/lub sąsiednie komórki w polu odbiorczym są od siebie oddalone o
+\(d > 1\). Zasada tworzenia macierzy za pomocą im2col jest jednak wówczas identyczna, tj.
+poszczególne kolumny w macierzy odpowiadają polom odbiorczym w kolejnych kanałach.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.85\textwidth]{figs/conv.png}
+\caption{Wizualizacja implementacji konwolucji jako mnożenia macierzy}
+\label{fig:conv}
+\end{figure}
+
+Drugim rodzajem warstw typowo wykorzystywanym w sieciach CNN są tzw. warstwy poolingowe
+(zbierające). Są to warstwy bezparametrowe, które z pola odbiorczego wyciągają pojedynczą liczbę.
+Operują na każdym kanale niezależnie, przez co nie zmieniają wymiaru głębi, ale pozwalają zredukować
+wymiar przestrzenny. Najczęściej stosowane są warstwy typu max pooling wyciągające wartość
+największą lub average pooling, które biorą średnią z wartości w polu odbiorczym.
+
+Żeby zobrazować różnicę między ekwiwariancją a inwariancją, weźmy zadanie wykrywania twarzy. Chcemy
+wykryć wszystkie twarze, niezależnie od tego, gdzie się znajdują. W związku z tym filtry wykrywające
+oczy, usta, nos etc. muszą aktywować się wielokrotnie i w różnych miejscach obrazu - chcemy
+ekwiwariancji, to daje nam warstwa konwolucyjna. Nie obchodzi nas jednak, gdzie dokładnie co do
+piksela względem siebie są te elementy twarzy, tylko żeby były mniej więcej w podobnych pozycjach -
+oczy po przeciwnych stronach nosa, nos poniżej oczu. Chcemy więc inwariancji ze względu na takie
+niewielkie translacje. Uwaga sieci konwolucyjne nie są ekwiwariantne/inwariantne ze względu na
+rotację, przybliżenie, odbicie, zmianę oświetlenia etc. Z tego powodu przeprowadza się wzbogacanie/
+augmentację zbioru uczącego, czyli dodanie sztucznych przykładów stworzonych przez transformacje
+oryginalnego zbioru treningowego. Dzięki temu sieć ma okazję zobaczyć takie modyfikacje i się ich
+nauczyć.
+
+Jedną ze słabych stron sieci konwolucyjnych (i sieci neuronowych w ogóle) jest niska
+interpretowalność. Wiemy, że sieć uczy się cech pozwalających skutecznie rozpoznawać obrazy, ale
+jakie w istocie są to cechy? Stosunkowo prosty trik pozwala w ciekawy sposób zobrazować
+interpretację wejściowego obrazu w poszczególnych warstwach CNN. Podstawowa idea polega tu na takiej
+modyfikacji wejściowego obrazu, aby wzmocnić jego reprezentację w wybranej warstwie konwolucyjnej.
+Jeżeli więc aktywacje w obrazowanej warstwie wynoszą \(\bm{A}\), to wykonywana jest wsteczna
+propagacja błędu (począwszy od obrazowanej warstwy) dla funkcji kosztu proporcjonalnej do
+\(-\norm{\bm{A}}_\text{Frobenius}\). Gradient propagowany jest do wejściowego obrazu włącznie. W
+efekcie wejściowy obraz jest modyfikowany w taki sposób, by w obrazowanej warstwie wzrosła
+amplituda.
 
 
-% \newcommand{\at}[1]{^{#1}}
-% \[
-% \begin{split}
-% &\bm{\bar{F}} := \pdv{E}{\bm{F}}\\
-% &\bm{\bar{F}}\at{i...j}      = \sum_{\bm{S} \in \text{succ}(\bm{F})} \sum_{k...l} \bm{\bar{S}}\at{k...l} \pdv{\bm{S}\at{k...l}}{\bm{F}\at{i...j}}\\
-% &\bm{\bar{\theta}}\at{i...j} = \sum_{k...l} \bm{\bar{F}}\at{k...l} \pdv{\bm{F}\at{k...l}}{\bm{\theta}\at{i...j}}
-% \end{split}
-% \]
 
 
 % ---------------------------------------------------------
 % TODO:
 % ---------------------------------------------------------
 
-% \subsection{Drzewa decyzyjne i lasy losowe. Ensemble learning. Boosting, bagging}
+% CART, Random forest. Ensemble learning. Boosting, bagging.
 
-% \subsection{Survival analysis}
+% Survival analysis
 
-% Cyclic graph backprop and other
+% ---------------------------------------------------------
 
-% Finish convolutional layers (convolution implementation as matmul and fft)
+% Convolutional layers (convolution implementation, pooling, upsampling)
 
-% Deconvolutional layers
-
-% Residual connections
-
-% Batch norm and layer norm layers
+% Attention layers
 
 % Autoencoders
 
-% \subsection{Transformer}
-
+% ---------------------------------------------------------
 % ---------------------------------------------------------
 
 
