@@ -2430,6 +2430,8 @@ Operują na każdym kanale niezależnie, przez co nie zmieniają wymiaru głębi
 wymiar przestrzenny. Najczęściej stosowane są warstwy typu max pooling wyciągające wartość
 największą lub average pooling, które biorą średnią z wartości w polu odbiorczym.
 
+\subsubsection{Ekwiwariancja i inwarianja}
+
 Żeby zobrazować różnicę między ekwiwariancją a inwariancją, weźmy zadanie wykrywania twarzy. Chcemy
 wykryć wszystkie twarze, niezależnie od tego, gdzie się znajdują. W związku z tym filtry wykrywające
 oczy, usta, nos etc. muszą aktywować się wielokrotnie i w różnych miejscach obrazu - chcemy
@@ -2442,6 +2444,9 @@ augmentację zbioru uczącego, czyli dodanie sztucznych przykładów stworzonych
 oryginalnego zbioru treningowego. Dzięki temu sieć ma okazję zobaczyć takie modyfikacje i się ich
 nauczyć.
 
+
+\subsubsection{Interpretowalność}
+
 Jedną ze słabych stron sieci konwolucyjnych (i sieci neuronowych w ogóle) jest niska
 interpretowalność. Wiemy, że sieć uczy się cech pozwalających skutecznie rozpoznawać obrazy, ale
 jakie w istocie są to cechy? Stosunkowo prosty trik pozwala w ciekawy sposób zobrazować
@@ -2453,7 +2458,8 @@ propagacja błędu (począwszy od obrazowanej warstwy) dla funkcji kosztu propor
 efekcie wejściowy obraz jest modyfikowany w taki sposób, by w obrazowanej warstwie wzrosła
 amplituda.
 
-\subsection{Połączenia rezydualne}
+
+\subsubsection{Połączenia rezydualne}
 
 W przypadku klasycznej (sekwencyjnej) architektury CNN przy pewnej liczbie warstw ukrytych
 skuteczność ulega wysyceniu. Dalsze zwiększanie głębokości sieci prowadzi do zjawiska degradacji.
@@ -2473,15 +2479,15 @@ tych ścieżek są sumowane.
 % TODO:
 % ---------------------------------------------------------
 
-% CART, Random forest. Ensemble learning. Boosting, bagging.
-
-% Survival analysis
-
-% ---------------------------------------------------------
-
 % Attention layers
 
-% [[Autoencoders]]
+% Autoencoders
+
+% [[CART, Random forest. Ensemble learning. Boosting, bagging.]]
+
+% [[Survival analysis]]
+
+% [[PCA]]
 
 % ---------------------------------------------------------
 % ---------------------------------------------------------
