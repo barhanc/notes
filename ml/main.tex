@@ -2467,10 +2467,10 @@ Czy można zapobiec zjawisku degradacji w głębokiej sieci konwolucyjnej? Tak! 
 której zjawisko degradacji nie występuje są sieci rezydualne (ResNety). Architektura sieci
 rezydualnych wywodzi się z heurystycznej/eksperymentalnej obserwacji, wedle której modelowanie
 nieliniowego przekształcenia \(\bm{f}(\bm{x})\) jest nierzadko trudniejsze, niż modelowanie
-przekształcenia rezydualnego \(\bm{f}(\bm{x}) + \bm{x}\). Podstawową jednostką funkcjonalną w sieciach
-ResNet są więc bloki rezydualne, które propagują aktywacje dwoma ścieżkami: poprzez sekwencję
-konwolucji i funkcji aktywacji oraz drugą ścieżką poprzez funkcję identycznościową. Sygnały na końcu
-tych ścieżek są sumowane.
+przekształcenia rezydualnego \(\bm{f}(\bm{x}) - \bm{x}\). Podstawową jednostką funkcjonalną w
+sieciach ResNet są więc bloki rezydualne, które propagują aktywacje dwoma ścieżkami: poprzez
+sekwencję konwolucji i funkcji aktywacji oraz drugą ścieżką poprzez funkcję identycznościową.
+Sygnały na końcu tych ścieżek są sumowane.
 
 
 

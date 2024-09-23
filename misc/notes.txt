@@ -471,10 +471,5 @@ potrzebne jest tylko to) zacznę opisywać, co do tej pory zrobiliśmy.
     setuptools() jak sprawdzić czy na danym sprzęcie jest wsparcie dla AVX2 / Neon / .... Wystarczy
     użyć Numpy (ofc, a ja szukałem jakiś wymyślnych rzeczy...)
 
-    >>> from numpy.core._multiarray_umath import __cpu_features__ as cpu_have
-    >>> cpu_have
-
-2024-09-05
-    ....
-
-
+    >>> from numpy.core._multiarray_umath import __cpu_features__ as cpu_has
+    >>> cpu_has
