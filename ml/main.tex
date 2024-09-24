@@ -2403,19 +2403,19 @@ Do algorytmu wstecznej propagacji błędu potrzebujemy oczywiście znać jeszcze
 \end{split}
 \]
 
-Opiszmy jeszcze pokrótce jak implementowane zwykle są warstwy konwolucyjne. Zwykle nie implementuje
-się ich bezpośrednio z definicji tylko korzysta z tzw. transformacji \emph{im2col}, która zamienia
-3-tensor (np. zdjęcie) w macierz, której kolumny to spłaszczone pola odbiorcze po których będzie
-przechodził filtr, natomiast pojedynczy filtr jest przekształcany do wektora wierszowego.
-Poszczególne filtry z mapy konwolucyjnej są potem łączone w macierz i wykonujemy zwykłe mnożenie
-macierzowe między macierzą filtrów oraz macierzą im2col. Takie podejście pozwala wykorzystać bardzo
-wydajne procedury do mnożenia macierzy. Poniżej na rysunku \ref{fig:conv} przedstawiono prostą
-wizualizację opisanej procedury dla przypadku \(c_\text{in} = 3\), \(c_\text{out} = 4\),
-\(h_\text{in} = w_\text{in} = 6\), \(h_f = w_f = s_h = s_w = 2\), \(d_h = d_w = 1\). Dla ułatwienia
-wizualizacji przyjęliśmy \(d_h = d_w = 1\) oraz \(s_h = h_f\) i \(s_w = w_f\), w przeciwnym wypadku
-pola odbiorcze na siebie zachodzą i/lub sąsiednie komórki w polu odbiorczym są od siebie oddalone o
-\(d > 1\). Zasada tworzenia macierzy za pomocą im2col jest jednak wówczas identyczna, tj.
-poszczególne kolumny w macierzy odpowiadają polom odbiorczym w kolejnych kanałach.
+Opiszmy jeszcze pokrótce jak implementowane są warstwy konwolucyjne. Zwykle nie implementuje się ich
+bezpośrednio z definicji tylko korzysta z tzw. transformacji \emph{im2col}, która zamienia 3-tensor
+(np. zdjęcie) w macierz, której kolumny to spłaszczone pola odbiorcze po których będzie przechodził
+filtr, natomiast pojedynczy filtr jest przekształcany do wektora wierszowego. Poszczególne filtry z
+mapy konwolucyjnej są potem łączone w macierz i wykonujemy zwykłe mnożenie macierzowe między
+macierzą filtrów oraz macierzą im2col. Takie podejście pozwala wykorzystać bardzo wydajne procedury
+do mnożenia macierzy. Poniżej na rysunku \ref{fig:conv} przedstawiono prostą wizualizację opisanej
+procedury dla przypadku \(c_\text{in} = 3\), \(c_\text{out} = 4\), \(h_\text{in} = w_\text{in} =
+6\), \(h_f = w_f = s_h = s_w = 2\), \(d_h = d_w = 1\). Dla ułatwienia wizualizacji przyjęliśmy \(d_h
+= d_w = 1\) oraz \(s_h = h_f\) i \(s_w = w_f\), w przeciwnym wypadku pola odbiorcze na siebie
+zachodzą i/lub sąsiednie komórki w polu odbiorczym są od siebie oddalone o \(d > 1\). Zasada
+tworzenia macierzy za pomocą im2col jest jednak wówczas identyczna, tj. poszczególne kolumny w
+macierzy odpowiadają polom odbiorczym w kolejnych kanałach.
 
 \begin{figure}[ht]
 \centering
