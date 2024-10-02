@@ -2478,18 +2478,98 @@ Sygnały na końcu tych ścieżek są sumowane.
 % TODO:
 % ---------------------------------------------------------
 
+% DEEP LEARNING::
+
 % Attention layers
 
 % Autoencoders and Compressors
 
 % Self-supervised learning
 
-% [[CART, Random forest. Ensemble learning. Boosting, bagging.]]
 
-% [[Survival analysis]]
+% CLASSICAL ML::
+
+% Bayesian linear regression
+
+% FFT
+
+% CART
+
+% MARS
 
 % ---------------------------------------------------------
 % ---------------------------------------------------------
+
+SYSTEMY REKOMENDACYJNE
+----------------------
+ 
+System rekomendacyjny - cechy:
+* wybiera podzbiór dostępnych elementów
+* optymalizuje zadaną miarę (np. zysk, zadowolenie klientów)
+* automatyzuje proces doboru treści na stronie
+ 
+Co może posłużyć jako kryterium optymalizacji:
+	-> miary syntetyczne (accuracy, precision, recall, F1, ...)
+ 	-> miary biznesowe (CTR = Click-Through Rate, 
+						czas spędzony na konsumowaniu treści, 
+						głębokość scrolla,
+						przychody z reklam,
+						liczba subskrypcji,
+						powracalnośc użytkowników,
+						długość i liczba sesji
+						)
+
+
+
+
+1. Algorytmy naiwne
+
+	* Algorytm losowy -- wybieramy k losowych elementów i je rekomendujemy
+
+	* Algorytm naj -- wybieramy element w pewien sposób najczęstszy (np. najczęściej czytany, najlepiej oceniany itp.)
+
+2. Analiza koszykowa
+
+	Naszym klientem jest platforma e-commerce.
+
+	Zbieramy historyczne dane o koszykach użytkowników -- co i kiedy było kupowane.
+	
+	Na podstawie bieżącego, jeszcze nisfinalizowanego koszyka użytkowanika chcemy wygenerować
+	rekomendację -- co jeszcze ten użytkownik może kupić.
+
+
+	Wskaźniki
+	---------
+
+	Support -- jaki odsetek wszystkich transakcji zawierał (wszystkie) elementy ze zbioru A
+
+	supp(A) := |{ t \in T | A \subseteq t }| / |T|
+
+
+	Confidence -- jaka jest szansa, że użytkownik kupi zbiór produktów B, jeśli ma w koszyku 
+				  już zbiór A (tak naprawdę prawdopodobieństwo warunkowe)
+
+	conf(A => B) = supp(A \cup B) / supp(A) 
+
+
+	Lift -- jak jest istotność obserwacji wskazanej w condifence (innymi słowy sprawdzamy, 
+			czy kupno produktów ze zbioru A i B jest niezależne)
+
+	lift(A => B) = supp(A \cup B) / (supp(A) * supp(B))
+
+
+	Idea
+	----
+	Użytkownik ma w koszyku zbiór arytykułów A
+
+	Dla każdego podzbioru artykułów A' chcemy znaleźć produkty B o wysokim confidence i lift
+
+
+	Jak ocenić jakośc rekomendacji?
+	-------------------------------
+	Najlepiej z baseline'ami!
+
+
 
 
 \bibliographystyle{plain}
