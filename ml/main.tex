@@ -1031,6 +1031,39 @@ gdzie \(\bm{X}^+\) oznacza \emph{pseudoodwrotność Moore'a--Penrose'a}, którą
 obliczyć korzystając z rozkładu SVD macierzy \(\bm{X}\).
 
 
+\subsection{Regresja bayesowska}
+
+Estymacja największej wiarygodności daje nam jedynie punktową wartość parametru \(\bm{w}\).
+Pełniejszą informację o parametrze \(\mathbf{w}\) możemy uzyskać rozpatrując rozkład a posteriori
+\(p(\bm{w} \mid \mc{X})\). Jeśli jako prior przyjmiemy rozkład normalny \(\mc{N}(\bm{\mu}_0,
+\bm{\Sigma}_0)\) to zauważmy, iż otrzymujemy instancję liniowego modelu Gaussowskiego
+\[
+\begin{split}
+\bm{y} \mid \bm{w} &\sim \mc{N}(\bm{X}\bm{w}, \sigma^2\bm{1})\\
+            \bm{w} &\sim \mc{N}(\bm{\mu}_0, \bm{\Sigma}_0) 
+\end{split}\quad,
+\]
+skąd rozład a posteriori jest rozkładem normalnym
+\[
+\bm{w} \mid \bm{y} \sim \mc{N}(\bm{\mu}_m, \bm{\Sigma}_m)
+\]
+z parametrami
+\[
+\begin{split}
+&\bm{\Sigma}_m = \left[\bm{\Sigma}_0^{-1} + \sigma^{-2}\bm{X}^T\bm{X}\right]^{-1}\\
+&\bm{\mu}_m    = \bm{\Sigma}_m \left[\sigma^{-2}\bm{X}^T\bm{y} + \bm{\Sigma}_0\bm{\mu}_0\right]
+\end{split}\quad.
+\]
+Rozkład predykcyjny dla nowej obserwacji \(y\) poczynionej w punkcie \(\bm{t}\) jest dany przez
+\[
+p(y(\bm{t}) \mid \mc{X}) = \int p(y(\bm{t}) \mid \bm{w}) p(\bm{w} \mid \mc{X}) \dd{\bm{w}}\,,
+\]
+skąd
+\[
+y(\bm{t}) \sim \mc{N}(\bm{t}^T\bm{\mu}_m, \sigma^2 + \bm{t}^T\bm{\Sigma}_m\bm{t})\,.
+\]
+
+
 \subsection{Regularyzacja}
 
 Regularyzacją  nazywamy proces polegający na wprowadzeniu ad hoc do zagadnienia optymalizacji
@@ -2481,8 +2514,6 @@ Sygnały na końcu tych ścieżek są sumowane.
 % CLASSICAL ML::
 % --------------
 
-% Bayesian linear regression
-
 % Local regression
 
 % Linear basis regression (Fourier regression), DFT, FFT
@@ -2508,78 +2539,6 @@ Sygnały na końcu tych ścieżek są sumowane.
 
 % ---------------------------------------------------------
 % ---------------------------------------------------------
-
-% SYSTEMY REKOMENDACYJNE
-% ----------------------
- 
-% System rekomendacyjny - cechy:
-% * wybiera podzbiór dostępnych elementów
-% * optymalizuje zadaną miarę (np. zysk, zadowolenie klientów)
-% * automatyzuje proces doboru treści na stronie
- 
-% Co może posłużyć jako kryterium optymalizacji:
-% 	-> miary syntetyczne (accuracy, precision, recall, F1, ...)
-%  	-> miary biznesowe (CTR = Click-Through Rate, 
-% 						czas spędzony na konsumowaniu treści, 
-% 						głębokość scrolla,
-% 						przychody z reklam,
-% 						liczba subskrypcji,
-% 						powracalnośc użytkowników,
-% 						długość i liczba sesji
-% 						)
-
-
-
-
-% 1. Algorytmy naiwne
-
-% 	* Algorytm losowy -- wybieramy k losowych elementów i je rekomendujemy
-
-% 	* Algorytm naj -- wybieramy element w pewien sposób najczęstszy (np. najczęściej czytany, najlepiej oceniany itp.)
-
-% 2. Analiza koszykowa
-
-% 	Naszym klientem jest platforma e-commerce.
-
-% 	Zbieramy historyczne dane o koszykach użytkowników -- co i kiedy było kupowane.
-	
-% 	Na podstawie bieżącego, jeszcze nisfinalizowanego koszyka użytkowanika chcemy wygenerować
-% 	rekomendację -- co jeszcze ten użytkownik może kupić.
-
-
-% 	Wskaźniki
-% 	---------
-
-% 	Support -- jaki odsetek wszystkich transakcji zawierał (wszystkie) elementy ze zbioru A
-
-% 	supp(A) := |{ t \in T | A \subseteq t }| / |T|
-
-
-% 	Confidence -- jaka jest szansa, że użytkownik kupi zbiór produktów B, jeśli ma w koszyku 
-% 				  już zbiór A (tak naprawdę prawdopodobieństwo warunkowe)
-
-% 	conf(A => B) = supp(A \cup B) / supp(A) 
-
-
-% 	Lift -- jak jest istotność obserwacji wskazanej w condifence (innymi słowy sprawdzamy, 
-% 			czy kupno produktów ze zbioru A i B jest niezależne)
-
-% 	lift(A => B) = supp(A \cup B) / (supp(A) * supp(B))
-
-
-% 	Idea
-% 	----
-% 	Użytkownik ma w koszyku zbiór arytykułów A
-
-% 	Dla każdego podzbioru artykułów A' chcemy znaleźć produkty B o wysokim confidence i lift
-
-
-% 	Jak ocenić jakośc rekomendacji?
-% 	-------------------------------
-% 	Najlepiej z baseline'ami!
-
-
-
 
 \bibliographystyle{plain}
 \bibliography{refs} % Entries are in the refs.bib file
