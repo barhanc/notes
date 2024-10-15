@@ -1570,6 +1570,143 @@ co możemy zapisać w zwartej postaci macierzowej
 \]
 
 
+\subsection{Resampling}
+
+Zazwyczaj specjalny zbiór testowy rozłączny ze zbiorem uczącym jest niedostępny. Istnieje oczywista
+potrzeba estymacji błędu testowego, który jest na ogół znacząco niedoszacowywany przez błąd
+treningowy. Jedna z dostępnych grup metod uwzględniających powyższe problemy polega na wydzieleniu
+części zbioru uczącego, dopasowaniu modelu na pozostałej części, a następnie zastosowaniu nauczonego
+modelu do części wydzielonej.
+
+Jest to bardzo prosta metoda, w której dostępne obserwacje dzielone są losowo na dwie części: zbiór
+uczący, zbiór walidacyjny (ang. \emph{validation set}, \emph{hold-out set}). Model jest dopasowywany
+na zbiorze uczącym, a następnie użyty do predykcji wartości zmiennej odpowiedzi na zbiorze
+walidacyjnym. Obliczony przy jej pomocy \emph{błąd walidacyjny} (np. MSE) stanowi estymatę błędu
+testowego. Otrzymana estymata jest silnie zależna od wybranego zbioru walidacyjnego. Otrzymana
+estymata jest silnie zależna od wybranego zbioru walidacyjnego. Powyższe problemy uwzględnia
+walidacja krzyżowa (ang. \emph{cross-validation}, CV).
+
+Walidacja krzyżowa bez jednego (ang. \emph{Leave-One-Out Cross-Validation}, LOOCV) jest metodą
+iteracyjną, której kroki wyglądają następująco: 
+\begin{itemize}
+\item wybieramy kolejny element zbioru obserwacji \((\bm{x}_i, y_i)\);
+\item zbiorem walidacyjnym jest \(\{(\bm{x}_i, y_i)\}\), a zbiorem uczącym reszta obserwacji;
+\item metodą zbioru walidacyjnego wyliczamy błąd walidacyjny \(E_i\).
+\end{itemize}
+Na koniec obliczamy estymatę błędu testowego
+\[
+CV_{(n)} = \frac{1}{n}\sum_{i=1}^n E_i\,.
+\]
+Korzyściami z zastosowania LOOCV jest redukcja obciążenia -- uczenie modelu korzysta w każdym kroku
+z \(n-1\) obserwacji -- w konsekwencji ewentualne przeszacowanie błędu treningowego jest nieznaczne.
+Dodatkowo metoda jest \emph{deterministyczna} -- wielokrotne uruchomienie daje ten sam wynik.
+
+\(k\)-krotna walidacja krzyżowa (ang. \emph{k-fold cross validation}) to także metoda iteracyjna, w
+której najpierw dzielimy losowo zbiór dostępnych obserwacji na \(k\) w przybliżeniu równolicznych
+grup. Następnie w każdym kroku:
+\begin{itemize}
+\item wybieramy po kolei jedną z grup;
+\item wybrana grupa staje się zbiorem walidacyjnym, suma pozostałych staje się zbiorem uczącym;
+\item metodą zbioru walidacyjnego obliczamy błąd walidacyjny \(E_i\).
+\end{itemize}
+Estymatą błędu testowego jest
+\[
+CV_{(k)} = \frac{1}{k}\sum_{i=1}^k E_i\,.
+\]
+Uwaga, \(n\)-krotna walidacja krzyżowa to LOOCV. Typowo przyjmowanymi wartościami \(k\) są
+\(k=5, 10\). Przewagi \(k\)-krotnej CV nad LOOCV (dla \(k < n\)):
+\begin{itemize}
+\item koszt obliczeniowy jest wyraźnie mniejszy;
+\item \(k\)-krotna CV ma wprawdzie większe obciążenie, ale mniejszą wariancję od LOOCV, stąd daje
+często dokładniejszą estymatę błędu testowego.
+\end{itemize}
+
+\emph{Bootstrap} to metoda statystyczna stosowana do oszacowania niepewności związanej z danym
+estymatorem lub metodą uczenia statystycznego. Łatwo stosuje się w sytuacjach, w których nie ma
+innych -- lepiej uzasadnionych teoretycznie -- metod oszacowania zmienności. Mamy do dyspozycji
+zbiór danych \(\mc{X}\) o wielkości \(n\), przy pomocy którego wyznaczamy estymatę \(\hat{\alpha}\)
+pewnej statystyki \(\alpha\). Zadanie polega na estymowaniu błędu standardowego \(\hat{\alpha}\),
+tzn. \(\sigma(\hat{\alpha})\) przy braku możliwości uzyskania nowych danych. Konstruujemy zbiory
+danych bootstrap \(\mc{X}^{*1},\ldots,\mc{X}^{*B}\) o wielkości n przez \emph{losowanie ze
+zwracaniem} z \(\mc{X}\) dla pewnego dużego \(B\) i na każdym z \(\mc{X}^{*b}\) obliczamy estymatę
+\(\hat{\alpha}^{*b}\). Ostatecznie błąd standardowy (tzw. \emph{błąd typu bootstrap}) ma postać
+\[
+\sigma(\hat{\alpha}) = \sqrt{\frac{1}{B-1} \sum_{b=1}^B \left(\hat{\alpha}^{*b} - \frac{1}{B} \sum_{r=1}^B \hat{\alpha}^{*r}\right)^2}\,.
+\]
+
+
+\subsection{Selekcja cech w modelach liniowych}
+
+Po wytrenowaniu modelu liniowego może okazać się, że część predyktorów nie ma istotnego wpływu na
+zmienną odpowiedzi. Utrzymywanie tych nieistotnych zmiennych nadmiernie zwiększa złożoność modelu, a
+więc ich usunięcie, tzn. wyzerowanie odpowiednich współczynników, wpływa dodatnio na
+interpretowalność modelu. Usuwanie nieistotnych predyktorów z modelu regresji wielokrotnej nazywa
+się selekcją cech lub selekcją zmiennych.
+
+Selekcja podzbioru polega na wyznaczeniu podzbioru predyktorów, które ocenia się jako najsilniej
+związane z odpowiedzią. Następnie dopasowuje się model liniowy używając metody najmniejszych
+kwadratów na zredukowanym zbiorze predyktorów. Do metod selekcji podzbioru należą: 
+\begin{itemize}
+\item wybór najlepszego podzbioru;
+\item metody selekcji krokowej.
+\end{itemize}
+
+W metodzie najlepszego podzbioru dopasowujemy model z każdą możliwą kombinacją spośród wszystkich
+\(p\) predyktorów. Spośród otrzymanych \(2^p\) modeli wybieramy najlepszy (najbardziej optymalny
+według przyjętego kryterium). Zazwyczaj postępuje się według algorytmu:
+\begin{enumerate}
+\item Za \(\mc{M}_0\) przyjmujemy \emph{model zerowy} (bez predyktorów).
+\item Dla \(k=1,\ldots,p\):
+    \begin{enumerate}
+    \item dopasowujemy wszystkie \({p \choose k}\) modeli z \(k\) predyktorami;
+    \item wybieramy \(\mc{M}_k\), który ma najmniejszy RSS lub największy \(R^2\).
+    \end{enumerate}
+\item Spośród \(\mc{M}_0, \ldots, \mc{M}_p\) wybieramy najbardziej optymalny według przyjętego
+kryterium.
+\end{enumerate}
+Ani RSS, ani \(R^2\) nie są dobrymi kryteriami porównywania modeli o różnej liczbie predyktorów,
+ponieważ -- jako miary związane z treningowym MSE -- mają lepsze wartości dla modeli o większej
+liczbie zmiennych. Potrzebne są zatem miary estymujące błąd testowy. Istnieją dwa powszechnie
+używane podejścia: podejście pośrednie, w którym wprowadzamy poprawki do błędu treningowego
+uwzględniające potencjalnie nadmierne obciążenie związane z przeuczeniem; podejście bezpośrednie, w
+którym estymujemy błąd testowy przy pomocy zbioru walidacyjnego albo walidacji krzyżowej. Oczywistą
+wadą metody wyboru najlepszego podzbioru jest potencjalnie znaczny koszt obliczeniowy. Alternatywą
+są metody selekcji krokowej, które przeszukują znacznie mniejszy zbiór możliwych modeli.
+
+Algorytm selekcji krokowej w przód ma postać
+\begin{itemize}
+\item \(\mc{M}_0\) jest modelem zerowym jak poprzednio.
+\item Dla \(k=0,\ldots,p-1\):
+    \begin{enumerate}
+    \item rozważamy wszystkie \(p-k\) modeli dodających jeden predyktor do \(\mc{M}_k\);
+    \item wybieramy \(\mc{M}_{k+1}\), który ma najmniejszy RSS lub największy \(R^2\)    
+    \end{enumerate}
+\item Spośród \(\mc{M}_0,\ldots,\mc{M}_p\) wybieramy najbardziej optymalny względem przyjętego
+kryterium.
+\end{itemize}
+Selekcja krokowa w przód dopasowuje \(1 + p(p+1)/2\) modeli (zamiast \(2^p\)), przy czym efektywnie
+przeszukiwana podprzestrzeń zawiera istotnie więcej modeli. Nie ma gwarancji odnalezienia globalnie
+najlepszego modelu.
+
+Algorytm selekcji krokowej wstecz ma postać
+\begin{itemize}
+\item \(\mc{M}_p\) jest modelem pełnym, czyli zawierającym wszystkie predyktory.
+\item Dla \(k=p,p-1,\ldots,1\):
+    \begin{enumerate}
+    \item rozważamy wszystkie \(k\) modeli elminujących jeden predyktor z \(\mc{M}_k\);
+    \item wybieramy \(\mc{M}_{k-1}\), który ma najmniejszy RSS lub największy \(R^2\).
+    \end{enumerate}
+\item Spośród \(\mc{M}_0,\ldots,\mc{M}_p\) wybieramy najbardziej optymalny względem przyjętego
+kryterium.
+\end{itemize}
+
+W podejściach hybrydowych zmienne są sekwencyjnie dodawane do modelu tak jak w selekcji krokowej w
+przód. Po każdym dodaniu nowej zmiennej, jedna nieistotna zmienna może zostać usunięta — podobnie
+jak w selekcji krokowej wstecz. Podejścia te starają się ściślej naśladować wybór najlepszego
+podzbioru przy zachowaniu niskiego kosztu obliczeniowego metod krokowych.
+
+
+
 \section{Uczenie głębokie i sieci neuronowe}
 
 \begin{quote}[\textit{Introduction, Ch. 1} \cite{prince2023understanding}]
@@ -2516,10 +2653,6 @@ Sygnały na końcu tych ścieżek są sumowane.
 % --------------
 
 % CART, boosting, bagging
-
-% Resampling -- cross validation, bootstrap
-
-% Feature selection in linear models
 
 % FFT for forecasting, STL decomposition
 
