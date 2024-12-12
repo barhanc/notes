@@ -1321,6 +1321,29 @@ określona. Wówczas rozkład predykcyjny ma parametry
 \]
 
 
+\subsection{Uogólnione modele addytywne}
+ 
+Zastępując w liniowej regresji wielokrotnej predyktory przez ich transformacje (również nieliniowe)
+otrzymujemy \emph{uogólniony model addytywny} (ang. \emph{generalized additive model, GAM})
+\[
+y(\bm{x}) \mid \beta_0, f_1, \ldots, f_d \sim \mc{N}(\phi(\bm{x}; \beta_0, f_1,\ldots,f_d), \sigma^2)\,,
+\]
+gdzie
+\[
+\phi(\bm{x}; \beta_0, f_1,\ldots, f_d) = \beta_0 + f_1(\bm{x}^1) + \ldots + f_d(\bm{x}^d)\,.
+\]
+Dopuszczalnymi transformacjami \(f_i\) są między innymi: wielomiany, funkcje sklejane, regresja
+lokalna i dowolne ich kombinacje. Jeśli to możliwe to GAM można dopasować metodą klasyczną (np.
+najmniejszych kwadratów), w ogólności stosuje się efektywny algorytm dopasowania wstecznego (ang.
+\emph{backfitting}). GAM pozwala dopasować funkcję nieliniową do każdego predyktora, co potencjalnie
+umożliwia osiągnięcie większej dokładności predykcji. Z uwagi na addytywność modelu możemy
+analizować indywidualny wpływ predyktorów na odpowiedź. Addytywność jest też największym
+ograniczeniem modelu, bo pomija interakcje między zmiennymi -- możliwe są rozszerzenia dopuszczające
+jawne interakcje między np. wybranymi parami zmiennych.
+
+% TODO: Backfitting algorithm math motivation
+
+
 \subsection{Naiwny klasyfikator bayesowski}
 
 Przechodzimy teraz do zagadnienia klasyfikacji, tj. predykcji zmiennej \(t\) pochodzącej ze
@@ -2642,8 +2665,6 @@ sieciach ResNet są więc bloki rezydualne, które propagują aktywacje dwoma ś
 sekwencję konwolucji i funkcji aktywacji oraz drugą ścieżką poprzez funkcję identycznościową.
 Sygnały na końcu tych ścieżek są sumowane.
 
-
-
 % ========================================================.
 % TODO:													  |
 % ========================================================|
@@ -2651,25 +2672,16 @@ Sygnały na końcu tych ścieżek są sumowane.
 % --------------------------------------------------------|
 % Classical ML 											  |
 % --------------------------------------------------------|
-% * GAMs												  |
 % * CART, boosting, bagging								  |
-% * SVM													  |
-% * PCA													  |
-% *														  |
+% * kernel methods
 % --------------------------------------------------------|
 % Deep Learning											  |
 % --------------------------------------------------------|
-% * Attention, Transformers, LLMs, LMMs					  |
+% * Attention, Transformers, LLMs   					  |
 % * GANs												  |
 % * DDPMs												  |
 % * Autoencoders										  |
 % * RBMs												  |
-% *														  |
-% --------------------------------------------------------|
-% Control Theory										  |
-% --------------------------------------------------------|
-% * 													  |
-% *														  |
 % ========================================================|
 % ========================================================.
 
