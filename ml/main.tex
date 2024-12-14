@@ -1179,6 +1179,29 @@ korzystając z odpowiednich solverów. Można również dodać człon regularyzu
 wektora estymowanych parametrów.
 
 
+\subsection{Uogólnione modele addytywne}
+ 
+Zastępując w liniowej regresji wielokrotnej predyktory przez ich transformacje (również nieliniowe)
+otrzymujemy \emph{uogólniony model addytywny} (ang. \emph{generalized additive model, GAM})
+\[
+y(\bm{x}) \mid \beta_0, f_1, \ldots, f_d \sim \mc{N}(\phi(\bm{x}; \beta_0, f_1,\ldots,f_d), \sigma^2)\,,
+\]
+gdzie
+\[
+\phi(\bm{x}; \beta_0, f_1,\ldots, f_d) = \beta_0 + f_1(\bm{x}^1) + \ldots + f_d(\bm{x}^d)\,.
+\]
+Dopuszczalnymi transformacjami \(f_i\) są między innymi: wielomiany, funkcje sklejane, regresja
+lokalna i dowolne ich kombinacje. Jeśli to możliwe to GAM można dopasować metodą klasyczną (np.
+najmniejszych kwadratów), w ogólności stosuje się efektywny algorytm dopasowania wstecznego (ang.
+\emph{backfitting}). GAM pozwala dopasować funkcję nieliniową do każdego predyktora, co potencjalnie
+umożliwia osiągnięcie większej dokładności predykcji. Z uwagi na addytywność modelu możemy
+analizować indywidualny wpływ predyktorów na odpowiedź. Addytywność jest też największym
+ograniczeniem modelu, bo pomija interakcje między zmiennymi -- możliwe są rozszerzenia dopuszczające
+jawne interakcje między np. wybranymi parami zmiennych.
+
+% TODO: Backfitting algorithm math motivation
+
+
 \subsection{Procesy gaussowskie}
 
 Jak już wspomnieliśmy macierz kowariancji \(n\)--wymiarowej zmiennej losowej \(\bm{x}\) o wartości
@@ -1319,29 +1342,6 @@ określona. Wówczas rozkład predykcyjny ma parametry
 \end{split}\quad.
 }
 \]
-
-
-\subsection{Uogólnione modele addytywne}
- 
-Zastępując w liniowej regresji wielokrotnej predyktory przez ich transformacje (również nieliniowe)
-otrzymujemy \emph{uogólniony model addytywny} (ang. \emph{generalized additive model, GAM})
-\[
-y(\bm{x}) \mid \beta_0, f_1, \ldots, f_d \sim \mc{N}(\phi(\bm{x}; \beta_0, f_1,\ldots,f_d), \sigma^2)\,,
-\]
-gdzie
-\[
-\phi(\bm{x}; \beta_0, f_1,\ldots, f_d) = \beta_0 + f_1(\bm{x}^1) + \ldots + f_d(\bm{x}^d)\,.
-\]
-Dopuszczalnymi transformacjami \(f_i\) są między innymi: wielomiany, funkcje sklejane, regresja
-lokalna i dowolne ich kombinacje. Jeśli to możliwe to GAM można dopasować metodą klasyczną (np.
-najmniejszych kwadratów), w ogólności stosuje się efektywny algorytm dopasowania wstecznego (ang.
-\emph{backfitting}). GAM pozwala dopasować funkcję nieliniową do każdego predyktora, co potencjalnie
-umożliwia osiągnięcie większej dokładności predykcji. Z uwagi na addytywność modelu możemy
-analizować indywidualny wpływ predyktorów na odpowiedź. Addytywność jest też największym
-ograniczeniem modelu, bo pomija interakcje między zmiennymi -- możliwe są rozszerzenia dopuszczające
-jawne interakcje między np. wybranymi parami zmiennych.
-
-% TODO: Backfitting algorithm math motivation
 
 
 \subsection{Naiwny klasyfikator bayesowski}
@@ -2623,6 +2623,7 @@ Operują na każdym kanale niezależnie, przez co nie zmieniają wymiaru głębi
 wymiar przestrzenny. Najczęściej stosowane są warstwy typu max pooling wyciągające wartość
 największą lub average pooling, które biorą średnią z wartości w polu odbiorczym.
 
+
 \subsubsection{Ekwiwariancja i inwarianja}
 
 Żeby zobrazować różnicę między ekwiwariancją a inwariancją, weźmy zadanie wykrywania twarzy. Chcemy
@@ -2666,14 +2667,14 @@ sekwencję konwolucji i funkcji aktywacji oraz drugą ścieżką poprzez funkcj�
 Sygnały na końcu tych ścieżek są sumowane.
 
 % ========================================================.
-% TODO:                                                   |
+% TODO::                                                  |
 % ========================================================|
 % ////////////////////////////////////////////////////////|
 % --------------------------------------------------------|
 % Classical ML                                            |
 % --------------------------------------------------------|
 % * CART, boosting, bagging                               |
-% * Kernel methods                                        |
+% * PCA (SVD / eigenvalue decomposition)                  |
 % --------------------------------------------------------|
 % Deep Learning                                           |
 % --------------------------------------------------------|
@@ -2683,7 +2684,7 @@ Sygnały na końcu tych ścieżek są sumowane.
 % * Autoencoders                                          |
 % * RBMs                                                  |
 % ========================================================|
-% ////////////////////////////////////////////////////////|
+% \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\|
 % ========================================================.
 
 \bibliographystyle{plain}
