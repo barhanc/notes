@@ -1215,9 +1215,7 @@ for (*$j$*) in range(1, (*$d$*)+1):
 while not converged:
 	for (*$j$*) in range(1, (*$d$*)+1):
 		(*$f_j$*) = Smooth((*$\left\{\left(\bm{x}_i^j, y_i - \beta_0 - \sum_{k \neq j} f_k(\bm{x}_i^k)\right)\right\}_{i=1}^N$*))
-		# Mean centering of estimated functions
-		(*$f_j$*) = lambda (*$x$*): (*$f_j(x) - 1/N \sum_{i=1}^N f_j(\bm{x}_i^j)$*)
-
+		
 	# Check convergence criteria
 	...
 \end{lstlisting}

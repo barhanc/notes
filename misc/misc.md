@@ -27,13 +27,16 @@
 
 * Using `collections.Counter` is useful. It is basically a histogram.
 
-* **Chinese remainder theorem** 
-
-  Let $n_i \in \mathbb{Z}-\{0,1\}$, $i \in [k]$, $N := \prod_{i=1}^k n_i$ and assume that $n_i \perp
-  n_j$ forall $i \neq j$, $i,j\in[k]$. Given integers $0 \leq a_i < n_i$, $i \in [k]$ there is
-  exactly one integer $x$ s.t. $0 \leq x < N$ and $x \equiv_{n_i} a_i$ forall $i \in [k]$.
-
-  **Proof.**
+* In Python there is `for else` construct
+  ```python
+  for x in iterable:
+    if cond(x):
+      # do something if condition is true
+      break
+    # do something
+  else:
+    # do something if the for loop was not interrupted using break or iterable is empty
+  ```
 
 * **Bezout's lemma**
 
@@ -66,3 +69,18 @@
   to a pair of modular equalities $ax \equiv_b c$, $by \equiv_a c$. Because of the assumption $a
   \perp b$ we can write $x \equiv_b ca^{-1}$ and $y = (c - ax)/b$ and obtain all solutions from a
   single pair as before.
+
+* **Chinese remainder theorem** 
+
+  Let $n_i \in \mathbb{Z}-\{0,1\}$, $i \in [k]$, $N := \prod_{i=1}^k n_i$ and assume that $n_i \perp
+  n_j$ forall $i \neq j$, $i,j\in[k]$. Given integers $0 \leq a_i < n_i$, $i \in [k]$ there is
+  exactly one integer $x$ s.t. $0 \leq x < N$ and $x \equiv_{n_i} a_i$ forall $i \in [k]$.
+
+  **Proof.**
+
+  First assume that $k=2$. Using Bezout's lemma there are two integers $m_1, m_2$ s.t. $n_1 m_1 +
+  n_2 m_2 = 1$ (since $\mathrm{gcd}(n_1,n_2) = 1$). Notice we can construct $x$ as
+  $$
+    x = a_1 n_1 m_1 + a_2 n_2 m_2 = a_1 + n_2 m_2 (a_2 - a_1) = a_2 + n_1 m_1 (a_1 - a_2)
+  $$
+  Indeed $x \equiv_{n_1} a_1$ and $x \equiv_{n_2} a_2$.
