@@ -21,7 +21,7 @@
   * rotate vector `x+y*1j` by an angle using multiplication by a suitable complex number
     $\mathrm{e}^{\mathrm{i} \theta}$, e.g. `1j` for 90 degrees.
 
-* Don't forget about `@functools.cache()` decorator which makes memoization a breeze.
+* Don't forget about `@functools.cache` decorator which makes memoization a breeze.
 
 * There is `cmath` library for complex number mathematical functions.
 
