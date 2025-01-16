@@ -84,3 +84,30 @@
     x = a_1 n_1 m_1 + a_2 n_2 m_2 = a_1 + n_2 m_2 (a_2 - a_1) = a_2 + n_1 m_1 (a_1 - a_2)
   $$
   Indeed $x \equiv_{n_1} a_1$ and $x \equiv_{n_2} a_2$.
+
+ * **Interior Point Methods**
+
+  Linear Programming (LP) is basically minimize a linear function in $\mathbb{R}^n$ over a *polyhedron*. 
+  This is the *primal formulation*.
+  ```
+  min c^T x s.t. Ax = b, x >= 0 (P)
+  ```
+  The *dual formulation* is
+  ```
+  max_{z,s} b^T z s.t. A^T z + s = c, s >= 0 (D)
+  ```
+  
+  LP Duality
+  
+  1. Weak   duality: if x is feasible for (P) and (s,z) is feasible for (D) then: c^T x >= b^T z.
+
+  2. Strong duality: there are exactly three possible scenarios for the primal-dual pair:
+
+  	 (1) (P) and (D) bot have solutions x* and (z*,s*) and their objectives are equal at optimality
+  	 
+  	 (2) one of (P), (D) is unbounded and the other is infeasible
+
+  	 (3) both (P) and (D) are infeasible
+
+  
+  
