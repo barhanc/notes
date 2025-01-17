@@ -85,29 +85,30 @@
   $$
   Indeed $x \equiv_{n_1} a_1$ and $x \equiv_{n_2} a_2$.
 
- * **Interior Point Methods**
+  * **Interior Point Methods**
 
-  Linear Programming (LP) is basically minimize a linear function in $\mathbb{R}^n$ over a *polyhedron*. 
-  This is the *primal formulation*.
-  ```
-  min c^T x s.t. Ax = b, x >= 0 (P)
-  ```
+  Linear Programming (LP) problem is  minimize a linear function in $\mathbb{R}^n$ over a
+  *polyhedron*. This is the *primal formulation*.
+  $$
+  \begin{aligned}
+  &\min_{\bm{x}}{\bm{c}^T \bm{x}}\\
+  &\text{s.t.}\,\bm{Ax} = \bm{b}\,\land\,\bm{x} >= 0
+  \end{aligned}
+  $$
   The *dual formulation* is
-  ```
-  max_{z,s} b^T z s.t. A^T z + s = c, s >= 0 (D)
-  ```
-  
-  LP Duality
-  
-  1. Weak   duality: if x is feasible for (P) and (s,z) is feasible for (D) then: c^T x >= b^T z.
+  $$
+  \begin{aligned}
+  &\max_{\bm{z}, \bm{s}} \bm{b}^T\bm{s}\\
+  &\text{s.t.}\,\bm{A}^T \bm{z} + \bm{s} = \bm{c}\,\land\, \bm{s} >= 0
+  \end{aligned}
+  $$
+  1. Weak duality: if $\bm{x}$ is feasible for primal formulation and $(\bm{s},\bm{z})$ is feasible for dual formulation then: $\bm{c}^T \bm{x} >= \bm{b}^T \bm{z}$.
 
   2. Strong duality: there are exactly three possible scenarios for the primal-dual pair:
+    * (1) (P) and (D) both have solutions $\bm{x}^*$ and $(\bm{z}^*,\bm{s}^*)$ and their objectives
+      are equal at optimality
+    * (2) one of (P), (D) is unbounded and the other is infeasible
+    * (3) both (P) and (D) are infeasible
 
-  	 (1) (P) and (D) bot have solutions x* and (z*,s*) and their objectives are equal at optimality
-  	 
-  	 (2) one of (P), (D) is unbounded and the other is infeasible
 
-  	 (3) both (P) and (D) are infeasible
-
-  
   
