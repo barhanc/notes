@@ -145,71 +145,7 @@ klasyfikacji.
 
 \subsection{Błąd średniokwadratowy}
 
-Rozpatrujemy zagadnienie regresji, którego celem jest przewidzenie dla danego wektora cech
-\(\bm{x}\) ciągłej wartości \(y\). Zbiór treningowy \(\mc{X}\) składa się z \(n\) par
-\((\bm{x}^{(i)}, y^{(i)})\). Zakładamy, że wartość \(y\) pochodzi z rozkładu normalnego z
-parametrami \(f(\bm{x}; \bm{\theta})\), \(\sigma^2\), gdzie wariancja jest znana, a \(f(\bm{x};
-\bm{\theta})\) to wyjście sieci neuronowej
-\[
-    y(\bm{x}) \sim \mc{N}\left( f(\bm{x}; \bm{\theta}), \sigma^2 \right) \,.
-\]
-Funkcja wiarygodności ma postać
-\[
-    C\cdot\prod_{i=1}^n \exp\left\{-\frac{1}{2\sigma^2} \left[y^{(i)} - f\left(\bm{x}^{(i)}; \bm{\theta}\right) \right]^2\right\}\,,
-\]
-skąd funkcja kosztu
-\[
-    L(\mc{X}; \bm{\theta}) = \frac{1}{2} \sum_{i=1}^n \left[y^{(i)} - f\left(\bm{x}^{(i)}; \bm{\theta}\right) \right]^2
-\]
-pomijając człony stałe. Otrzymujemy zatem znany błąd średniokwadratowy. Wygodniej jest przyjąć, że
-sieć neuronowa przetwarza od razu cały \emph{batch} przykładów uczących, tj. na wejściu otrzymujemy
-macierz
-\[
-    \bm{X} = \mqty[\bm{x}^{(1)}\\ \vdots \\ \bm{x}^{(n)}]
-\]
-i zwracamy wektor odpowiedzi, tzn. sieć neuronowa realizuje przekształcenie \(\bm{f} : \Rbb^{(n,d)}
-\mapsto \Rbb^n\). W takim przypadku błąd średniokwadratowy możemy zapisać wygodniej jako
-\[
-    L(\mc{X}; \bm{\theta}) = \frac{1}{2} \norm{\bm{y} - \bm{f}(\bm{X}; \bm{\theta})}^2\,.
-\]
-Ponieważ będzie to nam potrzebne później, podajemy tutaj również wzór na pochodną powyższej funkcji
-kosztu po odpowiedzi sieci
-\[
-    \pdv{L}{f_\alpha} = f_\alpha - y_\alpha \,.
-\]
-
-
 \subsection{Entropia krzyżowa}
-
-Podobnie jak w przypadku regresji postępujemy w przypadku klasyfikacji. Rozważmy najpierw
-klasyfikację binarną, w której zbiór treningowy składa się z \(n\) par zawierających wektor cech
-\(\bm{x}^{(i)}\) oraz etykietę \(t^{(i)} \in \{0,1\}\). Tym razem dane będziemy modelować przez rozkład
-dwumianmowy z pewnym parametrem \(\pi(\bm{x}; \bm{\theta}) \in [0;1]\) określającym
-prawdopodobieństwo klasy pozytywnej
-\[
-    t(\bm{x}) \sim \text{Bin}\left(\pi(\bm{x}; \bm{\theta})\right)\,.
-\]
-Dodatkowo założymy, że funkcja \(\pi\) ma postać
-\[
-    \pi(\bm{x}; \bm{\theta}) = \sigma\left( f(\bm{x}; \bm{\theta})\right)\,,
-\]
-gdzie \(f(\bm{x}; \bm{\theta})\) to wyjście sieci neuronowej, a \(\sigma\) to funkcja logistyczna
-\[
-    \sigma(z) = \frac{1}{1 + \e^{-z}}\,.
-\]
-Funkcja wiarygodności ma w tym przypadku postać
-\[
-    \prod_{i=1}^n \pi\left(\bm{x}^{(i)}; \bm{\theta}\right)^{t^{(i)}}\cdot \left[1 - \pi\left(\bm{x}^{(i)}; \bm{\theta}\right)\right]^{1 - t^{(i)}}\,,
-\]
-skąd
-\[
-\begin{split}
-    &L(\mc{X}; \bm{\theta}) =\\
-    &- \sum_{i=1}^n \left\{ t^{(i)} \log \pi^{(i)} + (1 - t^{(i)}) \log \left(1 - \pi^{(i)}\right) \right\}\,,
-\end{split}
-\]
-gdzie \(\pi^{(i)} = \pi(\bm{x}^{(i)};\bm{\theta})\). Taką funkcję kosztu nazywamy (binarną) entropią
-krzyżową.
 
 
 \section{Metody optymalizacji}
