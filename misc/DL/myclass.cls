@@ -20,6 +20,7 @@
 \newcommand{\mc}[1]{\mathcal{#1}}
 \newcommand{\tpose}{\intercal}
 \newcommand{\x}{\times}
+\newcommand{\matmul}{\vcenter{\hbox{\scalebox{0.8}{\textsl{\textbf{@}}}}}}
 
 \renewcommand{\thefootnote}{\fnsymbol{footnote}}
 

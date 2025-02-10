@@ -15,7 +15,7 @@ model perceptronu -- prostej 3-warstwowej sieci, której zadaniem miało być ro
 alfanumerycznych. Podstawową jednostką przetwarzającą w takiej sieci był neuron McCullocha--Pittsa,
 który realizował następujące przekształcenie \(F: \Rbb^n \mapsto \Rbb\)
 \[
-    F(\bm{x}) = \varphi \left( \bm{w}^\tpose \bm{x} + b \right)\,,
+    F(\bm{x}) = \varphi \left( \bm{x} \bm{w}^\tpose + b \right)\,,
 \]
 gdzie \(\bm{x} = (x_1, \ldots, x_n)\) określa sygnały wchodzące do neuronu, \(\varphi\) jest pewną
 nieliniową funkcję zwaną funkcją aktywacji, a \(\bm{w}\) i \(b\) to pewne parametry (zwane również
@@ -49,8 +49,10 @@ określone zadanie.
 Pojęcie tensora w uczeniu maszynowym nie ma wiele wspólnego z tensorami używanymi w algebrze, czy w
 fizyce. W naszym kontekście tensor to po prostu wielowymiarowa tablica liczb. Standardowo w tym
 tekście tensory będziemy oznaczać literami wytłuszczonymi, np. \(\bm{A}\), natomiast odnosząc się do
-ustalonego elementu tensora \(\bm{A}\) będziemy zapisywać \(A_{\alpha_1,\ldots,\alpha_n}\) lub
-\(A_\alpha\), gdzie \(\alpha\) będzie oznaczać wielowskaźnik \((\alpha_1,\ldots,\alpha_n)\).
+ustalonego elementu tensora \(\bm{A}\) będziemy zapisywać \(A_{\alpha_1,\ldots,\alpha_k}\) lub
+\(A_\alpha\), gdzie \(\alpha\) będzie oznaczać wielowskaźnik \((\alpha_1,\ldots,\alpha_k)\). Liczbę
+\(k\) nazywamy wymiarem tensora \(\bm{A}\). Zbiór wszystkich tensorów wymiaru \(k\) o liczbie
+elementów wzdłuż osi \(i\) równej \(n_i\) będziemy oznaczać \(\Rbb^{(n_1,\ldots,n_k)}\).
 
 \medskip
 
@@ -72,45 +74,181 @@ wprowadzimy następujące wielkości:
 \end{itemize}
 
 Obliczenie wartości \(\bm{v}^{(i)}\) możemy wyrazić rekurencyjnie jako
-\[
+\[\boxed{
     \bm{v}^{(i)} = \bm{F}^{(i)}\left[ \left(\bm{v}^{(j)}\right)_{j \in \mathscr{P}_i}; \bm{\theta}^{(i)}\right] \,.
-\]
+}\]
 Jeśli teraz wartości \(\bm{v}\) będziemy obliczać w kolejności zwróconej przez sortowanie
 topologicznie wierzchołków grafu to przy propagacji sygnału w przód odwiedzimy każdy wierzchołek
 jedynie raz.
 
-% \section{Funkcje straty}
-% \section{Metody optymalizacji}
-% \section{Wsteczna propagacja błędu}
-% \section{Inicjalizacja}
-% \section{Regularyzacja}
+Jako przykład rozważmy wspomniany na wstępie perceptron wielowarstwowy składający się z \(N\) warstw
+w pełni połączonych (ang. \emph{fully connected layers}). Sieć taka jest reprezentowana przez
+skierowaną ścieżkę, której każdy wierzchołek (warstwa w pełni połączona) realizuje przekształcenie
+\(\bm{F}: \Rbb^{(\ldots, n)} \mapsto \Rbb^{(\ldots, m)}\)
+\[
+    \bm{F}(\bm{X} ; \bm{W}, \bm{b}) = \varphi \left( \bm{X} \bm{W} + \bm{b} \right) \,,
+\]
+gdzie \(\bm{W} \in \Rbb^{(n, m)}\), \(\bm{b} \in \Rbb^m\) są parametrami tego przekształcenia, a
+\(\varphi\) to pewna nieliniowa funkcja aktywacji. Warto zaznaczyć, iż \(\bm{X}\) jest dowolnym \(k
+\geq 1\) wymiarowym tensorem, którego ostatnia oś ma \(n\) elementów (nie musi to być koniecznie
+macierz, czy wektor). Łatwo zrozumieć powyższy wzór wypisując jawne wyrażenie na element wartości
+funkcji \(\bm{F}\) 
+\[
+    F_{\alpha\mu}(\bm{X} ; \bm{W}, \bm{b}) = \varphi \left( \sum_{\beta=1}^{n} X_{\alpha\beta} W_{\beta\mu} + b_{\mu}\right)\,,
+\]
+gdzie \(\alpha\) to wielowskaźnik, natomiast \(\beta\) i \(\mu\) to skalarne indeksy. Obliczenie
+wartości \(\bm{v}^{(i)}\) można dla takiej sieci wyrazić zatem rekurencyjnie jako
+\[
+    \bm{v}^{(i)} = \varphi \left( \bm{v}^{(i-1)} \bm{W}^{(i)} + \bm{b}^{(i)} \right)\,
+\]
+gdzie \(\bm{v}^{(0)}\) to wejście do sieci neuronowej, co wynika z faktu, iż dla ścieżki
+\(\mathscr{N}_i = \{i+1\}\), \(\mathscr{P}_i = \{i-1\}\) (zakładając naturalną numerację
+wierzchołków).
 
 
-\section{Architektury}
+\section{Funkcje straty}
 
-\subsection{CNN}
-~
+Idea treningu sieci neuronowych polega na znalezieniu takich wartości parametrów sieci \(\Theta\),
+aby sieć realizowała określone zadanie. Zadanie to jest specyfikowane w postaci zbioru przykładów
+\(\mc{X}\), który zawiera wzorce odpowiedzi modelu. W najbardziej typowym przypadku uczenia
+nadzorowanego zbiór \(\mc{X}\) składa się z par zawierających wektor cech i prawidłową etykietę dla
+nich. Zbiór ten może mieć jednak również inną postać, np. w przypadku trenowania modeli
+generatywnych dla obrazków, składa się on jedynie z pewnych zdjęć i nie zawiera żadnych etykiet. Nie
+wchodząc w żadne szczegóły dotyczące struktury samego zbioru \(\mc{X}\), w każdym z nich trening
+sieci wygląda podobnie. Przede wszystkim wprowadzamy funkcję \(L: 2^\mc{X} \times \Theta \mapsto
+\Rbb\) zwaną funkcją kosztu lub straty (ang. \emph{cost, loss function}), która w sposób ilościowy
+określa jak sieć neuronowa z danymi parametrami \(\bm{\theta}\) radzi sobie na dowolnym podzbiorze
+danych. Następnie wykorzystujemy algorytmy optymalizacji, aby znaleźć parametry które minimalizują
+stratę (na całym zbiorze lub na jego części)
+\[
+    \bm{\theta}^* = \arg\min_{\bm{\theta} \in \Theta} L(\mc{X}, \bm{\theta})\,.
+\]
+Zauważmy, że w takim podejściu istnieje pewna pułapka. Otóż sieć neuronową (czy też dowolny inny
+model uczenia maszynowego) uczymy na zbiorze danych treningowych. Nie interesuje nas jednak tak
+naprawdę jego wydajność na tym zbiorze, tylko na zbiorze nowych, niewidzianych w czasie treningu
+danych (czyli interesuje nas generalizacja). Szukanie minimum globalnego funkcji kosztu na zbiorze
+treningowym może wówczas doprowadzić do nadmiernego dopasowania (ang. \emph{overfitting}), czyli
+sytuacji, w której model bardzo dobrze radzi sobie na danych treningowych natomiast fatalnie radzi
+sobie na danych testowych, których nie były dostępne podczas treningu.
 
-\subsection{RBM}
-~
+\medskip
 
-\subsection{Autoencoder}
-~
+Pozostaje pytanie, jak właściwie konstruujemy funkcje kosztu. Jednym z lepiej umotywowanych podejść
+(choć nie jedynym i chyba nawet nie najbardziej rozpowszechnionym) jest konstrukcja w oparciu o
+kryterium maksymalnej wiarygodności. Zasadnicza idea jest taka, iż modelujemy nasze dane jako
+pochodzące z pewnej sprametryzowanej rodziny rozkładów prawdopodobieństwa, a parametry tego rozkładu
+są zależne od parametrów sieci. Następnie maksymalizujemy funkcję wiarygodności dla zbioru danych
+treningowych, przy czym ową maksymalizację wyrażamy najczęściej jako minimalizację zanegowanej
+logarytmicznej funkcji wiarygodności (ang. \emph{Negated Log-Likelihood}). Poniżej rozpatrzymy
+szczegółowo konstrukcję dwóch najczęściej używanych funkcji straty odpowiednio dla zadań regresji i
+klasyfikacji.
 
-\subsection{VAE}
-~
+\subsection{Błąd średniokwadratowy}
 
-\subsection{GAN}
-~
+Rozpatrujemy zagadnienie regresji, którego celem jest przewidzenie dla danego wektora cech
+\(\bm{x}\) ciągłej wartości \(y\). Zbiór treningowy \(\mc{X}\) składa się z \(n\) par
+\((\bm{x}^{(i)}, y^{(i)})\). Zakładamy, że wartość \(y\) pochodzi z rozkładu normalnego z
+parametrami \(f(\bm{x}; \bm{\theta})\), \(\sigma^2\), gdzie wariancja jest znana, a \(f(\bm{x};
+\bm{\theta})\) to wyjście sieci neuronowej
+\[
+    y(\bm{x}) \sim \mc{N}\left( f(\bm{x}; \bm{\theta}), \sigma^2 \right) \,.
+\]
+Funkcja wiarygodności ma postać
+\[
+    C\cdot\prod_{i=1}^n \exp\left\{-\frac{1}{2\sigma^2} \left[y^{(i)} - f\left(\bm{x}^{(i)}; \bm{\theta}\right) \right]^2\right\}\,,
+\]
+skąd funkcja kosztu
+\[
+    L(\mc{X}; \bm{\theta}) = \frac{1}{2} \sum_{i=1}^n \left[y^{(i)} - f\left(\bm{x}^{(i)}; \bm{\theta}\right) \right]^2
+\]
+pomijając człony stałe. Otrzymujemy zatem znany błąd średniokwadratowy. Wygodniej jest przyjąć, że
+sieć neuronowa przetwarza od razu cały \emph{batch} przykładów uczących, tj. na wejściu otrzymujemy
+macierz
+\[
+    \bm{X} = \mqty[\bm{x}^{(1)}\\ \vdots \\ \bm{x}^{(n)}]
+\]
+i zwracamy wektor odpowiedzi, tzn. sieć neuronowa realizuje przekształcenie \(\bm{f} : \Rbb^{(n,d)}
+\mapsto \Rbb^n\). W takim przypadku błąd średniokwadratowy możemy zapisać wygodniej jako
+\[
+    L(\mc{X}; \bm{\theta}) = \frac{1}{2} \norm{\bm{y} - \bm{f}(\bm{X}; \bm{\theta})}^2\,.
+\]
+Ponieważ będzie to nam potrzebne później, podajemy tutaj również wzór na pochodną powyższej funkcji
+kosztu po odpowiedzi sieci
+\[
+    \pdv{L}{f_\alpha} = f_\alpha - y_\alpha \,.
+\]
 
-\subsection{DDPM}
-~
 
-\subsection{Transformer}
-~
+\subsection{Entropia krzyżowa}
 
-\section{Interpretowalność}
-~
+Podobnie jak w przypadku regresji postępujemy w przypadku klasyfikacji. Rozważmy najpierw
+klasyfikację binarną, w której zbiór treningowy składa się z \(n\) par zawierających wektor cech
+\(\bm{x}^{(i)}\) oraz etykietę \(t^{(i)} \in \{0,1\}\). Tym razem dane będziemy modelować przez rozkład
+dwumianmowy z pewnym parametrem \(\pi(\bm{x}; \bm{\theta}) \in [0;1]\) określającym
+prawdopodobieństwo klasy pozytywnej
+\[
+    t(\bm{x}) \sim \text{Bin}\left(\pi(\bm{x}; \bm{\theta})\right)\,.
+\]
+Dodatkowo założymy, że funkcja \(\pi\) ma postać
+\[
+    \pi(\bm{x}; \bm{\theta}) = \sigma\left( f(\bm{x}; \bm{\theta})\right)\,,
+\]
+gdzie \(f(\bm{x}; \bm{\theta})\) to wyjście sieci neuronowej, a \(\sigma\) to funkcja logistyczna
+\[
+    \sigma(z) = \frac{1}{1 + \e^{-z}}\,.
+\]
+Funkcja wiarygodności ma w tym przypadku postać
+\[
+    \prod_{i=1}^n \pi\left(\bm{x}^{(i)}; \bm{\theta}\right)^{t^{(i)}}\cdot \left[1 - \pi\left(\bm{x}^{(i)}; \bm{\theta}\right)\right]^{1 - t^{(i)}}\,,
+\]
+skąd
+\[
+\begin{split}
+    &L(\mc{X}; \bm{\theta}) =\\
+    &- \sum_{i=1}^n \left\{ t^{(i)} \log \pi^{(i)} + (1 - t^{(i)}) \log \left(1 - \pi^{(i)}\right) \right\}\,,
+\end{split}
+\]
+gdzie \(\pi^{(i)} = \pi(\bm{x}^{(i)};\bm{\theta})\). Taką funkcję kosztu nazywamy (binarną) entropią
+krzyżową.
+
+
+\section{Metody optymalizacji}
+\section{Wsteczna propagacja błędu}
+\section{Funkcje aktywacji}
+\section{Inicjalizacja}
+\section{Regularyzacja}
+
+
+% \section{Architektury}
+
+% \subsection{MLP}
+% ~
+
+% \subsection{CNN}
+% ~
+
+% \subsection{RBM}
+% ~
+
+% \subsection{Autoencoder}
+% ~
+
+% \subsection{VAE}
+% ~
+
+% \subsection{GAN}
+% ~
+
+% \subsection{DDPM}
+% ~
+
+% \subsection{Transformer}
+% ~
+
+% \section{Interpretowalność}
+% ~
+
+
 
 
 \end{document}
