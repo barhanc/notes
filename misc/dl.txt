@@ -1,0 +1,82 @@
+1. WHAT IS A NEURAL NETWORK?
+
+Neural network is any Directed Acyclic Graph (DAG) in which every node i has the following
+attributes.
+
+1.  Set of previous nodes 𝒫ᵢ
+
+2.  Set of next nodes 𝒩ᵢ
+
+3.  Parametrized tensor function with signature 
+
+    Fᵢ : ℝ^(...) × ... × ℝ^(...) × Θ ↦ ℝ^(...)
+    
+    The function takes p tensor arguments of dimensions k₁,...,kₚ respectively and parameters θᵢ ∈ Θ
+    and returns a tensor of dimension l. Obviously it must satisfy p = |𝒫ᵢ| and the tensor returned
+    by parent nodes must have appropriate shapes.
+
+4. The gradient of the function Fᵢ w.r.t. the parameters ∂Fᵢ[β]/∂θᵢ[α] and w.r.t. all the inputs
+that is for all j ∈ 𝒫ᵢ we have functions ∂Fᵢ[β]/∂Fⱼ[α], where α, β denote some multi-indices.
+
+---------------------------------------------------------------------------------------------------
+
+2. LOSS FUNCTIONS
+
+Training a neural network consists of changing the parameters θ_i of the nodes in such a way as to
+make the network perform the given task. The task is specified by a training set 𝒳 which contains
+"blueprint answers" of the network. To train the network we introduce the quantitative measure of
+network's performance on the dataset which implicitly (through the network's outputs) depends on the
+parameters θ of the network L(𝒳,θ). Training can then be phrased as an optimization problem of the
+form
+
+θ* = argmin L(𝒳,θ)
+
+for a fixed training set 𝒳.
+
+There is no single established way of constructing loss functions. One of the more motivated
+approaches is based on the maximum likelihood criterion. The idea is that we model our data using
+some parametrized statistical model and express the parameters of this model as an output of a
+neural network. The loss function is then taken to be the negated log-likelihood function. In this
+manner one can derive the most common loss functions.
+
+2.1. Mean Squared Error TODO:
+
+2.2 (Binary) Cross Entropy TODO:
+
+---------------------------------------------------------------------------------------------------
+
+3. FORWARD PROPAGATION
+
+Let vᵢ be the (tensor) value of the function Fᵢ. To propagate the (tensor) inputs through the
+network we use the following recursive equation
+
+vᵢ = Fᵢ( (vⱼ | j ∈ 𝒫ᵢ) ; θᵢ )
+
+and visit the nodes in the topological order as this guarantees that we visit every node exactly
+once. We assume here that nodes vᵢ such that 𝒫ᵢ = ∅ are the inputs of the network and nodes vᵢ such
+that 𝒩ᵢ = ∅ are the outputs of the network.
+
+---------------------------------------------------------------------------------------------------
+
+4. BACKWARD PROPAGATION
+
+Let L be the loss function. In order to compute the derivatives ∂L/∂θᵢ we use the following
+recursive equations
+
+∂L/∂θᵢ[α] = ∑{β} ∂L/∂Fᵢ[β] ⋅ ∂Fᵢ[β]/∂θᵢ[α]
+
+∂L/∂Fᵢ[α] = ∑{j ∈ 𝒩ᵢ} ∑{β} ∂L/∂Fⱼ[β] ⋅ ∂Fⱼ[β]/∂Fᵢ[α]
+
+where α, β are some multi-indices. We visit the nodes in the reversed topological order and compute
+and store the values of loss function gradients. All gradients are computed for the current values
+vᵢ and θᵢ, therefore before backward propagation one must perform forward propagation to compute
+values vᵢ.
+
+
+hᵢ = ∑{β} X[α'β] ⋅ Wᵢ[βα] + bᵢ[α]
+
+Fᵢ[α'α](X ; Wᵢ, bᵢ) = ϕ( ∑{β} X[α'β] ⋅ Wᵢ[βα] + bᵢ[α])
+
+∂Fᵢ[α'α]/∂Wᵢ[μ'μ] (X ; Wᵢ, bᵢ) = ϕ'(hᵢ) ⋅ ∑{β} X[α'β] ⋅ δ[μ'β] ⋅ δ[μα] = ϕ'(hᵢ) ⋅ X[α'μ'] ⋅ δ[μα]
+
+∂Fᵢ[α'α]/∂X[μ'μ] (X ; Wᵢ, bᵢ) = ϕ'(hᵢ) ⋅ ∑{β} Wᵢ[βα] ⋅ δ[μ'α'] ⋅ δ[μβ] = ϕ'(hᵢ) ⋅ Wᵢ[μα] ⋅ δ[μ'α']
