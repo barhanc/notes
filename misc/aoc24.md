@@ -85,7 +85,7 @@
   $$
   Indeed $x \equiv_{n_1} a_1$ and $x \equiv_{n_2} a_2$.
 
-  * **Interior Point Methods**
+* **Interior Point Methods**
 
   Linear Programming (LP) problem is  minimize a linear function in $\mathbb{R}^n$ over a
   *polyhedron*. This is the *primal formulation*.
