@@ -3,26 +3,28 @@
 Neural network is any Directed Acyclic Graph (DAG) in which every vertex $i$ has the following
 attributes.
 
-1. Set of previous nodes - $\mathscr{P}_i$.
-2. Set of next nodes - $\mathscr{N}_i$.
-3. Parametrized tensor function of the form
-    ```math
-    \newcommand\Rbb{\mathbb{R}}
+Set of previous nodes - $\mathscr{P}_i$.
 
-    \bm{F}^{(i)} : \Rbb^{\left(n_{1}^{(1)}, \ldots, n_{k_1}^{(1)}\right)} \times \ldots \times  \Rbb^{\left(n_{1}^{(p)}, \ldots, n_{k_p}^{(p)}\right)} \times \Theta \mapsto \Rbb^{(m_1, \ldots, m_l)}
-    ```
-    The function takes $p$ tensor arguments of dimensions $k_1,\ldots,k_p$ respectively (input
-   tensor $q$ of dimension $k_q$ has $n_{r}^{(q)}$ elements along the $r$ axis) and parameters
-   $\bm{\theta}^{(i)} \in \Theta$ and returns a tensor of dimension $l$. Obviously it must satisfy
-   $p = |\mathscr{P}_i|$ and the tensors returned by the parent nodes must have appropriate shapes.
+Set of next nodes - $\mathscr{N}_i$.
 
-4. The gradient functions of the function $\bm{F}^{(i)}$ w.r.t. to the parameters and w.r.t. all the
-   inputs, that is for all $j \in \mathscr{P}_i$ we have a gradient functions
-   ```math
-    \newcommand{\pdv}[2]{\frac{\partial #1}{\partial #2}}
-    \pdv{F_\beta ^{(i)}}{\theta_\alpha ^{(i)}}\,,\quad \pdv{F_\beta ^{(i)}}{F_\alpha ^{(j)}} \,,
-   ```
-    where $\alpha$, $\beta$ are the suitable multi-indices.
+Parametrized tensor function of the form
+```math
+\newcommand\Rbb{\mathbb{R}}
+
+\bm{F}^{(i)} : \Rbb^{\left(n_{1}^{(1)}, \ldots, n_{k_1}^{(1)}\right)} \times \ldots \times  \Rbb^{\left(n_{1}^{(p)}, \ldots, n_{k_p}^{(p)}\right)} \times \Theta \mapsto \Rbb^{(m_1, \ldots, m_l)}
+```
+The function takes $p$ tensor arguments of dimensions $k_1,\ldots,k_p$ respectively (input tensor
+$q$ of dimension $k_q$ has $n_{r}^{(q)}$ elements along the $r$ axis) and parameters
+$\bm{\theta}^{(i)} \in \Theta$ and returns a tensor of dimension $l$. Obviously it must satisfy $p =
+|\mathscr{P}_i|$ and the tensors returned by the parent nodes must have appropriate shapes.
+
+The gradient functions of the function $\bm{F}^{(i)}$ w.r.t. to the parameters and w.r.t. all the
+inputs, that is for all $j \in \mathscr{P}_i$ we have a gradient functions
+```math
+\newcommand{\pdv}[2]{\frac{\partial #1}{\partial #2}}
+\pdv{F_\beta ^{(i)}}{\theta_\alpha ^{(i)}}\,,\quad \pdv{F_\beta ^{(i)}}{F_\alpha ^{(j)}} \,,
+```
+where $\alpha$, $\beta$ are the suitable multi-indices.
 
 
 # Loss functions
