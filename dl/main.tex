@@ -1,5 +1,4 @@
 \documentclass{myclass}
-\usepackage[polish]{babel}
 
 \begin{document}
 
@@ -178,6 +177,10 @@ Typically one uses the L1 or L2 norms (\(p=1,2\)). The most important difference
 that L1 norm contains implicit feature selection that is it often makes the parameters exactly 0,
 while L2 norm only encourages the weights to be values close to 0. 
 
+\subsection{Weight normalization}
+
+...
+
 \subsection{Early stopping}
 
 The simplest, yet extremely powerful and popular form of regularization is the early stopping. The
@@ -213,9 +216,14 @@ part of the space that is likely to produce a good solution.
 
 \subsection{Augmentation}
 
-Training set augmentation is a method of implicitly specifing certain invariancess
+Training set augmentation is a method of implicitly specifing certain invariances of the network by
+modyfing the examples from the training set before feeding them into the network. Typical examples
+are image transformations for convolutional neural networks trained to classify images as we want
+the output of the network to be invariant under rotations, zoom, reflection, etc.
 
 \section{Initialization}
+
+\section{Normalization}
 
 \section{Architectures}
 
