@@ -14,6 +14,7 @@
 
 % Custom symbols
 \newcommand{\Rbb}{\mathbb{R}}
+\newcommand{\tpose}{\intercal}
 \newcommand{\e}{\mathrm{e}}
 \newcommand{\im}{\mathrm{i}}
 \newcommand{\arcangle}{\mathord{<\mspace{-9mu}\mathrel{)}\mspace{2mu}}}

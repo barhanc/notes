@@ -4,8 +4,28 @@
 
 \section{What is a neural network?}
 
-Neural network is any Directed Acyclic Graph (DAG) in which every vertex \(i\) has the following
-attributes.
+History of neural networks dates back at least to the 1950s when F. Rosenblatt proposed the
+perceptron model. The basic computational unit in such a network was the McCulloch--Pitts neuron
+which realized the following mapping \(\Rbb^n \mapsto \Rbb\)
+\[
+\boxed
+{
+   f(\bm{x}) = \varphi \left( \bm{x} \bm{w}^\tpose + b \right)
+}\,,
+\]
+where \(\bm{x} = \mqty[x_1 & \ldots & x_n]\) is the vector of input signals, \(\varphi\) is some
+nonlinear activation function and \(\bm{w}\), \(b\) are some parameters (\(\bm{w}\) called the
+weights and \(b\) called the bias). Multilayer perceptron was built from many such neurons connected
+in layers so that the connections existed only between the neurons in neighboring layers and there
+were no connections between the neurons in the same layer. 
+
+\begin{figure}[ht]
+   \centering
+   \includegraphics[width=0.85\columnwidth]{figs/nn.png}
+\end{figure}
+
+In general neural network is any Directed Acyclic Graph (DAG) in which every vertex \(i\) has the
+following attributes.
 
 \medskip
 
