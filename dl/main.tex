@@ -414,10 +414,10 @@ backpropagation algorithm. First we compute the jacobian
 \]
 It is easy to show that 
 \[
-   \pdv{M_\alpha}{X_{\beta'\beta}} = \frac{1}{n} \delta_{\alpha\beta}\,,\quad \pdv{S_\alpha}{X_{\beta'\beta}} = \frac{2}{n}(X_{\beta'\alpha} - M_\alpha) \delta_{\alpha\beta} \,,
+   \pdv{M_\alpha}{X_{\beta'\beta}} = \frac{1}{n} \delta_{\alpha\beta}\,,\quad \pdv{S_\alpha}{X_{\beta'\beta}} = \frac{2}{n}(X_{\beta'\alpha} - M_\alpha) \delta_{\alpha\beta} \,.
 \]
 Denoting \(\hat{X}_{\alpha'\alpha} = (X_{\alpha'\alpha} - M_\alpha) / \sqrt{S_\alpha + \epsilon}\)
-we can write the vector jacobian product as
+we can write the vector-jacobian product as
 \[
 \boxed
 {
