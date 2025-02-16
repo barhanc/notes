@@ -416,22 +416,13 @@ It is easy to show that
 \[
    \pdv{M_\alpha}{X_{\beta'\beta}} = \frac{1}{n} \delta_{\alpha\beta}\,,\quad \pdv{S_\alpha}{X_{\beta'\beta}} = \frac{2}{n}(X_{\beta'\alpha} - M_\alpha) \delta_{\alpha\beta} \,,
 \]
-thus the vector-jacobian product is given by
-\[
-\begin{split}
-   \pdv{L}{X_{\beta'\beta}} = &\sum_{\alpha'\alpha} \pdv{L}{F_{\alpha'\alpha}} \pdv{F_{\alpha'\alpha}}{X_{\beta'\beta}} \\
-                            = &A_\beta(S_\beta + \epsilon)^{-\onehalf} \pdv{L}{F_{\beta'\beta}} \\
-                            & - \frac{1}{n}(S_\beta + \epsilon)^{-\threehalves} (X_{\beta'\beta} - M_{\beta}) \sum_{\alpha'} \pdv{L}{F_{\alpha'\beta}} (X_{\alpha'\beta} - M_\beta) \\
-                            & - \frac{1}{n} (S_\beta + \epsilon)^{-\onehalf} \sum_{\alpha'} \pdv{L}{F_{\alpha'\beta}}
-\end{split}
-\]
 Denoting \(\hat{X}_{\alpha'\alpha} = (X_{\alpha'\alpha} - M_\alpha) / \sqrt{S_\alpha + \epsilon}\)
-we can write this expression in a more elegant form
+we can write the vector jacobian product as
 \[
 \boxed
 {
 \begin{split}
-   &\pdv{L}{X_{\beta'\beta}} =\\
+   &\pdv{L}{X_{\beta'\beta}} = \sum_{\alpha'\alpha} \pdv{L}{F_{\alpha'\alpha}} \pdv{F_{\alpha'\alpha}}{X_{\beta'\beta}} =\\
    &\frac{A_\beta}{n\sqrt{S_\beta + \epsilon}} \left[ n \pdv{L}{F_{\beta'\beta}} - \sum_{\alpha'} \pdv{L}{F_{\alpha'\beta}} - \hat{X}_{\beta'\beta} \sum_{\alpha'} \pdv{L}{F_{\alpha'\beta}} \hat{X}_{\alpha'\beta} \right]
 \end{split}
 }
