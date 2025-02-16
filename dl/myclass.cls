@@ -20,6 +20,8 @@
 \newcommand{\arcangle}{\mathord{<\mspace{-9mu}\mathrel{)}\mspace{2mu}}}
 \newcommand\mc[1]{\mathcal{#1}}
 \renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\newcommand{\onehalf}{\frac{1}{2}}
+\newcommand{\threehalves}{\frac{3}{2}}
 
 % Colouring
 \RequirePackage[]{hyperref}

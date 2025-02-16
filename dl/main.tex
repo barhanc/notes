@@ -49,7 +49,7 @@ tensor \(q\) of dimension \(k_q\) has \(n_{r}^{(q)}\) elements along the \(r\) a
 \medskip
 
 4. The gradient functions of the function \(\bm{F}^{(i)}\) w.r.t. to the parameters and w.r.t. all
-the inputs, that is for all \(j \in \mathscr{P}_i\) we have a gradient functions
+the inputs, that is for all \(j \in \mathscr{P}_i\) we have the gradient functions
 \[
    \pdv{F_\beta ^{(i)}}{\theta_\alpha ^{(i)}}\,,\quad \pdv{F_\beta ^{(i)}}{F_\alpha ^{(j)}} \,,
 \]
@@ -82,44 +82,91 @@ this manner one can derive the most common loss functions.
 \subsection{Mean Squared Error}
 
 \[
-\boxed{ L(\mc{X}, \bm{\theta}) = \frac{1}{n} \sum_\alpha \left[ y_\alpha - \Phi_\alpha(\bm{X};\bm{\theta}) \right]^2}
+\boxed{ L(\mc{X}, \bm{\theta}) = \frac{1}{2n} \sum_\alpha \left[ y_\alpha - \Phi_\alpha(\bm{X};\bm{\theta}) \right]^2}
 \] 
 where \(\bm{X}\) is a tensor which can be interpreted as a stack of \(n\) 1-D feature-vectors
 residing in the last dimension of \(\bm{X}\), \(\bm{y}\) is the corresponding tensor of \(n\) scalar
 continuous outputs for each feature-vector (so called target) and \(\bm{\Phi}\) denotes the neural
-network.
+network. We also show the derivation of the gradient of the loss function w.r.t. \(\bm{\Phi}\)
+\[
+\begin{split}
+   \pdv{L}{\Phi_\beta} &= \frac{1}{2n} \sum_\alpha 2 \left( \Phi_\alpha - y_\alpha \right) \pdv{\Phi_\alpha}{\Phi_\beta} \\
+                       &= \frac{1}{n} \sum_\alpha \left( \Phi_\alpha - y_\alpha \right) \delta_{\alpha\beta}\\
+                       &= \frac{1}{n} \left( \Phi_\beta - y_\beta \right)
+\end{split}
+\]
+so finally
+\[
+\boxed{\pdv{L}{\Phi_\beta} = \frac{1}{n} \left( \Phi_\beta - y_\beta \right) }
+\]
 
 
 \subsection{(Binary) Cross Entropy}
 
 \[
+\boxed{
 \begin{split} 
-   &\boxed{L(\mc{X}, \bm{\theta}) = \frac{1}{n} \sum_{\alpha} \left[ t_\alpha \log\pi_\alpha + (1-t_\alpha)\log(1-\pi_\alpha) \right]} \\
-   &\bm{\pi} = \sigma\left( \bm{\Phi}(\bm{X}; \bm{\theta})\right)\,,\quad \sigma(z) = \frac{1}{1 + \e^{-z}}\,,
+   & L(\mc{X}, \bm{\theta}) = -\frac{1}{n} \sum_{\alpha} \left[ t_\alpha \log\pi_\alpha + (1-t_\alpha)\log(1-\pi_\alpha) \right] \\
+   & \bm{\pi} = \sigma\left( \bm{\Phi}(\bm{X}; \bm{\theta})\right)\,,\quad \sigma(z) = \frac{1}{1 + \e^{-z}}\,,
 \end{split}
+}
 \] 
 where \(\bm{X}\) is a tensor which can be interpreted as a stack of \(n\) 1-D feature-vectors
 residing in the last dimension of \(\bm{X}\), \(\bm{t}\) is the corresponding tensor of \(n\) binary
 (i.e. 0 or 1) values denoting the class for each feature-vector, \(\sigma\) is the logistic
 function, \(\bm{\Phi}\) denotes the neural network and \(\bm{\pi}\) is a tensor of the same shape as
-\(\bm{t}\) which contains the probabilities of the positive class.
+\(\bm{t}\) which contains the probabilities of the positive class.  We also show the derivation of
+the gradient of the loss function w.r.t. \(\bm{\Phi}\)
+\[
+\begin{split}
+   \pdv{L}{\Phi_\beta} &= \sum_{\mu} \pdv{L}{\pi_{\mu}} \pdv{\pi_{\mu}}{\Phi_\beta} \\
+                       &= \frac{1}{n}\sum_{\mu} \left( \frac{1-t_\mu}{1 - \pi_\mu} - \frac{t_{\mu}}{\pi_{\mu}} \right) \sigma'(\Phi_\mu) \delta_{\mu\beta} \\
+                       &= \frac{1}{n} \left( \frac{1-t_\beta}{1 - \pi_\beta} - \frac{t_{\beta}}{\pi_{\beta}}\right) \sigma'(\Phi_\beta)\quad.
+\end{split}
+\]
+Note however that
+\[
+   \dv{\sigma}{z} = \sigma(z)\left(1 - \sigma(z)\right)\,,
+\]
+therefore \(\sigma'(\Phi_\beta) = \pi_\beta (1 - \pi_\beta)\) and thus
+\[
+\boxed{\pdv{L}{\Phi_\beta} = \frac{1}{n}(\pi_\beta - t_\beta)}
+\]
 
 
 \subsection{Cross Entropy}
 
 \[
-\begin{split} 
-   &\boxed{L(\mc{X}, \bm{\theta}) = \frac{1}{n}\sum_{\alpha}\sum_{\beta} t_{\alpha\beta} \log \pi_{\alpha\beta}}\\
-   & \bm{\pi} = \bm{\sigma}\left( \bm{\Phi}(\bm{X};\bm{\theta}) \right)\,,\quad \sigma_{\alpha'\alpha}(\bm{z}) = \frac{\exp z_{\alpha'\alpha}}{\sum_{\beta} \exp z_{\alpha'\beta}}\,,
+\boxed
+{
+\begin{split}
+   & L(\mc{X}, \bm{\theta}) = -\frac{1}{n}\sum_{\alpha}\sum_{\beta} t_{\alpha\beta} \log \pi_{\alpha\beta}\\
+   & \bm{\pi} = \bm{\sigma}\left( \bm{\Phi}(\bm{X};\bm{\theta}) \right)\,,\quad \sigma_{\alpha'\alpha}(\bm{z}) = \frac{\exp z_{\alpha'\alpha}}{\sum_{\beta} \exp z_{\alpha'\beta}}
 \end{split}
+}
 \] 
 where \(\bm{X}\) is a tensor which can be interpreted as a stack of \(n\) 1-D feature-vectors
 residing in the last dimension of \(\bm{X}\), \(\bm{t}\) is the corresponding thensor which can be
 interpreted as a stack of \(n\) 1-D one-hot-vectors residing in the last dimension of \(\bm{t}\)
 encoding the correct class, \(\bm{\sigma}\) is the soft-max function which given the stack of 1-D
 vectors independently normalizes each of them so that the entries are non-negative and sum to 1 and
-\(\bm{\Phi}\) denotes the neural network.
-
+\(\bm{\Phi}\) denotes the neural network. We also show the derivation of the gradient of the loss
+function w.r.t~\(\bm{\Phi}\)
+\[
+   \pdv{L}{\Phi_{\mu\nu}} = \sum_{\mu'\nu'} \pdv{L}{\pi_{\mu'\nu'}} \pdv{\pi_{\mu'\nu'}}{\Phi_{\mu\nu}} = -\frac{1}{n}\sum_{\mu'\nu'} \frac{t_{\mu'\nu'}}{\pi_{\mu'\nu'}} \pdv{\pi_{\mu'\nu'}}{\Phi_{\mu\nu}}\,.
+\]
+It can easily be shown that
+\[
+   \pdv{\pi_{\mu'\nu'}}{\Phi_{\mu\nu}} = \delta_{\mu'\mu} \delta_{\nu'\nu} \pi_{\mu'\nu'} - \delta_{\mu'\mu} \pi_{\mu'\nu'} \pi_{\mu' \nu}
+\]
+and thus
+\[
+   \pdv{L}{\Phi_{\mu\nu}} = -\frac{1}{n} \left( t_{\mu\nu} - \pi_{\mu\nu} \sum_{\nu'} t_{\mu\nu'} \right)\,.
+\]
+However from the definition of \(\bm{t}\) we have \(\sum_{\nu'} t_{\mu\nu'} = 1\) and thus finally
+\[
+\boxed{\pdv{L}{\Phi_{\mu\nu}} = \frac{1}{n} \left( \pi_{\mu\nu} - t_{\mu\nu} \right)}
+\]
 
 \section{Forward propagation}
 
@@ -332,6 +379,73 @@ initialization e.g. \(\mc{N}(0,0.01)\).
 
 
 \section{Normalization}
+
+Activation normalization is a technique that rescales the activations of a layer of the neural
+network. It is used to increase the speed of convergence of the neural network, reduce overfitting
+and the need for careful initialization. The basic idea is to introduce a computational node (layer)
+which realizes the following mapping
+\[
+\boxed{
+\begin{split}
+   &F_{\alpha'\alpha}(\bm{X}; \bm{A},\bm{B}) = A_\alpha \frac{X_{\alpha'\alpha} - M_\alpha}{\sqrt{S_\alpha + \epsilon}} + B_\alpha\\
+   &M_\alpha = \frac{1}{n} \sum_{\alpha'} X_{\alpha'\alpha}\,,\quad S_\alpha = \frac{1}{n} \sum_{\alpha'} (X_{\alpha'\alpha} - M_\alpha)^2
+\end{split}
+}
+\]
+where \(\bm{A}\), \(\bm{B}\) are learnable parameters, \(\alpha'\) and \(\alpha\) are some
+multi-indices which arbitrarily divide all indices of tensor \(\bm{X}\), \(1 = \sum_{\alpha'}
+n^{-1}\) and \(\epsilon \simeq 10^{-8}\) is used to prevent division by 0. If the multi-index
+\(\alpha'\) along which we normalize the data contains the batch dimension then such normalization
+is called \emph{batch normalization}. Such normalization introduces some problems since the examples
+get mixed and are no longer i.i.d. Additionaly the layer behaves differently during training and
+inference since during inference we can no longer compute the normalization along the batch
+dimension. If, on the other hand, the indices \(\alpha'\) do not contain the batch dimension then
+such a normalization is called \emph{layer normalization}.
+
+We also show the derivation of the generalized vector-jacobian product required in the
+backpropagation algorithm. First we compute the jacobian
+\[
+\begin{split}
+   \pdv{F_{\alpha'\alpha}}{X_{\beta'\beta}} = A_\alpha \bigg[ 
+                                              &(S_\alpha + \epsilon)^{-\onehalf} \delta_{\alpha'\beta'} \delta_{\alpha\beta} \\
+                                              &- \frac{1}{2}(S_\alpha + \epsilon)^{-\threehalves} (X_{\alpha'\alpha} - M_\alpha) \pdv{S_\alpha}{X_{\beta'\beta}} \\
+                                              & - (S_\alpha + \epsilon)^{-\onehalf} \pdv{M_\alpha}{X_{\beta'\beta}}  \bigg]\quad.
+\end{split}
+\]
+It is easy to show that 
+\[
+   \pdv{M_\alpha}{X_{\beta'\beta}} = \frac{1}{n} \delta_{\alpha\beta}\,,\quad \pdv{S_\alpha}{X_{\beta'\beta}} = \frac{2}{n}(X_{\beta'\alpha} - M_\alpha) \delta_{\alpha\beta} \,,
+\]
+thus the vector-jacobian product is given by
+\[
+\begin{split}
+   \pdv{L}{X_{\beta'\beta}} = &\sum_{\alpha'\alpha} \pdv{L}{F_{\alpha'\alpha}} \pdv{F_{\alpha'\alpha}}{X_{\beta'\beta}} \\
+                            = &A_\beta(S_\beta + \epsilon)^{-\onehalf} \pdv{L}{F_{\beta'\beta}} \\
+                            & - \frac{1}{n}(S_\beta + \epsilon)^{-\threehalves} (X_{\beta'\beta} - M_{\beta}) \sum_{\alpha'} \pdv{L}{F_{\alpha'\beta}} (X_{\alpha'\beta} - M_\beta) \\
+                            & - \frac{1}{n} (S_\beta + \epsilon)^{-\onehalf} \sum_{\alpha'} \pdv{L}{F_{\alpha'\beta}}
+\end{split}
+\]
+Denoting \(\hat{X}_{\alpha'\alpha} = (X_{\alpha'\alpha} - M_\alpha) / \sqrt{S_\alpha + \epsilon}\)
+we can write this expression in a more elegant form
+\[
+\boxed
+{
+\begin{split}
+   &\pdv{L}{X_{\beta'\beta}} =\\
+   &\frac{A_\beta}{n\sqrt{S_\beta + \epsilon}} \left[ n \pdv{L}{F_{\beta'\beta}} - \sum_{\alpha'} \pdv{L}{F_{\alpha'\beta}} - \hat{X}_{\beta'\beta} \sum_{\alpha'} \pdv{L}{F_{\alpha'\beta}} \hat{X}_{\alpha'\beta} \right]
+\end{split}
+}
+\]
+Additionally the vector-jacobian products for the parameters are given by
+\[
+\boxed
+{
+\begin{split}
+   &\pdv{L}{A_\beta} = \sum_{\alpha'\alpha} \pdv{L}{F_{\alpha'\alpha}} \pdv{F_{\alpha'\alpha}}{A_\beta} = \sum_{\alpha'} \pdv{L}{F_{\alpha'\beta}} \hat{X}_{\alpha'\beta}\\
+   &\pdv{L}{B_\beta} =  \sum_{\alpha'\alpha} \pdv{L}{F_{\alpha'\alpha}} \pdv{F_{\alpha'\alpha}}{B_\beta} = \sum_{\alpha'} \pdv{L}{F_{\alpha'\beta}}
+\end{split}
+}
+\]
 
 \section{Architectures}
 
