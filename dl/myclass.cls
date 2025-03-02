@@ -14,12 +14,12 @@
 
 % Custom symbols
 \newcommand{\Rbb}{\mathbb{R}}
+\newcommand{\Ebb}{\mathbb{E}}
 \newcommand{\tpose}{\intercal}
 \newcommand{\e}{\mathrm{e}}
 \newcommand{\im}{\mathrm{i}}
 \newcommand{\arcangle}{\mathord{<\mspace{-9mu}\mathrel{)}\mspace{2mu}}}
-\newcommand\mc[1]{\mathcal{#1}}
-\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\newcommand{\mc}[1]{\mathcal{#1}}
 \newcommand{\onehalf}{\frac{1}{2}}
 \newcommand{\threehalves}{\frac{3}{2}}
 
@@ -38,4 +38,19 @@
             mathrsfs, physics, wasysym, xcolor, bm}
 
 % Additional packages and commands depending on project:
-\usepackage{lipsum}
+\usepackage{lipsum, listings}
+
+\lstdefinestyle{mystyle}{ 
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,
+    tabsize=2
+}
+\lstset{style=mystyle}
+
+\DeclareEmphSequence{\bfseries\itshape}
+\DeclareMathOperator*{\argmin}{arg\,min} 
+\DeclareMathOperator*{\argmax}{arg\,max} 

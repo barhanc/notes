@@ -11,7 +11,7 @@ which realized the following mapping \(\Rbb^n \mapsto \Rbb\)
 \boxed
 {
    f(\bm{x}) = \varphi \left( \bm{x} \bm{w}^\tpose + b \right)
-}\,,
+}
 \]
 where \(\bm{x} = \mqty[x_1 & \ldots & x_n]\) is the vector of input signals, \(\varphi\) is some
 nonlinear activation function and \(\bm{w}\), \(b\) are some parameters (\(\bm{w}\) called the
@@ -146,7 +146,7 @@ therefore \(\sigma'(\Phi_\beta) = \pi_\beta (1 - \pi_\beta)\) and thus
 }
 \] 
 where \(\bm{X}\) is a tensor which can be interpreted as a stack of \(n\) 1-D feature-vectors
-residing in the last dimension of \(\bm{X}\), \(\bm{t}\) is the corresponding thensor which can be
+residing in the last dimension of \(\bm{X}\), \(\bm{t}\) is the corresponding tensor which can be
 interpreted as a stack of \(n\) 1-D one-hot-vectors residing in the last dimension of \(\bm{t}\)
 encoding the correct class, \(\bm{\sigma}\) is the soft-max function which given the stack of 1-D
 vectors independently normalizes each of them so that the entries are non-negative and sum to 1 and
@@ -307,11 +307,11 @@ A general method of regularization of any machine learning model is averaging th
 ensemble of similar models trained on different subsets of the training set which make different
 mistakes. The naive implementation of this method for the neural networks is not feasible as neural
 networks require vast computational resources in the training process. The method which effectively
-realizes this ensembling is dropout. The idea is to introduce layers into the computation graph
-which during training multiply the inputs elementwise by a binary tensor whose element can be 0 or 1
-with specified probability \(p\). During training, in each forward pass we sample such tensor and
-update the running sum. Having finished training we normalize the running sum tensor (i.e. divide it
-by the number of forward passes in training phase) and during forward pass multiply by it.
+realizes this ensemble is dropout. The idea is to introduce layers into the computation graph which
+during training multiply the inputs elementwise by a binary tensor whose element can be 0 or 1 with
+specified probability \(p\). During training, in each forward pass we sample such tensor and update
+the running sum. Having finished training we normalize the running sum tensor (i.e. divide it by the
+number of forward passes in training phase) and during forward pass multiply by it.
 
 
 \subsection{Transfer learning}
@@ -329,8 +329,8 @@ part of the space that is likely to produce a good solution.
 
 \subsection{Augmentation}
 
-Training set augmentation is a method of implicitly specifing certain invariances of the network by
-modyfing the examples from the training set before feeding them into the network. Typical examples
+Training set augmentation is a method of implicitly specifying certain invariances of the network by
+modifying the examples from the training set before feeding them into the network. Typical examples
 are image transformations for convolutional neural networks trained to classify images as we want
 the output of the network to be invariant under rotations, zoom, reflection, etc.
 
@@ -397,7 +397,7 @@ multi-indices which arbitrarily divide all indices of tensor \(\bm{X}\), \(1 = \
 n^{-1}\) and \(\epsilon \simeq 10^{-8}\) is used to prevent division by 0. If the multi-index
 \(\alpha'\) along which we normalize the data contains the batch dimension then such normalization
 is called \emph{batch normalization}. Such normalization introduces some problems since the examples
-get mixed and are no longer i.i.d. Additionaly the layer behaves differently during training and
+get mixed and are no longer i.i.d. Additionally the layer behaves differently during training and
 inference since during inference we can no longer compute the normalization along the batch
 dimension. If, on the other hand, the indices \(\alpha'\) do not contain the batch dimension then
 such a normalization is called \emph{layer normalization}.
@@ -407,9 +407,10 @@ backpropagation algorithm. First we compute the jacobian
 \[
 \begin{split}
    \pdv{F_{\alpha'\alpha}}{X_{\beta'\beta}} = A_\alpha \bigg[ 
-                                              &(S_\alpha + \epsilon)^{-\onehalf} \delta_{\alpha'\beta'} \delta_{\alpha\beta} \\
-                                              &- \frac{1}{2}(S_\alpha + \epsilon)^{-\threehalves} (X_{\alpha'\alpha} - M_\alpha) \pdv{S_\alpha}{X_{\beta'\beta}} \\
-                                              & - (S_\alpha + \epsilon)^{-\onehalf} \pdv{M_\alpha}{X_{\beta'\beta}}  \bigg]\quad.
+                                            & (S_\alpha + \epsilon)^{-\onehalf} \delta_{\alpha'\beta'} \delta_{\alpha\beta} \\
+                                            & - \frac{1}{2}(S_\alpha + \epsilon)^{-\threehalves} (X_{\alpha'\alpha} - M_\alpha) \pdv{S_\alpha}{X_{\beta'\beta}} \\
+                                            & - (S_\alpha + \epsilon)^{-\onehalf} \pdv{M_\alpha}{X_{\beta'\beta}}
+                                            \bigg]\quad.
 \end{split}
 \]
 It is easy to show that 
@@ -450,5 +451,10 @@ Additionally the vector-jacobian products for the parameters are given by
 \subsection{DDPM}
 \subsection{Transformer}
 
-\section{Interpretability}
+% TODO:
+
+% * Architectures
+% * Quantization 
+% * Mechanistic Interpretability
+
 \end{document}

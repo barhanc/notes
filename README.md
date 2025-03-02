@@ -1,8 +1,8 @@
 # notes
 
-* [Deep Learning Cheatsheet](https://barhanc.github.io/notes/dl/main.pdf) (WIP)
+* [Deep Learning Cheatsheet](https://barhanc.github.io/notes/dl/dl.pdf) (WIP)
 
-* [Machine Learning notes](https://barhanc.github.io/notes/ml/main.pdf)
+* [Machine Learning notes](https://barhanc.github.io/notes/dl/ml.pdf)
 
 ---
 
