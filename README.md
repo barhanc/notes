@@ -2,7 +2,7 @@
 
 * [Deep Learning notes](https://barhanc.github.io/notes/dl/dl.pdf) (WIP)
 
-* [Machine Learning notes](https://barhanc.github.io/notes/dl/ml.pdf)
+* [Machine Learning notes](https://barhanc.github.io/notes/dl/ml.pdf) (WIP)
 
 ---
 
