@@ -863,21 +863,58 @@ korelację po okresie przejściowym i przyspieszyć zbieżność. Standardowo wy
 z tej klasy są algorytmy HMC (\emph{Hamiltonian Monte Carlo}) oraz NUTS (\emph{No U-Turn
 Sampler}).
 
-\subsubsection{Próbkowanie Gibbsa}
+% \subsubsection{Próbkowanie Gibbsa}
 % TODO
 
+\section{KDE}
 
-\section{PCA}
-% TODO
+W poprzednim paragrafie opisaliśmy w jaki sposób mając (nieznormalizowaną) funkcję gęstości
+prawdopodobieństwa \(\tilde{p}(\bm{x})\) generować algorytmicznie próbki z opisanego przez nią
+rozkładu. Teraz zajmiemy się problemem odwrotnym tj. mając realizację prostej próby losowej z
+pewnego rozkładu chcemy znaleźć funkcję \(\hat{p}(\bm{x})\), która estymuje gęstość rozkładu
+prawdopodobieństwa, z którego pochodzą próbki. Opiszemy tutaj jedną z najprostszych metod zwaną
+estymatorem jądrowym (ang. \emph{Kernel Density Estimator, KDE}). Estymatorem jądrowym gęstości
+funkcji \(p\) nazywamy funkcję
+\[
+\hat{p}(\bm{x}) := \frac{1}{n}\sum_{i=1}^n K_{\bm{H}}(\bm{x} - \bm{x}_i)\,,
+\]
+gdzie \(\bm{H}\) jest symetryczną i dodatnio określoną macierzą zwaną \textit{bandwidth matrix},
+funkcja \(K_{\bm{H}}\) ma postać
+\[
+K_{\bm{H}}(\bm{x}) = (\det \bm{H})^{-1/2} K(\bm{H}^{-1/2}\bm{x})\,,
+\]
+gdzie funkcja \(K\) zwana jądrem (z ang. \textit{kernel}) jest gęstością prawdopodobieństwa pewnego
+sferycznie symetrycznego rozkładu wielowymiarowego. Wybór funkcji \(K\) nie jest kluczowy ze
+statystycznego punktu widzenia, więc możemy bez problemu założyć, iż jest to gęstość
+wielowymiarowego rozkładu normalnego, tj.
+\[
+K_{\bm{H}}(\bm{x}) = \frac{1}{\sqrt{(2\pi)^m \det\bm{H}}} \exp\left(-\frac{1}{2} \bm{x}^T\bm{H}^{-1}\bm{x}\right)\,,
+\]
+gdzie zakładamy \(\bm{x} \in \mathbb{R}^m\). Większym problemem w przypadku KDE jest wybór
+odpowiedniego parametru \(\bm{H}\). Jednym z prostszych wyborów w przypadku estymatora jest tzw.
+\emph{reguła Silvermana}, która podaje następujący przepis na macierz \(\bm{H}\)
+\[
+H_{\alpha\beta} = 0\,,\quad \sqrt{H_{\alpha\alpha}} = \left(\frac{4}{4 + m}\right)^\frac{1}{m + 4} n^\frac{-1}{m + 4} \sigma_\alpha\,,
+\] 
+gdzie \(\sigma_\alpha\) jest estymatorem wariancji \(\alpha\)-tej współrzędnej zmiennej \(\bm{X}\).
+Inną możliwością jest tzw. \emph{reguła Scotta}
+\[
+H_{\alpha\beta} = 0\,,\quad \sqrt{H_{\alpha\alpha}} = n^\frac{-1}{m+4} \sigma_\alpha\,.
+\]
+KDE w praktycznych zastosowaniach często przyspiesza się za pomocą odpowiednich struktur danych do
+wyszukiwania najbliższych sąsiadów w przestrzeni \(\mathbb{R}^m\), tj. zamiast sumować przyczynki od
+wszystkich punktów \(\bm{x}_i\) dla danego \(\bm{x}\), znajdujemy jego \(k\) najbliższych sąsiadów
+\(\bm{x}\) ze zbioru \(\{\bm{x}_i\}_{i=1}^n\) (np. stosując \emph{approximate nearest neighbors}) i
+obliczamy przyczynki do \(\hat{p}(\bm{x})\) tylko od nich.
 
-\section{Selekcja cech}
-% TODO
+% \section{PCA}
 
-\section{Kalibracja modeli}
-% TODO
+% Analiza składowych głównych (ang. \emph{Principle Component Analysis}) to liniowa metoda redukcji
+% wymiarowości, która może zostać wykorzystana zarówno w celach wizualzacji wysokowymiarowych danych,
+% jak i do zmniejszenia liczby wymiarów celem ułatwionego ich późniejszego przetwarzania przez inne
+% modele uczenia maszynowego. Zasadnicza idea jest następująca ... 
 
 \section{Ewaluacja i selekcja modeli}
-% TODO
 
 \subsection{Przygotowanie danych}
 
@@ -1180,5 +1217,8 @@ W podejściach hybrydowych zmienne są sekwencyjnie dodawane do modelu tak jak w
 przód. Po każdym dodaniu nowej zmiennej, jedna nieistotna zmienna może zostać usunięta — podobnie
 jak w selekcji krokowej wstecz. Podejścia te starają się ściślej naśladować wybór najlepszego
 podzbioru przy zachowaniu niskiego kosztu obliczeniowego metod krokowych.
+
+% \subsection{Kalibracja modeli}
+% TODO
 
 \end{document}
