@@ -96,7 +96,7 @@ gdzie
     &\bm{\Sigma}_{x \mid y} = \bm{\Sigma}_{xx} - \bm{\Sigma}_{xy} \bm{\Sigma}_{yy}^{-1} \bm{\Sigma}_{yx}
 \end{split}\quad.
 \]
-% TODO: Dowód
+% TODO: Proof
 
 \section{Liniowe modele Gaussowskie}
 
@@ -863,8 +863,8 @@ korelację po okresie przejściowym i przyspieszyć zbieżność. Standardowo wy
 z tej klasy są algorytmy HMC (\emph{Hamiltonian Monte Carlo}) oraz NUTS (\emph{No U-Turn
 Sampler}).
 
-% \subsubsection{Próbkowanie Gibbsa}
 % TODO
+\section{(Histogram) Gradient Boosted Trees}
 
 \section{KDE}
 
@@ -913,7 +913,7 @@ Analiza składowych głównych (ang. \emph{Principle Component Analysis}) to lin
 wymiarowości, która może zostać wykorzystana zarówno w celach wizualzacji wysokowymiarowych danych,
 jak i do zmniejszenia liczby wymiarów celem ułatwionego ich późniejszego przetwarzania przez inne
 modele uczenia maszynowego. Zasadnicza idea jest następująca. Mamy macierz \(\bm{X}\) wymiaru \(n
-\times d\), gdzie \(n\) to liczba przykładów, a \(d\) to liczba cech.Wiemy, że dla każdej macierzy
+\times d\), gdzie \(n\) to liczba przykładów, a \(d\) to liczba cech. Wiemy, że dla każdej macierzy
 \(\bm{X}\) wymiaru \(n \times d\) (\(n \geq d\)) istnieje jej rozkład SVD 
 \[
     \bm{X} = \sigma_1 \bm{u}_1 \bm{v}_1^\tpose + \ldots + \sigma_d \bm{u}_{r} \bm{v}_r^\tpose\,,
@@ -927,6 +927,7 @@ przybliżyć macierz \(\bm{X}\) za pomocą kilku pierwszych wyrażeń, w szczeg�
 \]
 Zauważmy jednak teraz, iż wektory \(\bm{u}_1\) i \(\bm{u}_2\) możemy potraktować jako kolejne
 współrzędne 2-D naszego zbioru punktów.
+
 
 \section{Ewaluacja i selekcja modeli}
 
@@ -1232,7 +1233,7 @@ przód. Po każdym dodaniu nowej zmiennej, jedna nieistotna zmienna może zosta�
 jak w selekcji krokowej wstecz. Podejścia te starają się ściślej naśladować wybór najlepszego
 podzbioru przy zachowaniu niskiego kosztu obliczeniowego metod krokowych.
 
-% \subsection{Kalibracja modeli}
+\subsection{Kalibracja modeli}
 % TODO
 
 \end{document}
