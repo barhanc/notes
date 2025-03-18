@@ -96,7 +96,6 @@ gdzie
     &\bm{\Sigma}_{x \mid y} = \bm{\Sigma}_{xx} - \bm{\Sigma}_{xy} \bm{\Sigma}_{yy}^{-1} \bm{\Sigma}_{yx}
 \end{split}\quad.
 \]
-% TODO: Proof
 
 \section{Liniowe modele Gaussowskie}
 
@@ -289,7 +288,6 @@ gdzie interesuje nas rozkład
 \[
     p(y \mid \mc{X}) = \int p(y \mid \bm{w}) p(\bm{w} \mid \mc{X}) \dd{\bm{w}}\,.
 \]
-% TODO: Proof
 Można pokazać, iż rozkład ten jest rozkładem normalnym
 \[
     y \mid \mc{X} \sim \mc{N}(\mu_y, \sigma_y^2)
@@ -320,6 +318,12 @@ przypadku rozkładu normalnego -- wyznaczony wcześniej parametr \(\bm{\mu_n}\)
 \[
     \bm{w}_\text{MAP} = \left(\frac{\sigma^2}{\tau^2}\bm{I} + \bm{X}^\tpose\bm{X}\right)^{-1}\bm{X}^\tpose\bm{y}\,.
 \]
+
+\subsection{Regresja w ujęciu częstościowym}
+% TODO
+
+\subsection{Uogólnione Modele Liniowe}
+% TODO
 
 \section{Wprowadzenie do procesów Gaussowskich}
 
@@ -863,8 +867,8 @@ korelację po okresie przejściowym i przyspieszyć zbieżność. Standardowo wy
 z tej klasy są algorytmy HMC (\emph{Hamiltonian Monte Carlo}) oraz NUTS (\emph{No U-Turn
 Sampler}).
 
-% TODO
 \section{(Histogram) Gradient Boosted Trees}
+% TODO
 
 \section{KDE}
 
