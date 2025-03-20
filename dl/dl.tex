@@ -443,6 +443,166 @@ Additionally the vector-jacobian products for the parameters are given by
 
 \subsection{MLP}
 \subsection{RBM}
+
+Generative model is a probabilistic model which enables us to generate new, synthetic observations
+similar to the one from training set. Some generative models allow us to estimate the probability
+density based on the finite number of samples (observations). There are also generative models in
+which we cannot analytically compute the value of the probabilitry density function, however we can
+still sample from such model to obtain synthetic observations. Moreover a generative model can
+,,explain'' the observations using so called \emph{latent} variables.
+
+We will now focus on the so called \emph{energy based models}. The general idea is to introduce a
+parametrized \emph{energy function} \(E(\bm{v},\bm{h}; \bm{\theta})\), where \(\bm{v} \in V
+\subseteq \Rbb^{d_v}\) is the observation vector, \(\bm{h} \in H \subseteq \Rbb^{d_h}\) is the
+latent variable vector and \(\bm{\theta}\) are the parametrs. We now assume that the joint
+probability is given by a Boltzmann factor
+\[
+   p(\bm{v},\bm{h} \mid \bm{\theta}) = \frac{\e^{- E( \bm{v}, \bm{h}; \bm{\theta})}}{Z(\bm{\theta})}
+\]
+where \(Z(\bm{\theta})\) is the normalization constant
+\[
+   Z(\bm{\theta}) = \sum_{\bm{v} \in V, \bm{h} \in H} \e^{-E(\bm{v},\bm{h}; \bm{\theta})}
+\]
+called also (in analogy to statistical physics) -- the \emph{partition function}. Because of the
+assumption of the Boltzmann-like probability distribution, these models are often called
+\emph{Boltzmann machines}. These models are trained in a similar fashion as standard neural
+networks. We first note that given the joint distribution we can compute the marginal distribution
+of observations
+\[
+\begin{split}
+   p(\bm{v} \mid \bm{\theta}) &= \sum_{\bm{h} \in H} p(\bm{v},\bm{h} \mid \bm{\theta}) \\
+                              &= \frac{1}{Z(\bm{\theta})} \sum_{\bm{h} \in H} \e^{-E(\bm{v},\bm{h}; \bm{\theta})}\,.
+\end{split}
+\]
+and thus can use the standart maximum likelihood criterion to train the model parameters i.e. given
+the training set \(\mc{X} = \{\bm{v}^{(1)}, \ldots, \bm{v}^{(N)}\}\) of i.i.d. samples, we seek
+parameters \(\bm{\theta}^*\) given by
+\[
+   \bm{\theta}^* = \argmin_{\bm{\theta}} \left\{ -\frac{1}{N} \sum_{i=1}^N \log p\left(\bm{v}^{(i)} \mid \bm{\theta}\right) \right\}\,.
+\]
+To find this minimum we will use one of the gradient descent algorithms and thus we will need to
+know the derivative of the loss function w.r.t. the parameters. We will now derive the expression
+for the derivative for arbitrary energy function. Indeed we have
+\[
+   \pdv{L(\mc{X}; \bm{\theta})}{\bm{\theta}} = - \frac{1}{N} \sum_{i=1}^N \frac{1}{p\left(\bm{v}^{(i)} \mid \bm{\theta}\right)} \pdv{p\left(\bm{v}^{(i)} \mid \bm{\theta}\right)}{\bm{\theta}}\,.
+\]
+Expanding the expression for \(p(\bm{v}^{(i)} \mid \bm{\theta})\) we get
+\[
+\begin{split}
+   \pdv{p(\bm{v}^{(i)} \mid \bm{\theta})}{\bm{\theta}} = &- \frac{1}{Z^2(\bm{\theta})} \pdv{Z(\bm{\theta})}{\bm{\theta}} \sum_{\bm{h} \in H} \e^{-E(\bm{v}^{(i)},\bm{h};\bm{\theta})}\\
+   &-\frac{1}{Z(\bm{\theta})} \sum_{\bm{h} \in H} \e^{-E(\bm{v}^{(i)},\bm{h};\bm{\theta})} \pdv{E(\bm{v}^{(i)},\bm{h};\bm{\theta})}{\bm{\theta}}
+\end{split}
+\]
+and computing the derivative of partition function we obtain
+\[
+   \pdv{Z(\bm{\theta})}{\bm{\theta}} = -\sum_{\bm{v} \in V, \bm{h} \in H} \e^{-E(\bm{v},\bm{h};\bm{\theta})} \pdv{E(\bm{v},\bm{h};\bm{\theta})}{\bm{\theta}}
+\]
+and thus putting it all together we get the following expression for the derivative of loss function
+\[
+\begin{split}
+   &\pdv{L(\mc{X};\bm{\theta})}{\bm{\theta}} \\
+   &= -\frac{1}{N} \sum_{i=1}^N \Bigg\{ \sum_{\bm{v} \in V, \bm{h} \in H} \left[ \frac{\e^{-E(\bm{v},\bm{h};\bm{\theta})}}{Z(\bm{\theta})} \cdot \pdv{E(\bm{v},\bm{h};\bm{\theta})}{\bm{\theta}} \right] \\
+   &- \sum_{\bm{h} \in H} \left[ \frac{\e^{-E(\bm{v}^{(i)},\bm{h};\bm{\theta})}}{\sum_{\bm{h}' \in H} \e^{-E(\bm{v}^{(i)},\bm{h}';\bm{\theta})}} \cdot \pdv{E(\bm{v}^{(i)},\bm{h};\bm{\theta})}{\bm{\theta}} \right] 
+   \Bigg\}
+\end{split}
+\]
+This expression looks awful, but let's notice that
+\[
+\begin{split}
+   p(\bm{h} \mid \bm{v}^{(i)}, \bm{\theta}) &= \frac{p(\bm{v}^{(i)}, \bm{h} \mid \bm{\theta})}{\sum_{\bm{h}' \in H} p(\bm{v}^{(i)}, \bm{h}' \mid \bm{\theta})}\\
+                                      &= \frac{\e^{-E(\bm{v}^{(i)},\bm{h};\bm{\theta})}}{\sum_{\bm{h}' \in H} \e^{-E(\bm{v}^{(i)},\bm{h}';\bm{\theta})}}
+\end{split}
+\]
+thus the expression can be written as
+\[
+\boxed
+{
+   \begin{split}
+      \pdv{L(\mc{X};\bm{\theta})}{\bm{\theta}}= &-\mathbb{E}_{\bm{v},\bm{h} \sim p(\bm{v},\bm{h} \mid \bm{\theta})} \left[ \pdv{E(\bm{v},\bm{h};\bm{\theta})}{\bm{\theta}} \right] \\
+      &+ \frac{1}{N} \sum_{i=1}^N \mathbb{E}_{\bm{h} \sim p(\bm{h} \mid \bm{v}^{(i)}, \bm{\theta})} \left[ \pdv{E(\bm{v}^{(i)}, \bm{h}; \bm{\theta})}{\bm{\theta}} \right]
+   \end{split}
+}
+\]
+The considerations up until now were quite general. We will now consider a specific Boltzmann
+machine called \emph{Restricted Boltzmann Machine}, introduce its' energy function and describe
+effective procedures to compute the gradient of the loss function. Restricted Boltzmann machine is an
+energy based model with binary units i.e. \(\bm{v} \in V = \{0,1\}^{d_v}\) and \(\bm{h} \in H =
+\{0,1\}^{d_h}\), described by the following energy function (for clarity of notation we don't write
+the parameters in the energy function arguments)
+\[
+\begin{split}
+   E(\bm{v}, \bm{h}) &= -\bm{v}\bm{b}^\tpose - \bm{h}\bm{c}^\tpose - \bm{v}\bm{W}\bm{h}^\tpose \\
+                     &= -\sum_{\alpha} b_\alpha v_\alpha -\sum_{\beta} c_\beta h_\beta - \sum_{\alpha\beta} v_\alpha W_{\alpha\beta} h_\beta
+\end{split}
+\]
+where \(\bm{W}\), \(\bm{b}\), \(\bm{c}\) are the parameters and the vectors are represented as row
+matrices. This energy function has a nice property of conditional independence. Indeed consider the
+conditional distribution
+\[
+\begin{split}
+   p(\bm{h} \mid \bm{v}) &= \frac{\e^{-E(\bm{v},\bm{h})}}{\sum_{\bm{h}' \in H} \e^{-E(\bm{v}, \bm{h}')}} \\
+   &= \frac{\prod_\beta \e^{(c_\beta h_\beta + \sum_\alpha v_\alpha W_{\alpha\beta} h_\beta)}}{ \sum_{\bm{h}' \in H} \prod_\beta \e^{(c_\beta h'_\beta + \sum_\alpha v_\alpha W_{\alpha\beta} h'_\beta)}}
+\end{split}
+\]
+and note that
+\[
+\begin{split}
+   &\sum_{\bm{h}' \in H} \prod_\beta \e^{(c_\beta h'_\beta + \sum_\alpha v_\alpha W_{\alpha\beta} h'_\beta)} \\
+   &= \prod_\beta \sum_{h'_\beta \in \{0,1\}} \e^{(c_\beta h'_\beta + \sum_\alpha v_\alpha W_{\alpha\beta} h'_\beta)}
+\end{split}
+\]
+thus
+\[
+   p(\bm{h} \mid \bm{v}) = \prod_\beta \frac{\e^{(c_\beta h_\beta + \sum_\alpha v_\alpha W_{\alpha\beta} h_\beta)}}{1 + \e^{(c_\beta + \sum_\alpha v_\alpha W_{\alpha\beta})}}
+\]
+and by symmetry
+\[
+   p(\bm{v} \mid \bm{h}) = \prod_\alpha \frac{\e^{(b_\alpha v_\alpha + \sum_\beta v_\alpha W_{\alpha\beta} h_\beta)}}{1 + \e^{(b_\alpha + \sum_\beta  W_{\alpha\beta} h_\beta)}}\,.
+\]
+We can see therefore that given \(\bm{v}\) (or \(\bm{h}\)) each element of \(\bm{h}\) (or \(\bm{v}\))
+is given by the Bernoulli distribution with parameters
+\[
+\begin{split}
+   &p(v_\alpha = 1 \mid \bm{h}) = \sigma\left( b_\alpha + \sum_\beta W_{\alpha\beta}h_\beta \right)\\
+   &p(h_\beta = 1 \mid \bm{v}) = \sigma\left( c_\beta + \sum_\alpha v_\alpha W_{\alpha\beta} \right)\\
+\end{split}
+\]
+where \(\sigma\) is the logistic function. This observation allows us to compute the second term in
+the loss derivative formula
+\[
+\begin{split}
+&\mathbb{E}_{\bm{h} \sim p(\bm{h} \mid \bm{v}^{(i)})}\left[ \pdv{E(\bm{v}^{(i)}, \bm{h})}{W_{\mu\nu}}\right] = -v_\mu^{(i)} \sigma\left(c_\nu + \sum_\alpha v_\alpha^{(i)} W_{\alpha\nu}\right)\\
+&\mathbb{E}_{\bm{h} \sim p(\bm{h} \mid \bm{v}^{(i)})}\left[ \pdv{E(\bm{v}^{(i)}, \bm{h})}{b_{\mu}}\right] = -v_\mu^{(i)}\\
+&\mathbb{E}_{\bm{h} \sim p(\bm{h} \mid \bm{v}^{(i)})}\left[ \pdv{E(\bm{v}^{(i)}, \bm{h})}{c_\nu}\right] = - \sigma\left(c_\nu + \sum_\alpha v_\alpha^{(i)} W_{\alpha\nu}\right)
+\end{split}
+\]
+The first term however is much more difficult to compute. In fact in practice it is impossible to
+compute as it requires summation over exponentially many values. To overcome this problem we
+introduce two heuristics which enable us to train RBMs in practice.
+
+\subsubsection{Contrastive Divergence}
+
+The first heuristic is based on a simple observation -- we can estimate the expectation of the
+gradient of the energy by sampling \(\underline{\bm{v}}\) from marginal distribution \(p(\bm{v})\)
+and approximating the true expectation as
+\[
+   \mathbb{E}_{\bm{v}, \bm{h} \sim p(\bm{v},\bm{h} \mid \bm{\theta})}\left[\pdv{E(\bm{v},\bm{h}; \bm{\theta})}{\bm{\theta}}\right] \approx \mathbb{E}_{\bm{h} \sim p(\bm{h} \mid \underline{\bm{v}}, \bm{\theta})}\left[\pdv{E(\underline{\bm{v}},\bm{h}; \bm{\theta})}{\bm{\theta}}\right]
+\]
+since we can easily compute the conditional expectation. How do we sample from the marginal
+distribution distribution? We can use the Gibbs sampling algorithm which is an instance of general
+class of MCMC (Markov Chain Monte Carlo) algorithms. We start with \(\underline{\bm{v}}^{(i,0)} =
+\bm{v}^{(i)}\), next we sample \(\underline{\bm{h}}_1\) from the conditional distribution \(p(\bm{h}
+\mid \underline{\bm{v}}_0)\), after that we sample \(\underline{\bm{v}}^{(i,1)}\) from \(p(\bm{v}
+\mid \underline{\bm{h}}_1)\) and so on. We repeat the steps \(k\) times and in the end obtain a
+sample \(\underline{\bm{v}}^{(i,k)}\). We then approximate the expectations as
+\[
+\begin{split}
+&\mathbb{E}_{\bm{v},\bm{h} \sim p(\bm{v},\bm{h})}\left[ \pdv{E(\bm{v}, \bm{h})}{W_{\mu\nu}}\right] \approx - \frac{1}{N}\sum_{i=1}^N \underline{v}_\mu^{(i,k)} \sigma\left(c_\nu + \sum_\alpha \underline{v}_\alpha^{(i,k)} W_{\alpha\nu}\right)\\
+&\mathbb{E}_{\bm{v},\bm{h} \sim p(\bm{v},\bm{h})}\left[ \pdv{E(\bm{v}, \bm{h})}{b_{\mu}}\right] \approx - \frac{1}{N}\sum_{i=1}^N \underline{v}_\mu^{(i,k)}\\
+&\mathbb{E}_{\bm{v},\bm{h} \sim p(\bm{v},\bm{h})}\left[ \pdv{E(\bm{v}, \bm{h})}{c_\nu}\right] \approx - \frac{1}{N}\sum_{i=1}^N \sigma\left(c_\nu + \sum_\alpha \underline{v}_\alpha^{(i,k)} W_{\alpha\nu}\right)
+\end{split}
+\]
+
 \subsection{DBN}
 \subsection{CNN}
 \subsection{Autoencoder}
