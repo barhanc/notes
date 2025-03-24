@@ -319,11 +319,76 @@ przypadku rozkładu normalnego -- wyznaczony wcześniej parametr \(\bm{\mu_n}\)
     \bm{w}_\text{MAP} = \left(\frac{\sigma^2}{\tau^2}\bm{I} + \bm{X}^\tpose\bm{X}\right)^{-1}\bm{X}^\tpose\bm{y}\,.
 \]
 
-\subsection{Regresja w ujęciu częstościowym}
-% TODO
+\subsection{*Regresja w ujęciu częstościowym}
+
+Podstawowym pytaniem, na które sama estymacja punktowa nie daje odpowiedzi w przypadku modelu
+liniowego jest: czy dany podzbiór współczynników jest istotny statystycznie? Oczywiście w ujęciu
+Bayesowskim odpowiedzi na to pytanie udziela rozkład a posteriori nad parametrami modelu. Chcemy
+mieć jednak również klasyczną, częstościową argumentację. Niech \(\hat{y}_i\) będzie odpowiedzą
+modelu dla cech \(\bm{x}_i\), a \(y_i\) prawdziwą odpowiedzią. Wielkość
+\[
+    \text{RSS} := \sum_{i=1}^N (y_i - \hat{y}_i)^2
+\]
+nazywamy \emph{rezydualną sumą kwadratów} (ang. \emph{residual sum of squares}). Wówczas jeśli
+potrzebujemy testu sprawdzającego istotność podzbioru współczynników tzn. testujemy hipotezę
+\[
+    H_0 : w_{i_1} = 0\,,\ldots\,,w_{i_q} = 0
+\]
+to odpowiednią statystyką testową jest 
+\[
+    \frac{ \text{RSS}_0 -  \text{RSS}}{ \text{RSS}}\frac{n - p - 1}{q} \sim F(q, n-p-1)\,,
+\]
+gdzie \( \text{RSS}_0\) oznacza rezydualną sumę kwadratów dla modelu spełniającego \(H_0\), \(F\) oznacza
+rozkład F Snedecora, natomiast \(p\) to liczba wszystkich parametrów modelu.
+
+Korzystając z metod częstościowych możemy również podać przedział ufności na poziomie \(1 - \alpha\)
+przy przewidywaniu odpowiedzi dla nieznanej wartości \(\bm{x}_0\) jako
+\[
+    \bm{\hat{w}}^\tpose \bm{x}_0 \pm t_{1-\frac{\alpha}{2},n-p-1} \hat{\sigma}^2 \sqrt{\bm{x}_0^\tpose \left(\bm{X}^\tpose \bm{X}\right)^{-1}\bm{x}_0}\,,
+\]
+gdzie
+\[
+    \hat{\sigma}^2 = \frac{ \text{RSS}}{n - p - 1}
+\]
+natomiast \(t_{1-\frac{\alpha}{2},n-p-1}\) jest kwantylem rzędu \(1-\frac{\alpha}{2}\) rozkładu t
+Studenta z parametrem \(n - p - 1\).
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.85\columnwidth]{figs/Student_densite_best.jpeg}
+\end{figure}
 
 \subsection{Uogólnione Modele Liniowe}
 % TODO
+W uogólnionym modelu liniowym zakładamy, że \(y(\bm{x})\) ma rozkład pochodzący z ustalonej
+\emph{wykładniczej rodziny rozkładów o nadmiernej dypsersji} \(p(\cdot; \theta(\bm{x}), \tau)\) z
+parametrem \(\theta(\bm{x})\) i znanym \(\tau\). Natomiast parametr \(\theta(\bm{x})\) rozkładu
+\(y(\bm{x})\) jest związany ze składnikiem systematycznym równością
+\[
+    \mu\left( \Ebb[y(\bm{x})]\right) = \bm{w}^\tpose \bm{x}
+\]
+dla pewnej \emph{funkcji wiążącej} (ang. \emph{link function}) \(\mu\).
+
+Wykładniczą rodziną rozkładów z nadmierną dyspersją z parametrami \(\theta\), \(\tau\) nazywa się
+rodzinę rozkładów, których gęstości (lub funkcje) prawdopodobieństwa mają postać
+\[
+    p(x; \theta, \tau) = \exp\left(\frac{\theta x - F(\theta)}{d(\tau)} + k(x,\tau)\right)\,,
+\]
+gdzie \(F\), \(d\) i \(k\) to pewne funkcje. Można wówczas pokazać, że jeśli \(X \sim p(x; \theta,
+\tau)\), to
+\[
+    \Ebb[X] = F'(\theta)\,,\quad \mathbb{V}[X] = F''(\theta)d(\tau)\,.
+\]
+Rodzinami wykładniczymi są:
+\begin{itemize}
+    \item \(\mc{N}(m, \sigma^2)\) dla \(\theta =m\) i \(\tau = \sigma^2\),
+    \item \(\text{Bin}(n,p)\) z ustaloną liczbą prób \(n\) dla \(\theta = \text{logit}(p)\) i \(\tau
+    = 1\),
+    \item \(\text{Pois}(\lambda)\) dla \(\theta = \log \lambda\) i \(\tau = 1\).
+\end{itemize}
+Rodzinami wykładniczymi nie są np. \(t_\nu\) i \(\mc{U}(a,b)\) z nieustalonymi końcami przedziału.
+
+
 
 \section{Wprowadzenie do procesów Gaussowskich}
 
