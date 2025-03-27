@@ -583,18 +583,31 @@ introduce two heuristics which enable us to train RBMs in practice.
 \subsubsection{Contrastive Divergence}
 
 The first heuristic is based on a simple observation -- we can estimate the expectation of the
-gradient of the energy by sampling \(\underline{\bm{v}}\) from marginal distribution \(p(\bm{v})\)
-and approximating the true expectation as
+gradient of the energy by sampling \(N\) vectors \(\underline{\bm{v}}^{(i)}\) from marginal
+distribution \(p(\bm{v})\) and approximating the true expectation as an average
 \[
-   \mathbb{E}_{\bm{v}, \bm{h} \sim p(\bm{v},\bm{h} \mid \bm{\theta})}\left[\pdv{E(\bm{v},\bm{h}; \bm{\theta})}{\bm{\theta}}\right] \approx \mathbb{E}_{\bm{h} \sim p(\bm{h} \mid \underline{\bm{v}}, \bm{\theta})}\left[\pdv{E(\underline{\bm{v}},\bm{h}; \bm{\theta})}{\bm{\theta}}\right]
+\begin{split}
+   &\mathbb{E}_{\bm{v}, \bm{h} \sim p(\bm{v},\bm{h} \mid \bm{\theta})}\left[\pdv{E(\bm{v},\bm{h}; \bm{\theta})}{\bm{\theta}}\right] \\
+   &\approx \frac{1}{N} \sum_{i=1}^N \mathbb{E}_{\bm{h} \sim p(\bm{h} \mid \underline{\bm{v}}^{(i)}, \bm{\theta})}\left[\pdv{E(\underline{\bm{v}}^{(i)},\bm{h}; \bm{\theta})}{\bm{\theta}}\right]\,. 
+\end{split}
 \]
-since we can easily compute the conditional expectation. How do we sample from the marginal
-distribution distribution? We can use the Gibbs sampling algorithm which is an instance of general
-class of MCMC (Markov Chain Monte Carlo) algorithms. We start with \(\underline{\bm{v}}^{(i,0)} =
-\bm{v}^{(i)}\), next we sample \(\underline{\bm{h}}_1\) from the conditional distribution \(p(\bm{h}
-\mid \underline{\bm{v}}_0)\), after that we sample \(\underline{\bm{v}}^{(i,1)}\) from \(p(\bm{v}
-\mid \underline{\bm{h}}_1)\) and so on. We repeat the steps \(k\) times and in the end obtain a
-sample \(\underline{\bm{v}}^{(i,k)}\). We then approximate the expectations as
+This is obviously due to the fact that
+\[
+\begin{split}
+   &\mathbb{E}_{\bm{v}, \bm{h} \sim p(\bm{v},\bm{h} \mid \bm{\theta})}\left[ f \right] = \sum_{\bm{v} \in V} \sum_{\bm{h} \in H} f p(\bm{v}, \bm{h} \mid \bm{\theta}) \\
+   &= \sum_{\bm{v} \in V} \left\{ \left[ \sum_{\bm{h} \in H} f p(\bm{h} \mid \bm{v}, \bm{\theta}) \right] p(\bm{v} \mid \bm{\theta}) \right\}\\
+   &= \sum_{\bm{v} \in V} \mathbb{E}_{\bm{h} \sim p(\bm{h} \mid \bm{v}, \bm{\theta})}[f] p(\bm{v} \mid \bm{\theta})\\
+   &\approx \frac{1}{N} \sum_{i=1}^N \mathbb{E}_{\bm{h} \sim p(\bm{h} \mid \underline{\bm{v}}^{(i)}, \bm{\theta})}[f]
+\end{split}\quad.
+\]
+Since we can easily compute the conditional expectation, using the above formula we can estimate the
+true gradient of the parameters. How do we sample from the marginal distribution distribution? We
+can use the Gibbs sampling algorithm which is an instance of general class of MCMC (Markov Chain
+Monte Carlo) algorithms. We start with \(\underline{\bm{v}}_0^{(i)} = \bm{v}^{(i)}\), next we sample
+\(\underline{\bm{h}}_1^{(i)}\) from the conditional distribution \(p(\bm{h} \mid
+\underline{\bm{v}}_0^{(i)})\), after that we sample \(\underline{\bm{v}}_1^{(i)}\) from \(p(\bm{v}
+\mid \underline{\bm{h}}_1^{(i)})\) and so on. We repeat the steps \(k\) times and in the end obtain
+samples \(\underline{\bm{v}}_k^{(i)}\). We then approximate the expectations as
 \[
 \begin{split}
 &\mathbb{E}_{\bm{v},\bm{h} \sim p(\bm{v},\bm{h})}\left[ \pdv{E(\bm{v}, \bm{h})}{W_{\mu\nu}}\right] \approx - \frac{1}{N}\sum_{i=1}^N \underline{v}_\mu^{(i,k)} \sigma\left(c_\nu + \sum_\alpha \underline{v}_\alpha^{(i,k)} W_{\alpha\nu}\right)\\
@@ -602,6 +615,26 @@ sample \(\underline{\bm{v}}^{(i,k)}\). We then approximate the expectations as
 &\mathbb{E}_{\bm{v},\bm{h} \sim p(\bm{v},\bm{h})}\left[ \pdv{E(\bm{v}, \bm{h})}{c_\nu}\right] \approx - \frac{1}{N}\sum_{i=1}^N \sigma\left(c_\nu + \sum_\alpha \underline{v}_\alpha^{(i,k)} W_{\alpha\nu}\right)
 \end{split}
 \]
+and are finally able to compute the gradients and update the parameters.
+
+\subsection{Persistent Contrastive Divergence}
+
+The algorithm described in the previous paragraph has one serious flaw -- it is extremely slow, as
+for it to work properly each parameters' update would require hundreds or thousands of Gibbs
+sampling steps. In practice it is, therefore, often implemented in such a way that we only perform
+few sampling steps (even as few as 1) but this comes with a serious problem -- we no longer
+approximate the true expectation with random error -- the error is now systematic.
+
+To overcome this difficulty we introduce the idea of a \emph{persistent chain}. The core idea is to
+spread the Gibbs sampling computation over many parameters' updates, i.e. during each parameters'
+update we perform only a few Gibbs sampling steps but retain the set of hidden vectors
+\(\bm{h}^{(j)}\) (which we will call the persistent chain) from which we start sampling in the next
+update. The outline of the algorithm is thus as follows -- first we initialize the persistent chain
+\(\{\bm{p}^{(j)} = \bm{0}\}_{j=1}^M\); during each parameters' update we perform \(k\) Gibbs
+sampling steps starting from \(\underline{\bm{h}}_1^{(j)} = \bm{p}^{(j)}\) and obtain a sample
+\(\bm{v}_k^{(j)}\), we approximate the expectations as before (noting that now we average over \(M\)
+samples) and in the end update the persistent chain by sampling \(M\) vectors \(\bm{p}^{(j)}\) from
+the distribution \(p(\bm{h} \mid \underline{\bm{v}}_k^{(j)})\).
 
 \subsection{DBN}
 \subsection{CNN}
