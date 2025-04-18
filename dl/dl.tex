@@ -339,7 +339,7 @@ the output of the network to be invariant under rotations, zoom, reflection, etc
 
 One important aspect of neural networks is the way we initialize the parameters before training.
 Since the neural network effectively realizes a highly nonlinear mapping, the loss as a function of
-the parametrs is also highly nonlinear and non-convex. Because of this the initial values of the
+the parameters is also highly nonlinear and non-convex. Because of this the initial values of the
 parameters do matter. The simplest form of initialization is zero initialization in which we just
 set \(\theta = 0\). This however leads to too much symmetry and thus we almost always use random
 initialization in which we sample weights (independently) from some probability distribution --
@@ -447,14 +447,14 @@ Additionally the vector-jacobian products for the parameters are given by
 Generative model is a probabilistic model which enables us to generate new, synthetic observations
 similar to the one from training set. Some generative models allow us to estimate the probability
 density based on the finite number of samples (observations). There are also generative models in
-which we cannot analytically compute the value of the probabilitry density function, however we can
+which we cannot analytically compute the value of the probability density function, however we can
 still sample from such model to obtain synthetic observations. Moreover a generative model can
 ,,explain'' the observations using so called \emph{latent} variables.
 
 We will now focus on the so called \emph{energy based models}. The general idea is to introduce a
 parametrized \emph{energy function} \(E(\bm{v},\bm{h}; \bm{\theta})\), where \(\bm{v} \in V
 \subseteq \Rbb^{d_v}\) is the observation vector, \(\bm{h} \in H \subseteq \Rbb^{d_h}\) is the
-latent variable vector and \(\bm{\theta}\) are the parametrs. We now assume that the joint
+latent variable vector and \(\bm{\theta}\) are the parameters. We now assume that the joint
 probability is given by a Boltzmann factor
 \[
    p(\bm{v},\bm{h} \mid \bm{\theta}) = \frac{\e^{- E( \bm{v}, \bm{h}; \bm{\theta})}}{Z(\bm{\theta})}
@@ -474,7 +474,7 @@ of observations
                               &= \frac{1}{Z(\bm{\theta})} \sum_{\bm{h} \in H} \e^{-E(\bm{v},\bm{h}; \bm{\theta})}\,.
 \end{split}
 \]
-and thus can use the standart maximum likelihood criterion to train the model parameters i.e. given
+and thus can use the standard maximum likelihood criterion to train the model parameters i.e. given
 the training set \(\mc{X} = \{\bm{v}^{(1)}, \ldots, \bm{v}^{(N)}\}\) of i.i.d. samples, we seek
 parameters \(\bm{\theta}^*\) given by
 \[
@@ -637,6 +637,49 @@ samples) and in the end update the persistent chain by sampling \(M\) vectors \(
 the distribution \(p(\bm{h} \mid \underline{\bm{v}}_k^{(j)})\).
 
 \subsection{DBN}
+
+Let's note that RBM can be interpreted as a network of units connected in layers as depicted in the
+figure below. The nodes on the left represent the visible binary units, the nodes on the right
+represent the hidden units and edges represent the interactions of the type \(W_{\alpha\beta}
+v_\alpha h _\beta\) (there are also biases, not depicted in the picture).
+
+\begin{figure}[ht]
+   \centering
+   \includegraphics[width=0.45\columnwidth]{figs/rbm.png}
+   \label{fig:rbm}
+   \caption{Schematic depiction of RBM with 8 visible units and 6 hidden units}
+\end{figure}
+
+Note that before we had not made any explicit connection between the RBM and neural networks. We
+simply treated it like an energy based model and the energy function was our primary object of
+interest. The interpretation of the RBM as an undirected, stochastic neural network is possible only
+due to the conditional independence property of $p(\bm{h} \mid \bm{v})$ and $p(\bm{v} \mid \bm{h})$.
+The network thus operates as follows -- we feed it some binary example vector $\bm{v}$, then compute
+the \emph{activations} of the hidden units $\sigma(\bm{b} + \bm{v}\bm{W})$ and then sample the
+hidden units given the activations from the Bernoulli distributions, we can then do the same thing
+in the opposite direction and sample from the visible layer. Performing these steps many times (that
+is performing Gibbs sampling) we obtain in the end an artificial sample from the network itself and
+if the network has been trained on some data $\mc{X}$ then these samples are similar (but not the
+same) to the empirical samples.
+
+Deep Belief Network (DBN) is basically multiple RBMs stacked on top of each other as depicted in the
+picture below. We can implement this network as a sequence of RBMs with parameters $\bm{W}^{(1)},
+\bm{b}^{(1)}, \bm{c}^{(1)}$, $\ldots$, $\bm{W}^{(l)}, \bm{b}^{(l)}, \bm{c}^{(l)}$ respectively ($l$
+being the number of layers). We can train the DBN using a simple heuristic called \emph{greedy
+layer-wise training}. The idea is simple -- we sequentially train each RBM $i$ on the dataset
+$\mc{X}$ propagated through the $i-1$ first layers (i.e. we compute only the activations and do not
+sample the units -- this still turns out to be working but slightly differs from the theory
+presented above). After training we can sample DBN by propagating the visible units $\bm{v}$ up to
+the last RBM, performing Gibbs sampling in this last RBM and propagating the output down to the
+first RBM.
+
+\begin{figure}[ht]
+   \centering
+   \includegraphics[width=0.85\columnwidth]{figs/dbn.png}
+   \label{fig:dbn}
+   \caption{Schematic depiction of DBN with 4 layers (8 visible units and 6 hidden units in each of the hidden layer)}
+\end{figure}
+
 \subsection{CNN}
 \subsection{Autoencoder}
 \subsection{VAE}

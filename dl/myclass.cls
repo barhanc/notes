@@ -23,7 +23,7 @@
 \newcommand{\onehalf}{\frac{1}{2}}
 \newcommand{\threehalves}{\frac{3}{2}}
 
-% Colouring
+% Coloring
 \RequirePackage[]{hyperref}
 \hypersetup{
     colorlinks=true,
