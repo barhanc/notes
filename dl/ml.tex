@@ -98,6 +98,7 @@ gdzie
 \end{split}\quad.
 \]
 
+
 \section{Liniowe modele Gaussowskie}
 
 Jednym z najprostszych modeli, do którego można zastosować wnioskowanie Bayesowskie jest tzw.
@@ -120,6 +121,7 @@ Wówczas rozkład a posteriori również będzie rozkładem normalnym o parametr
     &\bm{\Sigma}_{x \mid y} = \left(\bm{\Sigma}_x^{-1} + \bm{A}^\tpose \bm{\Sigma}_y^{-1} \bm{A} \right)^{-1}
 \end{split}\quad.
 \]
+
 
 \section{Regresja liniowa}
 
@@ -249,6 +251,7 @@ wzoru analitycznego tylko z metody iteracyjnej stochastycznego spadku wzdłuż g
 \]
 która w tym przypadku zbiega do minimum globalnego \(\bm{w}_\text{MLE}\).
 
+
 \subsection{Regresja Bayesowska}
 
 Pokażemy teraz, jak przeprowadzić pełne wnioskowanie Bayesowskie dla modelu regresji liniowej.
@@ -298,6 +301,7 @@ o parametrach
     \mu_y = \bm{\mu}_n^\tpose \bm{x}\,,\quad \sigma^2_y = \sigma^2 + \bm{x}^\tpose \bm{\Sigma}_n \bm{x}\,.
 \]
 
+
 \subsection{Regresja grzbietowa}
 
 Rozważmy Bayesowską regresję liniową, w której prior ma postać \(\bm{w} \sim \mc{N}(0,
@@ -319,6 +323,7 @@ przypadku rozkładu normalnego -- wyznaczony wcześniej parametr \(\bm{\mu_n}\)
 \[
     \bm{w}_\text{MAP} = \left(\frac{\sigma^2}{\tau^2}\bm{I} + \bm{X}^\tpose\bm{X}\right)^{-1}\bm{X}^\tpose\bm{y}\,.
 \]
+
 
 \subsection{*Regresja w ujęciu częstościowym}
 
@@ -353,42 +358,6 @@ gdzie
 \]
 natomiast \(t_{1-\frac{\alpha}{2},n-p-1}\) jest kwantylem rzędu \(1-\frac{\alpha}{2}\) rozkładu t
 Studenta z parametrem \(n - p - 1\).
-
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=0.85\columnwidth]{figs/Student_densite_best.jpeg}
-\end{figure}
-
-
-\subsection{Uogólnione Modele Liniowe}
-
-W uogólnionym modelu liniowym zakładamy, że \(y(\bm{x})\) ma rozkład pochodzący z ustalonej
-\emph{wykładniczej rodziny rozkładów o nadmiernej dypsersji} \(p(\cdot; \theta(\bm{x}), \tau)\) z
-parametrem \(\theta(\bm{x})\) i znanym \(\tau\). Natomiast parametr \(\theta(\bm{x})\) rozkładu
-\(y(\bm{x})\) jest związany ze składnikiem systematycznym równością
-\[
-    \mu\left( \Ebb[y(\bm{x})]\right) = \bm{w}^\tpose \bm{x}
-\]
-dla pewnej \emph{funkcji wiążącej} (ang. \emph{link function}) \(\mu\).
-
-Wykładniczą rodziną rozkładów z nadmierną dyspersją z parametrami \(\theta\), \(\tau\) nazywa się
-rodzinę rozkładów, których gęstości (lub funkcje) prawdopodobieństwa mają postać
-\[
-    p(x; \theta, \tau) = \exp\left(\frac{\theta x - F(\theta)}{d(\tau)} + k(x,\tau)\right)\,,
-\]
-gdzie \(F\), \(d\) i \(k\) to pewne funkcje. Można wówczas pokazać, że jeśli \(X \sim p(x; \theta,
-\tau)\), to
-\[
-    \Ebb[X] = F'(\theta)\,,\quad \mathbb{V}[X] = F''(\theta)d(\tau)\,.
-\]
-Rodzinami wykładniczymi są:
-\begin{itemize}
-    \item \(\mc{N}(m, \sigma^2)\) dla \(\theta =m\) i \(\tau = \sigma^2\),
-    \item \(\text{Bin}(n,p)\) z ustaloną liczbą prób \(n\) dla \(\theta = \text{logit}(p)\) i \(\tau
-    = 1\),
-    \item \(\text{Pois}(\lambda)\) dla \(\theta = \log \lambda\) i \(\tau = 1\).
-\end{itemize}
-Rodzinami wykładniczymi nie są np. \(t_\nu\) i \(\mc{U}(a,b)\) z nieustalonymi końcami przedziału.
 
 
 \section{Wprowadzenie do procesów Gaussowskich}
@@ -683,11 +652,10 @@ co możemy zapisać w zwartej postaci macierzowej
     \pdv{L}{\bm{W}} = (\bm{\pi} - \bm{t})^\tpose \bm{X}\,.
 \]
 
-\section{Regresja Poissonowska}
+
+\section{Gradient Boosted Trees}
 % TODO
 
-\section{Regresja porządkowa}
-% TODO
 
 \section{Liczby losowe w komputerze}
 
@@ -939,8 +907,6 @@ korelację po okresie przejściowym i przyspieszyć zbieżność. Standardowo wy
 z tej klasy są algorytmy HMC (\emph{Hamiltonian Monte Carlo}) oraz NUTS (\emph{No U-Turn
 Sampler}).
 
-\section{(Histogram) Gradient Boosted Trees}
-% TODO
 
 \section{KDE}
 
@@ -983,19 +949,20 @@ wszystkich punktów \(\bm{x}_i\) dla danego \(\bm{x}\), znajdujemy jego \(k\) na
 \(\bm{x}\) ze zbioru \(\{\bm{x}_i\}_{i=1}^n\) (np. stosując \emph{approximate nearest neighbors}) i
 obliczamy przyczynki do \(\hat{p}(\bm{x})\) tylko od nich.
 
+
 \section{PCA}
 
 Analiza składowych głównych (ang. \emph{Principle Component Analysis}) to liniowa metoda redukcji
-wymiarowości, która może zostać wykorzystana zarówno w celach wizualzacji wysokowymiarowych danych,
+wymiarowości, która może zostać wykorzystana zarówno w celach wizualizacji wysokowymiarowych danych,
 jak i do zmniejszenia liczby wymiarów celem ułatwionego ich późniejszego przetwarzania przez inne
-modele uczenia maszynowego. Zasadnicza idea jest następująca. Mamy macierz \(\bm{X}\) wymiaru \(n
+modele uczenia maszynowego. Zasadnicza idea jest następująca, mamy macierz \(\bm{X}\) wymiaru \(n
 \times d\), gdzie \(n\) to liczba przykładów, a \(d\) to liczba cech. Wiemy, że dla każdej macierzy
 \(\bm{X}\) wymiaru \(n \times d\) (\(n \geq d\)) istnieje jej rozkład SVD 
 \[
     \bm{X} = \sigma_1 \bm{u}_1 \bm{v}_1^\tpose + \ldots + \sigma_d \bm{u}_{r} \bm{v}_r^\tpose\,,
 \]
 gdzie \(r \leq \min\{n,d\}\) to rząd macierzy \(\bm{X}\), \(\sigma_1 \geq \sigma_2 \geq \ldots \geq
-\sigma_d \geq 0\) -- to wartości osobliwe, natomiast\(\bm{u}_i\) to ortonormalne wektory kolumnowe
+\sigma_r \geq 0\) -- to wartości osobliwe, natomiast \(\bm{u}_i\) to ortonormalne wektory kolumnowe
 wymiaru \(n\), a \(\bm{v}_i\) to ortonormalne wektory kolumnowe wymiaru \(d\). Możemy w takim razie
 przybliżyć macierz \(\bm{X}\) za pomocą kilku pierwszych wyrażeń, w szczególności dwóch
 \[
@@ -1005,7 +972,8 @@ Zauważmy jednak teraz, iż wektory \(\bm{u}_1\) i \(\bm{u}_2\) możemy potrakto
 współrzędne 2-D naszego zbioru punktów.
 
 
-\section{Ewaluacja i selekcja modeli}
+\section{Ewaluacja modeli}
+
 
 \subsection{Przygotowanie danych}
 
@@ -1169,6 +1137,7 @@ oraz
 W przypadku klasyfikacji wieloklasowej macierz pomyłek jest macierzą wymiaru \(K \times K\), gdzie
 \(K\) jest liczbą klas.
 
+
 \subsection{Tuning hiperparametrów i walidacja skrośna}
 
 Praktycznie wszystkie modele uczenia maszynowego mają hiperparametry, często liczne, które w
@@ -1238,76 +1207,6 @@ z \(\mc{X}\) dla pewnego dużego \(B\) i na każdym z \(\mc{X}_b\) obliczamy est
 \end{split}
 \]
 
-
-\subsection{Selekcja cech w modelach liniowych}
-
-Po wytrenowaniu modelu liniowego może okazać się, że część predyktorów nie ma istotnego wpływu na
-zmienną odpowiedzi. Utrzymywanie tych nieistotnych zmiennych nadmiernie zwiększa złożoność modelu, a
-więc ich usunięcie, tzn. wyzerowanie odpowiednich współczynników, wpływa dodatnio na
-interpretowalność modelu. Usuwanie nieistotnych predyktorów z modelu regresji wielokrotnej nazywa
-się selekcją cech lub selekcją zmiennych.
-
-Selekcja podzbioru polega na wyznaczeniu podzbioru predyktorów, które ocenia się jako najsilniej
-związane z odpowiedzią. Następnie dopasowuje się model liniowy używając metody najmniejszych
-kwadratów na zredukowanym zbiorze predyktorów. Do metod selekcji podzbioru należą: 
-\begin{itemize}
-\item wybór najlepszego podzbioru;
-\item metody selekcji krokowej.
-\end{itemize}
-
-W metodzie najlepszego podzbioru dopasowujemy model z każdą możliwą kombinacją spośród wszystkich
-\(p\) predyktorów. Spośród otrzymanych \(2^p\) modeli wybieramy najlepszy (najbardziej optymalny
-według przyjętego kryterium). Zazwyczaj postępuje się według algorytmu:
-\begin{enumerate}
-\item Za \(\mc{M}_0\) przyjmujemy \emph{model zerowy} (bez predyktorów).
-\item Dla \(k=1,\ldots,p\):
-    \begin{enumerate}
-    \item dopasowujemy wszystkie \({p \choose k}\) modeli z \(k\) predyktorami;
-    \item wybieramy \(\mc{M}_k\), który ma najmniejszy RSS lub największy \(R^2\).
-    \end{enumerate}
-\item Spośród \(\mc{M}_0, \ldots, \mc{M}_p\) wybieramy najbardziej optymalny według przyjętego
-kryterium.
-\end{enumerate}
-Ani RSS, ani \(R^2\) nie są dobrymi kryteriami porównywania modeli o różnej liczbie predyktorów,
-ponieważ -- jako miary związane z treningowym MSE -- mają lepsze wartości dla modeli o większej
-liczbie zmiennych. Potrzebne są zatem miary estymujące błąd testowy. Istnieją dwa powszechnie
-używane podejścia: podejście pośrednie, w którym wprowadzamy poprawki do błędu treningowego
-uwzględniające potencjalnie nadmierne obciążenie związane z przeuczeniem; podejście bezpośrednie, w
-którym estymujemy błąd testowy przy pomocy zbioru walidacyjnego albo walidacji krzyżowej. Oczywistą
-wadą metody wyboru najlepszego podzbioru jest potencjalnie znaczny koszt obliczeniowy. Alternatywą
-są metody selekcji krokowej, które przeszukują znacznie mniejszy zbiór możliwych modeli.
-
-Algorytm selekcji krokowej w przód ma postać
-\begin{itemize}
-\item \(\mc{M}_0\) jest modelem zerowym jak poprzednio.
-\item Dla \(k=0,\ldots,p-1\):
-    \begin{enumerate}
-    \item rozważamy wszystkie \(p-k\) modeli dodających jeden predyktor do \(\mc{M}_k\);
-    \item wybieramy \(\mc{M}_{k+1}\), który ma najmniejszy RSS lub największy \(R^2\)    
-    \end{enumerate}
-\item Spośród \(\mc{M}_0,\ldots,\mc{M}_p\) wybieramy najbardziej optymalny względem przyjętego
-kryterium.
-\end{itemize}
-Selekcja krokowa w przód dopasowuje \(1 + p(p+1)/2\) modeli (zamiast \(2^p\)), przy czym efektywnie
-przeszukiwana podprzestrzeń zawiera istotnie więcej modeli. Nie ma gwarancji odnalezienia globalnie
-najlepszego modelu.
-
-Algorytm selekcji krokowej wstecz ma postać
-\begin{itemize}
-\item \(\mc{M}_p\) jest modelem pełnym, czyli zawierającym wszystkie predyktory.
-\item Dla \(k=p,p-1,\ldots,1\):
-    \begin{enumerate}
-    \item rozważamy wszystkie \(k\) modeli eliminujących jeden predyktor z \(\mc{M}_k\);
-    \item wybieramy \(\mc{M}_{k-1}\), który ma najmniejszy RSS lub największy \(R^2\).
-    \end{enumerate}
-\item Spośród \(\mc{M}_0,\ldots,\mc{M}_p\) wybieramy najbardziej optymalny względem przyjętego
-kryterium.
-\end{itemize}
-
-W podejściach hybrydowych zmienne są sekwencyjnie dodawane do modelu tak jak w selekcji krokowej w
-przód. Po każdym dodaniu nowej zmiennej, jedna nieistotna zmienna może zostać usunięta — podobnie
-jak w selekcji krokowej wstecz. Podejścia te starają się ściślej naśladować wybór najlepszego
-podzbioru przy zachowaniu niskiego kosztu obliczeniowego metod krokowych.
 
 \subsection{Kalibracja modeli}
 % TODO
