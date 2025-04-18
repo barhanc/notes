@@ -34,10 +34,12 @@ Our first example of an RL system will be the well-known problem of $k$-armed ba
 problem we have a finite set of $k$ possible actions $\mc{A}$ and a conditional probability
 distribution of the rewards $r$ given the chosen action $a$ i.e. $p(r \mid a)$. This probability
 distribution is obviously not known a priori and thus our goal is to find a policy which maximizes
-our expected reward over some finite number of steps $T$. Note that if we knew the probability
-distributions ahead of time then in each step we should just choose the action $a^*$ such that
+our expected reward over some finite number of steps $T$ or in other words we want a policy that
+learns as quickly as possible a very good approximations of the true conditional expected values
+$\Ebb[r \mid a]$. Note that if we knew the probability distributions ahead of time (or even just
+their expectations) then in each step we should just choose the action $a^*$ such that
 \[
-    a^* = \argmax_{a \in \mc{A}} \Ebb_{r \sim p(r \mid a)}[r]
+    a^* = \argmax_{a \in \mc{A}} \Ebb[r \mid a]
 \]
 since
 \[
@@ -47,14 +49,14 @@ since
 \subsection{Value function methods}
 
 One of two classes of methods used in the $k$-armed bandits problem are based on the so called
-\emph{value function} from the set of possible actions $A$ to the set of real numbers, which at step
-$t$ is given by
+\emph{value function} which really is just an estimator of the conditional expected reward given the
+action $a$, namely
 \[
     q_t(a) = \frac{1}{n_t(a)} \sum_{i=1}^{t-1} r_i \delta_{a_i,a}\,,\quad n_t(a) = \sum_{i=1}^{t-1} \delta_{a_i,a}\,,
 \]
 where $a_i \in \mc{A}$ is the action chosen at step $i$, $n_t(a)$ is the number of times action $a$
-was chosen up until timestep $t$ and $\delta$ denotes the Kronecker's delta. Let's note that this
-expression satisfies the following recursive equation
+was chosen up until timestep $t$ and $\delta$ denotes the Kronecker's delta. Let's note that these
+expressions satisfy the following recursive equations
 \[
 \boxed
 {
@@ -68,18 +70,18 @@ Based on the definition of value function and the recursive equations for the up
 several methods of choosing the action at given step which differ by the way they balance
 exploration and exploitation.
 
-\subsubsection{$\epsilon$-Greedy}
+\subsubsection{$\varepsilon$-Greedy}
 
 Given the value function at step $t$, the simplest possible choice of action is the greedy one i.e.
 \[
     a_t = \argmax_{a \in \mc{A}} q_t(a)\,.
 \]
-This approach is pure exploitation an no exploration and thus we predict that it won't perform well.
-A simple modification of this method which allows for any exploration is the $\epsilon$-greedy
-choice where with probability $\epsilon$ we randomly choose any action from $\mc{A}$ and with
-probability $1-\epsilon$ greedily choose the one with maximal value function. The value of
-$\epsilon$ is chosen beforehand and can have a big impact on the overall performance of this
-algorithm. Of course if $\epsilon = 0$ then we just go back to the greedy choice of action.
+This approach is purely exploitative and thus as expected it doesn't perform very well. A simple
+modification of this method which allows for any exploration is the $\epsilon$-greedy choice where
+with probability $\epsilon$ we randomly choose any action from $\mc{A}$ and with probability
+$1-\epsilon$ greedily choose the one with maximal value function. The value of $\epsilon$ is chosen
+beforehand and can have a big impact on the overall performance of this algorithm. Of course if
+$\epsilon = 0$ then we just go back to the greedy choice of action.
 
 Two possible modifications of this simple algorithm can make it perform better. First of all if we
 look at the equation for the value function update we can generalize it a bit and write it as
@@ -95,7 +97,56 @@ prefer exploration in the initial phase.
 
 \subsubsection{Upper Confidence Bound}
 
+Another approach is based on a somewhat lesser known result from the probability theory, namely the
+\emph{Hoeffding's inequality} which states that for any i.i.d. sequence of random variables
+$X_1,\ldots,X_n$ with expected value $\Ebb[X]$ and any $u \geq 0$ we have
+\[
+    \Pr{\Ebb[X] > \overline{X}_n + u} \leq \e^{-2nu^2}\,,
+\]
+where $\displaystyle\overline{X}_n = \frac{1}{n} \sum_{i=1}^n X_i$. The idea is to introduce for any
+action $a$, the upper confidence bound $u_t(a)$ on the value function $q_t(a)$, since from the
+Hoeffding's inequality we have
+\[
+    \Pr{\Ebb[r \mid a] > q_t(a) + u_t(a)} \leq \e^{-2 n_t(a) u_t(a)^2}
+\]
+and assuming that we want this probability to be less then some given $p$ we have
+\[
+    u_t(a) = \sqrt{\frac{-\ln p}{2 n_t(a)}}\,.
+\]
+A good heuristic in practice for choosing the value of $p$ is assuming that it changes with the
+number of time steps according to $p \propto t^{-4}$ so that the upper bound can be written as
+\[
+\boxed
+{
+    u_t(a) = c \sqrt{\frac{\ln t}{n_t(a)}}
+}
+\]
+where $c$ is a hyper-parameter. We then choose the action according to
+\[
+\boxed
+{
+    a_t = \argmax_{a \in \mc{A}} \left[ q_t(a) + c \sqrt{\frac{\ln t}{n_t(a)}} \right]
+}
+\]
+
+
 \subsection{Gradient based methods}
+
+The two previous methods for choosing actions in the $k$-armed bandits problem used the value
+function $q_t(a)$. This is however not the only option to choose an action. We can for example
+introduce a \emph{preference function} $h_t(a)$ which qualitatively describes how good an action $a$
+is at timestep $t$. The question however appears -- how to choose an action based on the preference
+function. A simple answer is to introduce the probability distribution over actions based on the
+preference function through the softmax function i.e. the probability of choosing action $a$ at step
+$t$ is given by
+\[
+\boxed
+{
+    \pi_t(a) = \frac{\e^{h_t(a)}}{\sum_{a' \in \mc{A}} \e^{h_t(a')}}
+}
+\]
+and choose the action by sampling from the categorical distribution described by the probabilities
+$\pi_t(a)$. How do we update the preference function? 
 
 \subsection{Thompson sampling}
 
