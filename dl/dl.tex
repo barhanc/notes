@@ -403,7 +403,7 @@ dimension. If, on the other hand, the indices \(\alpha'\) do not contain the bat
 such a normalization is called \emph{layer normalization}.
 
 We also show the derivation of the generalized vector-jacobian product required in the
-backpropagation algorithm. First we compute the jacobian
+backpropagation algorithm. First we compute the Jacobian
 \[
 \begin{split}
    \pdv{F_{\alpha'\alpha}}{X_{\beta'\beta}} = A_\alpha \bigg[ 
@@ -442,6 +442,130 @@ Additionally the vector-jacobian products for the parameters are given by
 \section{Architectures}
 
 \subsection{MLP}
+
+Multilayer perceptron (MLP) is perhaps the simplest feed-forward neural network architecture. Its
+computational graph is a simple directed path with computational nodes consisting (in the vanilla
+case) of two types -- \emph{linear} (or \emph{affine}) nodes $\bm{A}$ which realize the following
+affine mapping
+\[
+   A_{\alpha'\alpha}(\bm{X}; \bm{W}, \bm{b}) = b_\alpha + \sum_\beta X_{\alpha'\beta} W_{\beta\alpha}\,,
+\]
+parametrized by weights' matrix $\bm{W}$ and bias vector $\bm{b}$, and \emph{elementwise non-linear
+activations} $\bm{F}$ which for given scalar activation function $f: \Rbb \mapsto \Rbb$ realize the
+following tensor mapping
+\[
+   F_{\alpha'\alpha}(\bm{X}) = f(X_{\alpha'\alpha})\,.
+\]
+Commonly used additions to this simple setup are dropout layers described above which help to
+prevent overfitting. Typically used activations include:
+\begin{itemize}
+   \item rectified linear unit activation
+   \[
+   \begin{split}
+      &\text{ReLU}: \Rbb \mapsto [0; +\infty)\\
+      &\text{ReLU}(z) = \max\{0,z\}\\
+   \end{split}
+   \]
+   \begin{center}
+   \includegraphics[width=0.5\columnwidth]{figs/Activation_rectified_linear.svg.png}
+   \end{center}
+   
+   \item logistic activation
+   \[
+   \begin{split}
+      &\sigma: \Rbb \mapsto (0;1)\\
+      &\sigma(z) = \frac{1}{1 + \e^{-z}}
+   \end{split}
+   \]
+   \begin{center}
+   \includegraphics[width=0.5\columnwidth]{figs/Activation_logistic.svg.png}
+   \end{center}
+
+   \item hyperbolic tangent activation
+   \[
+   \begin{split}
+      &\tanh: \Rbb \mapsto (-1;+1)\\
+      &\tanh(z) = \frac{\e^{z} - \e^{-z}}{\e^{z} + \e^{-z}}
+   \end{split}
+   \]
+   \begin{center}
+   \includegraphics[width=0.5\columnwidth]{figs/Activation_tanh.svg.png}
+   \end{center}
+
+   \item Gaussian error linear unit activation
+   \[
+      \text{GELU}(z) = z \Phi(z)
+   \]
+   where $\Phi$ is the c.d.f. of the standard normal distribution,
+   \begin{center}
+   \includegraphics[width=0.5\columnwidth]{figs/Activation_gelu.png}
+   \end{center}
+
+   \item sigmoid linear unit activation
+   \[
+      \text{SiLU}(z) = z \sigma(z)
+   \]
+   \begin{center}
+   \includegraphics[width=0.5\columnwidth]{figs/Swish.svg.png}
+   \end{center}
+
+\end{itemize}
+
+The first one on the list is the most commonly used activation function, the next two were once very
+popular but nowadays find applications only in some specific use-cases, meanwhile the last two are
+relatively new modifications of the field-tested ReLU.
+
+Here, we also derive the (very simple) expressions for the vjp-s of both the linear and activation
+layers required in the backpropagation algorithm. Indeed for the non-linear activation layer
+$\bm{F}$ we have
+\[
+   \pdv{F_{\alpha'\alpha}}{X_{\mu\nu}} = f'(X_{\alpha'\alpha}) \delta_{\alpha'\mu} \delta_{\alpha\nu}
+\]
+and thus
+\[
+\boxed
+{
+   \pdv{L}{X_{\mu\nu}} = \sum_{\alpha'\alpha} \pdv{L}{F_{\alpha'\alpha}} \pdv{F_{\alpha'\alpha}}{X_{\mu\nu}} = \pdv{L}{F_{\mu\nu}} f'(X_{\mu\nu})\,.
+}
+\]
+On the other hand for the linear layer $\bm{A}$ we have
+\[
+\begin{split}
+   \pdv{A_{\alpha'\alpha}}{X_{\mu\nu}} &= \sum_{\beta} W_{\beta\alpha} \delta_{\alpha'\mu} \delta_{\beta\nu} = W_{\nu\alpha} \delta_{\alpha'\mu}\\
+   \pdv{A_{\alpha'\alpha}}{W_{\mu\nu}} &= \sum_{\beta} X_{\alpha'\beta} \delta_{\beta\mu} \delta_{\alpha\nu} = X_{\alpha'\mu} \delta_{\alpha\nu}\\
+   \pdv{A_{\alpha'\alpha}}{b_{\mu}   } &= \delta_{\alpha\mu}
+\end{split}
+\]
+and thus
+\[
+\boxed
+{
+\begin{split}
+   \pdv{L}{X_{\mu\nu}} &= \sum_{\alpha'\alpha} \pdv{L}{A_{\alpha'\alpha}} \pdv{A_{\alpha'\alpha}}{X_{\mu\nu}} = \sum_{\alpha} \pdv{L}{A_{\mu\alpha}} W_{\nu\alpha} \\
+   \pdv{L}{W_{\mu\nu}} &= \sum_{\alpha'\alpha} \pdv{L}{A_{\alpha'\alpha}} \pdv{A_{\alpha'\alpha}}{W_{\mu\nu}} = \sum_{\alpha'} \pdv{L}{A_{\alpha'\nu}} X_{\alpha'\mu} \\
+   \pdv{L}{b_\mu     } &= \sum_{\alpha'\alpha} \pdv{L}{A_{\alpha'\alpha}} \pdv{A_{\alpha'\alpha}}{b_\mu     } = \sum_{\alpha'} \pdv{L}{A_{\alpha'\mu}}
+\end{split}
+}
+\]
+
+Here, we will also comment on the incorporation of the dropout layers. Note that the dropout layer
+$\bm{D}$ is actually just a multiplication of the input tensor by a ''constant'' 0-1 tensor i.e.
+\[
+   D_{\alpha'\alpha}(\bm{X}) = B_{\alpha'\alpha} X_{\alpha'\alpha}\,.
+\]
+The tensor $\bm{B}$ is obviously different in the training phase (during which in every forward pass
+its every element is randomly sampled from the Bernoulli distribution with given parameter $p$ i.e.
+the dropout probability) and the inference phase (during which it is just a constant matrix with
+value $p$ being the dropout probability). The vjp-s for the dropout layer required in the
+backpropagation algorithm are thus simply given by
+\[
+\boxed
+{
+   \pdv{L}{X_{\mu\nu}} = \sum_{\alpha'\alpha} \pdv{L}{D_{\alpha'\alpha}} \pdv{D_{\alpha'\alpha}}{X_{\mu\nu}} = \pdv{L}{D_{\mu\nu}} B_{\mu\nu}\,,
+}
+\]
+where $\bm{B}$ is the current 0-1 matrix sampled in the latest forward pass.
+
 \subsection{RBM}
 
 Generative model is a probabilistic model which enables us to generate new, synthetic observations
@@ -681,6 +805,7 @@ first RBM.
 \end{figure}
 
 \subsection{CNN}
+\subsection{ResNet}
 \subsection{Autoencoder}
 \subsection{VAE}
 \subsection{GAN}
@@ -688,7 +813,6 @@ first RBM.
 \subsection{Transformer}
 
 % TODO:
-
 % * Architectures
 % * Quantization 
 % * Mechanistic Interpretability
