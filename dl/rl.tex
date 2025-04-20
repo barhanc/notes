@@ -28,7 +28,7 @@ concepts of reinforcement learning are:
 \end{itemize}
 
 
-\section{Multi-armed Bandits}
+\section{Multi-armed bandits}
 
 Our first example of an RL system will be the well-known problem of $k$-armed bandits. In this
 problem we have a finite set of $k$ possible actions $\mc{A}$ and a conditional probability
@@ -43,7 +43,7 @@ their expectations) then in each step we should just choose the action $a^*$ suc
 \]
 since
 \[
-    \Ebb_{r_1 \sim p(r \mid a_1), \ldots, r_T \sim p(r \mid a_T)} \left[ \sum_{t=1}^T r_t \right] = \sum_{t=1}^T \Ebb_{r_t \sim p(r \mid a_t)} [r_t]\,.
+    \Ebb_{r_1 \sim p(r \mid a_1), \ldots, r_T \sim p(r \mid a_T)} \left[ \sum_{t=1}^T r_t \right] = \sum_{t=1}^T \Ebb[r \mid a_t]\,.
 \]
 
 \subsection{Value function methods}
@@ -90,7 +90,7 @@ look at the equation for the value function update we can generalize it a bit an
 \]
 where $\alpha_t(a)$ is called step-size. We can thus choose step-size beforehand and update the
 value function according to this equation instead of the one before. Additionally we can use the so
-called \emph{optimistic initialization} i.e. choose suitable values of $q_0(a)$ different than 0
+called \emph{optimistic initialization} i.e. choose suitable values of $q_1(a)$ different than 0
 (which is on the contrary called the \emph{realistic initialization}). This makes the algorithm
 prefer exploration in the initial phase.
 
@@ -136,19 +136,97 @@ The two previous methods for choosing actions in the $k$-armed bandits problem u
 function $q_t(a)$. This is however not the only option to choose an action. We can for example
 introduce a \emph{preference function} $h_t(a)$ which qualitatively describes how good an action $a$
 is at timestep $t$. The question however appears -- how to choose an action based on the preference
-function. A simple answer is to introduce the probability distribution over actions based on the
+function. A good answer is to introduce the probability distribution over actions based on the
 preference function through the softmax function i.e. the probability of choosing action $a$ at step
 $t$ is given by
 \[
 \boxed
 {
-    \pi_t(a) = \frac{\e^{h_t(a)}}{\sum_{a' \in \mc{A}} \e^{h_t(a')}}
+    \pi_t(a) = \frac{\exp h_t(a) }{\sum_{a' \in \mc{A}} \exp h_t(a')}
 }
 \]
 and choose the action by sampling from the categorical distribution described by the probabilities
 $\pi_t(a)$. How do we update the preference function? 
+% TODO: it doesn't really make sense
 
 \subsection{Thompson sampling}
+
+We will assume that the conditional probability $p(r \mid a)$ comes from some parametric family of
+probability distribution and is parametrized by the parameters $\theta_a$, namely
+\[
+    p(r \mid a) = p(r \mid \theta_a)\,.
+\]
+Thompson sampling algorithm is based on a simple Bayesian update rule, namely let $\pi_t(\theta_a)$
+be the prior distribution of the parameters $\theta_a$ at timestep $t$, then using the Bayes theorem
+we have
+\[
+    p(\theta_a \mid r_t) \propto p(r_t \mid \theta_a) \pi_t(\theta_a)
+\]
+and can update the prior as
+\[
+    \pi_{t+1}(\theta_a) = \frac{1}{Z(r_t)}p(r_t \mid \theta_a) \pi_t(\theta_a)\,,
+\]
+where
+\[
+    Z(r_t) = \int p(r_t \mid \theta_a) \pi_t(\theta_a) \dd{\theta_a}
+\]
+is the normalization constant. The action choice is then as follows, we \emph{sample}
+parameter values $\theta_a$ for every action $a \in \mc{A}$ using distributions $\pi_t(\theta_a)$
+and obtain samples
+\[
+    \{\underline{\theta_a} \mid a \in \mc{A}\}
+\]
+and choose the action maximizing the conditional expected reward namely
+\[
+    a_t = \argmax_{a \in \mc{A}} \Ebb_{r \sim p(r \mid \underline{\theta_a})}[r]
+\]
+We apply the action, obtain the reward and update the corresponding prior distribution of the
+parameters $\theta_{a_t}$.
+
+In the actual applications we often use statistical models $p(r \mid \theta_a)$ for which there
+exist so called conjugate priors i.e. priors which result in posterior from the same parametric
+family as the prior (\emph{not} the likelihood $p(r \mid \theta_a)$) but with modified parameters
+since this greatly simplifies the required computation. Below we describe an example adaptation of
+the Thompson sampling algorithm to the Bernoulli bandits problem.
+
+\subsubsection{Bernoulli bandits}
+
+Let's assume that each bandit returns as a reward either 0 or 1 (e.g. we have a recommender system
+and our feedback is whether user clicked a given link, ad, etc.) i.e. $r \in \{0,1\}$. We will model
+conditional distributions $p(r \mid a)$ using Bernoulli distribution i.e.
+\[
+    p(r \mid a) = \text{Ber}(r \mid \theta_a) = \theta_a^r (1 - \theta_a)^{(1-r)}\,,
+\]
+where $\theta_a \in [0;1]$ is the probability of getting 1. Let's assume that the prior distribution
+$\pi(\theta_a)$ is given by a beta distribution with some parameters $\alpha_a$, $\beta_a$
+\[
+    \pi(\theta_a) = \text{Beta}(\theta_a; \alpha_a, \beta_a) \propto \theta_a^{\alpha_a - 1} (1 - \theta_a)^{\beta_a - 1}\,.
+\]
+Let's note that the posterior is given by
+\[
+\begin{split}
+    p(\theta_a \mid r) &\propto \theta_a^r (1 - \theta_a)^{(1-r)} \cdot \theta_a^{\alpha_a - 1} (1 - \theta_a)^{\beta_a - 1} \\
+                       &\propto \theta_a^{\alpha_a + r - 1} (1 - \theta_a)^{\beta_a + (1 - r) -1}
+\end{split}
+\]
+and thus is just the beta distribution with parameters $\alpha_a + r$ and $\beta_a + (1-r)$. We
+therefore see that beta distribution is the conjugate prior to the Bernoulli likelihood. Thompson
+sampling algorithm for the Bernoulli bandits is thus following. Let $\alpha_t^{(a)}$,
+$\beta_t^{(a)}$ be the parameters of the prior distribution $\pi_t(\theta_a)$ at timestep $t$
+(values at $t=1$ are hyper-parameters), obtain samples $\underline{\theta_a}$ from
+$\text{Beta}(\alpha_t^{(a)}, \beta_t^{(a)})$ for each action $a \in \mc{A}$, perform action $a_t$
+chosen as
+\[
+    a_t = \argmax_{a \in \mc{A}} \Ebb_{r \sim \text{Ber}(\underline{\theta_a})}[r] = \argmax_{a \in \mc{A}} \underline{\theta_a}
+\]
+and observe reward $r_t$, finally update the prior distributions by updating the parameters
+according to
+\[
+\begin{split}
+    &\alpha_{t+1}^{(a)} = \alpha_{t}^{(a)} + \delta_{a_t,a} r_t\\
+    &\beta_{t+1}^{(a)} = \beta_{t}^{(a)} + \delta_{a_t,a} (1 - r_t)
+\end{split}
+\]
 
 \section{Dynamic Programming}
 
