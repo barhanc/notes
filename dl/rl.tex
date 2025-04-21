@@ -148,6 +148,13 @@ $t$ is given by
 and choose the action by sampling from the categorical distribution described by the probabilities
 $\pi_t(a)$. How do we update the preference function? 
 % TODO: it doesn't really make sense
+\[
+\boxed
+{
+    h_{t+1}(a) = h_{t}(a) + \alpha (r_t - \overline{r}_t)\big[ \delta_{a_t, a} - \pi_t(a) \big]
+}
+\]
+
 
 \subsection{Thompson sampling}
 
