@@ -203,16 +203,15 @@ backward propagation one must perform forward propagation to compute values \(\b
 
 The standard optimization method used to train neural networks is the Stochastic Gradient Descent,
 which is an iterative, gradient-based algorithm in which in every step \(t\) we update the
-parameters \(\bm{\theta}^{(i)}\) utilizing the gradient information. Let \(\bm{\theta}^{(i,t)}\)
-denote the value of parameters \(\bm{\theta}^{(i)}\) at step \(t\) and let \(\bm{v}^{(i,t)}\) be the
-values of the function \(\bm{F}^{(i)}\) at step \(t\). In each step we take a batch \(\mc{X}\)  of
-training data, perform forward propagation to compute values \(\bm{v}^{(i,t)}\) and the value of the
-loss function \(L(\mc{X},\bm{\theta}^{(t)})\), next perform backward propagation to compute the
-values of gradients \(\bm{g}^{(i,t)} =
-\partial_{\bm{\theta}^{(i)}}L\left(\mc{X},\bm{\theta}^{(t)}\right)\) and afterwards we update the
-parameters according to
+parameters \(\bm{\theta}\) utilizing the gradient information. Let \(\bm{\theta}_t\) denote the
+value of parameters \(\bm{\theta}\) at step \(t\) and let \(\bm{v}_t\) be the values of the
+functions \(\bm{F}\) at step \(t\). In each step we take a batch \(\mc{X}\)  of training data,
+perform forward propagation to compute values \(\bm{v}_t\) and the value of the loss function
+\(L(\mc{X},\bm{\theta}_t)\), next perform backward propagation to compute the values of gradients
+\((\partial_{\bm{\theta}}L)\left(\mc{X},\bm{\theta}_t\right)\) and
+afterwards we update the parameters according to
 \[
-   \boxed{ \theta_\alpha^{(i,t+1)} = \theta_\alpha^{(i,t)} - \eta g_\alpha^{(i,t)} }
+   \boxed{ \bm{\theta}_{t+1} = \bm{\theta}_t - \eta \pdv{L}{\bm{\theta}}\bigg|_{\bm{\theta}=\bm{\theta}_t} }
 \] 
 where \(\eta\) is the learning rate.
 
@@ -222,9 +221,52 @@ where \(\eta\) is the learning rate.
 The problem with vanilla SGD is that it gets stuck in the local minima. To overcome this problem one
 can take inspiration from simple physics. We first introduce velocity tensor \(\bm{V}\) with the
 following update rule
-\[\boxed{ V^{(i,t+1)}_\alpha = \gamma V^{(i,t)}_\alpha - \eta g^{(i,t)}_\alpha }\] where \(0 <
-   \gamma < 1\) is the so called momentum term and update parameters using
-\[\boxed{ \theta_\alpha ^{(i,t+1)} = \theta_\alpha ^{(i,t)} + V_\alpha ^{(i,t+1)} }\]
+\[
+\boxed
+{
+   \bm{V}_{t+1} = \mu \bm{V}_{t} - \eta \pdv{L}{\bm{\theta}}\bigg|_{\bm{\theta}=\bm{\theta}_t}
+}
+\] 
+where \(0 < \mu < 1\) is the so called \emph{momentum term} and update parameters using
+\[
+\boxed
+{ 
+   \bm{\theta}_{t+1} = \bm{\theta}_t + \bm{V}_{t+1}
+}
+\]
+
+
+\subsection{Nesterov's Accelerated Gradient}
+
+A simple modification of classical momentum, which (at least theoretically, for convex functions)
+improves the convergence rate of the SGD algorithm is the following. Whereas classical momentum
+updates the velocities according to
+\[
+   \bm{V}_{t+1} = \mu \bm{V}_{t} - \eta \pdv{L}{\bm{\theta}}\bigg|_{\bm{\theta} = \bm{\theta}_t}
+\]
+the Nesterov method uses
+\[
+\boxed
+{
+   \bm{V}_{t+1} = \mu \bm{V}_{t} - \eta \pdv{L}{\bm{\theta}}\bigg|_{\bm{\theta} = \bm{\theta}_t + \mu \bm{V}_t}
+}
+\]
+Using the equation above in the way it was written creates certain problems -- the problem is that
+the parameters $\bm{\theta}$ we keep in the layers are not the ones we need to compute forward and
+backward passes. A simple solution of this complication is to use parameters $\bm{\phi}_t =
+\bm{\theta}_t + \mu \bm{V}_t$ instead of $\bm{\theta}_t$ since assuming the same initialization,
+$\bm{V}_0 = 0$ and $\bm{V}_{T} \approx 0$ (where $T$ is the number of training epochs) the values of
+both parameters coincide and the update equations (\emph{\mbox{Bengio's} equations}) for $\bm{V}_t$
+and $\bm{\phi}_t$ have a very simple form
+\[
+\boxed
+{
+\begin{split}
+   &\bm{V}_{t+1} = \mu \bm{V}_t - \eta \pdv{L}{\bm{\theta}}\bigg|_{\bm{\theta} = \bm{\phi}_t}\\
+   &\bm{\phi}_{t+1} = \bm{\phi}_t + \mu^2 \bm{V}_t - \eta (1 + \mu) \pdv{L}{\bm{\theta}}\bigg|_{\bm{\theta} = \bm{\phi}_t}
+\end{split}
+}
+\]
 
 
 \subsection{Adaptive Moment Estimation (Adam)}
@@ -235,17 +277,18 @@ both the gradients and the second moments of the gradients.
 \[
 \boxed{
 \begin{split} 
-   &M_\alpha^{(i,t+1)} = \beta_1 M_\alpha^{(i,t)} + (1-\beta_1) g_\alpha^{(i,t)} \\
-   &V_\alpha ^{(i,t+1)} = \beta_2 V_\alpha^{(i,t)} + (1 - \beta_2) \left(g_\alpha^{(i,t)}\right)^2\\
-   &\tilde{M}_\alpha^{(i,t+1)} = \frac{M_\alpha^{(i,t+1)}}{1 - \beta_1^t} \\
-   &\tilde{V}_\alpha^{(i,t+1)}=\frac{ V_\alpha^{(i,t+1)}}{1 - \beta_2^t} \\
-   &\theta_\alpha ^{(i,t+1)} = \theta_\alpha ^{(i,t)} - \eta \frac{\tilde{M}_\alpha^{(i,t+1)}}{\sqrt{\tilde{V}_\alpha^{(i,t+1)}} + \epsilon}
+   &\bm{M}_{t+1} = \beta_1 \bm{M}_t + (1 - \beta_1) \pdv{L}{\bm{\theta}}\bigg|_{\bm{\theta} = \bm{\theta}_t} \\
+   &\bm{V}_{t+1} = \beta_2 \bm{V}_t + (1 - \beta_2) \left[ \pdv{L}{\bm{\theta}}\bigg|_{\bm{\theta} = \bm{\theta}_t} \right]^2\\
+   &\widetilde{\bm{M}}_{t+1} = \frac{\bm{M}_{t+1}}{1 - \beta_1^t} \\
+   &\widetilde{\bm{V}}_{t+1} = \frac{\bm{V}_{t+1}}{1 - \beta_2^t} \\
+   &\bm{\theta}_{t+1} = \bm{\theta}_t - \eta \frac{\widetilde{\bm{M}}_{t+1}}{\sqrt{\widetilde{\bm{V}}_{t+1}} + \epsilon}
 \end{split}
 }
 \] 
-where \(\epsilon \simeq 10^{-8}\)  is used to prevent division by 0, \(\eta\) is the learning rate
-and \(\beta_1\) and \(\beta_2\) are the forgetting factors typically set to \(\beta_1=0.9\) and
-\(\beta_2=0.999\). Additionally popular choice for \(\eta\) is \(\eta = 3\cdot10^{-4}\).
+where all operations are performed element-wise, \(\epsilon \simeq 10^{-8}\) is used to prevent
+division by 0, \(\eta\) is the learning rate and \(\beta_1\) and \(\beta_2\) are the forgetting
+factors typically set to \(\beta_1=0.9\) and \(\beta_2=0.999\). Additionally popular choice for the
+learning rate \(\eta\) is \(\eta = 3\mathrm{e}{-4}\).
 
 
 \subsection{Asynchronous SGD}
@@ -804,18 +847,37 @@ first RBM.
    \caption{Schematic depiction of DBN with 4 layers (8 visible units and 6 hidden units in each of the hidden layer)}
 \end{figure}
 
-\subsection{CNN}
-\subsection{ResNet}
+
+\subsubsection{MLP initialization using DBN}
+
+DBNs can be used to initialize weights in the MLP layers and thus improve the overall performance of
+the MLP network. The improvement can be huge, especially if we have lots of unlabeled data and only
+a handful of labeled examples as is the case e.g. when the labeling process is costly, difficult or
+time-consuming. The implementation is straight-forward. We train the $n$-layer-deep DBN in an
+unsupervised manner using the greedy layer-wise training algorithm. We then construct an MLP with
+$n+1$ layers, initialize the first $n$ layers with the weights and biases of the pretrained DBN and
+finetune the MLP on the smaller set of labeled examples. This type of initialization is also called
+\emph{greedy layer-wise pretraining}. One key aspect to remember when using this approach is that
+the activations of the MLP must match the ''activations'' of the DBN. If we use the logistic sigmoid
+activations in the MLP then nothing is changed in the RBM, however if we would like to use ReLU
+activation function then one may show that the RBM activations should given by $\text{ReLU}(\bm{b} +
+\bm{vW})$ and to sample the hidden units we should use the so called \emph{noisy rectified linear
+unit} 
+\[
+   \text{N-ReLU}(z) = \max\{ 0, z + \sigma(z) \cdot \epsilon\}\,,
+\]
+where $\epsilon \sim \mc{N}(0,1)$.
+
+
 \subsection{Autoencoder}
 \subsection{VAE}
+\subsection{CNN}
+\subsection{ResNet}
 \subsection{GAN}
 \subsection{DDPM}
 \subsection{Transformer}
 
 % TODO:
-% * DBN initialization of MLP
-% * Gaussian RBM units
-% * Nesterov momentum (+Bengio's formula)
 % * Autoencoder
 % * CNN
 
