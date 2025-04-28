@@ -482,7 +482,9 @@ Additionally the vector-jacobian products for the parameters are given by
 }
 \]
 
+
 \section{Architectures}
+
 
 \subsection{MLP}
 
@@ -608,6 +610,7 @@ backpropagation algorithm are thus simply given by
 }
 \]
 where $\bm{B}$ is the current 0-1 matrix sampled in the latest forward pass.
+
 
 \subsection{RBM}
 
@@ -784,6 +787,7 @@ samples \(\underline{\bm{v}}_k^{(i)}\). We then approximate the expectations as
 \]
 and are finally able to compute the gradients and update the parameters.
 
+
 \subsubsection{Persistent Contrastive Divergence}
 
 The algorithm described in the previous paragraph has one serious flaw -- it is extremely slow, as
@@ -802,6 +806,7 @@ sampling steps starting from \(\underline{\bm{h}}_1^{(j)} = \bm{p}^{(j)}\) and o
 \(\bm{v}_k^{(j)}\), we approximate the expectations as before (noting that now we average over \(M\)
 samples) and in the end update the persistent chain by sampling \(M\) vectors \(\bm{p}^{(j)}\) from
 the distribution \(p(\bm{h} \mid \underline{\bm{v}}_k^{(j)})\).
+
 
 \subsection{DBN}
 
@@ -878,9 +883,6 @@ where $\epsilon \sim \mc{N}(0,1)$.
 \subsection{Transformer}
 
 % TODO:
-% * Autoencoder
-% * CNN
-
 % * Architectures
 % * Quantization 
 % * Mechanistic Interpretability
