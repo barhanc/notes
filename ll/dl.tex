@@ -869,7 +869,7 @@ activation function then one may show that the RBM activations should given by $
 \bm{vW})$ and to sample the hidden units we should use the so called \emph{noisy rectified linear
 unit} 
 \[
-   \text{N-ReLU}(z) = \max\{ 0, z + \sigma(z) \cdot \epsilon\}\,,
+   \text{N-ReLU}(z) = \max\{ 0, z + \sqrt{\sigma(z)} \cdot \epsilon\}\,,
 \]
 where $\epsilon \sim \mc{N}(0,1)$.
 
@@ -883,6 +883,7 @@ where $\epsilon \sim \mc{N}(0,1)$.
 \subsection{Transformer}
 
 % TODO:
+% * Generative Models
 % * Architectures
 % * Quantization 
 % * Mechanistic Interpretability
