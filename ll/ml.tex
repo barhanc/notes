@@ -1134,7 +1134,6 @@ jednak łączenie wyników odbywa się w zupełnie inny sposób.
 \begin{algorithm}[ht]
 \caption{Proste stopniowe modelowanie addytywne}
 \KwIn{Zbiór danych $\{(\bm{x}_i, y_i)\}_{i=1}^n$, funkcja straty $L(y, f(\bm{x}))$, liczba iteracji $M$}
-\KwOut{Model addytywny $f_M(\bm{x})$}
 
 Zainicjalizuj model: $f_0(\bm{x}) \leftarrow 0$\;
 
@@ -1157,7 +1156,6 @@ współczynnika, które tworzą wyraz dodawany do aktualnego rozwinięcia funkcj
 \begin{algorithm}[ht]
 \caption{Boosting gradientowy dla drzew}
 \KwIn{Zbiór danych $\{(\bm{x}_i, y_i)\}_{i=1}^n$, funkcja straty $L(y, f(\bm{x}))$, liczba iteracji $M$}
-\KwOut{Model addytywny $f_M(\bm{x})$}
 
 Inicjalizuj model:
 \[
@@ -1242,9 +1240,136 @@ obliczamy przyczynki do \(\hat{p}(\bm{x})\) tylko od nich.
 
 \subsection{KNN}
 
+Metody oparte o sąsiedztwo to zbiór metod, które wykorzystują najbliższych (w sensie pewnej metryki
+lub półmetryki) sąsiadów (ang. \emph{nearest neighbors}) dla danego nowego punktu. Zasadniczą
+ideą tych metod jest iż punkty leżące blisko siebie w pewnej przestrzeni powinny mieć podobne
+własności, czyli taka przestrzeń metryczna powinna być \emph{semantycznie sensowna}.
+
+Jednym z najprostszych algorytmów z tej dziedziny jest \emph{k-nearest neighbors} (KNN) używany
+najczęściej do klasyfikacji, ale możliwe jest również użycie go do regresji. Załóżmy, iż mamy zbiór
+treningowy \(\mc{X} = \{t_i(\bm{x}_i)\}_{i=1}^n\), gdzie \(\mathbf{x}\) to wektor cech, a \(t\) to
+prawidłowa klasa. Chcąc przewidzieć klasę dla nowego wektora cech \(\mathbf{x}\) znajdujemy \(k\)
+najbliższych sąsiadów \(\mathbf{x}\) w zbiorze \(\{\bm{x}_i\}_{i=1}^n\) względem metryki \(d\),
+zliczamy klasy najbliższych sąsiadów i zwracamy klasę występującą najczęściej lub rozkład
+prawdopodobieństwa nad możliwymi klasami jako stosunek liczby punktów z daną klasą do liczby
+sąsiadów
+\[
+    \hat{t}(\bm{x}) = \argmax_{c \in \{1, \ldots, C\}} \frac{1}{k}\sum_{i: \bm{x}_i \in N_k(\bm{x})} [t_i = c]\,.
+\]
+W przypadku regresji zamiast zwracać klasę występującą najczęściej, zwracamy średnią arytmetyczną
+wartości \(t\) dla \(k\) najbliższych sąsiadów (użycie średniej powoduje, iż KNN w przypadku
+regresji potrafi tylko interpolować wartości)
+\[
+    \hat{t}(\bm{x}) = \frac{1}{k}\sum_{i: \bm{x}_i \in N_k(\bm{x})} t_i\,.
+\]
+Liczba sąsiadów \(k\) jest hiperparametrem modelu KNN, który silnie wpływa na jakość predykcji.
+Zasadniczo im większa wartość \(k\) tym większy jest bias modelu, natomiast im mniejsza tym większa
+jest wariancja modelu. KNN jest modelem nieliniowym i potrafi nauczyć się nietrywialnych granic
+decyzyjnych. Jest również bardziej elastyczny w porównaniu do modeli liniowych (np. regresji
+logistycznej). Standardowo wykorzystywane metryki to w szczególności metryka euklidesowa, metryka
+manhattan, podobieństwo cosinusowe.
+
+Często wykorzystywaną modyfikacją KNN jest tzw. ważenie sąsiadów. Opiera się ono na prostej
+obserwacji, iż nie wszyscy najbliżsi sąsiedzi danego punktu są jednakowo ważni, gdyż w rzadkich
+obszarach przestrzeni sąsiedzi ci mogą być dosyć daleko. Rozwiązaniem jest ważenie sąsiadów
+odwrotnością odległości do nich. Wówczas w przypadku klasyfikacji prawdopodobieństwa obliczamy jako
+stosunek sumy wag danej klasy do sumy wszystkich wag, a w przypadku regresji obliczamy średnią
+ważoną zamiast arytmetycznej.
+
+W vanilla KNN etap treningu polega jedynie na zapamiętaniu zbioru danych i dopiero na etapie
+predykcji znajdowani są najbliżsi sąsiedzi. Takie podejście jest bardzo nieefektywne, złożoność
+obliczeniowa etapu predykcji to \(O(kn)\). W praktyce podczas treningu budowana jest pomocnicza
+struktura danych, która pozwala efektywniej przeszukiwać punkty w celu znalezienia najbliższych
+sąsiadów. Przykładami takich struktur są np. k-d tree, ball tree, quad tree, octree. W przypadku k-d
+tree złożoność treningu (budowy struktury) wynosi \(O(n \log n)\), natomiast wyszukania \(k\)
+sąsiadów \(O(k \log n)\). W przypadku zastosowania kNN do wyszukiwania taka złożoność jest niestety
+nadal za duża w praktyce (chcemy wyszukiwać wśród setek milionów obiektów), dlatego powstały również
+metody przybliżone (z ang. \textit{Approximate Nearest Neighbors}). W algorytmach
+przybliżonych zamiast znajdować dokładnych \(k\) najbliższych sąsiadów znajdujemy \(k\) sąsiadów,
+którzy niekoniecznie muszą być rzeczywiście najbliższymi, potrafimy to jednak zrobić znacznie
+szybciej.
+
+
 \subsection{NBC}
 
+Mając zbiór uczący dla zafania klasyfikacji postaci $\mc{X} = \{t_i(\bm{x}_i)\}_{i=1}^n$ możemy
+próbować estymować rozkłady $p(\bm{x} \mid k)$ i $p(k)$ dla klasy $k \in \{1,\ldots,K\}$, a
+następnie korzystając z twierdzenia Bayesa stworzyć klasyfikator zgodny z regułą MAP
+\[
+    \hat{t}(\bm{x}) = \argmax_{k \in \{1,\ldots,K\}} p(k \mid \bm{x}) = \argmax_{k \in \{1,\ldots,K\}} p(\bm{x} \mid k) p(k)\,.
+\]
+W przypadku drugiego członu sprawa jest prosta -- estymatorem MLE jest
+\[
+    p(k) = \frac{1}{n} \sum_{i=1}^n [t_i = k]\,.
+\]
+Problemem jest zwykle estymowanie rozkładu warunkowego $p(\bm{x} \mid k)$, zwłaszcza dla wektora
+cech o wielu predyktorach $p \gg 1$ (klątwa wymiarowości). Naiwny klasyfikator Bayesowski (ang. \emph{Naive Bayesian
+Classifier, NBC}) czyni (naiwne) założenie o warunkowej niezależności predyktorów względem klasy,
+tj.
+\[
+    p(x_1,\ldots,x_p \mid k) = \prod_{i=1}^p p(x_i \mid k)\,.
+\]
+Wówczas rozkładu warunkowe dla poszczególnych predyktorów $p(x_i \mid k)$ estymujemy niezależni,
+albo zgodnie z przyjętym modelem zdarzeń (np. przyjmując jakiś rozkład parametryczny i estymując
+jego parametry), albo używając metod nieparametrycznych (np. jednowymiarowych KDE).
+
+Zauważmy, że NBC zasadniczo różni się od modeli rozważanych wcześniej (regresja liniowa,
+logistyczna, itp.), w których bezpośrednio modelowaliśmy rozkład warunkowy $p(y \mid \bm{x})$. Tutaj
+zamiast rozkładu warunkowego estymujemy rozkład łączny cech i odpowiedzi $p(y, \bm{x})$. Model taki
+nazywa się \emph{modelem generatywnym}. Natomiast model, w którym wprost modelujemy rozkład
+warunkowy nazywa się \emph{modelem dyskryminatywnym}.
+
 \subsection{LDA i QDA}
+
+Modele LDA (ang. \emph{Linear Discriminant Analysis}) i QDA (ang. \emph{Quadratic Discriminant
+Analysis}) są modelami generatywnymi, podobnymi do NBC. Zasadniczą różnicą względem NBC jest to, że
+nie czynią założenia warunkowej niezależności. Zamiast tego zakładają, że rozkład predyktorów w
+ramach danej klasy jest wielowymiarowym rozkładem normalnym. W przypadku LDA mamy
+\[
+    \bm{x} \mid k \sim \mc{N}(\bm{\mu}_k, \bm{\Sigma})
+\]
+nastomiast w przypadku QDA
+\[
+    \bm{x} \mid k \sim \mc{N}(\bm{\mu}_k, \bm{\Sigma}_k)\,.
+\]
+Modele LDA i QDA różnią się między sobą założeniem o równości macierzy kowariancji między klasami. W
+przypadku LDA mamy tylko jedną macierz kowariancji niezależną od klasy, natomiast w przypadku QDA
+mamy osobne macierze dla każdej z klas. W obu przypadkach rozkład a priori $p(k)$ estymujemy
+analogicznie jak w przypadku NBC, tj.
+\[
+     p(k) = \frac{1}{n} \sum_{i=1}^n [t_i = k]\,.
+\]
+Właściwy klasyfikator jest również budowany zgodnie z bayesowską regułą MAP
+\[
+\begin{split}
+    \hat{t}(\bm{x}) &= \argmax_{k} \log p(k \mid \bm{x}) \\
+                    &= \argmax_{k} \left( \log p(\bm{x} \mid k) + \log p(k)\right)\,.
+\end{split}
+\]
+Rozwijając wyrażenie pod operatorem argmax otrzymujemy odpowiednio dla LDA (pomijając człony stałe)
+\[
+    \delta_k(\bm{x}) = \bm{x}^\tpose \bm{\Sigma}^{-1}\bm{\mu}_k - \frac{1}{2} \bm{\mu}_k^\tpose \bm{\Sigma}^{-1} \bm{\mu}_k + \log p(k)
+\]
+i QDA
+\[
+\begin{split}
+    \delta_k(\bm{x}) = &-\frac{1}{2} \log \det \bm{\Sigma}_k - \frac{1}{2} \bm{x}^\tpose \bm{\Sigma}_k^{-1} \bm{x} + \bm{x}^\tpose \bm{\Sigma}_k^{-1} \bm{\mu}_k \\
+                       &- \frac{1}{2} \bm{\mu}_k^\tpose \bm{\Sigma}_k^{-1} \bm{\mu}_k + \log p(k)
+\end{split}
+\]
+Funkcję $\delta_k$ nazywamy \emph{funkcją dyskryminatora}. Widzimy również, skąd biorą się nazwy
+modeli -- w przypadku LDA funkcja dyskryminatora jest funkcją liniową względem predyktorów,
+natomiast w przypadku QDA ma ona postać formy kwadratowej względem predyktorów. Uczenie modeli LDA i
+QDA polega na estymacji parametrów rozkładów warunkowych: $\bm{\mu}_k, \bm{\Sigma}$ w przypadku LDA
+i $\bm{\mu}_k, \bm{\Sigma}_k$ w przypadku QDA. Można pokazać, iż odpowiednimi estymatorami są
+\[
+\begin{split}
+    &\bm{\mu}_k = \frac{1}{n_k} \sum_{i: t_i = k} \bm{x}_i\\
+    &\bm{\Sigma} = \frac{1}{n - K} \sum_{k=1}^K \sum_{i: t_i = k} (\bm{x}_i - \bm{\mu}_k)(\bm{x}_i - \bm{\mu}_k)^\tpose\\
+    &\bm{\Sigma}_k = \frac{1}{n_k - 1} \sum_{i: t_i = k} (\bm{x}_i - \bm{\mu}_k)(\bm{x}_i - \bm{\mu}_k)^\tpose
+\end{split}
+\]
+
 
 \subsection{PCA}
 
