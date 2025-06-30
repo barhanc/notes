@@ -68,7 +68,7 @@ wnioskowania Bayesowskiego). Korzystając z tego rozkładu możemy:
 
 \end{itemize}
 
-\section{Rozkład normalny}
+\subsection{Rozkład normalny}
 
 Wielowymiarowy rozkład normalny o średniej \(\bm{\mu} \in \Rbb^n\) i symetrycznej, nieujemnie
 określonej macierzy kowariancji \(\bm{\Sigma} \in \Rbb^{n \times n}\) to rozkład o gęstości danej
@@ -99,7 +99,7 @@ gdzie
 \]
 
 
-\section{Liniowe modele Gaussowskie}
+\subsection{Liniowe modele Gaussowskie}
 
 Jednym z najprostszych modeli, do którego można zastosować wnioskowanie Bayesowskie jest tzw.
 liniowy model Gaussowski. Zakładamy, iż mamy obserwację \(\bm{y}\), która pochodzi z rozkładu
@@ -325,7 +325,7 @@ przypadku rozkładu normalnego -- wyznaczony wcześniej parametr \(\bm{\mu_n}\)
 \]
 
 
-\subsection{*Regresja w ujęciu częstościowym}
+\subsection{Regresja w ujęciu częstościowym}
 
 Podstawowym pytaniem, na które sama estymacja punktowa nie daje odpowiedzi w przypadku modelu
 liniowego jest: czy dany podzbiór współczynników jest istotny statystycznie? Oczywiście w ujęciu
@@ -358,6 +358,295 @@ gdzie
 \]
 natomiast \(t_{1-\frac{\alpha}{2},n-p-1}\) jest kwantylem rzędu \(1-\frac{\alpha}{2}\) rozkładu t
 Studenta z parametrem \(n - p - 1\).
+
+\subsection{Predyktory jakościowe}
+
+Zmienne jakościowe, które mają być użyte jako predyktory w regresji liniowej wymagają reprezentacji
+numerycznej. Typowo stosowanym kodowaniem jest kodowanie za pomocą tzw. \emph{dummy variables} w
+taki sposób, że zmienna jakościowa o $k$ poziomach jest kodowana jako wektor binarny o $k-1$
+składowych (aby uniknąć tzw. \emph{dummy variable trap} -- naiwny one-hot-encoding powoduje
+redundancję w postaci liniowej zależności składowych wektora kodującego $x_1 + \ldots + x_k = 1$).
+Przykładowo dla zmiennej jakościowej $\mathsf{ShelveLoc} \in \{\mathsf{Bad}, \mathsf{Medium},
+\mathsf{Good}\}$ tworzymy wektor binarny o dwóch składowych: $\mathsf{ShelveLocBad} \in \{0,1\}$,
+$\mathsf{ShelveLocGood} \in \{0,1\}$. Wektor $(0,0)$ reprezentuje wówczas wartość $\mathsf{Medium}$
+zmiennej $\mathsf{ShelveLoc}$.
+
+\subsection{Ocena jakości dopasowania}
+
+Najpopularniejszymi miarami dopasowania modelu są:
+\begin{itemize}
+    \item RSE (ang. \emph{residual standard error}) zdefiniowany jako $\sqrt{\frac{\text{RSS}}{n-p-1}}$,
+    \item Ułamek wariancji wyjaśnionej przez model
+    \[
+        R^2 := 1 - \frac{\text{RSS}}{\text{TSS}}\,,\quad \text{TSS} = \sum_{i=1}^n (y_i - \overline{y})^2\,,
+    \]
+    który powinien być jak najbliższy 1.
+\end{itemize}
+
+Należy pamiętać, iż powyższe miary dopasowania \emph{nie} są dobrymi miarami przy porównywaniu
+modeli o \emph{różnej} liczbie predyktorów (jeśli liczymy te miary na zbiorze treningowym). Aby
+poradzić sobie z tym problemem mamy dwie opcje: metody bezpośrednie, w których estymujemy błąd
+testowy za pomocą walidacji krzyżowej lub metody holdout lub metody pośrednie, w których wprowadzamy
+poprawki do błędu treningowego. W szczególności miarami pośrednimi są:
+\begin{itemize}
+    \item adjusted $R^2$ obliczany jako $1 - \text{RSS}(n-1) / \text{TSS}(n-p-1)$
+    \item kryterium Mallowa $C_p = \frac{1}{n}(\text{RSS} + 2 p \hat{\sigma}^2)$
+\end{itemize}
+
+\section{Uogólnione modele liniowe}
+
+Prosty model regresji liniowej może posłużyć nam jako wzór do tworzenia bardziej skomplikowanych
+modeli statystycznych. Formalnie dowolny model statystyczny jest uogólnionym modelem liniowym (ang.
+\emph{Generalized Linear Model, GLM}) jeśli zachodzi
+\begin{enumerate}
+    \item Parametry $\bm{\beta}$ modelu są związane z wektorem $\bm{x}$ jedynie poprzez tzw.
+    \emph{składnik systematyczny} $\bm{\beta}^\tpose \bm{x}$ (jest to zatem model liniowy).
+    
+    \item Rozkład $y \mid \bm{x}, \bm{\beta}$ pochodzi z ustalonej wykładniczej rodziny rozkładów
+    $P(\theta, \tau)$ z parametrami $\theta, \tau$ o gęstości danej przez
+    \[
+        p(z; \theta, \tau) = \exp\left[\frac{\theta z - f(\theta)}{d(\tau)} + k(z, \tau)\right]\,,
+    \]
+    dla pewnych funkcji $f, d, k$.
+
+    \item Parametr $\theta$ jest związany ze składnikiem systematycznym równością
+    \[
+        g(f'(\theta)) = \bm{\beta}^\tpose \bm{x}
+    \]
+    dla pewnej funkcji wiążącej $g$.
+\end{enumerate}
+
+
+\subsection{Regresja logistyczna}
+
+Rozpatrzymy teraz problem klasyfikacji binarnej z perspektywy estymacji MLE. Niech \(\mc{X} =
+\{t_i(\bm{x}_i)\}_{i=1}^n\) będzie zbiorem obserwacji i.i.d., gdzie zakładamy, iż \(t \in \{0,1\}\).
+Jako model statystyczny przyjmiemy, iż klasa \(t(\bm{x})\) pochodzi z rozkładu Bernoulliego z
+parametrem \(\pi(\bm{x}; \bm{w})\) (prawdopodobieństwem klasy pozytywnej, gdzie \(\pi\) jest tzw.
+funkcją wiążącą, ang. \emph{link function}) zależnym od estymowanych parametrów \(\bm{w}\)
+\[
+t \mid \bm{x}, \bm{w} \sim \mathrm{Ber}(\pi(\bm{x}; \bm{w}))\,.
+\]
+W przypadku regresji logistycznej jako funkcję \(\pi(\bm{x}; \bm{w})\) przyjmiemy
+\(\sigma(\phi(\bm{x}; \bm{w}))\), gdzie
+\[
+\sigma(z) = \frac{1}{1 + \e^{-z}}
+\]
+to tzw. \emph{funkcja logistyczna} (będąca szczególnym przypadkiem funkcji sigmoidalnej), natomiast
+\(\phi(\bm{x}; \bm{w})\) może być dowolną funkcją wykorzystywaną do zagadnienia regresji. W
+przypadku regresji logistycznej przyjmujemy prosty model liniowy
+\[
+\phi(\bm{x}; \bm{w}) = \bm{w}^\tpose \bm{x}\,.
+\]
+Zauważmy, iż taka postać uwzględnia człon stały poprzez podstawienie \(\bm{x}^\tpose \leftarrow
+\mqty[\bm{x}^\tpose & 1]\). Wiarygodność dla powyższego modelu statystycznego ma postać
+\[
+p(\mc{X} \mid \bm{w}) = \prod_{i=1}^n \pi(\bm{x}_i;\bm{w})^{t_i} (1 - \pi(\bm{x}_i;\bm{w}))^{1 - t_i}\,,
+\]
+skąd funkcja NLL
+\[
+\boxed{
+    L(\mc{X}; \bm{w}) = - \sum_{i=1}^n \left[ t_i \log \pi_i + (1 - t_i) \log (1 - \pi_i) \right]\,,
+}
+\]
+gdzie \(\pi_i = \pi(\bm{x}_i; \bm{w})\). Taką funkcję kosztu nazywamy \emph{binarną entropią
+krzyżową} (ang. \emph{ binary cross-entropy function}). Niestety dla takiej postaci funkcji kosztu
+nie można znaleźć minimum w postaci analitycznej (jak zrobiliśmy w przypadku regresji liniowej),
+dlatego musimy wykorzystywać algorytmy optymalizacji numerycznej, które najczęściej wykorzystują
+pierwsze pochodne funkcji kosztu po parametrach. Typowo wykorzystywanym do tego celu algorytmem jest
+\emph{spadek wzdłuż gradientu} (ang. \emph{gradient descent}), w którym iteracyjnie wykonujemy
+\[
+    \bm{w}_{t+1} = \bm{w}_t - \eta \pdv{L}{\bm{w}}\bigg|_{\bm{w}_t}\,.
+\]    
+Wyznaczymy więc pochodne funkcji \(L\) po parametrach \(\bm{w}\). Wprowadźmy macierz
+\(X_{\alpha\beta} = x_\beta^{(\alpha)}\) oraz wektory \(\phi_\alpha = \phi(\bm{x}_\alpha; \bm{w})\),
+\(\sigma_\alpha = \sigma(\phi_\alpha)\). Wówczas
+\[
+L(\mc{X}; \bm{w}) = - \sum_{\alpha=1}^n \left[ t_\alpha \log \sigma_\alpha + (1 - t_\alpha) \log(1 - \sigma_\alpha) \right]\,.
+\]
+W takim razie mamy
+\[
+\pdv{L}{\phi_\alpha} = \sum_{\beta=1}^n \pdv{L}{\sigma_\beta} \pdv{\sigma_\beta}{\phi_\alpha}\,,
+\]
+gdzie
+\[
+\pdv{L}{\sigma_\beta} = \frac{1 - t_\beta}{1 - \sigma_\beta} - \frac{t_\beta}{\sigma_\beta}
+\]
+oraz
+\[
+\pdv{\sigma_\beta}{\phi_\alpha} = \sigma'(\phi_\beta) \delta_{\alpha\beta}\,,
+\]
+gdzie
+\[
+\sigma'(z) = \frac{\e^{-z}}{(1 + \e^{-z})^2} = \sigma(z)(1 - \sigma(z))\,,
+\]
+zatem
+\[
+\pdv{L}{\phi_\alpha} = \left(\frac{1 - t_\alpha}{1 - \sigma_\alpha} - \frac{t_\alpha}{\sigma_\alpha}\right)\sigma_\alpha(1 - \sigma_\alpha) = \sigma_\alpha - t_\alpha\,.
+\]
+W takim razie, z powyższego mamy
+\[
+\pdv{L}{w_\alpha} = \sum_{\beta=1}^n \pdv{L}{\phi_\beta} \pdv{\phi_\beta}{w_\alpha} = \sum_{\beta=1}^n (\sigma_\beta - t_\beta) X_{\beta\alpha}\,,
+\]
+co możemy zapisać w zwartej postaci macierzowej
+\[
+\pdv{L}{\bm{w}} = \bm{X}^\tpose (\bm{\sigma} - \bm{t})\,.
+\]
+
+\subsection{Wieloklasowa regresja logistyczna}
+
+Regresję logistyczną możemy w prosty sposób uogólnić na przypadek klasyfikacji jednej z \(k\) klas.
+Zakładamy teraz, iż zbiór obserwacji i.i.d. ma postać \(\mc{X} = \{t_i(\bm{x}_i)\}_{i=1}^n\) dla \(t
+\in \{1,\ldots,k\}\). Nasz model statystyczny uogólnimy do postaci rozkładu kategorialnego (ang.
+\emph{categorical distribution} lub \emph{multinomial distribution}) z parametrem \(\bm{\pi}(\bm{x};
+\bm{W})\) (wektorem prawdopodobieństw każdej klasy) zależnym od estymowanych parametrów \(\bm{W}\)
+\[
+t \mid \bm{x}, \bm{W} \sim \mathrm{Cat}(\bm{\pi}(\bm{x}; \bm{W}))\,.
+\]
+W przypadku regresji softmax jako funkcję \(\bm{\pi}: \mathbb{R}^m \mapsto [0;1]^k\) przyjmiemy
+funkcję \(\bm{\sigma}(\bm{\phi}(\bm{x}; \bm{W}))\), gdzie \(\bm{\sigma}: \mathbb{R}^k \mapsto
+[0;1]^k\)
+\[
+\sigma_\alpha(\bm{z}) = \frac{\exp(z_\alpha)}{ \sum_{\beta=1}^k \exp(z_\beta)}
+\]
+to tzw. \emph{funkcja softmax}, natomiast \(\bm{\phi}: \mathbb{R}^m \mapsto \mathbb{R}^k\), to
+dowolna funkcja. W przypadku regresji softmax przyjmiemy prosty model liniowy
+\[
+\bm{\phi}(\bm{x}; \bm{W}) = \bm{W}\bm{x}\,.
+\]
+Wiarygodność dla powyższego modelu ma postać
+\[
+\prod_{\alpha=1}^n \prod_{\beta=1}^k \pi_{\alpha\beta}^{t_{\alpha\beta}}\,,
+\]
+skąd funkcja NLL ma postać
+\[
+\boxed{
+L(\mc{X}; \bm{W}) = - \sum_{\alpha=1}^n \sum_{\beta=1}^k t_{\alpha\beta} \log \pi_{\alpha\beta}\,,
+}
+\]
+gdzie
+\[
+\begin{split}
+    &\pi_{\alpha\beta} = \sigma_\beta(\bm{\phi}(\bm{x}_\alpha; \bm{W})) = \frac{\exp \phi_{\alpha\beta}}{\displaystyle \sum_{\gamma=1}^k \exp \phi_{\alpha\gamma}}\\
+    &\phi_{\alpha\beta} = \phi_{\beta}(\bm{x}_\alpha; \bm{W}) \\
+    &t_{\alpha\beta} = [t_\alpha = \beta]
+\end{split}\,.
+\]
+Wiersze macierzy \(\bm{t}\) są binarnymi wektorami kodującymi w sposób one-hot klasę danego
+przykładu. Niestety dla takiej postaci funkcji kosztu nie można znaleźć minimum w postaci
+analitycznej, dlatego musimy wykorzystywać algorytmy optymalizacji numerycznej. Wyznaczymy więc
+jeszcze pierwsze pochodne funkcji \(L\) po parametrach \(\bm{W}\)
+\[
+    \pdv{L}{\pi_{\beta\beta'}} = - \frac{t_{\beta\beta'}}{\pi_{\beta\beta'}}\,.
+\]
+Jednocześnie mamy
+\[
+    \pdv{L}{\phi_{\alpha\alpha'}} = \sum_{\beta=1}^n \sum_{\beta'=1}^k \pdv{L}{\pi_{\beta\beta'}} \pdv{\pi_{\beta\beta'}}{\phi_{\alpha\alpha'}}\,,
+\]
+gdzie
+\[
+\begin{split}
+    \pdv{\pi_{\beta\beta'}}{\phi_{\alpha\alpha'}} &= \frac{\exp \phi_{\beta\beta'} \delta_{\alpha\beta} \delta_{\alpha'\beta'} }{ \displaystyle \sum_{\gamma=1}^k \exp \phi_{\beta\gamma}} - \frac{\exp \phi_{\beta\beta'} \exp \phi_{\beta\alpha'} \delta_{\alpha\beta}}{\displaystyle \left[ \sum_{\gamma=1}^k \exp \phi_{\beta\gamma} \right]^2} \\
+           &= \pi_{\beta\beta'} \delta_{\alpha\beta} \delta_{\alpha'\beta'} - \pi_{\beta\beta'} \pi_{\beta\alpha'} \delta_{\alpha\beta}\,.
+\end{split}
+\]
+Z powyższego mamy zatem
+\[
+    \pdv{L}{\phi_{\alpha\alpha'}} = \pi_{\alpha\alpha'} \sum_{\beta'=1}^k t_{\alpha\beta'} - t_{\alpha\alpha'} = \pi_{\alpha\alpha'} - t_{\alpha\alpha'}\,.
+\]
+Ostatecznie zatem
+\[
+    \pdv{L}{W_{\beta\beta'}} = \sum_{\alpha=1}^n \sum_{\alpha'=1}^k \pdv{L}{\phi_{\alpha\alpha'}} \pdv{\phi_{\alpha\alpha'}}{W_{\beta\beta'}}\,,
+\]
+gdzie
+\[
+    \pdv{\phi_{\alpha\alpha'}}{W_{\beta\beta'}} = X_{\alpha\beta'} \delta_{\alpha'\beta}\,,
+\]
+zatem
+\[
+    \pdv{L}{W_{\beta\beta'}} = \sum_{\alpha=1}^n (\pi_{\alpha\beta} - t_{\alpha\beta}) X_{\alpha\beta'}\,,
+\]
+co możemy zapisać w zwartej postaci macierzowej
+\[
+    \pdv{L}{\bm{W}} = (\bm{\pi} - \bm{t})^\tpose \bm{X}\,.
+\]
+
+\subsection{Regresja probitowa}
+
+Regresja probitowa to model analogiczny do regresji logistycznej, w którym jako funkcję wiążącą
+przyjmujemy
+\[
+    \pi(\bm{x}; \bm{w}) = \Phi(\bm{w}^\tpose \bm{x})\,,
+\]
+gdzie $\Phi$ jest dystrybuantą standardowego, jednowymiarowego rozkładu normalnego. Taki model
+możemy traktować jako model ze \emph{zmienną ukrytą} (ang. \emph{latent variable})
+\[
+    h \mid \bm{x}, \bm{w} \sim \mc{N}(\bm{w}^\tpose \bm{x}, 1)\,,
+\]
+która wyznacza obserwowalną zmienną odpowiedzi jako
+\[
+    t = \begin{cases}
+        &1\,,\quad\text{jeśli}\,h > 0\\
+        &0\,,\quad\text{w.p.p.}
+    \end{cases}
+\]
+
+\subsection{Regresja Poissonowska}
+
+Regresja Poissonowksa to podstawowy model dla danych zliczeniowych, w których zmienna objaśniana $t$
+przyjmuje dowolne wartości naturalne $t \in \mathbb{N}$. Jest to zasadniczo model postaci
+\[
+    t \mid \bm{x}, \bm{w} \sim \text{Pois}\left(\e^{\bm{w}^\tpose \bm{x}}\right)\,.
+\]
+Zanegowana logarytmiczna funkcja wiarygodności ma dla tego modelu postać
+\[
+    L(\mc{X}; \bm{w}) = - \sum_{i=1}^n \left( t_i \bm{w}^\tpose \bm{x}_i - \e^{\bm{w}^\tpose \bm{x}_i}\right)\,,
+\]
+pamiętając, iż funkcja masy prawdopodobieńśtwa dla rozkładu Poissona to
+\[
+    P(Y = k; \lambda) = \frac{\lambda^k}{k!} \e^{-\lambda}\,.
+\]
+
+
+\subsection{Regresja porządkowa}
+
+Regresja porządkowa to podstawowy model w przypadku, w którym zmienna objaśniana $t$ przyjmuje
+wartości z \emph{liniowo uporządkowanego zbioru}, o którym bez straty ogólności założymy, iż ma
+postać $\{1,2,\ldots,k\}$. Regresja porządkowa może być rozumiana jako model klasyfikacyjny, ale ze
+względu na nacisk na zachowanie porządku etykiet przypomina też regresję całkowitoliczbową
+(Poissona). Jest to zasadniczo model postaci
+\[
+    t \mid \bm{x}, \bm{w}, \theta_1, \ldots, \theta_{k-1} \sim \text{Cat}(\pi_1(\bm{x}; \bm{w}, \bm{\theta}), \ldots, \pi_k(\bm{x}; \bm{w}, \bm{\theta}))\,,
+\]
+gdzie
+\[
+    \pi_\alpha(\bm{x}; \bm{w}, \bm{\theta}) := \Phi(\theta_\alpha - \bm{w}^\tpose \bm{x}) - \Phi(\theta_{\alpha-1} - \bm{w}^\tpose \bm{x})
+\]
+dla $\theta_0 = -\infty < \theta_1 < \cdots < \theta_{k-1} < \theta_k = +\infty$ i $\Phi$ będącego
+dystrybuantą standardowego, jedynowymiarowego rozkładu normalnego. Zauważmy, że przy takim wyborze
+funkcjie $\pi_\alpha$ zachodzi wymagany warunek
+\[
+\begin{split}
+\sum_{\alpha=1}^k \pi_\alpha (\bm{x}; \bm{w}, \bm{\theta}) &= \Phi(\theta_k - \bm{w}^\tpose \bm{x}) - \Phi(\theta_0 - \bm{w}^\tpose \bm{x}) \\
+                                                           &= \Phi(+\infty) - \Phi(-\infty) = 1\,.
+\end{split}
+\]
+Parametry modelu $\bm{w}$ i $\bm{\theta}$ są estymowane metodą największej wiarygodności. Zauważmy,
+że możemy ten model interpretować jako model ze \emph{zmienną ukrytą} (ang. \emph{latent variable})
+\[
+    h \mid \bm{x}, \bm{w} \sim \mc{N}(\bm{w}^\tpose \bm{x}, 1)\,,
+\]
+która wyznacza obserwowaną odpowiedź modelu $t$ zgodnie z
+\[
+    t = \begin{cases}
+        &1\,,\quad \text{jeśli}\,\theta_0 < h \leq \theta_1\\
+        &2\,,\quad \text{jeśli}\,\theta_1 < h \leq \theta_2\\
+        &\vdots\\
+        &k\,,\quad \text{jeśli}\,\theta_{k-1} < h \leq \theta_k
+    \end{cases}
+\]
+
+
 
 
 \section{Wprowadzenie do procesów Gaussowskich}
@@ -493,165 +782,6 @@ określona. Wówczas rozkład predykcyjny ma parametry
 \end{split}\quad.
 }
 \]
-
-\section{Regresja logistyczna}
-
-Rozpatrzymy teraz problem klasyfikacji binarnej z perspektywy estymacji MLE. Niech \(\mc{X} =
-\{t_i(\bm{x}_i)\}_{i=1}^n\) będzie zbiorem obserwacji i.i.d., gdzie zakładamy, iż \(t \in \{0,1\}\).
-Jako model statystyczny przyjmiemy, iż klasa \(t(\bm{x})\) pochodzi z rozkładu Bernoulliego z
-parametrem \(\pi(\bm{x}; \bm{w})\) (prawdopodobieństwem klasy pozytywnej, gdzie \(\pi\) jest tzw.
-funkcją wiążącą, ang. \emph{link function}) zależnym od estymowanych parametrów \(\bm{w}\)
-\[
-t_i \mid \bm{w} \sim \mathrm{Ber}(\pi(\bm{x}_i; \bm{w}))\,.
-\]
-W przypadku regresji logistycznej jako funkcję \(\pi(\bm{x}; \bm{w})\) przyjmiemy
-\(\sigma(\phi(\bm{x}; \bm{w}))\), gdzie
-\[
-\sigma(z) = \frac{1}{1 + \e^{-z}}
-\]
-to tzw. \emph{funkcja logistyczna} (będąca szczególnym przypadkiem funkcji sigmoidalnej), natomiast
-\(\phi(\bm{x}; \bm{w})\) może być dowolną funkcją wykorzystywaną do zagadnienia regresji. W
-przypadku regresji logistycznej przyjmujemy prosty model liniowy
-\[
-\phi(\bm{x}; \bm{w}) = \bm{w}^\tpose \bm{x}\,.
-\]
-Zauważmy, iż taka postać uwzględnia człon stały poprzez podstawienie \(\bm{x}^\tpose \leftarrow
-\mqty[\bm{x}^\tpose & 1]\). Wiarygodność dla powyższego modelu statystycznego ma postać
-\[
-p(\mc{X} \mid \bm{w}) = \prod_{i=1}^n \pi(\bm{x}_i;\bm{w})^{t_i} (1 - \pi(\bm{x}_i;\bm{w}))^{1 - t_i}\,,
-\]
-skąd funkcja NLL
-\[
-\boxed{
-    L(\mc{X}; \bm{w}) = - \sum_{i=1}^n \left[ t_i \log \pi_i + (1 - t_i) \log (1 - \pi_i) \right]\,,
-}
-\]
-gdzie \(\pi_i = \pi(\bm{x}_i; \bm{w})\). Taką funkcję kosztu nazywamy \emph{binarną entropią
-krzyżową} (ang. \emph{ binary cross-entropy function}). Niestety dla takiej postaci funkcji kosztu
-nie można znaleźć minimum w postaci analitycznej (jak zrobiliśmy w przypadku regresji liniowej),
-dlatego musimy wykorzystywać algorytmy optymalizacji numerycznej, które najczęściej wykorzystują
-pierwsze pochodne funkcji kosztu po parametrach. Typowo wykorzystywanym do tego celu algorytmem jest
-\emph{spadek wzdłuż gradientu} (ang. \emph{gradient descent}), w którym iteracyjnie wykonujemy
-\[
-    \bm{w}_{t+1} = \bm{w}_t - \eta \pdv{L}{\bm{w}}\bigg|_{\bm{w}_t}\,.
-\]    
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=0.85\columnwidth]{figs/image.png}
-\end{figure}
-Wyznaczymy więc pochodne funkcji \(L\) po parametrach \(\bm{w}\). Wprowadźmy macierz
-\(X_{\alpha\beta} = x_\beta^{(\alpha)}\) oraz wektory \(\phi_\alpha = \phi(\bm{x}_\alpha; \bm{w})\),
-\(\sigma_\alpha = \sigma(\phi_\alpha)\). Wówczas
-\[
-L(\mc{X}; \bm{w}) = - \sum_{\alpha=1}^n \left[ t_\alpha \log \sigma_\alpha + (1 - t_\alpha) \log(1 - \sigma_\alpha) \right]\,.
-\]
-W takim razie mamy
-\[
-\pdv{L}{\phi_\alpha} = \sum_{\beta=1}^n \pdv{L}{\sigma_\beta} \pdv{\sigma_\beta}{\phi_\alpha}\,,
-\]
-gdzie
-\[
-\pdv{L}{\sigma_\beta} = \frac{1 - t_\beta}{1 - \sigma_\beta} - \frac{t_\beta}{\sigma_\beta}
-\]
-oraz
-\[
-\pdv{\sigma_\beta}{\phi_\alpha} = \sigma'(\phi_\beta) \delta_{\alpha\beta}\,,
-\]
-gdzie
-\[
-\sigma'(z) = \frac{\e^{-z}}{(1 + \e^{-z})^2} = \sigma(z)(1 - \sigma(z))\,,
-\]
-zatem
-\[
-\pdv{L}{\phi_\alpha} = \left(\frac{1 - t_\alpha}{1 - \sigma_\alpha} - \frac{t_\alpha}{\sigma_\alpha}\right)\sigma_\alpha(1 - \sigma_\alpha) = \sigma_\alpha - t_\alpha\,.
-\]
-W takim razie, z powyższego mamy
-\[
-\pdv{L}{w_\alpha} = \sum_{\beta=1}^n \pdv{L}{\phi_\beta} \pdv{\phi_\beta}{w_\alpha} = \sum_{\beta=1}^n (\sigma_\beta - t_\beta) X_{\beta\alpha}\,,
-\]
-co możemy zapisać w zwartej postaci macierzowej
-\[
-\pdv{L}{\bm{w}} = \bm{X}^\tpose (\bm{\sigma} - \bm{t})\,.
-\]
-
-\section{Wieloklasowa regresja logistyczna}
-
-Regresję logistyczną możemy w prosty sposób uogólnić na przypadek klasyfikacji jednej z \(k\) klas.
-Zakładamy teraz, iż zbiór obserwacji i.i.d. ma postać \(\mc{X} = \{t_i(\bm{x}_i)\}_{i=1}^n\) dla \(t
-\in \{1,\ldots,k\}\). Nasz model statystyczny uogólnimy do postaci rozkładu kategorialnego (ang.
-\emph{categorical distribution} lub \emph{multinomial distribution}) z parametrem \(\bm{\pi}(\bm{x};
-\bm{W})\) (wektorem prawdopodobieństw każdej klasy) zależnym od estymowanych parametrów \(\bm{W}\)
-\[
-t_i \mid \bm{W} \sim \mathrm{Cat}(\bm{\pi}(\bm{x}_i; \bm{W}))\,.
-\]
-W przypadku regresji softmax jako funkcję \(\bm{\pi}: \mathbb{R}^m \mapsto [0;1]^k\) przyjmiemy
-funkcję \(\bm{\sigma}(\bm{\phi}(\bm{x}; \bm{W}))\), gdzie \(\bm{\sigma}: \mathbb{R}^k \mapsto
-[0;1]^k\)
-\[
-\sigma_\alpha(\bm{z}) = \frac{\exp(z_\alpha)}{ \sum_{\beta=1}^k \exp(z_\beta)}
-\]
-to tzw. \emph{funkcja softmax}, natomiast \(\bm{\phi}: \mathbb{R}^m \mapsto \mathbb{R}^k\), to
-dowolna funkcja. W przypadku regresji softmax przyjmiemy prosty model liniowy
-\[
-\bm{\phi}(\bm{x}; \bm{W}) = \bm{W}\bm{x}\,.
-\]
-Wiarygodność dla powyższego modelu ma postać
-\[
-\prod_{\alpha=1}^n \prod_{\beta=1}^k \pi_{\alpha\beta}^{t_{\alpha\beta}}\,,
-\]
-skąd funkcja NLL ma postać
-\[
-\boxed{
-L(\mc{X}; \bm{W}) = - \sum_{\alpha=1}^n \sum_{\beta=1}^k t_{\alpha\beta} \log \pi_{\alpha\beta}\,,
-}
-\]
-gdzie
-\[
-\begin{split}
-    &\pi_{\alpha\beta} = \sigma_\beta(\bm{\phi}(\bm{x}_\alpha; \bm{W})) = \frac{\exp \phi_{\alpha\beta}}{\displaystyle \sum_{\gamma=1}^k \exp \phi_{\alpha\gamma}}\\
-    &\phi_{\alpha\beta} = \phi_{\beta}(\bm{x}_\alpha; \bm{W}) \\
-    &t_{\alpha\beta} = [t_\alpha = \beta]
-\end{split}\,.
-\]
-Wiersze macierzy \(\bm{t}\) są binarnymi wektorami kodującymi w sposób one-hot klasę danego
-przykładu. Niestety dla takiej postaci funkcji kosztu nie można znaleźć minimum w postaci
-analitycznej, dlatego musimy wykorzystywać algorytmy optymalizacji numerycznej. Wyznaczymy więc
-jeszcze pierwsze pochodne funkcji \(L\) po parametrach \(\bm{W}\)
-\[
-    \pdv{L}{\pi_{\beta\beta'}} = - \frac{t_{\beta\beta'}}{\pi_{\beta\beta'}}\,.
-\]
-Jednocześnie mamy
-\[
-    \pdv{L}{\phi_{\alpha\alpha'}} = \sum_{\beta=1}^n \sum_{\beta'=1}^k \pdv{L}{\pi_{\beta\beta'}} \pdv{\pi_{\beta\beta'}}{\phi_{\alpha\alpha'}}\,,
-\]
-gdzie
-\[
-\begin{split}
-    \pdv{\pi_{\beta\beta'}}{\phi_{\alpha\alpha'}} &= \frac{\exp \phi_{\beta\beta'} \delta_{\alpha\beta} \delta_{\alpha'\beta'} }{ \displaystyle \sum_{\gamma=1}^k \exp \phi_{\beta\gamma}} - \frac{\exp \phi_{\beta\beta'} \exp \phi_{\beta\alpha'} \delta_{\alpha\beta}}{\displaystyle \left[ \sum_{\gamma=1}^k \exp \phi_{\beta\gamma} \right]^2} \\
-           &= \pi_{\beta\beta'} \delta_{\alpha\beta} \delta_{\alpha'\beta'} - \pi_{\beta\beta'} \pi_{\beta\alpha'} \delta_{\alpha\beta}\,.
-\end{split}
-\]
-Z powyższego mamy zatem
-\[
-    \pdv{L}{\phi_{\alpha\alpha'}} = \pi_{\alpha\alpha'} \sum_{\beta'=1}^k t_{\alpha\beta'} - t_{\alpha\alpha'} = \pi_{\alpha\alpha'} - t_{\alpha\alpha'}\,.
-\]
-Ostatecznie zatem
-\[
-    \pdv{L}{W_{\beta\beta'}} = \sum_{\alpha=1}^n \sum_{\alpha'=1}^k \pdv{L}{\phi_{\alpha\alpha'}} \pdv{\phi_{\alpha\alpha'}}{W_{\beta\beta'}}\,,
-\]
-gdzie
-\[
-    \pdv{\phi_{\alpha\alpha'}}{W_{\beta\beta'}} = X_{\alpha\beta'} \delta_{\alpha'\beta}\,,
-\]
-zatem
-\[
-    \pdv{L}{W_{\beta\beta'}} = \sum_{\alpha=1}^n (\pi_{\alpha\beta} - t_{\alpha\beta}) X_{\alpha\beta'}\,,
-\]
-co możemy zapisać w zwartej postaci macierzowej
-\[
-    \pdv{L}{\bm{W}} = (\bm{\pi} - \bm{t})^\tpose \bm{X}\,.
-\]
-
 
 \section{Liczby losowe w komputerze}
 
@@ -859,23 +989,29 @@ tak aby uniknąć znaczących korelacji. Pozostaje pytanie jak skonstruować fun
 \(\pi(\bm{y} \mid \bm{x})\) dla danego rozkładu granicznego \(p(\bm{x})\). Podstawową konstrukcję
 podaje algorytm Metropolisa--Hastingsa. 
 
-\begin{lstlisting}[language=Python, escapeinside={(*}{*)}]
-# Metropolis-Hastings 
-# -------------------- 
-# Initialize state (*$\bm{x}$*) using any admissible value. 
+\begin{algorithm}[ht]
+\caption{Metropolis-Hastings Algorithm}
+\SetAlgoLined
+\KwIn{Target distribution $p(\bm{x})$, proposal distribution $q(\bm{y} \mid \bm{x})$, number of iterations $\texttt{max\_iter}$}
+\KwOut{Samples from the target distribution}
 
-for i = 1,...,max_iter: 
-
-    # Step 1. Sample candidate (*$\bm{y}$*) from the 
-    # conditional proposal distribution (*$q(\bm{y}\mid\bm{x})$*).
+Initialize state $\bm{x}$ with any admissible value\;
+\For{$i = 1$ \KwTo $\texttt{max\_iter}$}{
+    Sample candidate $\bm{y} \sim q(\bm{y} \mid \bm{x})$\;
     
-    # Step 2. Accept new candidate with 
-    # probability 
-    (*$r(\bm{y} \mid \bm{x}) = \min\left\{1,\frac{p(\bm{y})q(\bm{x}\mid\bm{y})}{p(\bm{x})q(\bm{y}\mid\bm{x})}\right\}$*) 
-    # and change state to (*$\bm{y}$*), otherwise stay 
-    # in state (*$\bm{x}$*).
+    Compute acceptance ratio:
+    \[
+        r(\bm{y} \mid \bm{x}) = \min\left\{1,\frac{p(\bm{y})q(\bm{x}\mid\bm{y})}{p(\bm{x})q(\bm{y}\mid\bm{x})}\right\}
+    \]
 
-\end{lstlisting}
+    Accept $\bm{y}$ with probability $r(\bm{y} \mid \bm{x})$\;
+    \eIf{candidate $\bm{y}$ is accepted}{
+        Set $\bm{x} \leftarrow \bm{y}$\;
+    }{
+        Keep current state $\bm{x}$\;
+    }
+}
+\end{algorithm}
 
 Funkcja przejścia ma postać
 \[
@@ -904,9 +1040,168 @@ z tej klasy są algorytmy HMC (\emph{Hamiltonian Monte Carlo}) oraz NUTS (\emph{
 Sampler}).
 
 
-\section{KDE}
+\section{Drzewa decyzyjne, bagging, boosting}
 
-W poprzednim paragrafie opisaliśmy w jaki sposób mając (nieznormalizowaną) funkcję gęstości
+Drzewa decyzyjne (ang. \emph{Classification and Regression Trees, CART}) to metoda uczenia
+maszynowego, której zasadniczą ideą jest segmentacja przestrzeni predyktorów na skończoną liczbę
+obszarów o prostej geometrii, typowo kostek. W każdym z obszarów wartość przewidywana jest obliczana
+jako średnia (w przypadku regresji) lub moda (w przypadku klasyfikacji) wartości odpowiedzi dla
+elementów ze zbioru uczącego należących do tego obszaru.
+
+Reguły podziału przestrzeni predyktorów są naturalnie reprezentowane w postaci drzewa binarnego --
+stąd nazwa metody. Poniżej przedstawiono standardowy algorytm uczenia drzewa CART.
+
+
+\begin{algorithm}[ht]
+\caption{CART}
+\KwIn{Zbiór danych $\mc{X} = \{(\bm{x}_i, y_i)\}$ w $R$}
+\KwOut{Drzewo decyzyjne (podział przestrzeni cech)}
+
+Zainicjalizuj region $R = \{\bm{x}_i \mid (\bm{x}_i, y_i) \in \mc{X}\}$ jako całą przestrzeń cech\;
+
+\If{spełniony warunek stopu w $R$}{
+    Zwróć liść z wartością $\overline{y}_R$\;
+}
+\Else{
+    Znajdź cechę $k^* \in \{1,\ldots,p\}$ i próg $s^*$ minimalizujące:
+    \[
+    \begin{split}
+        &\sum_{i: \bm{x}_i \in R_{-}(k,s)} \left(y_i - \overline{y}_{R_{-}(k,s)}\right)^2\\
+        &+ \sum_{i: \bm{x}_i \in R_{+}(k,s)} \left(y_i - \overline{y}_{R_{+}(k,s)}\right)^2
+    \end{split}
+    \]
+    gdzie:\;
+    $R_{-}(k,s) = \{\bm{x} \in R \mid x_k < s\}$\;
+    $R_{+}(k,s) = \{\bm{x} \in R \mid x_k \geq s\}$\;
+
+    Rekurencyjnie twórz poddrzewa dla podregionów $R_{-}(k^*,s^*)$ i $R_{+}(k^*,s^*)$\;
+}
+\end{algorithm}
+
+Powyższy algorytm został przedstawiony dla zagadnienia regresji zmiennej ciągłej. W przypadku
+zadania klasyfikacji przewidywana wartość w każdym regionie to klasa najczęściej występująca.
+Natomiast przy dokonywaniu podziałów zamiast RSS używa się innych miar -- najczęście indeksu Giniego
+\[
+    G = \sum_{k=1}^K \hat{p}_{mk} ( 1 - \hat{p}_{mk})
+\]
+lub entropii krzyżowej 
+\[
+    D = -\sum_{k=1}^K \hat{p}_{mk} \log \hat{p}_{mk}\,,
+\]
+gdzie $\hat{p}_{mk}$ jest proporcją obserwacji w regionie $R_m$, które należą do klasy $k$.
+
+\subsection{Przycinanie drzewa}
+
+Opisany proces prowadzi do modelu z małym błędem treningowym, ale silnie zagrożonego przeuczeniem.
+Jedną z możliwości poradzenia sobie z tym problemem jest zatrzymywanie podziału przy niezbyt dużym
+spadku RSS. Lepszą alternatywą jest wyhodowanie dużego drzewa, a następnie jego przycięcie.
+
+\subsection{Bagging}
+
+Bagging opiera się na prostej obserwacji: jeśli $Z_1,\ldots,Z_n$ jest prostą próbą losową z rozkładu
+o wariancji $\sigma^2$, to $\text{Var}(\overline{Z}) = \sigma^2 / n$. Idea jest zatem następująca: z
+oryginalnego zbioru uczącego $\mc{X}$ tworzymy $B$ zbiorów uczących typu bootstrap (tj. zbiorów
+zawierających tyle samo obserwacji co $\mc{X}$, tworzonych poprzez losowanie \emph{ze zwracaniem} z
+$\mc{X}$). Na każdym z tych $B$ zbiorów trenujemy drzewo decyzyjne \emph{bez przycinania} -- jest to
+więc drzewo o dużej wariancji, ale małym obciążeniu. Finalny model jest tworzony jako średnia lub
+moda z odpowiedzi modeli z zespołu, tj. w przypadku regresji
+\[
+    \hat{f}_\text{bag}(\bm{x}) = \frac{1}{B} \sum_{b=1}^B \hat{f}_b(\bm{x})\,.
+\]
+Można pokazać, iż zbiory typu bootstrap obejmują średnio $2/3$ dostępnych obserwacji.
+Niewykorzystane obserwacje (tzw, \emph{out-of-bab observations, OOB}) mogą być użyte do estymacji
+błędu testowego poprzez uśrednienie błędów OOB każdego z drzew. Bagging zwiększa dokładność
+predykcji kosztem intepretowalności. W przypadku metody bagging można jednak wprowadzić tzw.
+ważności cech (ang. \emph{feature importances}) jako sumaryczne redukcje RSS (lub indeksu Giniego,
+entropii) uzyskane przez podział względem tego predyktora, uśrednione po $B$ drzewach.
+
+\subsection{Lasy losowe}
+
+Lasy losowe są odmianą metody bagging, w której w trakcie budowania drzew, przy każdym podziale,
+rozważa się tylko $m < p$ losowo wybranych predyktorów (typowo dla zagadnień regresji $m \approx
+\sqrt{p}$, a dla klasyfikacji $m \approx p/3$). Poprawka ta redukuje korelacje między drzewami
+będącą efektem dominacji najważniejszych predyktorów.
+
+Ani w metodzie bagging, ani w lasach losowych zwiększenie liczby drzew $B$ \emph{nie powoduje
+przeuczenia}.
+
+\subsection{Boosting gradientowy}
+
+Boosting jest techniką ogólną stosowaną do różnych metod uczenia statystycznego w celu istotnego
+zwiększenia dokładności. Pomysł uczenia zespołowego jest podobny jak w baggingu i lasach losoweych,
+jednak łączenie wyników odbywa się w zupełnie inny sposób.
+
+\begin{algorithm}[ht]
+\caption{Proste stopniowe modelowanie addytywne}
+\KwIn{Zbiór danych $\{(\bm{x}_i, y_i)\}_{i=1}^n$, funkcja straty $L(y, f(\bm{x}))$, liczba iteracji $M$}
+\KwOut{Model addytywny $f_M(\bm{x})$}
+
+Zainicjalizuj model: $f_0(\bm{x}) \leftarrow 0$\;
+
+\For{$m = 1$ \KwTo $M$}{
+    Znajdź parametry $(\beta_m, \gamma_m)$ minimalizujące:
+    \[
+        \sum_{i=1}^n L\left(y_i,\; f_{m-1}(\bm{x}_i) + \beta \cdot b(\bm{x}_i; \gamma)\right)
+    \]
+
+    Zaktualizuj model:
+    \[
+        f_m(\bm{x}) \leftarrow f_{m-1}(\bm{x}) + \beta_m \cdot b(\bm{x}; \gamma_m)
+    \]
+}
+\Return{$f_M(\bm{x})$}
+\end{algorithm}
+W każdej iteracji szukamy optymalnej (dla danej funkcji kosztu $L$) funkcji bazowej (z pewnej rodziny parametrycznej) i
+współczynnika, które tworzą wyraz dodawany do aktualnego rozwinięcia funkcji $\hat{f}$
+
+\begin{algorithm}[ht]
+\caption{Boosting gradientowy dla drzew}
+\KwIn{Zbiór danych $\{(\bm{x}_i, y_i)\}_{i=1}^n$, funkcja straty $L(y, f(\bm{x}))$, liczba iteracji $M$}
+\KwOut{Model addytywny $f_M(\bm{x})$}
+
+Inicjalizuj model:
+\[
+f_0(\bm{x}) =\arg\min_{\gamma} \sum_{i=1}^n L(y_i, \gamma)
+\]
+
+\For{$m = 1$ \KwTo $M$}{
+    Oblicz pseudorezydua\;
+    \For{$i = 1$ \KwTo $n$}{
+        $r_{im} = -\nabla_f L(y_i, f_{m-1}(\bm{x}_i))$
+    }
+
+    Dopasuj regresyjne drzewo decyzyjne do $\{(\bm{x}_i, r_{im})\}$, uzyskując regiony
+    terminalne $R_{jm}$ dla $j = 1, \ldots, J_m$\;
+
+    Oblicz wagi\;
+    \For{$j = 1$ \KwTo $J_m$}{
+        $\displaystyle\gamma_{jm} = \argmin_{\gamma} \sum_{i: \bm{x}_i \in R_{jm}} L(y_i, f_{m-1}(\bm{x}_i) + \gamma)$\;
+    }
+
+    Aktualizuj model
+    \[
+        f_m(\bm{x}) = f_{m-1}(\bm{x}) + \sum_{j=1}^{J_m} \gamma_{jm} \cdot \bm{1}_{R_{jm}}(\bm{x})
+    \]
+}
+
+\Return{$f_M(\bm{x})$}
+\end{algorithm}
+
+W przeciwieństwie do baggingu nadmierne zwiększanie liczbny drzew $M$ prowadzi do przeuczenia. Brak
+kontroli nad wielkością drzew $J_m$ może istotnie zdegradować jakość predykcji. Aby uniknąć problemu
+silnie rozbudowanych drzew często przyjmuje się wspólną, niewielką wartość $J_m=J$ wielkości drzew.
+Zamiast $J$ można też użyć parametru zwanego głębokością interakcji $d = J-1$ oznaczającego liczbę
+podziałów w drzewie (dla $d=1$ finalny model jest addytywny). Inne metody stosowane w celu
+uniknięcia przeuczenia to w szczególności: early-stopping; użycie współczynnika spowalniającego $\nu
+\in (0;1]$, przez który mnożony jest dodawany człon; subsampling -- hodowanie drzew w każdej
+iteracji na wylosowanym fragmencie zbioru uczącego (tzw. stochastyczny boosting).
+
+
+\section{Inne metody uczenia maszynowego}
+
+\subsection{KDE}
+
+W poprzednim rozdziale opisaliśmy w jaki sposób mając (nieznormalizowaną) funkcję gęstości
 prawdopodobieństwa \(\tilde{p}(\bm{x})\) generować algorytmicznie próbki z opisanego przez nią
 rozkładu. Teraz zajmiemy się problemem odwrotnym tj. mając realizację prostej próby losowej z
 pewnego rozkładu chcemy znaleźć funkcję \(\hat{p}(\bm{x})\), która estymuje gęstość rozkładu
@@ -945,8 +1240,13 @@ wszystkich punktów \(\bm{x}_i\) dla danego \(\bm{x}\), znajdujemy jego \(k\) na
 \(\bm{x}\) ze zbioru \(\{\bm{x}_i\}_{i=1}^n\) (np. stosując \emph{approximate nearest neighbors}) i
 obliczamy przyczynki do \(\hat{p}(\bm{x})\) tylko od nich.
 
+\subsection{KNN}
 
-\section{PCA}
+\subsection{NBC}
+
+\subsection{LDA i QDA}
+
+\subsection{PCA}
 
 Analiza składowych głównych (ang. \emph{Principle Component Analysis}) to liniowa metoda redukcji
 wymiarowości, która może zostać wykorzystana zarówno w celach wizualizacji wysokowymiarowych danych,
@@ -969,7 +1269,6 @@ współrzędne 2-D naszego zbioru punktów.
 
 
 \section{Ewaluacja modeli}
-
 
 \subsection{Przygotowanie danych}
 
@@ -1206,10 +1505,8 @@ z \(\mc{X}\) dla pewnego dużego \(B\) i na każdym z \(\mc{X}_b\) obliczamy est
 
 
 % TODO:
-% * Drzewa decyzyjne, Random Forest, Boosting
-% * Regresja porządkowa
-% * Regresja Poissonowska
 % * Proste modele klasyfikacyjne: kNN, oparte na tw. Bayesa = Naive Bayes (+wariant z KDE), LDA,
 %   QDA, różnica między discriminative (np. logistic regression) i generative (np. LDA, QDA)
+% * Drzewa decyzyjne, Random Forest,
 
 \end{document}

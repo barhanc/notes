@@ -39,6 +39,7 @@
 
 % Additional packages and commands depending on project:
 \usepackage{lipsum, listings}
+\usepackage[linesnumbered,ruled,vlined]{algorithm2e}
 
 \lstdefinestyle{mystyle}{ 
     basicstyle=\ttfamily\footnotesize,
