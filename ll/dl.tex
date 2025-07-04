@@ -483,8 +483,7 @@ Additionally the vector-jacobian products for the parameters are given by
 \]
 
 
-\section{Architectures}
-
+\section{Architecture}
 
 \subsection{MLP}
 
@@ -817,7 +816,7 @@ v_\alpha h _\beta\) (there are also biases, not depicted in the picture).
 
 \begin{figure}[ht]
    \centering
-   \includegraphics[width=0.85\columnwidth]{figs/rbm.png}
+   \includegraphics[width=0.65\columnwidth]{figs/rbm.png}
    \label{fig:rbm}
    \caption{Schematic depiction of RBM with 8 visible units and 6 hidden units}
 \end{figure}
@@ -847,7 +846,7 @@ first RBM.
 
 \begin{figure}[ht]
    \centering
-   \includegraphics[width=0.65\columnwidth]{figs/dbn.png}
+   \includegraphics[width=0.45\columnwidth]{figs/dbn.png}
    \label{fig:dbn}
    \caption{Schematic depiction of DBN with 4 layers}
 \end{figure}
@@ -874,18 +873,37 @@ unit}
 where $\epsilon \sim \mc{N}(0,1)$.
 
 
-% \subsection{Autoencoder}
+\subsection{Autoencoder}
+
+Autoencoder is a general type of neural architecture used for unsupervised learning. The idea is to
+construct two networks: an encoder network and a decoder network and connect them through the so
+called \emph{bottleneck layer}. The encoder, given some high-dimensional input data, compresses them
+into much more compact representation and the decoder can reconstruct the original data from this
+compact representation. The encoder and the decoder are trained jointly and learn the suitable
+representations together. If we care only about the learnt representations we can discard the
+decoder after training and use only the encoder part.
+
+\begin{figure}[ht]
+   \centering
+   \includegraphics[width=0.95\columnwidth]{figs/autoencoder.png}
+   \label{fig:ae}
+   \caption{Schematic depiction of a general autoencoder architecture}
+\end{figure}
+
+One important aspect of the training process of the autoencoder is the choice of the loss functions.
+Since the output of the autoencoder should be as close as possible to the input the typical choice
+would be the L2 loss. If the data can be modelled using sigmoid units then perhaps the pixelwise
+cross-entropy loss would be more suitable.
+
 % \subsection{CNN}
 % \subsection{Residual Connections}
 % \subsection{GAN}
-% \subsection{DDPM}
 % \subsection{RNN}
 % \subsection{Transformer}
 
 % TODO:
-% * Architectures
-% * Quantization
-% * Large Language Models!!!
+% * Architecture
+% * Large Language Models !!!
 
 
 \end{document}
