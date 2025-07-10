@@ -1,8 +1,8 @@
-# notes
 
-* [Deep Learning notes](https://barhanc.github.io/notes/ll/dl.pdf) (WIP)
 
-* [Machine Learning notes](https://barhanc.github.io/notes/ll/ml.pdf)
+* [Deep Learning notes](https://barhanc.github.io/notes/machine-learning/deep/dl.pdf) (WIP)
+
+* [Machine Learning notes](https://barhanc.github.io/notes/machine-learning/classical/ml.pdf)
 
 ---
 
