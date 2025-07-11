@@ -70,22 +70,3 @@ Algorithms & Data Structures
 * Newton's method
 * QR decomposition
 * FFT algorithm
-
-
-
----
-
-*Maksymy i rady programistyczne*
-
-* Programy mają być czytane przez ludzi. 
-* Dawaj więcej komentarzy niż będzie ci, jak sądzisz potrzeba. 
-* Stosuj komentarze wstępne. 
-* Stosuj przewodniki w długich programach. 
-* Komentarz ma dawać coś więcej, niż tylko parafrazę tekstu programu. 
-* Błędne komentarze są gorsze niż zupełny brak komentarzy.
-* Stosuj odstępy dla poprawienia czytelnoś ci.
-* Używaj dobrych nazw mnemonicznych.
-* Wystarczy jedna instrukcja w wierszu.
-* Porządkuj listy według alfabetu.
-* Nawiasy kosztują mniej niż błędy.
-* Stosuj wcięcia dla uwidocznienia struktury programu i danych.
