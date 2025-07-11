@@ -10,10 +10,10 @@ own bootstraps.”
 The solution to this dilemma is that the microprocessor, in its power-on default state, is
 hard-wired to fetch that first instruction from a predetermined address in memory. This first
 instruction, which is loaded into the processor’s instruction register, is the first line of a
-program called the **BIOS** that lives in a special set of storage locations—a small read-only
-memory **(ROM) module attached to the computer’s motherboard**. It’s the job of the BIOS to perform
-basic tests of the RAM and peripherals in order to verify that everything is working properly. Then
-the boot process can continue.
+program called the **BIOS** (Basic Input/Output System) that lives in a special set of storage
+locations—a small read-only memory **(ROM) module attached to the computer’s motherboard**. It’s the
+job of the BIOS to perform basic tests of the RAM and peripherals in order to verify that everything
+is working properly. Then the boot process can continue.
 
 At the end of the BIOS program lies a jump instruction, the target of which is the location of a
 **bootloader program**. By using a jump, the BIOS hands off control of the system to this second

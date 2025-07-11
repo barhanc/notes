@@ -107,12 +107,13 @@ Python
           f.close()
   ```
 
-* `bisect` from `bisect` module in standard library returns and index `i` which for a given array
+* `bisect` from `bisect` module in standard library returns an index `i` which for a given array
   `xs` and target `y` partitions the array into two halves such that `all(x <= y for x in xs[:i])`
   and `all(x > y for x in xs[i:])`
 
 * `heapq` is VERY useful as it is a good, standard implementation of a min/max heap data structure
-  that you can use. It is arguably better (and objectively faster) than `queue.PriorityQueue` although the API is a bit less intuitive.
+  that you can use. It is arguably better (and objectively faster) than `queue.PriorityQueue`
+  although the API is a bit less intuitive.
 
 * To check whether a number `n` in the given range (e.g. `int32`) is a power of some number `k` you
   just have to check if `k**p % n == 0` where `p` is the greatest number such that `k**p` is still
@@ -125,12 +126,14 @@ Python
 * What I like the most about Python: in general it is a language which enables one to write code
   that is concise, easy-to-read and powerful at the same time. Examples of this are: powerful list
   comprehensions and generator expressions which combined with (batteries-included) standard library
-  functions like `all`, `any`, `sum` etc. enable to express complex logic in a concise but
+  functions like `all`, `any`, `sum`, etc. enable to express complex logic in a concise but
   easy-to-read and elegant (cough cough looking at you C++) way. 
   
   One feature that I don't particularly like in Python (except for the lack of performance) is the
   lack of truly private/protected fields and methods in classes.
 
+* TODO: Dunder names, methods
+* TODO: Pickling objects
 * TODO: PIP (Package Installer for Python), publishing, wheels, etc.
 * TODO: Decorators
 * TODO: Linters, formatters, type checking
