@@ -16,7 +16,7 @@ Algorithms & Data Structures
 * Tablica (Array) - abstrakcyjna struktura danych, która pozwala odwoływać się do poszczególnych
   *komórek* za pomocą ich indeksów
 
-* List jedno-/dwukierunkowa (Linked list) - abstrakcyjna struktura danych, która pozawa poruszać się
+* Lista jedno-/dwukierunkowa (Linked list) - abstrakcyjna struktura danych, która pozawa poruszać się
   po kolei po elementach w jedną (lub dwie) strony i wpinać lub usuwać elementy.
 
 * Stos (Stack, LIFO Queue) - abstrakcyjna struktura danych, która pozwala na odkładanie na
