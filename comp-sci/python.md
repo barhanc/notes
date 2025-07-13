@@ -121,7 +121,7 @@ Python
 
 * PEP (Python Enhancement Proposal) jest oficjalnym dokumentem informacyjnym dla społeczności
   programistów Pythona. Dokumenty tego typu służą między innymi jako dokumentacja nowych funkcji
-  języka.
+  języka. Są podobne do RFC (Request For Comments).
 
 * What I like the most about Python: in general it is a language which enables one to write code
   that is concise, easy-to-read and powerful at the same time. Examples of this are: powerful list
@@ -132,11 +132,38 @@ Python
   One feature that I don't particularly like in Python (except for the lack of performance) is the
   lack of truly private/protected fields and methods in classes.
 
-* TODO: Dunder names, methods
-* TODO: Pickling objects
+* The `pickle` module implements binary protocols for serializing and de-serializing a Python object
+  structure. “Pickling” is the process whereby a Python object hierarchy is converted into a byte
+  stream, and “unpickling” is the inverse operation, whereby a byte stream (from a binary file or
+  bytes-like object) is converted back into an object hierarchy.
+
+* Linters, also known as static code analyzers, are tools that analyze source code to detect
+  potential issues such as syntax errors, style inconsistencies, and potential bugs. For Python I
+  personally use Pylint from Microsoft.
+
+* Polymorphism translates to "many forms." In programming it is the ability of an object with
+  different types to be handled by a common interface.
+
+  Polymorphism: By designing code around ABCs, you can write functions that accept objects based on
+  their interfaces rather than specific classes. This promotes polymorphism and code reuse. 
+  
+  Duck typing is a form of dynamic polymorphism
+
+* Python is strongly (Python interpeter checks whether the operation can be performed on a given
+  object), dynamically (i.e. the values have types, not variables) typed. It does not have implicit
+  casting.
+
+* Testing in Python. For testing use Pytest (as a better alternative to built-in unittest module)
+  
+  - Tests should be written first. This is known as "Test-Driven Development" or "Red, Green,
+    Refactor".
+  - Because the primary purpose of a test framework is to run tests, it needs a way to find them.
+    You can customize this, but the easiest way is to just make sure everything test-related starts
+    with the word "test". Put your tests in a "tests" folder. Write your tests in files named
+    "test_<something>.py", name your test classes (if you have them) TestSomething and name your
+    test functions test_something_something.
+
 * TODO: PIP (Package Installer for Python), publishing, wheels, etc.
-* TODO: Decorators
-* TODO: Linters, formatters, type checking
-* TODO: Testing in Python
-* TODO: Clean code
+* TODO: Clean code and Design Patterns in Python
+
 

@@ -65,7 +65,7 @@ Algorithms & Data Structures
 ## Elementary numerical methods
 
 * 2s-complement representation of integers
-* Floating-point arithmetic
+* Floating-point arithmetic (IEEE754)
 * Bisection method
 * Newton's method
 * QR decomposition
