@@ -1393,6 +1393,31 @@ Zauważmy jednak teraz, iż wektory \(\bm{u}_1\) i \(\bm{u}_2\) możemy potrakto
 współrzędne 2-D naszego zbioru punktów.
 
 
+\subsection{PDP}
+
+Wykresy PDP (ang. Partial Dependence Plots) to prosta i intuicyjna metoda do wizualizacji wpływu
+danych predyktorów modelu uczenia maszynowego na jego odpowiedź. Jest to wykres funkcji częściowej
+zależności
+\[
+    f_S(\bm{x}_S) = \Ebb_{X_{\{1,\ldots,p\}\setminus S}}[f(\bm{x}_S, X_{\{1,\ldots,p\}\setminus S})]\,,
+\]
+gdzie $S$ jest badanym podzbiorem predyktorów, natomiast $f$ to funkcja modelu. Praktycznie
+stosowaną estymatę oblicza się uśredniając po zbiorze danych
+\[
+    \hat{f}_S(\bm{x}_S) = \frac{1}{n} \sum_{i=1}^n f(\bm{x}_S, \bm{x}^{(i)}_{\{1,\ldots,p\}\setminus S})\,,
+\]
+przy czym $\bm{x}^{(i)}_{\{1,\ldots,p\}\setminus S}$ są wartościami nieinteresujących cech obiektów
+ze zbioru danych. Zaletami wykresów częściowej zależności są w szczególności: intuicyjnosć, łatwość
+implementacj, przejrzystość interpretacji (o ile predyktory nie są istotnie skorelowane) oraz
+możliwą interpretację przyczynową. Ograniczenia PDP to m.in. 
+\begin{itemize}
+    \item Nie da się zwizualizować PDP dla więcej niż 2 cech jednocześnie.
+    \item Jeśli predyktory są skorelowane, może występować uśrednianie po nierealistycznych danych.
+    \item PDP mogą ukrywać efekty niejednorodne (np. uśrednienie powoduje wzajemne zniesienie
+          efektów pochodzących od różnych części zbioru danych).
+\end{itemize}
+
+
 \section{Ewaluacja modeli}
 
 \subsection{Przygotowanie danych}
@@ -1627,9 +1652,6 @@ z \(\mc{X}\) dla pewnego dużego \(B\) i na każdym z \(\mc{X}_b\) obliczamy est
 \end{split}
 \]
 
-
-% TODO: Partial Dependence Plots (PDPs)
 % TODO: Kalibracja modeli probabilistycznych
-% TODO: Modele graficzne
 
 \end{document}
