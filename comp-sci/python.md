@@ -163,7 +163,39 @@ Python
     "test_<something>.py", name your test classes (if you have them) TestSomething and name your
     test functions test_something_something.
 
-* TODO: PIP (Package Installer for Python), publishing, wheels, etc.
-* TODO: Clean code and Design Patterns in Python
+* Wheels are the new standard of Python distribution and are intended to replace eggs. Advantages of
+  wheels:
+  - Faster installation for pure Python and native C extension packages.
+  - Avoids arbitrary code execution for installation. (Avoids setup.py)
+  - Installation of a C extension does not require a compiler on Linux, Windows or macOS.
+  - Allows better caching for testing and continuous integration.
+  - Creates .pyc files as part of installation to ensure they match the Python interpreter used.
+  - More consistent installs across platforms and machines.
+
+* SOLID
+  - Single Responsibility Principle (SRP)
+
+    A class should have only one reason to change. "Reasons to change" are, in essence, the
+    responsibilities managed by a class or function.
+
+  - Open/Closed Principle (OCP)
+
+    Objects should be open for extension, but closed to modification. It should be possible to
+    augment the functionality provided by an object (for example, a class) without changing its
+    internal contracts. An object can enable this when it is designed to be extended cleanly.
+
+  - Liskov Substitution Principle (LSP)
+    
+    In essence, a function accepting a supertype should also accept all its subtypes with no
+    modification.
+  
+  - Interface Segregation Principle (ISP)
+
+    Keep interfaces small so that users don’t end up depending on things they don’t need.
+
+  - Dependency Inversion Principle (DIP)
+
+    Depend upon abstractions, not concrete details
+
 
 

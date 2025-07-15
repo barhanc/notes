@@ -1,5 +1,6 @@
 
 ![alt text](figs/simple_computer.png)
+![alt text](figs/simple_computer_2.png)
 
 ## What happens when you boot your computer?
 
