@@ -92,3 +92,54 @@ order.
   
   Przekazywanie przez wskaźnik (by pointer) – do funkcji przekazywany jest wskaźnik na zmienną, co
   umożliwia modyfikację danych w pamięci, do której wskaźnik się odnosi.
+
+
+* W Javie wszystkie obiekty i tablice mieszczą się w obszarze pamięci nazywanym stertą (ang. heap) –
+  jest jedna na proces, wspólna dla wszystkich jego wątków. Nie ma specjalnej struktury, jest
+  nieuporządkowana (z punktu widzenia programu), stąd nazwa. Każdy wątek ponadto ma w pamięci swój
+  stos (stack), gdzie mieszczą się informacje o obecnie trwających wywołaniach funkcji, w tym
+  argumenty funkcji i zmienne lokalne.
+
+  Wykonanie programu polega na wywołaniu (w wątku głównym) funkcji main; podczas tego wywołania
+  możemy przejść do wywołania funkcji wewnątrz main, a w niej do kolejnej funkcji, i tak dalej. W
+  danym momencie stos musi więc pamiętać sekwencję obecnie trwających, zagnieżdżonych wywołań
+  funkcji – czyli wszystkie wywołania które zaczęliśmy, a z których jeszcze nie wyszliśmy. Stos
+  składa się z sekwencji ramek stosu (stack frame) odpowiadających kolejnym wywołaniom: od main, aż
+  po obecnie wykonywaną funkcję. Każdy inny wątek będzie miał własny stos, tylko zaczynający się od
+  innej funkcji niż main.
+
+  Na ramkę stosu składa się odnośnik do wykonywanej funkcji, oraz argumenty wywołania i zmienne
+  lokalne. Ale, co ważne, prymitywne zmienne (int/float/boolean/char/short/long/double/byte) są
+  zapisane w ramce stosu bezpośrednio, przez wartość, natomiast dla obiektów i tablic zapisujemy w
+  ramce stosu tylko referencję (wskaźnik 32 lub 64-bitowy) do pozycji obiektu/tablicy na wspólnej
+  stercie.
+
+  Zmiennych na stosie nie da się sięgnąć z innego wątku, więc ich zachowanie jest proste i
+  bezpieczne.
+
+  W językach C, C++, Rust Krótko mówiąc jest tak samo, ale rozróżniamy w kodzie obiekt od wskaźnika
+  na obiekt; zmienne lokalne zawsze są na stosie – sami decydujemy czy trzymamy obiekt bezpośrednio
+  na stosie, czy trzymamy na stosie tylko wskaźnik do obiektu utworzonego na stercie.
+
+## The Basics of Application Memory Management
+
+The memory hierarchy categorises memory devices based on their response times (access time).
+![alt text](figs/mem_hierarchy.png)
+
+The executing program is stored in the primary memory, which is also known as the main memory. More
+specifically though, all variables, functions, parameters and the like are stored in stack or heap
+memory which is allocated in RAM segments within the primary memory.
+![alt text](figs/mem_org.png)
+
+### WHAT IS STACK & HEAP MEMORY?
+
+Stack memory is a region of memory that is allocated on contiguous blocks within RAM for a process.
+Furthermore it acts as a LIFO (last-in-first-out) buffer for data or instructions. So basically, if
+a variable is the last element in the stack, it will be the first to be removed when it is time for
+memory to be deallocated. Examples of data that are stored within the stack are: local variables,
+functions and pointer variables. The capacity of the stack remains static while the program executes
+and is usuallly few MBs.
+
+Heap memory, like stack memory, is allocated within RAM. It is used for dynamic memory allocation
+and can be likened to a free pool. Complex data is stored here, such as: global variables, reference
+types, strings and maps.
