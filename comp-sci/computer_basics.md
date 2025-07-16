@@ -1,6 +1,5 @@
 
-![alt text](figs/simple_computer.png)
-![alt text](figs/simple_computer_2.png)
+![alt text](figs/simple_computer.png) ![alt text](figs/simple_computer_2.png)
 
 ## What happens when you boot your computer?
 
@@ -21,6 +20,38 @@ At the end of the BIOS program lies a jump instruction, the target of which is t
 program, whose job it is to search for and load the computer’s operating system from the hard disk.
 The operating system (OS) loads and unloads all of the other programs that run on the computer, so
 once the OS is up and running the computer is ready to interact with the user.
+
+## Reprezentacja liczb
+
+* Przedstaw sposób kodowania liczb w systemie U2.
+
+  Wartość dziesiętną liczby U2 wyraża wzór:
+  ```math
+    -a_{n-1} \times 2^{n-1} + \sum_{i=0}^{n-2} a_i \times 2^i
+  ```
+  Aby zamienić liczbę w U2 na przeciwną, należy wykonać dwa kroki: dokonać inwersji bitów, czyli
+  zamienić 0 na 1 i odwrotnie i zwiększyć wynik o 1. Zaletą tego kodu jest również istnienie tylko
+  jednego zera. Przedział kodowanych liczb nie jest przez to symetryczny. Dla reprezentacji
+  8-bitowej są to liczby od −128 do 127. Liczba -2n-1 nie ma liczby przeciwnej w reprezentacji U2.
+
+  Zastosowania:
+    - sprawy walutowe, operacje monetarne
+    - procesory graficzne np. Sony, Nintendo
+    - rozmiary czcionek w calach np. w TeX
+    - libfixmath - implementacja biblioteki stałoprzecinkowej w C
+
+* Reprezentacja zmiennoprzecinkowa (float)
+
+  Należy pamiętać o ułomności reprezentacji zbioru liczb rzeczywistych $\mathbb{R}$ w rzeczywistym
+  świecie skończonych komputerów.
+  
+  ![alt text](figs/floating_point.png)
+
+  F nie jest kontinuum - więcej - jest skończony o liczbie elementów wyrażonych wzorem:
+  ```math
+    2 \cdot (\beta - 1) \cdot \beta^{t-1} \cdot (U - L + 1) + 1
+  ```
+
 
 ## Hardware heap and stack
 ![alt text](figs/memory.png)

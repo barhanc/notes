@@ -93,10 +93,10 @@ Czasem jednak trzeba samemu złączyć dwie wersje zmian i są na to dwa sposoby
 Alternatywą jest rebase, który przerabia wszystkie commity w obecnym branchu, odtwarzając zmiany z
 innego punktu startowego.
 
-- git rebase foo zmiena obecny branch, zmieniając jego podstawę na foo. foo pozostaje bez zmian.
+- `git rebase foo` zmiena obecny branch, zmieniając jego podstawę na foo. foo pozostaje bez zmian.
 
--Najczęściej robimy git rebase master, żeby wciągnąć najnowsze zmiany z mastera i odtworzyć nasz
-branch na ich podstawie.
+- Najczęściej robimy `git rebase master`, żeby wciągnąć najnowsze zmiany z mastera i odtworzyć nasz
+  branch na ich podstawie.
 
 - Rebase zmienia commity, więc potencjalnie powoduje poważne problemy z rozsynchronizowaniem
   repozytoriów.
@@ -114,8 +114,8 @@ branch na ich podstawie.
   uciążliwy: np. jeśli najnowsze zmiany w masterze powodują konflikt, który rozwiązujemy usuwając
   część naszego branchowego kodu, to prawdopodobnie będziemy musieli to usunięcie powtórzyć tyle
   razy, ile mamy commitów w branchu. Ogólnie dla dużych konfliktów rebase jest trudniejszy i lepiej
-  w nietrywialnych sytuacjach użyć merge. Ale w najgorszym przypadku zawsze możemy zrobić git rebase
-  --abort w połowie.
+  w nietrywialnych sytuacjach użyć merge. Ale w najgorszym przypadku zawsze możemy zrobić `git
+  rebase --abort` w połowie.
 
 - Wrzucamy zmienione commity z git push --force.
 
