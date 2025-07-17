@@ -143,3 +143,23 @@ and is usuallly few MBs.
 Heap memory, like stack memory, is allocated within RAM. It is used for dynamic memory allocation
 and can be likened to a free pool. Complex data is stored here, such as: global variables, reference
 types, strings and maps.
+
+### Garbage Collector
+
+Garbage collection to jedna z metod automatycznego zarządzania dynamicznie przydzielaną pamięcią, w
+której za proces jej zwalniania odpowiedzialny jest nie programista, lecz programowy zarządca
+noszący nazwę garbage collector
+
+#### Reference counting
+
+Zliczanie referencji (ang. reference counting) jest jedną z najprostszych metod odśmiecania. W
+metodzie tej alokowane obiekty posiadają dodatkowe pole, które wykorzystywane jest do zliczania
+odwołań do danego obiektu, co pozwala stwierdzić czy jest on jeszcze wykorzystywany. Podczas
+alokowania obiektu pole to ustawiane jest na 1, następnie za każdym razem, gdy do obiektu dodawane
+jest odwołanie, licznik ten jest zwiększany o jeden, a gdy odwołanie jest usuwane – licznik jest
+zmniejszany o jeden. Wyzerowanie licznika oznacza, że w programie nie istnieje żadne odwołanie do
+tego obiektu – nie jest on używany oraz nie ma możliwości ponownego, poprawnego odwołania się do
+niego, w związku z czym przydzielona mu pamięć może zostać zwolniona
+
+Metoda ta nie gwarantuje zwolnienia wszystkich niepotrzebnych obszarów w sytuacji, gdy występują
+tzw. wzajemne (cykliczne) odwołania.

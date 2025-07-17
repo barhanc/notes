@@ -197,5 +197,10 @@ Python
 
     Depend upon abstractions, not concrete details
 
+* Lambdas can have default arguments e.g.
+  ```python
+  f = lambda x, y=1: x * y
+  ```
+
 
 
