@@ -124,14 +124,15 @@ order.
 ## The Basics of Application Memory Management
 
 The memory hierarchy categorises memory devices based on their response times (access time).
+
 ![alt text](figs/mem_hierarchy.png)
 
 The executing program is stored in the primary memory, which is also known as the main memory. More
 specifically though, all variables, functions, parameters and the like are stored in stack or heap
 memory which is allocated in RAM segments within the primary memory.
+
 ![alt text](figs/mem_org.png)
 
-### WHAT IS STACK & HEAP MEMORY?
 
 Stack memory is a region of memory that is allocated on contiguous blocks within RAM for a process.
 Furthermore it acts as a LIFO (last-in-first-out) buffer for data or instructions. So basically, if
