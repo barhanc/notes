@@ -130,14 +130,14 @@ once the OS is up and running the computer is ready to interact with the user.
   pamięcią, w której za proces jej zwalniania odpowiedzialny jest nie programista, lecz programowy
   zarządca noszący nazwę garbage collector
   
-  - **Zliczanie referencji (ang. reference counting)** jest jedną z najprostszych metod odśmiecania. W
-    metodzie tej alokowane obiekty posiadają dodatkowe pole, które wykorzystywane jest do zliczania
-    odwołań do danego obiektu, co pozwala stwierdzić czy jest on jeszcze wykorzystywany. Podczas
-    alokowania obiektu pole to ustawiane jest na 1, następnie za każdym razem, gdy do obiektu dodawane
-    jest odwołanie, licznik ten jest zwiększany o jeden, a gdy odwołanie jest usuwane – licznik jest
-    zmniejszany o jeden. Wyzerowanie licznika oznacza, że w programie nie istnieje żadne odwołanie do
-    tego obiektu – nie jest on używany oraz nie ma możliwości ponownego, poprawnego odwołania się do
-    niego, w związku z czym przydzielona mu pamięć może zostać zwolniona
+  - **Zliczanie referencji (ang. reference counting)** jest jedną z najprostszych metod odśmiecania.
+    W metodzie tej alokowane obiekty posiadają dodatkowe pole, które wykorzystywane jest do
+    zliczania odwołań do danego obiektu, co pozwala stwierdzić czy jest on jeszcze wykorzystywany.
+    Podczas alokowania obiektu pole to ustawiane jest na 1, następnie za każdym razem, gdy do
+    obiektu dodawane jest odwołanie, licznik ten jest zwiększany o jeden, a gdy odwołanie jest
+    usuwane – licznik jest zmniejszany o jeden. Wyzerowanie licznika oznacza, że w programie nie
+    istnieje żadne odwołanie do tego obiektu – nie jest on używany oraz nie ma możliwości ponownego,
+    poprawnego odwołania się do niego, w związku z czym przydzielona mu pamięć może zostać zwolniona
   
     Metoda ta nie gwarantuje zwolnienia wszystkich niepotrzebnych obszarów w sytuacji, gdy występują
     tzw. wzajemne (cykliczne) odwołania.
@@ -251,11 +251,11 @@ komputerowym. Jest zarządcą zasobów: (bierne) procesor, pamięć operacyjna /
   **Protokół IPv4**
 
   Adres ma postać 4 bajtów zapisywanych dziesiątkowo oddzielonych kropkami, czyli 32 bitów. Adres
-  składa się z części adresującej sieć i części adresującej hosta. Gdzie przebiega granica?
-  Wstępny podział na klasy adresowe zakładał granice występujące na kropkach. 
+  składa się z części adresującej sieć i części adresującej hosta. Gdzie przebiega granica? Wstępny
+  podział na klasy adresowe zakładał granice występujące na kropkach. 
 
-  Wyczerpywanie się puli adresowej IP v IV spowodowało konieczność poszukiwania bardziej
-  oszczędnych mechanizmów gospodarowania nimi. Stąd: 
+  Wyczerpywanie się puli adresowej IP v IV spowodowało konieczność poszukiwania bardziej oszczędnych
+  mechanizmów gospodarowania nimi. Stąd: 
   
   - Network Address Translation (NAT)
   
@@ -282,8 +282,8 @@ komputerowym. Jest zarządcą zasobów: (bierne) procesor, pamięć operacyjna /
   - DHCPDISCOVER – klient do wszystkich serwerów DHCP w sieci (co 2, 4, 8, 16 sec. 5 min) wysyła
     zapytanie.
 
-  - DHCPOFFER wszystkie serwery DHCP wysyłają do klienta od którego otrzymały zapytanie z
-    propozycją adresu.
+  - DHCPOFFER wszystkie serwery DHCP wysyłają do klienta od którego otrzymały zapytanie z propozycją
+    adresu.
   
   - DHCPREQUEST – klient do wybranego serwera DHCP z informacją o wybraniu adresu.
 
@@ -301,11 +301,11 @@ komputerowym. Jest zarządcą zasobów: (bierne) procesor, pamięć operacyjna /
     przesłania. Posiada kontrole przepływu danych.
   
   - UDP (User Datagram Protocol) – protokół bezpołączeniowy. Przesyłane są datagramy, bez
-    potwierdzenia i ew. retransmisji. Jest szybki, ale zawodny w szczególności: nie zawiera
-    żadnych komunikatów potwierdzających przyjęcie pakietu bądź informujących o jego zagubieniu,
-    nie gwarantuje, że dane zostaną dostarczone do procesu docelowego w kolejności wys łania,
-    pakiety danych mogą być zduplikowane, nie zawiera żadnego mechanizmu kontroli prędkości przesy
-    łania danych pomiędzy hostami.
+    potwierdzenia i ew. retransmisji. Jest szybki, ale zawodny w szczególności: nie zawiera żadnych
+    komunikatów potwierdzających przyjęcie pakietu bądź informujących o jego zagubieniu, nie
+    gwarantuje, że dane zostaną dostarczone do procesu docelowego w kolejności wys łania, pakiety
+    danych mogą być zduplikowane, nie zawiera żadnego mechanizmu kontroli prędkości przesy łania
+    danych pomiędzy hostami.
 
   W sieci wykorzystywany jest model klient- serwer.
   - Stroną czynną jest klient, który żąda od serwera udostępniania usług. 
@@ -315,8 +315,36 @@ komputerowym. Jest zarządcą zasobów: (bierne) procesor, pamięć operacyjna /
     przedziału 49152 do 65535.
 
 
-* DNS (Domain Name System) - rozproszona baza danych używana w sieciach TCP/IP do tłumaczenia nazw
-  komputerów na adresy IP. Przestrzeń nazw domeny jest schematem nazewniczym udostępniającym
+* **DNS** (Domain Name System) - rozproszona baza danych używana w sieciach TCP/IP do tłumaczenia
+  nazw komputerów na adresy IP. Przestrzeń nazw domeny jest schematem nazewniczym udostępniającym
   hierarchiczną strukturę dla bazy danych DNS.
 
   ![alt text](figs/dns.png)
+
+* **HTTP(S)** (Hypertext Transfer Protocol) - protokół warstwy aplikacji umożliwiający przesyłanie
+  zróżnicowanych rodzajów danych/zasobów (ang. resources) przez internet np. strony HTML (HyperText
+  Markup Language), aplikacje, pliki graficzne. Cechy:
+
+  - Protokół klient-serwer: serwer to jakiś serwer WWW, natomiast klientem jest typowo przeglądarka
+    internetowa
+  - Protokół bezstanowy i bezpołączeniowy – działa w oparciu o model żądanie/odpowiedź – po
+    dostarczeniu danych połączenie najczęściej jest zamykane
+  - Możliwe wykorzystanie innego niż TCP, ale niezawodnego protokołu transportowego 
+  - Rodzaje żądań HTTP: GET, POST, PUT, DELETE, HEAD, inne
+
+  **Ciasteczko (cookie)** to ciąg znaków przechowywany w pamięci przeglądarki. Ciasteczka to sposób
+  na:
+  - utrzymanie stanu sesji
+  - zapewnienia personalizacji stron WWW
+  - prowadzenie statystyk przez administratorów serwera Są przekazywane w nagłówku żądań HTTP.
+
+  **HTTPS**:
+    - Wykorzystuje SSL (Secure Socket Layer) / TLS (Transport Layer Security)
+      - Otwarty standard opracowany przez Netscape
+      - Rozwiązanie oparte na kryptografii z kluczem publicznym – klucz o długości 128 bit (dziś
+        sugerowana 2048 bit)
+      - szyfrowanie danych na czas transmisji kluczem sesji
+      - uwierzytelnianie klienta i serwera
+    - Domyślnie używa portu 443 TCP
+
+
