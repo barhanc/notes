@@ -1,5 +1,7 @@
 
-![alt text](figs/simple_computer.png) ![alt text](figs/simple_computer_2.png)
+![alt text](figs/simple_computer.png) 
+
+![alt text](figs/simple_computer_2.png)
 
 ## What happens when you boot your computer?
 
@@ -34,32 +36,17 @@ once the OS is up and running the computer is ready to interact with the user.
   jednego zera. Przedział kodowanych liczb nie jest przez to symetryczny. Dla reprezentacji
   8-bitowej są to liczby od −128 do 127. Liczba -2n-1 nie ma liczby przeciwnej w reprezentacji U2.
 
-  Zastosowania:
-    - sprawy walutowe, operacje monetarne
-    - procesory graficzne np. Sony, Nintendo
-    - rozmiary czcionek w calach np. w TeX
-    - libfixmath - implementacja biblioteki stałoprzecinkowej w C
-
-* Reprezentacja zmiennoprzecinkowa (float)
-
-  Należy pamiętać o ułomności reprezentacji zbioru liczb rzeczywistych $\mathbb{R}$ w rzeczywistym
-  świecie skończonych komputerów.
+* Reprezentacja zmiennoprzecinkowa (float)  
   
   ![alt text](figs/floating_point.png)
 
-  F nie jest kontinuum - więcej - jest skończony o liczbie elementów wyrażonych wzorem:
-  ```math
-    2 \cdot (\beta - 1) \cdot \beta^{t-1} \cdot (U - L + 1) + 1
-  ```
 
 
-## Hardware heap and stack
+## The Basics of Application Memory Management
+
 ![alt text](figs/memory.png)
 
-For many architectures, allocating memory on the stack is just a matter of changing the stack
-pointer, i.e. it's one instruction. Allocating memory on the heap involves looking for a big enough
-block, splitting it, and managing the "book-keeping" that allows things like free() in a different
-order.
+![alt text](figs/mem_hierarchy.png)
 
 * Podaj sposoby przydziału pamięci dla zmiennych. 
 
@@ -79,7 +66,6 @@ order.
   Kolejność pól w pamięci jest zgodna z kolejnością deklaracji w kodzie źródłowym. Dodatkowo stosuje
   się wyrównania (padding) aby zoptymalizować dostęp do pamięci (np. wyrównanie do 4/8 bajtów).
 
-
 * Sposoby przekazywania parametrów do procedur i funkcji.
 
   Przekazywanie przez wartość (by value) – do funkcji lub procedury przekazywana jest kopia wartości
@@ -92,7 +78,6 @@ order.
   
   Przekazywanie przez wskaźnik (by pointer) – do funkcji przekazywany jest wskaźnik na zmienną, co
   umożliwia modyfikację danych w pamięci, do której wskaźnik się odnosi.
-
 
 * W Javie wszystkie obiekty i tablice mieszczą się w obszarze pamięci nazywanym stertą (ang. heap) –
   jest jedna na proces, wspólna dla wszystkich jego wątków. Nie ma specjalnej struktury, jest
@@ -121,46 +106,217 @@ order.
   na obiekt; zmienne lokalne zawsze są na stosie – sami decydujemy czy trzymamy obiekt bezpośrednio
   na stosie, czy trzymamy na stosie tylko wskaźnik do obiektu utworzonego na stercie.
 
-## The Basics of Application Memory Management
+* For many architectures, allocating memory on the stack is just a matter of changing the stack
+  pointer, i.e. it's one instruction. Allocating memory on the heap involves looking for a big
+  enough block, splitting it, and managing the "book-keeping" that allows things like free() in a
+  different order.
 
-The memory hierarchy categorises memory devices based on their response times (access time).
+* The executing program is stored in the primary memory, which is also known as the main memory.
+  More specifically though, all variables, functions, parameters and the like are stored in stack or
+  heap memory which is allocated in RAM segments within the primary memory.
 
-![alt text](figs/mem_hierarchy.png)
+* Stack memory is a region of memory that is allocated on contiguous blocks within RAM for a
+  process. Furthermore it acts as a LIFO (last-in-first-out) buffer for data or instructions. So
+  basically, if a variable is the last element in the stack, it will be the first to be removed when
+  it is time for memory to be deallocated. Examples of data that are stored within the stack are:
+  local variables, functions and pointer variables. The capacity of the stack remains static while
+  the program executes and is usuallly few MBs.
 
-The executing program is stored in the primary memory, which is also known as the main memory. More
-specifically though, all variables, functions, parameters and the like are stored in stack or heap
-memory which is allocated in RAM segments within the primary memory.
+* Heap memory, like stack memory, is allocated within RAM. It is used for dynamic memory allocation
+  and can be likened to a free pool. Complex data is stored here, such as: global variables,
+  reference types, strings and maps.
 
-![alt text](figs/mem_org.png)
+* **Garbage collection** to jedna z metod automatycznego zarządzania dynamicznie przydzielaną
+  pamięcią, w której za proces jej zwalniania odpowiedzialny jest nie programista, lecz programowy
+  zarządca noszący nazwę garbage collector
+  
+  - **Zliczanie referencji (ang. reference counting)** jest jedną z najprostszych metod odśmiecania. W
+    metodzie tej alokowane obiekty posiadają dodatkowe pole, które wykorzystywane jest do zliczania
+    odwołań do danego obiektu, co pozwala stwierdzić czy jest on jeszcze wykorzystywany. Podczas
+    alokowania obiektu pole to ustawiane jest na 1, następnie za każdym razem, gdy do obiektu dodawane
+    jest odwołanie, licznik ten jest zwiększany o jeden, a gdy odwołanie jest usuwane – licznik jest
+    zmniejszany o jeden. Wyzerowanie licznika oznacza, że w programie nie istnieje żadne odwołanie do
+    tego obiektu – nie jest on używany oraz nie ma możliwości ponownego, poprawnego odwołania się do
+    niego, w związku z czym przydzielona mu pamięć może zostać zwolniona
+  
+    Metoda ta nie gwarantuje zwolnienia wszystkich niepotrzebnych obszarów w sytuacji, gdy występują
+    tzw. wzajemne (cykliczne) odwołania.
 
 
-Stack memory is a region of memory that is allocated on contiguous blocks within RAM for a process.
-Furthermore it acts as a LIFO (last-in-first-out) buffer for data or instructions. So basically, if
-a variable is the last element in the stack, it will be the first to be removed when it is time for
-memory to be deallocated. Examples of data that are stored within the stack are: local variables,
-functions and pointer variables. The capacity of the stack remains static while the program executes
-and is usuallly few MBs.
+## UNIX
 
-Heap memory, like stack memory, is allocated within RAM. It is used for dynamic memory allocation
-and can be likened to a free pool. Complex data is stored here, such as: global variables, reference
-types, strings and maps.
+System operacyjny - program, która działa jako pośrednik między użytkownikiem a sprzętem
+komputerowym. Jest zarządcą zasobów: (bierne) procesor, pamięć operacyjna / masowa oraz procesów.
 
-### Garbage Collector
+* Użytkownicy w systemie UNIX:
+  - nazwa użytkownika jest **niepowtarzalna**
+  - ich liczba jest ograniczona do 2^16
 
-Garbage collection to jedna z metod automatycznego zarządzania dynamicznie przydzielaną pamięcią, w
-której za proces jej zwalniania odpowiedzialny jest nie programista, lecz programowy zarządca
-noszący nazwę garbage collector
+* Architektura systemu
+  - **sprzęt (hardware)** - znajduje się w środku systemu komputerowego; dostarcza zasobów biernych
+  - **jądro systemu (kernel)** - ma bezpośredni dostęp do sprzętu
+  - **programy systemowe**
+  - **programy użytkowe** - programy użytkowe mogą korzystać z programów i komend systemowych
+  
+  Rolą systemu jest wspieranie iluzji:
+  - istnienia systemu plików dysponującego "miejscem" do przechowywania informacji
+  - istnienia przestrzeni, w której wykonują się procesy użytkowników
 
-#### Reference counting
+  ![alt text](figs/kernel.png)
 
-Zliczanie referencji (ang. reference counting) jest jedną z najprostszych metod odśmiecania. W
-metodzie tej alokowane obiekty posiadają dodatkowe pole, które wykorzystywane jest do zliczania
-odwołań do danego obiektu, co pozwala stwierdzić czy jest on jeszcze wykorzystywany. Podczas
-alokowania obiektu pole to ustawiane jest na 1, następnie za każdym razem, gdy do obiektu dodawane
-jest odwołanie, licznik ten jest zwiększany o jeden, a gdy odwołanie jest usuwane – licznik jest
-zmniejszany o jeden. Wyzerowanie licznika oznacza, że w programie nie istnieje żadne odwołanie do
-tego obiektu – nie jest on używany oraz nie ma możliwości ponownego, poprawnego odwołania się do
-niego, w związku z czym przydzielona mu pamięć może zostać zwolniona
+* Podsystem sterujący procesami jest odpowiedzialny za:
+  
+  - Szeregowanie procesów – realizuje politykę przydzielania CPU procesom. Ustala on kolejność
+    wykonania procesów oraz przydziela im procesor do chwili zakończenia wykonywania lub wyczerpania
+    kwantu czasu.
+  
+  - Zarządzanie pamięcią operacyjną – przydzielanie pamięci dla procesów. Jeśli w danym momencie
+    czasu nie ma dość pamięci fizycznej dla wszystkich procesów, to w zależności od stopnia deficytu
+    jądro przesyła ich fragmenty lub całe procesy między obszarem wymiany tak, aby każdy z nich miał
+    szansę się wykonać.
+  
+  - Realizacja mechanizmów komunikacji międzyprocesowej – dostępne mechanizmy umożliwiają
+    asynchroniczne sygnalizowanie pewnych zdarzeń oraz synchroniczną transmisję komunikatów między
+    procesami.
 
-Metoda ta nie gwarantuje zwolnienia wszystkich niepotrzebnych obszarów w sytuacji, gdy występują
-tzw. wzajemne (cykliczne) odwołania.
+* Podsystem plików:
+  - Zarządza plikami, przydzielając im miejsce, administruje dostępnym miejscem w systemach plików,
+    steruje dostępem do plików i udostępnia dane użytkownikom.
+
+* Zadaniem funkcji bibliotecznych jest odwzorowanie wywołań funkcji w programach na wywołania
+  funkcji systemowych, umożliwiających dostęp do jądra systemu.
+
+  Funkcje biblioteczne są łączone z kodem programu użytkownika po jego kompilacji, na etapie
+  linkowania.
+
+* **Proces** to wykonujący się program. Wykonaniem procesów steruje jądro stwarzając wrażenie, że
+  wiele procesów wykonuje się jednocześnie. Proces wykonuje się przechodząc przez ściśle ustalony
+  ciąg instrukcji stanowiący całość i nigdy nie wykonuje skoków do instrukcji innego procesu.
+  
+  - Proces to jednostka utworzona za pomocą funkcji `fork()`, za wyjątkiem procesu o numerze 0
+  - Proces wywołujący forka nazywa się macierzystym, a nowo utworzony - potomnym
+  - Kernel identyfikuje proces za pomocą identyfikatora PID
+  - Proces o PID=0 jest tworzony podczas **inicjalizacji systemu**. Tworzy on proces o PID=1 (tzw.
+    init), który jest przodkiem kolejnych procesów.
+  - Proces może pracować w trybie użytkownika lub w trybie jądra.
+
+* **Wątek (thread)** jest fragmentem wykonującego się programu w obrębie danego procesu. Każdy wątek
+  posiada osobny licznik rozkazów, ale korzysta z segmentu kodu procesu. Posiada własny stos,
+  natomiast współdzieli przestrzeń adresową z innymi wątkami w danym procesie.
+
+* **Sygnał** jest informacją wysyłaną **asynchronicznie**, która steruje procesem. Do wysyłania
+  sygnałów służy polecenie `kill`
+  - 15 TERM - graceful zakończnienie wykonywania procesu
+  - 9 KILL - forceful zakończenie wykonywania procesu
+  - 3 QUIT - ^C
+  - 20 TerminalSToP - ^Z
+
+* **i-node** to podstawowa struktura opisująca plik. Każdy plik jest opisywany przez jeden i-węzeł
+  niezależnie od tego pod iloma nazwami plik ten występuje. i-węzeł zawiera informacje takie jak:
+  typ pliku, identyfikator właściciela, prawa dostępu, tablicę alokacji pliku na dysku.
+
+
+## Sieci
+
+* **Model ISO/OSI**
+
+  Podstawowyt model warstwowy, unifikujący rozwiązania sieciowe. Idea polega na określeniu zadań
+  poszczególnych warstw oraz standaryzacji interfejsów między warstwami, co ułatwia tworzenie
+  aplikacji sieciowych.
+
+  ![alt text](figs/iso_osi.png)
+
+* **Warstwa dostępu do sieci**
+
+  Tu odbywa się właściwa komunikacja na poziomie pojedynczych bitów. W warstwie tej zdefiniowane są
+  parametry fizyczne transmisji takie jak właściwości medium transmisyjnego, poziomy oraz czasy
+  trwania sygnałów, itd. W tej warstwie zdefiniowany jest adres sprzętowy (MAC - Media Access
+  Control), który jest przypisany do interfejsu (NIC - Network Interface Card):
+
+  - 48 bitów, zapisywanych jako kolejne bajty w systemie szesnastkowym oddzielone ":" (np.
+    00:0A:E6:3E:FD:E1)
+  
+  - Powinien być unikatowy w skali świata.
+  
+  - Producenci interfejsów dzielą pulę adresową między siebie.
+
+* **Warstwa sieciowa** - w niej zdefiniowane są protokoły umożliwiające dostęp do Internetu:
+
+  - Protokół IP (Internet Protocol) – zapewniający ciągłą, hierarchiczną adresację hostów oraz
+    obsługę zaadresowanych ramek
+
+  - Protokół ARP (Address Resolution Protocol) pozwalający na znalezienie adresu MAC w oparciu o
+    adres IP w celu fizycznego przesłania informacji.
+
+  **Protokół IPv4**
+
+  Adres ma postać 4 bajtów zapisywanych dziesiątkowo oddzielonych kropkami, czyli 32 bitów. Adres
+  składa się z części adresującej sieć i części adresującej hosta. Gdzie przebiega granica?
+  Wstępny podział na klasy adresowe zakładał granice występujące na kropkach. 
+
+  Wyczerpywanie się puli adresowej IP v IV spowodowało konieczność poszukiwania bardziej
+  oszczędnych mechanizmów gospodarowania nimi. Stąd: 
+  
+  - Network Address Translation (NAT)
+  
+  - routing bezklasowy – wymagający podania maski podsieci wskazującej na granicę w adresie między
+    częścią adresującą sieć i częścią adresującą hosta.
+
+    Np. 147.132.90.72/26 (26 bitów maski)
+    
+    10010011.10000100.01011010.01001000 adres
+    
+    11111111.11111111.11111111.11000000 maska
+    
+    10010011.10000100.01011010.01000000 adres sieci (147.132.90.64)
+
+    10010011.10000100.01011010.01111111 adres broadcastowy (147.132.90.127)
+  
+  **Protokół DHCP**
+
+  Protokół DHCP (Dynamic Host Configuration Protocol) służy do dynamicznego nadawania adresów IP
+  hostom w danej sieci. Wymaga istnienia co najmniej jednego serwera DHCP w sieci lokalnej. Każdy
+  serwer musi posiadać zdefiniowaną pulę adresów IP „do rozdania”. W przypadku kilku serwerów w
+  jednej sieci ich pule muszą być rozłączne. Uzyskanie adresu IP składa się z 4 faz:
+
+  - DHCPDISCOVER – klient do wszystkich serwerów DHCP w sieci (co 2, 4, 8, 16 sec. 5 min) wysyła
+    zapytanie.
+
+  - DHCPOFFER wszystkie serwery DHCP wysyłają do klienta od którego otrzymały zapytanie z
+    propozycją adresu.
+  
+  - DHCPREQUEST – klient do wybranego serwera DHCP z informacją o wybraniu adresu.
+
+  - DHCPACK – serwer DHCP do klienta, któremu wydzierżawia adres ze swojej puli.
+
+  Po upływie połowy czasu dzierżawy klient występuje o przedłużenie czasu dzierżawy.
+
+* **Warstwa transportowa** 
+
+  Zawiera dwa protokoły:
+
+  - TCP (Transmission Control Protocol) - protokół połączeniowy, niezawodny. Przed przesłaniem
+    pakietu zestawiany jest obwód wirtualny (protokół point-to-point) za pomocą procedury 3-way
+    handshake. Przesłanie pakietu wymaga potwierdzenia – jego brak implikuje kolejne próby
+    przesłania. Posiada kontrole przepływu danych.
+  
+  - UDP (User Datagram Protocol) – protokół bezpołączeniowy. Przesyłane są datagramy, bez
+    potwierdzenia i ew. retransmisji. Jest szybki, ale zawodny w szczególności: nie zawiera
+    żadnych komunikatów potwierdzających przyjęcie pakietu bądź informujących o jego zagubieniu,
+    nie gwarantuje, że dane zostaną dostarczone do procesu docelowego w kolejności wys łania,
+    pakiety danych mogą być zduplikowane, nie zawiera żadnego mechanizmu kontroli prędkości przesy
+    łania danych pomiędzy hostami.
+
+  W sieci wykorzystywany jest model klient- serwer.
+  - Stroną czynną jest klient, który żąda od serwera udostępniania usług. 
+  - Żądanie wysyłane do klienta jest parą adresu IP oraz numeru usługi - portu. 
+  - Usługi posiadają zdefiniowane numery. 
+  - Serwer, aby rozpoznać połączenia z tego samego klienta nadaje im numer (port efemeryczny) z
+    przedziału 49152 do 65535.
+
+
+* DNS (Domain Name System) - rozproszona baza danych używana w sieciach TCP/IP do tłumaczenia nazw
+  komputerów na adresy IP. Przestrzeń nazw domeny jest schematem nazewniczym udostępniającym
+  hierarchiczną strukturę dla bazy danych DNS.
+
+  ![alt text](figs/dns.png)
