@@ -817,8 +817,8 @@ v_\alpha h _\beta\) (there are also biases, not depicted in the picture).
 \begin{figure}[ht]
    \centering
    \includegraphics[width=0.65\columnwidth]{figs/rbm.png}
-   \label{fig:rbm}
    \caption{Schematic depiction of RBM with 8 visible units and 6 hidden units}
+   \label{fig:rbm}
 \end{figure}
 
 Note that before we had not made any explicit connection between the RBM and neural networks. We
@@ -847,8 +847,8 @@ first RBM.
 \begin{figure}[ht]
    \centering
    \includegraphics[width=0.45\columnwidth]{figs/dbn.png}
-   \label{fig:dbn}
    \caption{Schematic depiction of DBN with 4 layers}
+   \label{fig:dbn}
 \end{figure}
 
 
@@ -886,8 +886,8 @@ decoder after training and use only the encoder part.
 \begin{figure}[ht]
    \centering
    \includegraphics[width=0.95\columnwidth]{figs/autoencoder.png}
-   \label{fig:ae}
    \caption{Schematic depiction of a general autoencoder architecture}
+   \label{fig:ae}
 \end{figure}
 
 One important aspect of the training process of the autoencoder is the choice of the loss functions.
@@ -930,8 +930,8 @@ H_\text{out}, W_\text{out})$ where
 \begin{figure}[ht]
    \centering
    \includegraphics[width=0.9\columnwidth]{figs/conv2d.png}
-   \label{fig:conv2d}
    \caption{Schematic representation of a convolution operation}
+   \label{fig:conv2d}
 \end{figure}
 
 Let's note here an important property of the convolutional layer -- it is \emph{equivariant} to
@@ -949,8 +949,8 @@ input. Typically we use max-pooling which for a receptive field returns the maxi
 \begin{figure}[ht]
    \centering
    \includegraphics[width=0.9\columnwidth]{figs/maxpool.png}
-   \label{fig:pool}
    \caption{Schematic representation of a pooling operation}
+   \label{fig:pool}
 \end{figure}
 
 \subsubsection{Residual connections}
@@ -967,8 +967,8 @@ to model the full transformation as shown in the Figure \ref{fig:residual}.
 \begin{figure}[ht]
    \centering
    \includegraphics[width=0.75\columnwidth]{figs/residual.png}
-   \label{fig:residual}
    \caption{Schematic representation of a residual connection}
+   \label{fig:residual}
 \end{figure}
 
 Of course the output of the series of layers must have compatible shape. We can note that such
@@ -977,14 +977,152 @@ reasons for its success.
 
 \subsubsection{Some implementation details}
 
+Looking at the equation describing the convolution operation, it is not clear how we could implement
+it in an efficient way. Naive implementation would obviously require 7 nested for loops which access
+the memory in a non-contiguous way making it highly inefficient. Convolution can however be
+implemented efficiently using matrix multiplication. Let's focus on the case with $B = 1$. The basic
+idea is to rewrite the convolution as (we will denote the result of the convolution as $\bm{C}$)
+\[
+\begin{split}
+   C_{c, (x,y)} & = b_c + \sum_{c',x',y'} K_{c,c',x',y'} \cdot X_{c',d_x x' + s_x x, d_y y' + s_y y} \\
+                & = b_c + \sum_{(c',x',y')} K_{c, (c',x',y')} \cdot \tilde{X}_{(c',x',y'), (x,y)}
+\end{split}
+\]
+where $\bm{\tilde{X}}$ is given by
+\[
+   \tilde{X}_{(c',x',y'), (x,y)} =  X_{c',d_x x' + s_x x, d_y y' + s_y y}
+\]
+If we now look at the multi-indices in round brackets as flattened indices, then we get the same
+structure as matrix multiplication. We thus only have to construct the auxiliary matrix
+$\bm{\tilde{X}}$ and use some highly optimized GEMM procedure to compute $\bm{C}$ (assuming we
+already store the kernels in the matrix form) and afterwards just reshape $\bm{C}$ to 3-D. The
+matrix $\bm{\tilde{X}}$ is the result of the so called \emph{im2col} transformation defined by the
+equality above (see Figure \ref{fig:im2col}). The im2col transformation can be implemented using
+NumPy as shown below. Whether there is a faster or simpler implementation possible is unknown to me.
 
+One more topic which requires attention is the computation of the gradient. We can first note that
+given gradient $\partial{L}/\partial{C_{c,x,y}}$ we can easily compute the gradient for the reshaped
+convolution output. Indeed if $Y_\alpha = X_{\nu(\alpha)}$ for some multi-index $\alpha$ and a
+bijective function between multi-indices $\nu$ then
+\[
+   \pdv{L}{X_\beta} = \sum_{\alpha} \pdv{L}{Y_\alpha} \pdv{Y_\alpha}{X_\beta} = \sum_{\alpha} \pdv{L}{Y_\alpha} \delta_{\beta, \nu(\alpha)}
+\]
+and since we assumed that $\nu$ is a bijection therefore there is only a single $\alpha$ s.t.
+$\nu(\alpha) = \beta$ and it is given by $\nu^{-1}(\beta)$ thus
+\[
+   \pdv{L}{X_\beta} = \pdv{L}{Y_{\nu^{-1}(\beta)}}\,.
+\]
+Obviously the reshape operation is a bijection. Now, since we can compute gradient w.r.t. the
+reshaped convolution output, we can also easily compute the gradient w.r.t. the parameters of the
+layer in almost the same way as for the linear layer, namely assuming we store the kernels as a
+matrix $\bm{K}$ we have
+\[
+   C_{\alpha\beta} = b_\alpha + \sum_{\gamma} K_{\alpha\gamma} \tilde{X}_{\gamma\beta}
+\]
+and thus
+\[
+\begin{split}
+   &\pdv{L}{\tilde{X}_{\mu\nu}} = \sum_{\alpha\beta} \pdv{L}{C_{\alpha\beta}} \pdv{C_{\alpha\beta}}{\tilde{X}_{\mu\nu}} 
+                                = \sum_{\alpha} \pdv{L}{C_{\alpha\nu}} K_{\alpha\mu}\\
+   &\pdv{L}{K_{\mu\nu}} = \sum_{\alpha\beta} \pdv{L}{C_{\alpha\beta}} \pdv{C_{\alpha\beta}}{K_{\mu\nu}} 
+                        = \sum_{\beta} \pdv{L}{C_{\mu\beta}} \tilde{X}_{\nu\beta}\\
+   &\pdv{L}{b_\mu} = \sum_{\beta} \pdv{L}{C_{\mu\beta}}
+\end{split}
+\]
+The difference being only the dimensions along which we perform the summation.
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[caption=Im2Col Operation]
+def im2col(
+    x: NDArray,          # input tensor
+    s: tuple[int, int],  # strides
+    d: tuple[int, int],  # dilation
+    k: tuple[int, int],  # kernel size
+) -> tuple[NDArray, NDArray]:
+  # Get input dimensions
+  B, C_in, H_in, W_in = x.shape
+
+  # Compute output size
+  H_out = int(1 + (H_in - d[0] * (k[0] - 1) - 1) / s[0])
+  W_out = int(1 + (W_in - d[1] * (k[1] - 1) - 1) / s[1])
+  
+  # The idea is to first compute an index-array of shape 
+  # `(B, C_in*H_ker*W_ker, H_out*W_out)` with flat index 
+  # (i.e. a number between 0 and prod(x.shape) - 1) of the 
+  # correct element to take from `x` and then use `np.take`.
+
+  # First we compute 1-D index arrays for each dimension.
+  # Basically if we would concatenate these arrays as columns
+  # then each row would be a unique multi-index to the array
+  # of appropriate shape i.e. `(C_in, H_ker, W_ker)` or 
+  # `(H_out, W_out)`.
+
+  # `(C_in * H_ker * W_ker,)` each
+  idx_c, idx_h_ker, idx_w_ker = np.indices((C_in, *k)).reshape(3, -1)
+
+  # `(H_out * W_out,)` each
+  idx_h_out, idx_w_out = np.indices((H_out, W_out)).reshape(2, -1)
+
+  # Then we compute 4 index-arrays broadcastable to 
+  # `(B, C_in * H_ker * W_ker, H_out * W_out)` each, such that forall i,j,k: 
+  # x[idx_b[i,j,k], idx_c[i,j,k], idx_h[i,j,k], idx_w[i,j,k]] is the 
+  # correct element to put under index (i,j,k) in the im2col matrix.
+
+  # broadcastable to `(B, C_in * H_ker * W_ker, H_out * W_out)`
+  idx_b = np.arange(B).reshape(-1, 1, 1)
+  idx_c = idx_c.reshape(-1, 1)
+  idx_h = d[0] * idx_h_ker.reshape(-1, 1) + s[0] * idx_h_out
+  idx_w = d[1] * idx_w_ker.reshape(-1, 1) + s[1] * idx_w_out
+
+  # Here we could just return x[idx_b, idx_c, idx_h, idx_w]. However
+  # for the backward pass it is much more convenient to have these
+  # indices raveled i.e. instead of having 4 index-arrays with indices 
+  # along given (i.e.: 0,1,2,3) dimension we can transform them to a single 
+  # index-array with raveled index i.e. index to the flattened array `x`.
+
+  # `(B, C_in * H_ker * W_ker, H_out * W_out)`
+  idxs = np.ravel_multi_index((idx_b, idx_c, idx_h, idx_w), x.shape)
+
+  # Finally we return the raveled index-array and the im2col array
+  # which can be constructed using `np.take` as by default the flattened
+  # input array is used to extract the values.
+  return idxs, np.take(x, idxs)
+\end{lstlisting} 
+\end{minipage}
+
+Now we face an obstacle, how to compute gradient $\partial{L}/\partial{X_{\beta}}$ given the
+gradient $\partial{L}/\partial{\tilde{X}_{\alpha}}$. Let's note that the index mapping of im2col
+operation is not a bijection thus in general we can only write
+\[
+   \pdv{L}{X_\beta} = \sum_{\alpha} \pdv{L}{\tilde{X}_\alpha} \delta_{\beta, \nu(\alpha)}
+\]
+where $\nu$ denotes the im2col operation i.e. $\nu((c',x',y'), (x,y)) = (c', d_xx' + s_xx, d_yy' +
+s_yy)$. Using this expression naively would be very inefficient. Let's note however that we already
+have precomputed indices of im2col transformation i.e. for every $\alpha$ we have (flattened) index
+$\nu(\alpha)$. We can thus initialize $\partial{L}/\partial{X_\beta}$ with 0s, iterate over all
+$\alpha = ((c',x',y'), (x,y))$ and accumulate the gradient $\partial{L}/\partial{\tilde{X}_\alpha}$
+under $\nu(\alpha)$. One additional optimization is to note that id we fix one of the $(c',x',y')$,
+$(x,y)$ then for all $(x,y)$ or $(c',x',y')$ indices after transformation $\nu$ are distinct which
+can be used to accumulate the gradients in parallel using some vectorization mechanism.
+
+\begin{figure}[ht]
+   \centering
+   \includegraphics[width=0.95\columnwidth]{figs/im2col.png}
+   \caption{Schematic representation of an im2col operation. Note that for simplicity the receptive 
+   fields do not overlap in this example i.e. the strides are equal to the kernel size. In general
+   though they may overlap and this creates duplicated entries in the im2col matrix.}
+   \label{fig:im2col}
+\end{figure}
+
+
+\subsection{GAN}
+% TODO
 
 
 \end{document}
 
 % TODO:
 % * Architecture
-%   - GAN
 %   - Transformer
 %   - ?other?
 % * ?CV?

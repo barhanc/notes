@@ -41,17 +41,29 @@
 \usepackage{lipsum, listings}
 \usepackage[linesnumbered,ruled,vlined]{algorithm2e}
 
-\lstdefinestyle{mystyle}{ 
-    basicstyle=\ttfamily\footnotesize,
-    breakatwhitespace=false,         
-    breaklines=true,                 
-    captionpos=b,                    
-    keepspaces=true,                 
+\definecolor{classcolor}{rgb}{0.8, 0.0, 0.0}
+\definecolor{keywordcolor}{rgb}{0.0, 0.0, 0.6}
+\definecolor{commentcolor}{rgb}{0.0, 0.5, 0.0}
+\definecolor{stringcolor}{rgb}{0.58, 0.0, 0.82}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\tiny,
+    keywordstyle=\color{keywordcolor}\bfseries,
+    commentstyle=\color{commentcolor}\itshape,
+    stringstyle=\color{stringcolor},
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    captionpos=b,
     numbers=left,
-    tabsize=2
+    numberstyle=\tiny\color{gray},
+    morekeywords={reshape, indices, arange, take, ravel_multi_index},
+    emph={np, NDArray},
+    emphstyle=\color{classcolor}
 }
-\lstset{style=mystyle}
 
 \DeclareEmphSequence{\bfseries\itshape}
 \DeclareMathOperator*{\argmin}{arg\,min} 
 \DeclareMathOperator*{\argmax}{arg\,max} 
+

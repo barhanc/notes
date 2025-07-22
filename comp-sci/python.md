@@ -212,4 +212,6 @@ Python
   those files (e.g. C extensions).
   https://setuptools.pypa.io/en/latest/userguide/quickstart.html#setup-py
 
+* `np.shares_memory` - Determine if two arrays share memory.
+
 
