@@ -240,7 +240,11 @@ komputerowym. Jest zarządcą zasobów: (bierne) procesor, pamięć operacyjna /
   
   - Producenci interfejsów dzielą pulę adresową między siebie.
 
-* **Warstwa sieciowa** - w niej zdefiniowane są protokoły umożliwiające dostęp do Internetu:
+  Protokołami tej warstwy są np. Ethernet.
+
+* **Warstwa sieciowa** - w niej zdefiniowane są protokoły umożliwiające dostęp do Internetu i
+  znalezienie najlepszej drogi łączącej dwa hosty , które mogą się znajdować w oddzielnych z punktu
+  widzenia warstwy łącza danych sieciach.
 
   - Protokół IP (Internet Protocol) – zapewniający ciągłą, hierarchiczną adresację hostów oraz
     obsługę zaadresowanych ramek
@@ -293,7 +297,9 @@ komputerowym. Jest zarządcą zasobów: (bierne) procesor, pamięć operacyjna /
 
 * **Warstwa transportowa** 
 
-  Zawiera dwa protokoły:
+  Odpowiada za segmentację danych z warstw wyŜszych i ponowne ich złoŜenie w punkcie docelowym. MoŜe
+  zapewniać niezawodność przesyłania danych i parametry jakości transmisji (QoS). Zawiera dwa
+  protokoły:
 
   - TCP (Transmission Control Protocol) - protokół połączeniowy, niezawodny. Przed przesłaniem
     pakietu zestawiany jest obwód wirtualny (protokół point-to-point) za pomocą procedury 3-way

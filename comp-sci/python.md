@@ -202,5 +202,14 @@ Python
   f = lambda x, y=1: x * y
   ```
 
+* **src vs flat layout** The “src layout” deviates from the flat layout by moving the code that is
+  intended to be importable (i.e. import awesome_package, also known as import packages) into a
+  subdirectory. This subdirectory is typically named src/, hence “src layout”.
+
+* New projects are advised to avoid setup.py configurations (beyond the minimal stub) when custom
+  scripting during the build is not necessary. Note that you can still keep most of configuration
+  declarative in setup.cfg or pyproject.toml and use setup.py only for the parts not supported in
+  those files (e.g. C extensions).
+  https://setuptools.pypa.io/en/latest/userguide/quickstart.html#setup-py
 
 

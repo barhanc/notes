@@ -907,18 +907,18 @@ layers which form the basic building blocks of a CNN were designed to remedy thi
 \[
 \boxed{
 \begin{split}
-   &\text{Conv2D}_{\beta,c,x,y}(\bm{X}; \bm{W}, \bm{b}) = \\
-   & b_c + \sum_{c'=0}^{C_\text{in}-1} \sum_{x'=0}^{H_\text{filter}-1} \sum_{y'=0}^{W_\text{filter}-1} X_{\beta, c', d_x x' + s_x x, d_y y' + s_y y} \cdot W_{c,c',x',y'}   
+   &\text{Conv2D}_{\beta,c,x,y}(\bm{X}; \bm{K}, \bm{b}) = \\
+   & b_c + \sum_{c'=0}^{C_\text{in}-1} \sum_{x'=0}^{H_\text{filter}-1} \sum_{y'=0}^{W_\text{filter}-1} X_{\beta, c', d_x x' + s_x x, d_y y' + s_y y} \cdot K_{c,c',x',y'}   
 \end{split}
 }
 \]
 The input to the layer is a stack (batch) of $B$ 3-dimensional tensors with shapes $(C_\text{in},
 H_\text{in}, W_\text{in})$ each. The set of the layer's parameters consists of a vector $\bm{b}$ of
-shape $(C_\text{out},)$ and a stack $\bm{W}$ of $C_\text{out}$ 3-dimensional \emph{filters} of shape
-$(C_\text{in}, H_\text{filter}, W_\text{filter})$ each. Additionally the layer has specified
-hyperparameters: $s_x$, $s_y$ (\emph{strides}), $d_x$, $d_y$ (\emph{dilations}). The output of the
-layer is a batch of $B$ 3-dimensional tensors with shapes $(C_\text{out}, H_\text{out},
-W_\text{out})$ where
+shape $(C_\text{out},)$ and a stack $\bm{K}$ of $C_\text{out}$ 3-dimensional \emph{filters} (or
+\emph{kernels}) of shape $(C_\text{in}, H_\text{filter}, W_\text{filter})$ each. Additionally the
+layer has specified hyperparameters: $s_x$, $s_y$ (\emph{strides}), $d_x$, $d_y$ (\emph{dilations}).
+The output of the layer is a batch of $B$ 3-dimensional tensors with shapes $(C_\text{out},
+H_\text{out}, W_\text{out})$ where
 \[
 \boxed{
 \begin{split}
@@ -934,4 +934,58 @@ W_\text{out})$ where
    \caption{Schematic representation of a convolution operation}
 \end{figure}
 
+Let's note here an important property of the convolutional layer -- it is \emph{equivariant} to
+translations of the object in the picture. Indeed the translation of the object corresponds to the
+equivalent translation of the activations of the layer. The whole network (after applying many
+convolutional layers, flattening and softmax) shoud thus be \emph{invariant} to such translations.
+Convolutional architecture has therefore a baked-in bias suitable for image data. The convolutional
+layer changes both the channel dimension and height / width. We can also use padding to counter the
+height / width shrinkage. 
+
+Pooling layers on the other hand are parameter-free layers that operate on each input channel
+independently and thus do not change the channel dimension but reduce the height / width of the
+input. Typically we use max-pooling which for a receptive field returns the maximum pixel value.
+
+\begin{figure}[ht]
+   \centering
+   \includegraphics[width=0.9\columnwidth]{figs/maxpool.png}
+   \label{fig:pool}
+   \caption{Schematic representation of a pooling operation}
+\end{figure}
+
+\subsubsection{Residual connections}
+
+Empirical studies of the VGG (Visual Geometry Group) CNNs showed that increasing the depth of the
+network improved accuracy up to a certain point, beyond which the performance deteriorated. One
+possible heuristic used to prevent this effect was the introduction of residual connections. This
+trick is based on an empirical observation that given some complex, nonlinear transformation
+$\bm{f}(\bm{x})$ it is often easier to model and learn the residual transformation i.e.
+$\bm{f}(\bm{x}) - \bm{x}$. The idea is thus to add special connections between layers of the network
+so that the parametrized layers learn this residual transformation which is then added to the input
+to model the full transformation as shown in the Figure \ref{fig:residual}.
+
+\begin{figure}[ht]
+   \centering
+   \includegraphics[width=0.75\columnwidth]{figs/residual.png}
+   \label{fig:residual}
+   \caption{Schematic representation of a residual connection}
+\end{figure}
+
+Of course the output of the series of layers must have compatible shape. We can note that such
+mechanism certainly improves the gradients flow through the network which might be one of the
+reasons for its success.
+
+\subsubsection{Some implementation details}
+
+
+
+
 \end{document}
+
+% TODO:
+% * Architecture
+%   - GAN
+%   - Transformer
+%   - ?other?
+% * ?CV?
+% * ?NLP?
