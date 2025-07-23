@@ -1116,8 +1116,88 @@ can be used to accumulate the gradients in parallel using some vectorization mec
 
 
 \subsection{GAN}
-% TODO
 
+We once again come back to the topic of generative models i.e. probabilistic models which enable us
+to sample new synthetic examples of the modeled observations. This can be achieved by constructing a
+model which either explicitly or implicitly models the probability distribution of the observed
+data. In the explicit case we have direct access to the probability density function and can compute
+the probability values. In the implict case we can only sample from the probability distribution but
+have no direct way of computing the probability values. A prominent example of the second class of
+models are the so called Generative Adversarial Networks (GANs). The idea is to express the
+generating process as a kind of game between two players: the \emph{generator} who generates the
+synthetic observations and the \emph{discriminator} whose task is to differentiate the true samples
+from the synthetic ones.
+
+\begin{figure}[ht]
+   \centering
+   \includegraphics[width=0.95\columnwidth]{figs/gan.png}
+   \caption{Schematic representation GAN architecture}
+   \label{fig:gan}
+\end{figure}
+
+The discriminator is trained using backpropgation like a simple classifier with binary
+cross-entropy loss and binary labels indicating whether the image is fake which can be written as
+\[
+\begin{split}
+   L_D = &-\Ebb_{\bm{x} \sim p_\text{data}(\bm{x})} [\log D_{\bm{\phi}}(\bm{x})] \\
+         &-\Ebb_{\bm{z} \sim p(\bm{z})}[\log(1 - D_{\bm{\phi}}(G_{\bm{\theta}}(\bm{z})))]
+\end{split}
+\]
+In practice we obviously approximate the expectations as averages from the samples, so in reality we
+sample a batch of examples $\{\bm{x}_1, \ldots, \bm{x}_N\}$ and a batch of latent variables
+$\{\bm{z}_1, \ldots, \bm{z}_N\}$ which after being passed through the generator create a batch of
+fake images $\{\bm{\tilde{x}}_1, \ldots, \bm{\tilde{x}}_n\}$ and then we can compute the
+discriminator loss as a standard binary cross entropy
+\[
+\begin{split}
+   L_D = &- \sum_{i=1}^N \bigg[ 1 \cdot \log D_{\bm{\phi}}(\bm{x}_i) + (1 - 1) \cdot \log \{1 - D_{\bm{\phi}}(\bm{x}_i)\} \bigg]\\
+         &- \sum_{i=1}^N \bigg[ 0 \cdot \log D_{\bm{\phi}}(\bm{\tilde{x}}_i) + (1 - 0) \cdot \log \{1 - D_{\bm{\phi}}(\bm{\tilde{x}_i})\} \bigg]\\
+       = &- \sum_{i=1}^N \bigg[ \log D_{\bm{\phi}}(\bm{x}_i) + \log \{1 - D_{\bm{\phi}}(\bm{\tilde{x}}_i)\} \bigg]
+\end{split}
+\]
+We then update the parameters of the discriminator using backpropagation on this loss. Now the
+question arises, how do we train th generator (after all this is the part that we want the most). In
+the classical formulation the generator loss is the negated discriminator loss i.e.
+\[
+   L_G = -L_D
+\]
+so that the training effectively realizes the zero-sum game
+\[
+\begin{split}
+   \min_{\bm{\theta}} \max_{\bm{\phi}} \bigg( &\Ebb_{\bm{x} \sim p_\text{data}(\bm{x})} [\log D_{\bm{\phi}}(\bm{x})] \\
+                                       &+ \Ebb_{\bm{z} \sim p(\bm{z})}[\log(1 - D_{\bm{\phi}}(G_{\bm{\theta}}(\bm{z})))] \bigg)
+\end{split}
+\]
+It can then be shown that in the equilibrium the probabilty distribution of the generator is the
+same as the data distribution. In practice, however this formulation can be problematic. Note that
+if the discriminator learns much faster then the generator then after very few epochs the
+discriminator has no difficulty in distinguishing the true samples from the synthetic ones.
+Discriminator loss is thus very low and therefore the gradient to the generator will have very small
+value -- the generator thus cannot learn. In practice therefore the generator loss is thus often
+defined as a discriminator cost (only the part with the generated observation) with changed changed
+label from 0 to 1
+\[
+   L_G = - \Ebb_{\bm{z} \sim p(\bm{z})} [\log D_{\bm{\phi}}(G_{\bm{\theta}}(\bm{z}))]\,.
+\]
+To update the generator parameters $\bm{\theta}$ we do a forward pass through the generator and
+discriminator, then propagate the gradient through the discriminator for the loss function with
+changed label (but we do not change any weights in the discriminator here) to obtain $\partial L_G /
+\partial \bm{\tilde{x}}$ and then backpropagate this gradient through generator and update its
+weights.
+
+\begin{figure}[ht]
+   \centering
+   \includegraphics[width=0.95\columnwidth]{figs/gan_train_1.png}
+   \caption{Discriminator training step}
+   \label{fig:gan_train_1}
+\end{figure}
+
+\begin{figure}[ht]
+   \centering
+   \includegraphics[width=0.95\columnwidth]{figs/gan_train_2.png}
+   \caption{Generator training step}
+   \label{fig:gan_train_2}
+\end{figure}
 
 \end{document}
 
