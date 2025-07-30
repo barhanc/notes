@@ -313,3 +313,67 @@ default value
 * You can also use `SUM()`, `AVG()`
 
 ### JOINS
+
+```sql
+SELECT *
+FROM artists
+JOIN songs
+  ON artists.artist_id = songs.artist_id;
+```
+
+`JOIN` keyword, which is short for an `INNER JOIN`. There are actually 4 different types of JOINS in
+SQL.
+
+| Type of Joins   | Description                                                                                                                                                              |
+|-----------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| INNER JOIN      | Returns only the rows with matching values from both tables.                                                                                                             |
+| LEFT JOIN       | Returns all the rows from the left table and the matching rows from the right table.                                                                                     |
+| RIGHT JOIN      | Returns all the rows from the right table and the matching rows from the left table.                                                                                     |
+| FULL OUTER JOIN | Returns all rows when there is a match in either the left or the right table. If there is no match, NULL values are returned for columns from the table without a match. |
+
+### Date-time functions
+
+* `CURRENT_DATE()` Returns today's date.
+* `CURRENT_TIME()` Returns the current time without the date.
+* `NOW()` Returns the current date and time.
+* To retrieve records where a date is greater than or less than another date, you can use the > and
+  < operators respectively.
+  ```sql
+  SELECT *
+  FROM messages
+  WHERE sent_date > '2022-08-10 00:00:00';
+  ``` 
+
+* `EXTRACT()` function extracts a specific component (i.e. year, month, day, hour, or minute)
+  ```sql
+  SELECT 
+    message_id, 
+    sent_date,
+    EXTRACT(YEAR FROM sent_date) AS extracted_year,
+    EXTRACT(MONTH FROM sent_date) AS extracted_month,
+    EXTRACT(DAY FROM sent_date) AS extracted_day,
+    EXTRACT(HOUR FROM sent_date) AS extracted_hour,
+    EXTRACT(MINUTE FROM sent_date) AS extracted_minute,
+  FROM messages
+  LIMIT 3;
+  ```
+
+* `DATE_TRUNC()` rounds down a date or timestamp to a specified unit of time
+* `INTERVAL` function is used to handle date and time gaps by adding and subtracting intervals such
+  as "3 days", "5 hours", "45 minutes".
+  ```sql
+  SELECT 
+    message_id,
+    sent_date,
+    sent_date + INTERVAL '2 days' AS add_2days,
+    sent_date - INTERVAL '3 days' AS minus_3days,
+    sent_date + INTERVAL '2 hours' AS add_2hours,
+    sent_date - INTERVAL '10 minutes' AS minus_10mins
+  FROM messages
+  LIMIT 3;
+  ```
+* `TO_CHAR()` converts a date or timestamp to a string with a specified format.
+* You can use casting for date and timestamp data too! If you encounter date or timestamp data
+  that's   formatted as strings, here's two SQL functions that can help:
+  - `::DATE` or `TO_DATE()`: Convert strings into dates.
+  - `::TIMESTAMP` or `TO_TIMESTAMP()`: Convert strings into timestamps.
