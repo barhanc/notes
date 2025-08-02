@@ -377,3 +377,64 @@ SQL.
   that's   formatted as strings, here's two SQL functions that can help:
   - `::DATE` or `TO_DATE()`: Convert strings into dates.
   - `::TIMESTAMP` or `TO_TIMESTAMP()`: Convert strings into timestamps.
+
+
+### Common Table Expression (CTE) and Subqueries
+
+Common Table Expression, is like a query within a query. With the WITH statement, you can create
+temporary tables to store results, making complex queries more readable and maintainable. These
+temporary tables exist only for the duration of the main query, streamlining your analysis process.
+
+```sql
+-- Start of a CTE
+WITH genre_revenue_cte AS (
+  SELECT
+    genre,
+    SUM(concert_revenue) AS total_revenue
+  FROM concerts
+  GROUP BY genre
+)
+-- End of a CTE
+
+SELECT
+  g.genre,
+  g.total_revenue,
+  AVG(c.concert_revenue) AS avg_concert_revenue
+FROM genre_revenue_cte AS g
+INNER JOIN concerts AS c 
+  ON g.genre = c.genre
+WHERE c.concert_revenue > g.total_revenue * 0.5
+GROUP BY g.genre, g.total_revenue;
+```
+
+By nesting queries within parentheses, you can generate temporary tables to perform calculations and
+filter data within the main query. 
+
+```sql
+SELECT artist_name
+FROM concerts
+WHERE concert_revenue > (
+  SELECT AVG(concert_revenue) FROM concerts);
+```
+
+### Window functions
+
+TODO
+
+
+
+### SQL Order of Execution
+
+TODO
+
+
+### Other
+
+* `CONCAT` function can be used for formatting e.g.
+  ```sql
+  CONCAT(
+        '$',
+        ROUND(SUM(total_sales) / 1000000),
+        ' million'
+    ) AS sales
+  ```
