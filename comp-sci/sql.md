@@ -425,7 +425,15 @@ TODO
 
 ### SQL Order of Execution
 
-TODO
+| Clause       | Order | Description                                                                                                                                                               |
+|--------------|-------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| FROM         | 1     | The query begins with the FROM clause, where the database identifies the tables involved and accesses the necessary data.                                                 |
+| WHERE        | 2     | The database applies the conditions specified in the WHERE clause to filter the data retrieved from the tables in the FROM clause.                                        |
+| GROUP BY     | 3     | If a GROUP BY clause is present, the data is grouped based on the specified columns, and aggregation functions (such as SUM(), AVG(), COUNT()) are applied to each group. |
+| HAVING       | 4     | The HAVING clause filters the aggregated data based on specified conditions.                                                                                              |
+| SELECT       | 5     | The SELECT clause defines the columns to be included in the final result set.                                                                                             |
+| ORDER BY     | 6     | If an ORDER BY clause is used, the result set is sorted according to the specified columns.                                                                               |
+| LIMIT/OFFSET | 7     | If LIMIT or OFFSET clause is present, the result set is restricted to the specified number of rows and optionally offset by a certain number of rows.                     |
 
 
 ### Other
