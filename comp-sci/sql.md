@@ -419,7 +419,29 @@ WHERE concert_revenue > (
 
 ### Window functions
 
-TODO
+In simple terms, they are functions that operate by creating virtual "windows" within the dataset.
+```sql
+SELECT
+  spend,
+   SUM(spend) OVER (
+     PARTITION BY product
+     ORDER BY transaction_date) AS running_total
+  FROM product_spend;
+```
+Here's what each SQL command in the window function is doing:
+
+* `SUM(spend)` is a typical aggregate function
+
+* `OVER` is required for window functions
+
+* `PARTITION BY`: makes each product it's own section / window,
+
+* `ORDER BY`: the data is ordered by transaction_date, and the running_total accumulates the sum
+  across the current row and all subsequent rows of spend
+
+* `ORDER BY` essentially sorts the data by the specified column, similar to an ORDER BY
+  clause. Without ORDER BY, each value would be a sum of all the spend values without its respective
+  product.
 
 
 
@@ -445,4 +467,33 @@ TODO
         ROUND(SUM(total_sales) / 1000000),
         ' million'
     ) AS sales
+  ```
+
+* `MAKE_DATE(year::INTEGER, month::INTEGER, day::INTEGER)` can be used to format date
+
+* For multiple CTEs use the following syntax
+  ```sql
+  WITH cte1 AS (
+    ...
+  ),
+
+  cte2 AS (
+    ...
+  ),
+
+  cte3 AS (
+    ...
+  )
+  ```
+
+* Rolling average / sum requires the nifty keywords
+  ```sql
+  SELECT
+  user_id,
+  tweet_date,
+  ROUND(AVG(tweet_count) OVER (
+    PARTITION BY user_id 
+    ORDER BY tweet_date
+    ROWS BETWEEN 2 PRECEDING AND CURRENT ROW), 2) AS rolling_avg_3
+  FROM tweets;
   ```
