@@ -497,3 +497,27 @@ Here's what each SQL command in the window function is doing:
     ROWS BETWEEN 2 PRECEDING AND CURRENT ROW), 2) AS rolling_avg_3
   FROM tweets;
   ```
+
+* Useful construction example using subqueries
+  ```sql
+  SELECT
+      merchant_id,
+      credit_card_id,
+      amount,
+      transaction_timestamp
+  FROM
+      transactions AS t1
+  WHERE
+      EXISTS (
+          SELECT
+              *
+          FROM
+              transactions AS t2
+          WHERE
+              t1.merchant_id = t2.merchant_id
+              AND t1.credit_card_id = t2.credit_card_id
+              AND t1.amount = t2.amount
+              AND t1.transaction_timestamp <  t2.transaction_timestamp
+              AND t2.transaction_timestamp <= t1.transaction_timestamp + INTERVAL '10 min'
+      )
+  ```
