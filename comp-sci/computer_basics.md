@@ -3,6 +3,8 @@
 
 ![alt text](figs/simple_computer_2.png)
 
+![alt text](figs/simple_computer_3.png)
+
 ## What happens when you boot your computer?
 
 The term boot is a shortened version of the term bootstrap, which is itself a reference to the
