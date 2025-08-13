@@ -5,6 +5,26 @@
 
 ![alt text](figs/simple_computer_3.png)
 
+![alt text](figs/flip_flop.png)
+
+![alt text](figs/memory_cell.png)
+
+![alt text](figs/byte.png)
+
+![alt text](figs/enabler.png)
+
+![alt text](figs/register.png)
+
+![alt text](figs/register_bus.png)
+
+![alt text](figs/decoder.png)
+
+![alt text](figs/ram.png)
+
+![alt text](figs/ram_closeup.png)
+
+![alt text](figs/stepper.png)
+
 ## What happens when you boot your computer?
 
 The term boot is a shortened version of the term bootstrap, which is itself a reference to the
