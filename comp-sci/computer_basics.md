@@ -374,5 +374,4 @@ komputerowym. Jest zarządcą zasobów: (bierne) procesor, pamięć operacyjna /
       - szyfrowanie danych na czas transmisji kluczem sesji
       - uwierzytelnianie klienta i serwera
     - Domyślnie używa portu 443 TCP
-
-
+    
