@@ -215,3 +215,5 @@ Python
 * `np.shares_memory` - Determine if two arrays share memory.
 
 * Assertions can be globally disabled with the -O (optimize) flag 
+
+* https://google.github.io/styleguide/pyguide.html
