@@ -1199,7 +1199,36 @@ weights.
    \label{fig:gan_train_2}
 \end{figure}
 
+\subsection{RNN}
+
+Sequence modelling is yet another topic where neural-based approaches outperform earlier, more
+classical solutions. We can model sequences using a Markov model of order $k$ i.e. given a sequence
+$(s_0, s_1,\ldots,s_t)$ we model the probability distribution of the next element given $k$ previous
+ones
+\[
+   P(s_t \mid s_{t-1}, \ldots, s_{t-k})\,.
+\]
+This approach can be found e.g. in Transformer architecture which we describe later. Another idea is
+to use a \emph{hidden Markov model} (HMM) in which have have a \emph{hidden state} $h_t$ and model
+the \emph{transition} and \emph{emission} probabilities
+\[
+   P(h_{t+1} \mid h_t)\,,\quad P(s_t \mid h_t)
+\]
+respectively. A simple recurrent neural network (RNN) is a straight-forward implementation of the
+HMM idea.
+
+\begin{figure}[ht]
+   \centering
+   \includegraphics[width=0.75\columnwidth]{figs/simple_rnn.png}
+   \caption{Simple RNN}
+   \label{fig:simple_rnn}
+\end{figure}
+
+The idea here is simple the input vector 
+
 \end{document}
+
+
 
 % TODO:
 % * Architecture
