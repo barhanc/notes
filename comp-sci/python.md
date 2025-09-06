@@ -217,3 +217,6 @@ Python
 * Assertions can be globally disabled with the -O (optimize) flag 
 
 * https://google.github.io/styleguide/pyguide.html
+
+* There is a built-in (online) topological sort algo in the `graphlib` module
+
