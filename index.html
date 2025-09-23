@@ -24,7 +24,7 @@
 
   <script>
     // change this to your markdown file
-    fetch("notes.md")
+    fetch("comp-sci/computer_basics.md")
       .then(res => res.text())
       .then(md => {
         document.getElementById("content").innerHTML = marked.parse(md);
