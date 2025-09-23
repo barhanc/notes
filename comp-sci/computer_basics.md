@@ -49,8 +49,8 @@ once the OS is up and running the computer is ready to interact with the user.
 
 * Przedstaw sposób kodowania liczb w systemie U2.
 
-  Wartość dziesiętną liczby U2 wyraża wzór:\
-  
+  Wartość dziesiętną liczby U2 wyraża wzór:
+
   $$-a_{n-1} \times 2^{n-1} + \sum_{i=0}^{n-2} a_i \times 2^i$$
   
   Aby zamienić liczbę w U2 na przeciwną, należy wykonać dwa kroki: dokonać inwersji bitów, czyli
