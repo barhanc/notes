@@ -25,6 +25,10 @@
 
 ![alt text](figs/stepper.png)
 
+![alt text](figs/clk_signals.png)
+
+![alt text](figs/empty_hard_wired_cu.png)
+
 ## What happens when you boot your computer?
 
 The term boot is a shortened version of the term bootstrap, which is itself a reference to the
