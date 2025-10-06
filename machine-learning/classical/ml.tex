@@ -1,5 +1,56 @@
-\documentclass{myclass}
+\documentclass[a5paper]{article}
+
+% --- Packages
 \usepackage[polish]{babel}
+\usepackage{amssymb}
+\usepackage{amsmath, amsfonts, enumerate, graphicx, hyperref, 
+            mathrsfs, physics, wasysym, xcolor, bm}
+% -------------------------------------------------------------------------------------------------
+
+% --- Additional packages and commands depending on project:
+\usepackage{lipsum, listings}
+\usepackage[a5paper, total={4.50in, 6.75in}]{geometry}
+\usepackage[linesnumbered,ruled,vlined]{algorithm2e}
+% -------------------------------------------------------------------------------------------------
+
+% --- Custom commands
+\newcommand{\Rbb}{\mathbb{R}}
+\newcommand{\Ebb}{\mathbb{E}}
+\newcommand{\tpose}{\intercal}
+\newcommand{\e}{\mathrm{e}}
+\newcommand{\im}{\mathrm{i}}
+\newcommand{\arcangle}{\mathord{<\mspace{-9mu}\mathrel{)}\mspace{2mu}}}
+\newcommand{\mc}[1]{\mathcal{#1}}
+\newcommand{\onehalf}{\frac{1}{2}}
+\newcommand{\threehalves}{\frac{3}{2}}
+
+\DeclareMathOperator*{\argmin}{arg\,min} 
+\DeclareMathOperator*{\argmax}{arg\,max} 
+% -------------------------------------------------------------------------------------------------
+
+% --- Code listings
+\definecolor{classcolor}{rgb}{0.8, 0.0, 0.0}
+\definecolor{keywordcolor}{rgb}{0.0, 0.0, 0.6}
+\definecolor{commentcolor}{rgb}{0.0, 0.5, 0.0}
+\definecolor{stringcolor}{rgb}{0.58, 0.0, 0.82}
+
+\lstset{
+   language=Python,
+   basicstyle=\ttfamily\tiny,
+   keywordstyle=\color{keywordcolor}\bfseries,
+   commentstyle=\color{commentcolor}\itshape,
+   stringstyle=\color{stringcolor},
+   showstringspaces=false,
+   breaklines=true,
+   frame=single,
+   captionpos=b,
+   numbers=left,
+   numberstyle=\tiny\color{gray},
+   morekeywords={reshape, indices, arange, take, ravel_multi_index},
+   emph={np, NDArray},
+   emphstyle=\color{classcolor}
+   }
+% -------------------------------------------------------------------------------------------------
 
 \begin{document}
 
@@ -1416,81 +1467,6 @@ możliwą interpretację przyczynową. Ograniczenia PDP to m.in.
     \item PDP mogą ukrywać efekty niejednorodne (np. uśrednienie powoduje wzajemne zniesienie
           efektów pochodzących od różnych części zbioru danych).
 \end{itemize}
-
-
-\subsection{Klasteryzacja}
-
-Klasteryzacja to metoda uczenia nienadzorowanego, której celem jest grupowanie obiektów, aby odkryć,
-czy nasze dane mają jakąś strukturę. Typowo w danych występują klastry (ang. clusters), czyli
-gęściej zbite chmury punktów, które odpowiadają one obiektom o podobnych własnościach. Zastosowania
-metod klasteryzacji to m.in. analiza zbioru danych jako część eksploracyjnej analizy danych (EDA).
-
-\subsubsection{k-means}
-
-Ideą algorytmu klasteryzacji k-means jest istnienie reprezentantów (prototypów) danych group wokół
-których dane klastry są wycentrowane. Zakładamy, że znamy pożądaną liczbę klastrów $k$ i szukamy
-tylu centroidów, czyli średnich z punktów z danego klastra. Algorytm jest następujący
-
-\begin{algorithm}[ht]
-\caption{Algorytm k-średnich (Lloyda)}
-\KwIn{Zbiór punktów $\mc{X} = \{x_1, x_2, \ldots, x_n\}$, liczba klastrów $k$}
-\KwOut{Centroidy $C = \{c_1, \ldots, c_k\}$ oraz przypisanie punktów do klastrów}
-
-Wybierz losowo $k$ punktów z $X$ jako początkowe centroidy $C = \{c_1, \ldots, c_k\}$\;
-
-\Repeat{iteration limit}{
-    \ForEach{$x_i \in X$}{
-        Przypisz $x_i$ do najbliższego centroidu:
-        \[
-        \text{cluster}(x_i) = \argmin_{j \in \{1,\ldots,k\}} \norm{x_i - c_j}^2
-        \]
-    }
-    \ForEach{$c_j \in C$}{
-        Oblicz nową pozycję centroidu jako średnią punktów przypisanych do klastra $j$:
-        \[
-        c_j = \frac{1}{|C_j|} \sum_{x_i \in C_j} x_i
-        \]
-    }
-}
-\end{algorithm}
-
-Formalne założenia: klastry mają rozkład normalny, wycentrowany na centroidach; co więcej, rozkłady
-te są sferyczne, tzn. mają zerową kowariancję (są izotoniczne). Taki klaster może być jednoznacznie
-zdefiniowany przez centroid, czyli wartość średnią. k-means wymaga normalizacji danych, bo liczymy
-odległości. Występuje klątwa wymiarowości, typowo zwalczana z pomocą PCA. Jest czułe na outliery,
-główna wada algorytmu
-
-\subsubsection{Klastrowanie hierarchiczne}
-
-Idea: klastry tworzą punkty blisko siebie; zbiór może mieć wiele klastrów, o różnych rozmiarach, ale
-wszystkie powinny być gęste; duże klastry mogą się składać z mniejszych. Metody hierarchiczne tworzą
-hierarchię klastrów, łącząc mniejsze klastry w coraz większe. Trzeba wybrać, ile finalnie klastrów
-chcemy.
-
-\begin{algorithm}[ht]
-\caption{Hierarchiczna klasteryzacja aglomeracyjna (bottom-up)}
-\KwIn{Zbiór punktów $\mc{X} = \{x_1, x_2, \ldots, x_n\}$}
-\KwOut{Drzewo dendrogramowe opisujące proces łączenia klastrów}
-
-\BlankLine
-\textbf{Inicjalizacja:} Utwórz $n$ jednoelementowych klastrów $\mathcal{C} = \{\{x_1\}, \{x_2\}, \ldots, \{x_n\}\}$\;
-
-\While{liczba klastrów w $\mathcal{C}$ > 1}{
-    Oblicz macierz odległości $D(C_i, C_j)$ dla wszystkich $C_i, C_j \in \mathcal{C}$, $i \ne j$\;
-
-    Znajdź parę klastrów $(C_p, C_q)$ taką, że
-    \[
-    (C_p, C_q) = \arg\min_{C_i \ne C_j} D(C_i, C_j)
-    \]
-
-    Połącz $C_p$ i $C_q$ w nowy klaster $C_{new} = C_p \cup C_q$\;
-    Zaktualizuj $\mathcal{C} := \mathcal{C} \setminus \{C_p, C_q\} \cup \{C_{new}\}$\;
-
-    Dodaj $(C_p, C_q, D(C_p, C_q))$ do struktury dendrogramu\;
-}
-
-\end{algorithm}
-
 
 
 \section{Ewaluacja modeli}
