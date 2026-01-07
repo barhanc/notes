@@ -1,0 +1,1017 @@
+\documentclass{myclass}
+\begin{document}
+
+\subsubsection*{Szkic rozwiązania zadania 1.}
+Niech \(\mathbf{r}_1\), \(\mathbf{r}_2\), \(\mathbf{r}\) oznaczają odpowiednio
+wektory wodzące psów i sań względem pewnego układu odniesienia nieporuszającego
+się względem ziemi. Ponieważ liny łączące psy z saniami są napięte, więc musi
+zachodzić
+\begin{equation}
+    \begin{split}
+        &0=\dv[]{}{t}|\mathbf{r_1}-\mathbf{r}|^2=2(\mathbf{r}_1-\mathbf{r})\cdot (\mathbf{v}_1-\mathbf{V})\\
+        &0=\dv[]{}{t}|\mathbf{r_2}-\mathbf{r}|^2=2(\mathbf{r}_2-\mathbf{r})\cdot (\mathbf{v}_2-\mathbf{V})
+    \end{split}\quad\,.
+\end{equation}
+Przyjmijmy układ współrzędnych kartezjańskich \((x,y)\), w którym oś \(x\)
+pokrywa się z wektorem \(\mathbf{V}\). Niech \(\eta\), \(\xi\) oznaczają
+odpowiednio katy jakie tworzą wektory \(\mathbf{v}_1\), \(\mathbf{v}_2\) z osią
+\(x\). Oczywiście \(\eta+\xi=\alpha\). Z powyższego otrzymujemy więc
+\begin{equation}
+    \begin{split}
+        &v_1=V\cos\eta\\
+        &v_2=V\cos\xi=V\cos(\alpha-\eta)
+    \end{split}\quad\,.
+\end{equation}
+Z pierwszego równania mamy \(\cos\eta=\frac{v_1}{V}\) i
+\(\sin\eta=\frac{\sqrt{V^2-v_1^2}}{V}\), zatem
+\begin{equation}
+    v_2=v_1\cos\alpha+\sqrt{V^2-v_1^2}\sin\alpha\,.
+\end{equation}
+Podnosząc stronami do kwadratu i rozwiązując względem \(V\) otrzymujemy
+odpowiedź
+\begin{equation}
+    V=\frac{\sqrt{v_1^2-2v_1v_2\cos\alpha+v_2^2}}{\sin\alpha}\,.
+\end{equation}
+Oczywiście zakładaliśmy tutaj, iż \(\alpha\neq 0\). Jeśli \(\alpha=0\) to
+spełnienie warunku (1) jest możliwe wtedy i tylko wtedy, gdy \(V=v_1=v_2\)
+\(\blacksquare\)
+
+\subsubsection*{Szkic rozwiązania zadania 2.}
+Przyjmijmy układ współrzędnych kartezjańskich, w którym oś X jest pozioma i
+skierowana od drabiny do bloku, a oś Y pionowa i skierowana w dół. Niech
+\(\mathbf{F}\) oznacza siłę reakcji działającą na drabinę w miejscu styku
+drabiny i bloku. Ponieważ nie występuje tarcie siła ta jest prostopadła do
+drabiny. Jeżeli drabina jest nieruchoma to wypadkowy moment siły działający na
+nią względem punktu podparcia drabiny o podłoże wynosi 0. Niech \(s\) oznacza
+położenie człowieka na drabinie mierząc wzdłuż drabiny. Mamy zatem
+\begin{equation}
+    F\sqrt{h^2+b^2}=mgs\frac{b}{\sqrt{h^2+b^2}}\,,
+\end{equation}
+skąd
+\begin{equation}
+    F=mgs\frac{b}{b^2+h^2}\,.
+\end{equation}
+Zgodnie z III zasadą dynamiki na blok działa więc siła \(-\mathbf{F}\), której
+składowe \(F_x\), \(F_y\) są dane wzorami
+\begin{equation}
+    \begin{split}
+        &F_x=F\frac{h}{\sqrt{h^2+b^2}}=mgs\frac{bh}{(b^2+h^2)^{3/2}}\\
+        &F_y=F\frac{b}{\sqrt{h^2+b^2}}=mgs\frac{b^2}{(b^2+h^2)^{3/2}}\,.
+    \end{split}
+\end{equation}
+Aby dla pewnego położenia \(s\) blok zaczął się obracać bez wcześniejszego
+przesuwania musi zachodzić
+\begin{equation}
+    \quad F_xh-F_yb\geq Mg\frac{b}{2}\quad\text{oraz}\quad \mu\geq \frac{F_x}{Mg+F_y}\,.
+\end{equation}
+Z pierwszego warunku otrzymujemy
+\begin{equation}
+    ms\frac{h^2-b^2}{(h^2+b^2)^{3/2}}\geq \frac{1}{2}M\,,
+\end{equation}
+czyli
+\begin{equation}
+    s\geq \frac{M}{2m}\frac{(h^2+b^2)^{3/2}}{h^2-b^2}\,,
+\end{equation}
+a zatem najmniejsze położenie \(s\), przy którym blok zacznie się obracać wynosi
+\begin{equation}
+    s_\text{min}=\frac{M}{2m}\frac{(h^2+b^2)^{3/2}}{h^2-b^2}\,.
+\end{equation}
+Jednocześnie zauważmy, że zawsze zachodzi \(s\leq\sqrt{h^2+b^2}\), zatem aby
+blok mógł dla pewnego położenia \(s\) zacząć się przewracać musi zachodzić
+\(s_\text{min}\leq \sqrt{h^2+b^2}\), czyli
+\begin{equation}
+    \frac{h^2-b^2}{h^2+b^2}\geq \frac{M}{2m}
+\end{equation}
+i jest to poszukiwany warunek. Z drugiego warunku mamy natomiast
+\begin{equation}
+\begin{split}
+    \mu&\geq \frac{mbh}{\frac{M}{s}(h^2+b^2)^{3/2}+mb^2}\\
+    &\geq \frac{mbh}{\frac{M}{s_\text{min}}(h^2+b^2)^{3/2}+mb^2}=\frac{bh}{2h^2-b^2}\,,
+\end{split}
+\end{equation}
+zatem
+\begin{equation}
+    \mu_\text{min}=\frac{bh}{2h^2-b^2}\quad\blacksquare
+\end{equation}
+\subsubsection*{Szkic rozwiązania zadania 3.}
+
+Niech \(\phi\), \(\theta\) oznaczają odpowiednio kąty jakie tworzą nić z pionem
+i pręt z podłożem. Zakładając, że nić jest cały czas napięta zachodzi
+\begin{equation}\label{eq:wiezy1}
+    \cos\phi+\sin\theta=\frac{H}{l}\,,
+\end{equation}
+skąd
+\begin{equation}\label{eq:wiezy2}
+    \Omega\sin\phi=\omega\cos\theta\,,
+\end{equation}
+gdzie
+\begin{equation}
+    \omega:=\dv[]{\theta}{t}\,,\quad\Omega:=\dv[]{\phi}{t}\,.
+\end{equation}
+Całkowita energia mechaniczna układu jest oczywiście zachowana, więc z tw.
+K{\"o}niga i elementarnej geometrii mamy
+\begin{equation}
+    \frac{mgH}{4}=\frac{1}{2}mv_\text{CM}^2+\frac{1}{2}\frac{1}{12}ml^2\omega^2+\frac{mgl\sin\theta}{2}\,,
+\end{equation}
+gdzie \(m\) jest masą pręta, a \(v_\text{CM}\) oznacza szybkość środka masy
+pręta w dowolnej chwili. Z powyższego
+\begin{equation}
+    v_\text{CM}^2=\frac{1}{2}gH-gl\sin\theta-\frac{1}{12}l^2\omega^2\,.
+\end{equation}
+Zauważmy, że \(\omega^2\geq 0\) oraz \(\sin\theta\geq H/l-1\), zatem
+\begin{equation}
+    v_\text{CM}^2\leq\frac{1}{2}gH-gH+gl=g\left(l-\frac{H}{2}\right)\,,
+\end{equation}
+czyli wartość \(v_\text{CM}\) jest ograniczona z góry przez
+\(v_\text{m}=\sqrt{g\left(l-\frac{H}{2}\right)}\). Pozostaje wykazać, iż
+istnieje chwila w trakcie ruchu pręta gdy \(v_\text{CM}=v_\text{m}\). Istotnie,
+gdy nić jest pionowa mamy \(\phi=0\), a zatem z równania (\ref{eq:wiezy2})
+\(\omega=0\) i (z równania (\ref{eq:wiezy1})) \(\sin\theta=H/l-1\), co kończy
+rozwiązanie zadania \(\blacksquare\)
+
+\subsubsection*{Szkic rozwiązania zadania 4.}
+\textit{W rozwiązaniu kropka nad daną wielkością oznacza różniczkowanie po
+czasie, tj. \(\dot{f}:=\dv[]{f}{t}\), \(\ddot{f}:=\dv[2]{f}{t}\), ...}\\
+
+Niech \(\mathbf{r}=[l\cos\phi,l\sin\phi]\) oznacza wektor wodzący kulki o masie
+\(m\) zaczepiony w miejscu zawiasu, \(\phi\) -- kąt między prętem i podłożem, a
+\(\mathbf{v}=v\mathbf{\hat{x}}\) -- prędkość klocka. Równanie więzów układu (do
+momentu utraty kontaktu między kulką i klockiem) ma postać
+\begin{equation}
+    v=-\dot{\phi}l\sin\phi\,.
+\end{equation}
+Niech \(\mathbf{N}\) oznacza siłę reakcji między kulką i klockiem. Ponieważ
+zakładamy, że powierzchnie są idealnie gładkie i nie występuje tarcie, więc
+\(\mathbf{N}=N\mathbf{\hat{x}}\). Z II zasady dynamiki \(N=M\dot{v}\), więc w
+momencie utraty kontaktu zachodzi
+\begin{equation}
+    \frac{1}{\sqrt{3}}\varepsilon=-\omega^2\,,
+\end{equation}
+gdzie \(\varepsilon\), \(\omega\) oznaczają odpowiednio \(\ddot{\phi}\) i
+\(\dot{\phi}\) w momencie utraty kontaktu. Jednocześnie energia mechaniczna
+układu jest zachowana więc w dowolnej chwili 
+\begin{equation}\label{energy}
+    mgl=\frac{1}{2}(M\sin^2\phi+m)\dot{\phi}^2l^2+mgl\sin\phi\,,
+\end{equation}
+skąd
+\begin{equation}\label{dotp}
+    \omega^2=-\frac{1}{\sqrt{3}}\varepsilon=\frac{g}{l}\frac{4m}{M+4m}\,.
+\end{equation}
+Różniczkując (\ref{energy}) po czasie otrzymujemy natomiast
+\begin{equation}
+    -\frac{1}{2}Ml^2\dot{\phi}^2\sin{2\phi}-mgl\cos\phi=(M\sin^2\phi+m)l^2\ddot{\phi}\,.
+\end{equation}
+Z powyższego więc
+\begin{equation}
+    Ml\varepsilon-2\sqrt{3}mg=\varepsilon l(M+4m)\,.
+\end{equation}
+Podstawiając do powyższego (\ref{dotp}) otrzymujemy ostatecznie
+\begin{equation}
+    \frac{M}{m}=4\,.
+\end{equation}
+Szybkość klocka wynosi natomiast
+\begin{equation}
+    V=-\omega l\sin\frac{\pi}{6}=\sqrt{\frac{gl}{8}}\,,
+\end{equation}
+co kończy rozwiązanie zadania \(\blacksquare\)
+\subsubsection*{Szkic rozwiązania zadania 5.}
+Z definicji ciepła molowego i I zasady termodynamiki dla gazu jednoatomowego
+mamy
+\begin{equation}
+    2R=C=\frac{\delta Q}{n\dd{T}}=\frac{3}{2}R+\frac{p}{n}\dv[]{V}{T}\,,
+\end{equation}
+skąd, podstawiając \(\frac{p}{n}=\frac{RT}{V}\) otrzymujemy
+\begin{equation}
+    \frac{1}{2}\frac{\dd{T}}{T}=\frac{\dd{V}}{V}\,.
+\end{equation}
+Całkując obustronnie powyższe równanie odpowiednio od \(V\) do \(2V\) i od \(T\)
+do \(T'\) otrzymujemy
+\begin{equation}
+    \log\frac{T'}{T}=\log 4\,,
+\end{equation}
+skąd wnioskujemy, że temperatura wzrosła czterokrotnie \(\blacksquare\)
+\subsubsection*{Szkic rozwiązania zadania 6.}
+\textit{W rozwiązaniu kładę \(4\pi\epsilon_0=1\).}\\
+
+\begin{figure}[ht]
+    \centering
+    \begin{tikzpicture}[line cap=round,line join=round,>=triangle 45,x=1cm,y=1cm,scale=0.7]
+\clip(-17,8) rectangle (-7,18); \draw
+[shift={(-11.790134107302215,13.171364848763671)},line width=0pt] (0,0) --
+(123.55925804040555:0.39144749639608173) arc
+(123.55925804040555:162.32882180271702:0.39144749639608173) -- cycle; \draw
+[line width=0.4pt] (-11.790134107302215,13.171364848763671) circle
+(4.236654832859354cm); \draw [line width=0.4pt]
+(-15.078357285291432,14.218948455633742)--
+(-14.332367964179264,16.560507983796263); \draw [line width=0.4pt]
+(-14.332367964179264,16.560507983796263)--
+(-10.644735402281466,9.092479464332367); \draw [line width=0.4pt]
+(-10.644735402281466,9.092479464332367)--
+(-9.57054040469577,12.464232196598486); \draw [line width=0.4pt,dashed]
+(-14.13215323265367,16.70183090713026)--
+(-10.983038924500262,9.012297460671915); \draw [line width=0.4pt,dashed]
+(-10.348392018535602,9.187569683061824)--
+(-14.500268036077266,16.427807426315567); \draw [line width=0.4pt,dashed]
+(-14.500268036077266,16.427807426315567)--
+(-15.192405184725748,14.25528257998549); \draw [line width=0.4pt,dashed]
+(-14.937466207955822,14.17406245642328)--
+(-14.13215323265367,16.70183090713026); \draw [line width=0.4pt,dashed]
+(-10.983038924500262,9.012297460671915)--
+(-9.854479906346574,12.554691496704184); \draw [line width=0.4pt,dashed]
+(-10.348392018535602,9.187569683061824)--
+(-9.329006537384975,12.387282760321643); \draw [line width=0.4pt]
+(-15.826879416607003,14.45741752287788)--
+(-7.753388797997426,11.885312174649465); \draw [line width=0.4pt]
+(-11.790134107302215,13.171364848763671)--
+(-14.13215323265367,16.70183090713026);
+\begin{scriptsize}
+\draw [fill=black] (-11.790134107302215,13.171364848763671) circle (1.5pt);
+\draw[color=black] (-11.409055341311891,13.460258566002118) node {$O$}; \draw
+[fill=black] (-7.753388797997426,11.885312174649465) circle (1.5pt);
+\draw[color=black] (-7.494580377351073,11.803130831258711) node {$B$}; \draw
+[fill=black] (-15.826879416607003,14.45741752287788) circle (1.5pt);
+\draw[color=black] (-16.30214904626291,14.634601055190359) node {$A$}; \draw
+[fill=black] (-12.819817049971508,13.497357527550303) circle (1.5pt);
+\draw[color=black] (-12.70083207941896,13.877802562157937) node {$P$}; \draw
+[fill=black] (-14.332367964179264,16.560507983796263) circle (1.5pt);
+\draw[color=black] (-14.42320106356172,16.878900034527888) node {$X$}; \draw
+[fill=black] (-10.644735402281466,9.092479464332367) circle (1.5pt);
+\draw[color=black] (-10.600063848759989,8.762888609249154) node {$Y$}; \draw
+[fill=black] (-15.078357285291432,14.218948455633742) circle (1.5pt);
+\draw[color=black] (-15.114758307194798,13.877802562157937) node {$X'$}; \draw
+[fill=black] (-9.57054040469577,12.464232196598486) circle (1.5pt);
+\draw[color=black] (-9.373528360052266,12.860039071528128) node {$Y'$}; \draw
+[color=black] (-9.329006537384975,12.387282760321643)-- ++(-1.5pt,0 pt) --
+++(3pt,0 pt) ++(-1.5pt,-1.5pt) -- ++(0 pt,3pt); \draw [color=black]
+(-9.854479906346574,12.554691496704184)-- ++(-1.5pt,0 pt) -- ++(3pt,0 pt)
+++(-1.5pt,-1.5pt) -- ++(0 pt,3pt); \draw [color=black]
+(-15.192405184725748,14.25528257998549)-- ++(-1.5pt,0 pt) -- ++(3pt,0 pt)
+++(-1.5pt,-1.5pt) -- ++(0 pt,3pt); \draw [color=black]
+(-14.937466207955822,14.17406245642328)-- ++(-1.5pt,0 pt) -- ++(3pt,0 pt)
+++(-1.5pt,-1.5pt) -- ++(0 pt,3pt); \draw[color=black]
+(-12.73997682905857,15.20872404990461) node {$R$};
+\end{scriptsize}
+\end{tikzpicture}
+    \caption{Konstrukcja poszukiwanego rozkładu \(\sigma\)}
+    \label{fig:discproof}
+\end{figure}
+Udowodnimy, że rozkład ładunku na powierzchni odosobnionego, metalowego dysku
+naładowanego ładunkiem \(Q\) jest taki, że infinitezymalny ładunek
+\(\dd{q}=\sigma \dd{\Sigma}\) znajdujący się w dowolnym punkcie \(X'\) na
+powierzchni dysku jest równy ładunkowi znajdującemu się w punkcie przecięcia
+prostej prostopadłej do płaszczyzny dysku przechodzącej przez \(X'\) z
+naładowaną jednorodnie z gęstością powierzchniową \(\sigma_0=Q/4\pi R^2\) sferą,
+której kołem wielkim jest ów dysk. Istotnie rozpatrzmy dowolny punkt \(P\) na
+kole wielkim \(AB\) naładowanej (z gęstością \(\sigma_0\)) sfery oraz dowolną
+cięciwę \(XY\) sfery zawierającą \(P\). Infinitezymalny ładunek zgromadzony w
+\(X\) i \(Y\) wynosi odpowiednio
+    \begin{equation}
+        \dd{q}_X=\sigma_0\dd{\Sigma}_X\,,\quad \dd{q}_Y=\sigma_0\dd{\Sigma}_Y\,,
+    \end{equation}
+    gdzie \(\dd{\Sigma}_X\), \(\dd{\Sigma}_Y\) są infitezymalnymi fragmentami
+    powierzchni sfery otaczającymi odpowiednio punkt \(X\) i \(Y\). W granicy
+    zachodzi
+    \begin{equation}
+        \frac{\dd{\Sigma}_X}{\dd{\Sigma_Y}}=\frac{PX^2}{PY^2}\,.
+    \end{equation}
+    Rozpatrzmy teraz osobną sytuację, w której mamy cienki, przewodzący dysk
+    \(AB\) naładowany w taki sposób, że \(\dd{q}_{X'}=\dd{q}_X\) i
+    \(\dd{q}_{Y'}=\dd{q}_Y\), gdzie \(X'\), \(Y'\) są rzutami prostokątnymi
+    punktów \(X\), \(Y\) na koło wielkie \(AB\). Oczywiście całkowity ładunek
+    dysku wynosi wówczas \(Q\). Pole elektryczne w punkcie \(P\) pochodzące od
+    ładunków \(\dd{q}_{X'}\) i \(\dd{q}_{Y'}\) wynosi
+    \begin{equation}
+        \delta\mathbf{E}(P)=\left(\frac{\sigma_0\dd{\Sigma}_X}{X'P^2}-\frac{\sigma_0\dd{\Sigma}_Y}{Y'P^2}\right)\frac{\overrightarrow{AB}}{AB}\,.
+    \end{equation}
+Z podobieństwa trójkątów \(\Delta X'XP\) i \(\Delta Y'YP\) mamy
+\begin{equation}
+        \frac{X'P}{XP}=\frac{Y'P}{YP}\,,
+\end{equation}
+skąd otrzymujemy
+\begin{equation}
+\begin{split}
+   \frac{\dd{\Sigma_X}}{X'P^2}\div\frac{\dd{\Sigma_Y}}{Y'P^2}=1\,,
+\end{split}
+\end{equation}
+czyli \(\delta\mathbf{E}(P)=\overline{0}\). Powtarzając konstrukcję dla
+wszystkich punktów dysku (po obu jego stronach) otrzymujemy
+\(\mathbf{E}(P)=\overline{0}\), ale punkt \(P\) wybraliśmy dowolnie, zatem dla
+każdego punktu \(P\) należącego do dysku \(\mathbf{E}(P)=\overline{0}\), więc
+potencjał wewnątrz dysku jest stały. Zauważmy jednak, iż w ten sposób
+znaleźliśmy rozkład ładunku na powierzchni dysku, dla którego potencjał dysku
+jest stały. Na mocy tw. o jednoznaczności (dla danej geometrii przewodnika
+istnieje dokładnie jeden sposób rozłożenia ładunku \(Q\) na jego powierzchni, w
+taki sposób, aby jego powierzchnia była powierzchnią ekwipotencjalną)
+skonstruowany rozkład jest zatem poszukiwanym rozkładem dla metalowego dysku.
+Pozostaje wyznaczyć \(\sigma(X')\). Mamy
+\begin{equation}
+    \sigma(X')\dd{\Sigma}_{X'}=\sigma_0\dd{\Sigma}_X
+\end{equation}
+oraz z prostych rozważań geometrycznych
+\begin{equation}
+    \dd{\Sigma}_{X'}=\dd{\Sigma}_X\frac{XX'}{R}=\dd{\Sigma}_X\frac{\sqrt{R^2-OX'^2}}{R}\,.
+\end{equation}
+Z powyższego otrzymujemy zatem
+\begin{equation}
+    \sigma(X')=\frac{\sigma_0R}{\sqrt{R^2-OX'^2}}=\frac{Q}{4\pi R}\frac{1}{\sqrt{R^2-OX'^2}}
+\end{equation}
+po każdej stronie dysku. Oznaczając \(OX'=s\) mamy 
+\begin{equation}
+    \sigma(s)=\frac{Q}{4\pi R}\frac{1}{\sqrt{R^2-s^2}}\,.
+\end{equation}
+Potencjał dysku \(V_0\) możemy znaleźć wykonując elementarne całkowanie.
+Przyjmując \(V(|\mathbf{r}|\to\infty)=0\) mamy
+\begin{equation}
+    V_0=4\pi\int\limits_0^R\frac{\sigma(s)}{s}s\dd{s}=\frac{\pi Q}{2R}\,.
+\end{equation}
+Pojemność metalowego dysku o promieniu \(R\) wynosi z powyższego
+\begin{equation}
+    C_\text{disc}=\frac{Q}{V_0}=\frac{2R}{\pi}\,,
+\end{equation}
+jednocześnie pojemność metalowej sfery o promieniu \(R\) wynosi oczywiście
+\begin{equation}
+    C_\text{sphere}=R\,.
+\end{equation}
+Stosunek tych pojemności jest zatem równy
+\begin{equation}
+    \frac{C_\text{disc}}{C_\text{sphere}}=\frac{2}{\pi}\,.
+\end{equation}
+\textit{Ten stosunek został wyznaczony doświadczalnie w XVIII w. przez H.
+Cavendisha, który otrzymał wartość \(1\div1.57\)} \(\blacksquare\)
+\subsubsection*{Szkic rozwiązania zadania 7.}
+\textit{W rozwiązaniu kładę \(4\pi\epsilon_0=1\).}\\
+
+\textit{Udowodnimy najpierw następujący lemat. Niech \(\Gamma'\) oznacza
+przewodnik powstały z usunięcia pewnej części sfery o średnicy \(f\). Jeśli na
+przewodniku \(\Gamma'\) będzie utrzymywany stały potencjał \(V_0\) to różnica
+gęstości powierzchniowych ładunku po zewnętrznej i wewnętrznej stronie wynosi
+\(V_0/2\pi f\).}\\
+
+Wykażemy, że \(\Delta\sigma\) jest niezależna od wyboru punktu \(P\). Istotnie
+rozpatrzmy przewodnik powstały przez wycięcie pewnej części \(\Gamma\) z bardzo
+cienkiego, nieskończonego arkusza metalu danego równaniem \(z=0\). Załóżmy, że
+przewodnik \(\Gamma\) został uziemiony, a w punkcie \((0,0,h)\) umieszczono
+punktowy ładunek elektryczny \(-q\). Niech \(\sigma_o(P)\) oznacza gęstość
+ładunku indukowanego wówczas w \(P\in\Gamma\) po stronie bliższej ładunkowi
+\(-q\) (\(z=0^+\)), a \(\sigma_i(P)\) -- analogiczną wielkości po stronie
+dalszej (\(z=0^-\)). Jeśli zamiast ładunku \(-q\) w \(O=(0,0,h)\) umieścimy
+ładunek \(q\) w \(O'=(0,0,-h)\) to gęstości powierzchniowe wyindukowanego
+ładunku w \(P\) wynoszą oczywiście \(-\sigma_i(P)\) dla \(z=0^+\) i
+\(-\sigma_o(P)\) dla \(z=0^-\). Dokonując superpozycji obu sytuacji otrzymujemy,
+iż dla ładunków \(-q\) i \(q\) umieszczonych odpowiednio w \(O\) i \(O'\)
+gęstość ładunku w \(P\in\Gamma\) po stronie \(z=0^+\) wynosi
+\(\sigma_o-\sigma_i\). Możemy jednak tą wielkość obliczyć, gdyż dla takiego
+ułożenia ładunków \(z=0\) jest powierzchnią ekwipotencjalną, zatem
+\(\sigma_o-\sigma_i\) będzie równa gęstości powierzchniowej ładunku indukowanego
+na nieskończonej, uziemionej płaszczyźnie \(z=0\) pod wpływem ładunku \(-q\) w
+\(O\). Jak łatwo sprawdzić
+\begin{equation}
+    \sigma_o-\sigma_i=\frac{qh}{2\pi|OP|^3}\,.
+\end{equation}
+Dokonajmy teraz inwersji przewodnika \(\Gamma\) (gdy po jednej stronie ma
+ładunek o gęstości \(\sigma_o\), a po drugiej \(\sigma_i\)) względem sfery o
+środku \(O\) i promieniu \(\mathscr{R}\). Obrazem inwersyjnym przewodnika
+\(\Gamma\) będzie pewien fragment \(\Gamma'\) sfery o średnicy
+\(f=\frac{\mathscr{R}^2}{h}\), na którym utrzymywany jest stały potencjał
+\(V_0=\frac{q}{\mathscr{R}}\). Gęstości powierzchniowe, w inwersji, transformują
+się jak \(\frac{|OP|^3}{\mathscr{R}^3}\), zatem
+\begin{equation}
+\begin{split}
+    \Delta\sigma'&=\sigma_o'-\sigma_i'=\frac{|OP|^3}{\mathscr{R}^3}(\sigma_o-\sigma_i)\\
+    &=\frac{qh}{2\pi\mathscr{R}^3}=\frac{V_0}{2\pi f}\,,
+\end{split}
+\end{equation}
+co kończy dowód lematu \(\square\)
+
+\noindent\rule[0.5ex]{\linewidth}{1pt}
+
+Niech \(C\) oznacza pojemność rozpatrywanego przewodnika. Niech \(Q_i\), \(Q_o\)
+oznaczają odpowiednio ładunki zgromadzone na wewnętrznej i zewnętrznej
+powierzchni półsfery, gdy jej potencjał wynosi \(V_0\) względem punktu w
+nieskończoności. Zachodzi
+\begin{equation}
+    Q_o+Q_i=CV_0\,.
+\end{equation}
+Jednocześnie, korzystając z udowodnionego lematu, mamy
+\begin{equation}
+    Q_o-Q_i=\Delta\sigma\cdot2\pi R^2=\frac{V_0R}{2}\,.
+\end{equation}
+Wyznaczmy stosunek \(Q_o/Q_i\)
+\begin{equation}
+    \frac{Q_o}{Q_i}=\frac{2C+R}{2C-R}\,.
+\end{equation}
+Ten stosunek jest dodatni, gdyż gęstość powierzchniowa ładunku indukowanego na
+odosobnionym przewodniku \(\Gamma\) ma w każdym punkcie taki sam znak lub jest
+zerowa, tj.
+\(\forall\,p\in\Gamma:\text{sgn}(\sigma(p))=\text{sgn}(V_0)\,\lor\,\sigma(p)=0\).
+Istotnie w przeciwnym przypadku w przewodniku płynąłby prąd\footnote{Fakt ten
+można uzasadnić ściślej korzystając z \textit{zasady maksimum} dla funkcji
+harmonicznych (tj. funkcji spełniających równanie Laplace'a). Istotnie z zasady
+maksimum funkcja \(f\) harmoniczna w obszarze \(D\subset\mathbb{R}^3\) może
+osiągać wartości ekstremalne tylko na brzegu \(\partial D\) tego obszaru.
+Rozpatrzmy zatem dowolną krzywą gładką \(l\) łączącą pewien punkt \(p\) na
+powierzchni odosobnionego naładowanego przewodnika \(\Gamma\) z punktem w
+nieskończoności, która jest normalna do powierzchni przewodnika w \(p\). Z
+powyższego twierdzenia pochodna \(V\) wzdłuż tej krzywej nie może zmieniać
+znaku, gdyż \(V\) osiąga wartości ekstremalne odpowiednio na powierzchni
+przewodnika i w punkcie w nieskończoności. W takim razie \(\forall p\in\Gamma:
+\text{sgn}\left(\pdv{V}{\mathbf{l}}\big|_p\right)=-\text{sgn}(V_0)\,\lor\,\pdv{V}{\mathbf{l}}\big|_p=0\),
+gdzie \(V_0\) jest potencjałem przewodnika względem nieskończoności, ale
+jednocześnie \(4\pi\sigma(p)=-\pdv{V}{\mathbf{l}}\big|_p\), skąd otrzymujemy
+tezę. }. W takim razie z powyższego otrzymujemy\footnote{Dokładna wartość
+poszukiwanej pojemności wynosi \(C=R\left(\frac{1}{2}+\frac{1}{\pi}\right)\).
+Patrz np.
+\href{https://www.nonstopsystems.com/radio/pdf-ant/antenna-article-calc-capacitance.pdf}{Yu.
+Ya. Iossel', E. S. Kochanov and M. G. Strunskiy, \textit{The Calculation of
+Electrical Capacitance}, s.163} }
+\begin{equation*}
+    C>\frac{R}{2}\quad\quad\blacksquare
+\end{equation*}
+
+
+
+
+\subsubsection*{Szkic rozwiązania zadania 8.}
+\textit{W rozwiązaniu kropka nad daną wielkością oznacza różniczkowanie po
+czasie, tj. \(\dot{f}:=\dv[]{f}{t}\), \(\ddot{f}:=\dv[2]{f}{t}\), ...}\\
+
+Niech \(\mathbf{r}=[x,y,z]\) oznacza wektor wodzący cząstki. Ponieważ ruch
+cząstki jest ograniczony do powierzchni sfery o promieniu \(l\), więc dogodnym
+wyborem współrzędnych, w których będziemy opisywać ruch są katy \(\theta\),
+\(\phi\) zdefiniowane jako
+\begin{equation}
+        x=l\sin\theta\cos\phi\,,\quad y=l\sin\theta\sin\phi\,,\quad z=l\cos\theta\,.
+\end{equation}
+Do rozwiązania zadania wystarczy nam znajomość dwóch całek ruchu dla powyższego
+układu. Istotnie, ponieważ składowa magnetyczna siły Lorentza nie wykonuje
+pracy, więc w dowolnym momencie ruchu
+\begin{equation}
+    \frac{m}{2}(\dot{x}^2+\dot{y}^2+\dot{z}^2)=\frac{ml^2}{2}(\dot{\theta}^2+\dot{\phi}^2\sin^2\theta)=\text{const.}
+\end{equation}
+Jednocześnie, zgodnie z drugą zasadą dynamiki dla ruchu obrotowego i wzorem na
+siłę Lorentza mamy
+\begin{equation}
+    \dv[]{\mathbf{J}}{t}=qB\mathbf{r}\times\dot{\mathbf{r}}\times\mathbf{\hat{z}}=qB\dot{\mathbf{r}}(\mathbf{r}\cdot\mathbf{\hat{z}})=qBz\dot{\mathbf{r}}\,,
+\end{equation}
+gdzie skorzystaliśmy z reguły BAC--CAB i faktu, że
+\(0=\dv[]{(\mathbf{r}\cdot\mathbf{r})}{t}=2\mathbf{r}\cdot\dot{\mathbf{r}}\). Z
+powyższego mamy zatem
+\begin{equation}
+    \dv[]{}{t}\left(J_z-\frac{qBz^2}{2}\right)=0\,,
+\end{equation}
+gdzie
+\begin{equation}
+    J_z=[\mathbf{r}\times m\dot{\mathbf{r}}]_z=ml^2\dot{\phi}\sin^2\theta\,.
+\end{equation}
+Otrzymaliśmy zatem drugą całkę ruchu
+\begin{equation}
+    ml^2\dot{\phi}\sin^2\theta-\frac{qBz^2}{2}=\text{const.}
+\end{equation}
+Oznaczmy powyższe całki ruchu odpowiednio przez \(\mathscr{E}\) i
+\(\mathscr{J}\). Korzystając z warunków początkowych mamy oczywiście
+\(\mathscr{E}=\frac{1}{2}mv^2\) i \(\mathscr{J}=0\). Jednocześnie przypomnijmy,
+że \(z=l\cos\theta\) i \(\dot{z}=-\dot{\theta}l\sin\theta\). Z powyższego mamy
+\begin{equation}
+    \dot{\phi}=\frac{qB}{2ml^2}\frac{z^2}{\sin^2\theta}\,,
+\end{equation}
+co po podstawieniu daje
+\begin{equation}
+    \dot{z}^2l^2=v^2l^2-v^2z^2-\left(\frac{qB}{2m}\right)^2z^4\,.
+\end{equation}
+Maksymalne \(z\) musi odpowiadać \(\dot{z}=0\), zatem
+\begin{equation}
+    z_\text{m}=\frac{m\sqrt{2}}{qB}\sqrt{-v^2+\sqrt{v^4+\left(\frac{qBlv}{m}\right)^2}}\,.
+\end{equation}
+Zauważmy, że \(z_\text{m}\leq l\). Istotnie,
+\(v^4+\frac{q^2B^2l^2v^2}{m^2}\leq\left(v^2+\frac{q^2B^2l^2}{2m^2}\right)^2\),
+przy czym równość zachodzi tylko dla \(qBl=0\) \(\blacksquare\)
+
+\subsubsection*{Szkic rozwiązania zadania 9.}
+Siła elektryczna działająca na dielektryk umieszczony wewnątrz kondensatora o
+pojemności \(C\), na którym utrzymywane jest stałe napięcie \(U\) jest dana
+wzorem
+\begin{equation}
+    F_\text{e}=\frac{1}{2}U^2\dv{C}{x}\,.
+\end{equation}
+Rozpatrzmy zatem układ opisany w treści zadania w momencie, w którym ciecz jest
+na wysokości \(x\) licząc od dolnych krawędzi kondensatora. Podzielmy obszar
+wewnątrz kondensatora na dwie części: 1 - obszar, w którym nie występuje ciecz;
+2 - obszar, w którym występuje ciecz o gęstości \(\rho\) i względnej
+przenikalności elektrycznej \(\epsilon_r\). Natężenie pola elektrycznego
+pomiędzy okładkami wynosi \(E=U/d\) i nie zależy od rozpatrywanego obszaru.
+Pojemność układu jest równa
+\begin{equation}
+    C=\epsilon_0(\epsilon_r-1)\frac{a}{d}x+\epsilon_0\frac{a^2}{d}\,.
+\end{equation}
+Korzystając zatem ze wzoru na siłę elektryczną działającą na dielektryk mamy
+\begin{equation}
+    F_\text{e}=\frac{1}{2}U^2\dv{C}{x}=\epsilon_0(\epsilon_r-1)\frac{U^2a}{2d}\,.
+\end{equation}
+Jeżeli ciecz sięga górnych krawędzi okładek, siła ciężkości działająca na ciecz
+wynosi \(F_\text{c}=\rho a^2gd\). Z warunków równowagi musi zachodzić
+\(F_\text{e}=F_\text{c}\), zatem
+\begin{equation}
+    \rho a^2gd=\epsilon_0(\epsilon_r-1)\frac{U^2a}{2d}\,,
+\end{equation}
+skąd otrzymujemy
+\begin{equation}
+    \epsilon_r=1+\frac{2\rho agd^2}{\epsilon_0U^2}\,,
+\end{equation}
+co stanowi rozwiązanie zadania \(\blacksquare\)
+
+\subsubsection*{Szkic rozwiązania zadania 10.}
+W najwyższym punkcie trajektorii składowa y-owa prędkości pocisku wynosi 0.
+Niech \((v_{10})_y\), \((v_{20})_y\), \((v_{30})_y\) oznaczają y-owe składowe
+prędkości początkowych odpowiednich fragmentów w momencie wybuchu. Z zasady
+zachowania pędu mamy
+\begin{equation}
+    (v_{10})_y+(v_{20})_y+(v_{30})_y=0\,.
+\end{equation}
+Zależność \(y(t)\) danego fragmentu ma postać
+\begin{equation}
+    y_i(t)=h_0+(v_{i0})_yt-\frac{1}{2}gt^2\quad(i=1,2,3)\,,
+\end{equation}
+gdzie \(h_0\) oznacza szukaną wysokość początkową, będącą jednocześnie
+wysokością, na jakiej eksplodował pocisk. Ponieważ 2 z 3 fragmentów spadły po
+takim samym czasie, ich składowe y-owe prędkości początkowych musiały być takie
+same. Bez straty ogólności możemy przyjąć \((v_{10})_y=(v_{20})_y\). Równanie
+(5) ma zatem postać \(2(v_{10})_y=-(v_{30})_y\). Mamy zatem dwie zależności:
+\begin{equation}
+    \begin{cases}
+    y_1(t)=y_2(t)=h_0+(v_{10})_yt-\frac{1}{2}gt^2\\
+    y_3(t)=h_0-2(v_{10})_yt-\frac{1}{2}gt^2
+    \end{cases}\,.
+\end{equation}
+Niech \(\tau\) oznacza czas, po którym spadł pierwszy fragment. Z treści zadania
+mamy zatem
+\begin{equation}
+    \begin{cases}
+    y_1(2\tau)=0=h_0+2(v_{10})_y\tau-2g\tau^2\\
+    y_3(\tau)=0=h_0-2(v_{10})_y\tau-\frac{1}{2}g\tau^2
+    \end{cases} \,,
+\end{equation}
+skąd otrzymujemy
+\begin{equation*}
+    h_0=\frac{5}{4}g\tau^2\,,
+\end{equation*}
+co stanowi rozwiązanie zadania \(\blacksquare\)
+
+\subsubsection*{Szkic rozwiązania zadania 11.}
+1) W przypadku, gdy powierzchnia stożka jest pomalowana na czarno światło jest
+całkowicie pochłaniane. Niech \(\Delta F\) oznacza siłę od promieniowania
+działającą na niewielką powierzchnię stożka. Niech \(p\) oznacza całkowity pęd
+fotonów uderzających w tą niewielką powierzchnię. Z II zasady dynamiki Newtona
+mamy
+\begin{equation}
+    \Delta F=\frac{\Delta p}{\Delta t}=\frac{p}{\Delta t}\,.
+\end{equation}
+Niech \(n\) oznacza całkowitą liczbę fotonów uderzających w stożek. Całkowita
+siła działająca na stożek w przypadku czarnej powierzchni wynosi więc
+\begin{equation}
+    F_1=n\Delta F=\frac{np}{\Delta t}\,.
+\end{equation}
+\indent 2) W przypadku drugim światło jest całkowicie odbijane. Niech \(\Delta
+F_\perp\) oznacza siłę od promieniowania działającą na niewielką powierzchnię
+stożka i prostopadłą do niej. Z II zasady dynamiki mamy
+\begin{equation}
+    \Delta F_\perp=\frac{\Delta p_\perp}{\Delta t}=\frac{2p_\perp}{\Delta t}\,,
+\end{equation}
+gdzie \(p_\perp\) -- składowa całkowitego pędu fotonów uderzających w niewielką
+powierzchnię stożka, prostopadła do powierzchni bocznej stożka. Z zależności
+geometrycznych \(p_\perp=p\sin(\theta/2)\), gdzie \(\theta\) jest kątem
+rozwarcia stożka. Ponieważ na przyspieszenie stożka ma wpływ jedynie składowa
+siły równoległa do osi stożka i ponieważ, ponownie z zależności geometrycznych,
+\((\Delta F_\perp)_\text{oś}=\Delta F_\perp\sin(\theta/2)\), zatem całkowita
+siła od promieniowania działająca na stożek w przypadku powierzchni odbijającej
+światło wynosi
+\begin{equation}
+    F_2=\frac{2np\sin^2(\theta/2)}{\Delta t}\,.
+\end{equation}
+Rozpatrzmy stosunek
+\begin{equation}
+    \frac{F_2}{F_1}=\frac{a_2}{a_1}=0.7=\frac{2np\sin^2(\theta/2)/\Delta t}{np/\Delta t}=2\sin^2(\theta/2)\,,
+\end{equation}
+skąd otrzymujemy odpowiedź.
+\begin{equation*}
+    \theta=2\arcsin\frac{\sqrt{7}}{2\sqrt{5}}\approx72.5^\circ\,,
+\end{equation*}
+co stanowi rozwiązanie zadania \(\blacksquare\)
+
+\subsubsection*{Szkic rozwiązania zadania 12.}
+Zauważmy, że kula o indeksie 4 będzie znajdować się na symetralnej odcinka
+\(L\). Ze względu na symetrię możemy zatem rozpatrywać tylko kule po jednej
+stronie, gdyż wszystko będzie analogiczne po stronie drugiej. Ponumerujmy więc
+kule po jednej stronie od 1 do 4, gdzie kula o indeksie 1 jest kulą najniżej
+położoną, a kula o indeksie 4 skrajną, unieruchomioną kulą. Na kulę o indeksie
+\(1<i<4\) działają następujące siły: \(m\mathbf{g}\), \(\mathbf{R}_{(i-1)i}\) i
+\(\mathbf{R}_{(i+1)i}\), gdzie \(\mathbf{R}_{mn}\) oznacza siłę reakcji z jaką
+kula o indeksie \(m\) działa na kulę o indeksie \(n\). Oczywiście z III zasady
+dynamiki zachodzi \(|\mathbf{R}_{mn}|=|\mathbf{R}_{nm}|\). Niech \(\alpha_i\)
+oznacza kąt jaki tworzy pręt między kulami \(i\), \(i+1\) z poziomem. Z treści
+zadania mamy \(\alpha_1=30^\circ\). Wyznaczymy \(\alpha_2\) i \(\alpha_3\).
+Rozpatrzmy kulę o indeksie 1. Z warunków równowagi dla tej kuli mamy
+\begin{equation}
+    mg=2R_{21}\sin 30^\circ =R_{21}\,.
+\end{equation}
+Rozpatrzmy kulę o indeksie \(1<i<4\). Z warunków równowagi
+\begin{equation}
+\begin{split}
+   &R_{(i-1)i}\cos\alpha_{i-1}=R_{i(i+1)}\cos\alpha_i\,,\\
+    &R_{(i-1)i}\sin\alpha_{i-1}+mg=R_{i(i+1)}\sin\alpha_i\,.
+\end{split}
+\end{equation}
+Łatwo sprawdzić, że warunek zerowania się momentu siły (np. względem osi
+przechodzącej przez \(i+1\) kulę i prostopadłej do płaszczyzny układu) nie
+wprowadza żadnego dodatkowego ograniczenia.\\
+Dla \(i=2\) mamy zatem
+\begin{equation}
+\begin{split}
+    R_{12}\cos30^\circ=mg\cos30^\circ=R_{23}\cos\alpha_2\\
+    R_{12}\sin30^\circ+mg=R_{23}\sin\alpha_2\,,
+\end{split}
+\end{equation}
+eliminując \(R_{23}\) z tych równań otrzymujemy
+\begin{equation}
+    \tan \alpha_2=\frac{1+\sin30^\circ}{\cos 30^\circ}=\sqrt{3}\,,
+\end{equation}
+skąd \(\alpha_2=60^\circ\) oraz \(R_{23}=\sqrt{3}mg\). Analogicznie dla \(i=3\)
+otrzymujemy
+\begin{equation}
+    \begin{split}
+        R_{23}\cos\alpha_2=R_{34}\cos\alpha_3\\
+        R_{23}\sin\alpha_2+mg=R_{34}\sin\alpha_3\,,
+    \end{split}
+\end{equation}
+skąd otrzymujemy
+\begin{equation}
+    \tan\alpha_3=\frac{5}{\sqrt{3}}\,,
+\end{equation}
+a zatem \(\cos\alpha_3=\sqrt{3}/2\sqrt{7}\). Ostatecznie zatem
+\begin{equation}
+\begin{split}
+    L&=2\cdot l(\cos\alpha_1+\cos\alpha_2+\cos\alpha_3)\\
+    &=\frac{\sqrt{3}+\sqrt{7}+\sqrt{21}}{\sqrt{7}}l
+\end{split}
+\end{equation}
+co stanowi rozwiązanie zadania \(\blacksquare\)
+
+\subsubsection*{Szkic rozwiązania zadania 13.}
+Układ możemy traktować jako pętlę o rezystancji \(\mathcal{R}\approx2\rho
+R/r^2\) i pojemności \(\mathcal{C}\approx\epsilon_0\pi r^2/d\). Zgodnie z regułą
+strumienia SEM indukowana w pętli wynosi
+\begin{equation}
+    \mathcal{E}=|-\alpha\pi R^2\dot{z}|=\alpha \pi R^2v\,,
+\end{equation}
+gdzie \(v\) jest szybkością pętli w danej chwili. Niech \(I\) oznacza natężenie
+prądu płynącego w chwili \(t\) w pętli. Zachodzi
+\begin{equation}
+    \alpha \pi R^2 v(t)=I\mathcal{R}+\frac{1}{\mathcal{C}}Q\,,
+\end{equation}
+różniczkując po czasie otrzymujemy
+\begin{equation}\label{eq:1}
+    \alpha\pi R^2 a(t)=\dot{I}\mathcal{R}+\frac{1}{\mathcal{C}}I\,.
+\end{equation}
+Siła magnetyczna działająca na pętlę wynosi 
+\begin{equation}
+    F_m=2\pi RI(t)B_s(R)\,,
+\end{equation}
+gdzie \(B_s\) jest składową radialną indukcji pola magnetycznego. Można ją w
+prosty sposób wyznaczyć korzystając z faktu, że dla pola magnetycznego całkowity
+strumień przez powierzchnię zamkniętą wynosi zero \(\Phi_\text{tot}=0\).
+Istotnie rozpatrzmy powłokę walcową zakreślaną przez spadającą pętlę w czasie
+\(\dd{t}\) o wysokości \(v\dd{t}=\dd{z}\) i promieniu \(R\). Całkowity strumień
+przez tą powierzchnię zamkniętą wynosi
+\begin{equation}
+    \Phi_\text{tot}=[B_z(z+\dd{z})-B_z(z)]\pi R^2-B_s(R)\cdot 2\pi R\dd{z}=0\,,
+\end{equation}
+skąd \(B_s(R)=\alpha R/2\). Z drugiej zasady dynamiki mamy zatem
+\begin{equation}\label{eq:2}
+    ma(t)=mg-\pi\alpha R^2I(t)\,.
+\end{equation}
+Korzystając z (\ref{eq:1}) otrzymujemy zatem
+\begin{equation}
+    \frac{\mathcal{R}}{\alpha \pi R^2}\dot{I}+\frac{1}{\mathcal{C}\alpha\pi R^2}I=g-\frac{\pi\alpha R^2}{m}I\,.
+\end{equation}
+Jest to niejednorodne liniowe równanie różniczkowe postaci
+\begin{equation}
+    A_1\dot{I}+B_1I+C_1=0\,,
+\end{equation}
+gdzie
+\begin{equation}
+    A_1=\frac{\mathcal{R}}{\alpha \pi R^2}\,,\quad B_1=\frac{\pi\alpha R^2}{m}+\frac{1}{\mathcal{C}\alpha\pi R^2}\,,\quad C_1=-g\,.
+\end{equation}
+Szkic rozwiązania z uwzględnieniem warunku brzegowego \(I(0)=0\) ma postać 
+\begin{equation}
+    I(t)=-\frac{C_1}{B_1}\left(1-e^{-\frac{B_1}{A_1}t}\right)\,.
+\end{equation}
+Z (\ref{eq:2}) otrzymujemy zatem
+\begin{equation}
+    a(t)=g+\frac{\pi\alpha R^2}{m}\frac{C_1}{B_1}\left(1-e^{-\frac{B_1}{A_1}t}\right)=A+Be^{Ct}\,,
+\end{equation}
+gdzie poszukiwane stałe są dane wzorami
+\begin{equation}
+    \begin{split}
+        &A=g-B\\
+        &B=\frac{\alpha^2\pi^2 R^4\mathcal{C}g}{\alpha^2 \pi^2 R^4\mathcal{C}+m}\\
+        &C=-\frac{\alpha^2\pi^2R^4\mathcal{C}+m}{m\mathcal{RC}}\,,
+    \end{split}
+\end{equation}
+gdzie \(\mathcal{R}=2\rho R/r^2\) i \(\mathcal{C}=\epsilon_0\pi r^2/d\)
+\(\blacksquare\)
+
+\subsubsection*{Szkic rozwiązania zadania 16.}
+Wskazania woltomierza nie są równe rzeczywistym napięciom na rezystorach ze
+względu na obecność wewnętrznej rezystancji miernika. Nie wpływa ona na pomiar
+SEM idealnego ogniwa, a zatem \(\mathcal{E}=6\,\text{V}\), natomiast wpływa na
+pomiar napięcia na rezystorach, gdyż zmienia natężenie prądu pobieranego ze
+źródła. Niech \(V_\alpha\) (\(\alpha=1,2\)) oznacza napięcie zmierzone na
+rezystorze \(R_\alpha\). Bez straty ogólności możemy przyjąć \(V_1=2\,\text{V}\)
+i \(V_2=3\,\text{V}\). Niech \(I\), \(I'\) oznaczają odpowiednio natężenie prądu
+pobieranego ze źródła w przypadku podłączenia woltomierza do \(R_1\) lub
+\(R_2\). Z napięciowego prawa Kirchhoffa
+\begin{equation}
+    \mathcal{E}=V_1+IR_2=V_2+I'R_1\,.
+\end{equation}
+Niech \(R_0\) oznacza opór wewnętrzny miernika. Z prawa Ohma mamy
+\begin{equation}
+\begin{split}
+    I=V_1\left(\frac{1}{R_1}+\frac{1}{R_0}\right)\,,\\
+    I'=V_2\left(\frac{1}{R_2}+\frac{1}{R_0}\right)\,.
+\end{split}
+\end{equation}
+Łącząc powyższe równania otrzymujemy
+\begin{equation}
+\begin{split}
+    &V_1\left(\frac{1}{R_1}+\frac{1}{R_0}\right)=\frac{\mathcal{E}-V_1}{R_2}\,,\\
+    &V_2\left(\frac{1}{R_2}+\frac{1}{R_0}\right)=\frac{\mathcal{E}-V_2}{R_1}\,.
+\end{split}
+\end{equation}
+Dzieląc odpowiednio przez \(V_1\) i \(V_2\) i odejmując stronami otrzymujemy
+\begin{equation}
+    \frac{R_2-R_1}{R_1R_2}=\frac{\mathcal{E}V_2R_1-V_1V_2R_1-\mathcal{E}V_1R_2+V_1V_2R_2}{V_1V_2R_1R_2}\,.
+\end{equation}
+Po przekształceniach otrzymujemy
+\begin{equation}
+    \frac{V_2}{V_1}=\frac{R_2}{R_1}\,.
+\end{equation}
+Rzeczywiste napięcia \(U_\alpha\) na rezystorach są więc dane wzorami
+\begin{equation}
+\begin{split}
+   U_1=\frac{\mathcal{E}}{1+\frac{R_2}{R_1}}=\frac{\mathcal{E}V_1}{V_1+V_2}=2.4\,\text{V}\,,\\
+    U_2=\frac{\mathcal{E}}{1+\frac{R_1}{R_2}}=\frac{\mathcal{E}V_2}{V_1+V_2}=3.6\,\text{V}\,,
+\end{split}
+\end{equation}
+co kończy rozwiązanie zadania \(\blacksquare\)
+
+\subsubsection*{Szkic rozwiązania zadania 28.}
+\textit{Problem jest dość typowy. Można go znaleźć w wielu podręcznikach akademickich do podstaw elektrodynamiki (patrz np. D.J. Griffiths ,,Podstawy elektrodynamiki'') jako pokaz wykorzystania magnetycznego potencjału skalarnego (sic!). Poniżej prezentujemy elementarne rozwiązania będące w zasięgu wiedzy licealnej.}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.4]{figs/owwwowoowow (1).png}
+    \label{fig:magneticrod}
+\end{figure}
+
+Przede wszystkim stwierdzamy, że jednorodna magnetyzacja
+\(\mathbf{M}=M\mathbf{\hat{x}}\) odpowiada prądowi powierzchniowemu
+\(\mathbf{K}(\theta)=M\sin\theta\mathbf{\hat{z}}\) płynącemu po powierzchni
+cylindra (to powinno zostać umieszczone jako \textit{wskazówka} wraz z definicją
+prądu powierzchniowego), gdzie \(\theta\) jest kątem między \(\mathbf{r}\) i
+\(\mathbf{\hat{x}}\). Jednocześnie ponieważ cylinder jest bardzo długi, więc
+możemy traktować problem jako dwuwymiarowy (tj. tak jakby cylinder był
+nieskończony). Rozważmy układ w płaszczyźnie \(xy\). Skorzystamy z faktu, iż
+pole magnetyczne wytwarzane przez nieskończony prostoliniowy przewód, przez
+który płynie prąd o natężeniu \(I=K\dd{l}\) wynosi
+\begin{equation}
+    \mathsf{B}=\frac{\mu_0K\dd{l}}{2\pi s}\,,
+\end{equation}
+gdzie \(s\) jest odległością od przewodu. Niech \(P\) będzie dowolnym punktem
+wewnątrz cylindra w rozważanej płaszczyźnie. Poprowadźmy proste prostopadłe
+\(AC\) i \(BD\) przechodzące przez \(P\) oraz zakreślmy niewielkie łuki o
+środkach \(A\), \(B\), \(C\), \(D\) takie, że kąty o wierzchołku \(P\)
+wyznaczone przez ich końce są sobie równe i wynoszą \(\dd{\omega}\). Niech
+\(\theta_A\), \(\theta_B\), \(\theta_C\), \(\theta_D\) oznaczają kąty skierowane
+między osią \(x\) (kierunkiem magnetyzacji), a odcinkami odpowiednio \(OA\),
+\(OB\), \(OC\) i \(OD\), gdzie \(O\) jest środkiem okręgu. Przyczynek do
+całkowitego pola magnetycznego od pary punktów \(A\), \(C\) wynosi
+\begin{equation}
+    \dd{\mathsf{B}_1}=\frac{\mu_0M}{2\pi}\left(\frac{\dd{l_A}\sin\theta_A}{AP}-\frac{\dd{l_C}\sin\theta_C}{CP}\right)\,,
+\end{equation}
+gdzie \(\dd{l}\) oznacza długość zakreślonego łuku wokół danego punktu.
+Przyczynek ten jest skierowany wzdłuż \(BD\). Analogicznie przyczynek od pary
+\(B\), \(D\) wynosi
+\begin{equation}
+    \dd{\mathsf{B}_2}=\frac{\mu_0M}{2\pi}\left(\frac{\dd{l_B}\sin\theta_B}{BP}-\frac{\dd{l_D}\sin\theta_D}{DP}\right)
+\end{equation}
+i jest skierowany wzdłuż \(AC\). Z założenia o równości kątów wyznaczonych przez
+zaznaczone łuki mamy jednak
+\begin{equation}
+\begin{split}
+    &\frac{\dd{l_A}}{AP}=\frac{\dd{l_C}}{CP}=\frac{\dd{\omega}}{\cos\arcangle OAC}\,,\\ &\frac{\dd{l_B}}{BP}=\frac{\dd{l_D}}{DP}=\frac{\dd{\omega}}{\cos\arcangle OBD}\,,    
+\end{split}
+\end{equation}
+przy czym oczywiście \(\cos\arcangle OBD=\sin(\frac{\theta_D-\theta_B}{2})\) i
+\(\cos\arcangle OAC=\sin(\frac{\theta_C-\theta_A}{2})\). Z powyższego zatem
+\begin{equation}
+\begin{split}
+    &\dd{\mathsf{B}_1}=\frac{\mu_0M\dd{\omega}}{2\pi}\frac{\sin\theta_A-\sin\theta_C}{\sin\frac{\theta_C-\theta_A}{2}}\,,\\
+    &\dd{\mathsf{B}_2}=\frac{\mu_0M\dd{\omega}}{2\pi}\frac{\sin\theta_B-\sin\theta_D}{\sin\frac{\theta_D-\theta_B}{2}}\,.
+\end{split}
+\end{equation}
+Udowodnimy, że wypadkowa tych przyczynków jest skierowana równolegle do osi
+\(x\). Istotnie niech \(\gamma\) oznacza kąt skierowany między prostą równoległą
+do \(x\) przechodzącą przez \(P\), a prostą \(AC\). Udowodnimy, że
+\begin{equation}
+    \frac{\dd{\mathsf{B}_1}}{\dd{\mathsf{B}_2}}=\frac{\sin\theta_A-\sin\theta_C}{\sin\theta_B-\sin\theta_D}\frac{\sin\frac{\theta_D-\theta_B}{2}}{\sin\frac{\theta_C-\theta_A}{2}}=\tan\gamma\,.
+\end{equation}
+Istotnie łatwo pokazać (np. korzystając z liczb zespolonych), że
+\begin{equation}
+    \tan\gamma=\frac{\sin\theta_C-\sin\theta_A}{\cos\theta_C-\cos\theta_A}=-\frac{\cos\theta_D-\cos\theta_B}{\sin\theta_D-\sin\theta_B}\,,
+\end{equation}
+z powyższego po prostych przekształceniach mamy zatem
+\begin{equation}
+    \tan\gamma=\tan\frac{\theta_B+\theta_D}{2}
+\end{equation}
+oraz
+\begin{equation}
+    \theta_A+\theta_C=\theta_B+\theta_D+(2k-1)\pi\,,\quad k\in\mathbb{Z}\,.
+\end{equation}
+Jednocześnie po prostych przekształceniach
+\begin{equation}
+    \frac{\sin\theta_A-\sin\theta_C}{\sin\theta_B-\sin\theta_D}\frac{\sin\frac{\theta_D-\theta_B}{2}}{\sin\frac{\theta_C-\theta_A}{2}}=\frac{\cos\frac{\theta_A+\theta_C}{2}}{\cos\frac{\theta_B+\theta_D}{2}}\,,
+\end{equation}
+czyli z powyższego
+\begin{equation}
+    \frac{\sin\theta_A-\sin\theta_C}{\sin\theta_B-\sin\theta_D}\frac{\sin\frac{\theta_D-\theta_B}{2}}{\sin\frac{\theta_C-\theta_A}{2}}=\tan\gamma\quad\square
+\end{equation}
+W takim razie przyczynek od czwórki punktów \(A\), \(B\), \(C\), \(D\) jest
+skierowany zgodnie z wektorem magnetyzacji i wynosi
+\begin{equation}
+    \dd{\mathsf{B}}=\sqrt{\dd{\mathsf{B}_1}^2+\dd{\mathsf{B}_2}^2}=\frac{\mu_0M\dd{\omega}}{2\pi}\cdot 2=\frac{\mu_0M}{\pi}\dd{\omega}\,.
+\end{equation}
+Całkowita indukcja pola magnetycznego w punkcie \(P\) wynosi zatem
+\begin{equation}
+    \boldsymbol{\mathsf{B}}=\frac{\mu_0\mathbf{M}}{\pi}\cdot\frac{\pi}{2}=\frac{1}{2}\mu_0\mathbf{M}\,,
+\end{equation}
+czyli wewnątrz cylindra pole magnetyczne jest jednorodne \(\blacksquare\)
+
+\subsubsection*{Szkic rozwiązania zadania 29.}
+Pole elektryczne światła odbitego od płytki będzie superpozycją pól
+elektrycznych promieni świetlnych odbitych kolejno od górnej i dolnej
+powierzchni płytki. Ponieważ drgania pola elektrycznego są koherentne, zatem aby
+obliczyć wypadkowe natężenie światła musimy najpierw obliczyć wypadkowe pole
+elektryczne (nie możemy dodawać natężeń światła). Ponieważ \(I\sim E^2\), więc
+amplituda pola elektrycznego promienia po przejściu przez granicę
+powietrze-szkło wyniesie \(\sqrt{r}E_0\), a promienia odbitego
+\(\sqrt{1-r}E_0\). Wprowadźmy parametr \(l=\sqrt{1-r}\). Pole elektryczne
+promienia odbitego od górnej powierzchni od strony powietrza wynosi
+\begin{equation}
+    lE_0\sin(-\omega x/c+\omega t+\pi)=lE_0\sin(\phi+\pi)\,.
+\end{equation}
+Pole elektryczne \(n\)-tego promienia wychodzącego z płytki po górnej stronie po
+\(n\) odbiciach od dolnej powierzchni płytki wynosi
+\begin{equation}
+    E_n=rl^{2n-1}E_0\sin(\phi+n\delta)\,,
+\end{equation}
+gdzie \(\delta=\frac{4\pi}{\lambda}h\) (\(h\) - grubość płytki). Istotnie
+amplituda pola elektrycznego promienia po przejściu przez granicę
+powietrze-szkło wynosi \(\sqrt{r}E_0\), każde odbicie mnoży ją przez czynnik
+\(l\), a odbić tych jest zawsze nieparzyście wiele, dodatkowo przy przejściu
+ponownym przez granicę szkło-powietrze należy ją pomnożyć przez czynnik
+\(\sqrt{r}\). Wypadkowe pole elektryczne światła odbitego od płytki wynosi więc
+\begin{equation}
+\begin{split}
+    E_\text{tot}&=lE_0\sin(\phi+\pi)+\\
+    &+rE_0\left[l\sin(\phi+\delta)+l^3\sin(\phi+2\delta)+...\right]\,.
+\end{split}
+\end{equation}
+Podstawiając \(h=\lambda/4\) otrzymujemy \(\delta=\pi\) zatem
+\begin{equation}
+\begin{split}
+     E_\text{tot}&=-lE_0\sin\phi +\\
+     &+rE_0\sin\phi\left[(-l-l^5-l^9-...)+(l^3+l^7+...)\right]\,.
+\end{split}
+\end{equation}
+Wyrażenie w nawiasie kwadratowym jest równe sumie dwóch szeregów geometrycznych,
+które z łatwością można obliczyć
+\begin{equation}
+\begin{split}
+    E_\text{tot}&=-lE_0\sin\phi+rE_0\sin\phi\frac{-l}{1+l^2}\\
+    &=-E_0\sin\phi \frac{l+l^3+rl}{1+l^2}\\
+    &=-E_0\sin\phi \frac{2l}{1+l^2}\,.
+\end{split}
+\end{equation}
+Amplituda pola elektrycznego światła odbitego wynosi zatem
+\begin{equation}
+    E_0\frac{2l}{1+l^2}\,.
+\end{equation}
+Natężenie światła odbitego jest więc równe
+\begin{equation}
+    I_{o}=I\frac{4l^2}{(1+l^2)^2}=4I\frac{1-r}{(2-r)^2}\,.
+\end{equation}
+Oczywiście ze względu na zachowanie energii natężenie światła przechodzącego
+przez płytkę jest równe
+\begin{equation}
+    I_p=I-I_o=I-4I\frac{1-r}{(2-r)^2}\quad\blacksquare
+\end{equation}
+
+\subsubsection*{Szkic rozwiązania zadania 36.}
+Droga optyczna światła wewnątrz kuli jest dana przez
+\begin{equation}
+\begin{split}
+     c(t_B-t_A)&=\int\limits_{r_A}^{r_B}n(r)\sqrt{1+r^2\phi'(r)^2}\dd{r}\\
+     &=\int\limits_{r_A}^{r_B}F(\phi',r)\dd{r}\,.
+\end{split}
+\end{equation}
+Zgodnie z zasadą Fermata całka ta musi być stacjonarna, zatem z tw.
+Eulera--Lagrange'a musi zachodzić
+\begin{equation}
+    \pdv{F}{\phi'}=P=\text{const.}\,,
+\end{equation}
+skąd
+\begin{equation}
+    \dv{\phi}{r}=\frac{P}{r}\frac{1}{\sqrt{n^2(r)r^2-P^2}}\,.
+\end{equation}
+Dla zadanej trajektorii zachodzi
+\begin{equation}
+    \phi(r)=\arcsin\left(\frac{r^2-R^2}{2rb}\right)\,,
+\end{equation}
+skąd
+\begin{equation}
+    n(r)=\frac{2P\sqrt{R^2+b^2}}{r^2+R^2}\,.
+\end{equation}
+Całkę ruchu \(P\) wyznaczymy z warunku \(n(R)=1\), skąd
+\(P=R^2/\sqrt{R^2+b^2}\), zatem
+\begin{equation}
+    n(r)=\frac{2}{1+\left(\frac{r}{R}\right)^2}\quad\blacksquare
+\end{equation}
+\subsubsection*{Szkic rozwiązania zadania 40.}
+\textit{W rozwiązaniu kładę \(c=1\).}
+\medskip
+
+Niech \(\boldsymbol{\beta}_\text{e}\), \(\boldsymbol{\beta}_\text{p}\),
+\(\boldsymbol{\beta}_\nu\) oznaczają prędkości poszczególnych cząstek, a
+\(\mathscr{E}_\text{e}\), \(\mathscr{E}_\text{p}\), \(\mathscr{E}_\nu\) -- ich
+energie relatywistyczne. Z zasady zachowania czterowektora energii--pędu mamy
+\begin{equation}
+    \begin{split}
+        -\frac{m_\text{e}\boldsymbol{\beta}_\text{e}}{\sqrt{1-\beta^2_\text{e}}}=\frac{m_\text{p}\boldsymbol{\beta}_\text{p}}{\sqrt{1-\beta^2_\text{p}}}+\frac{m_\nu\boldsymbol{\beta}_\nu}{\sqrt{1-\beta^2_\nu}}
+    \end{split}
+\end{equation}
+oraz
+\begin{equation}\label{eq:energy}
+    m_\text{n}=\mathscr{E}_\text{e}+\mathscr{E}_\text{p}+\mathscr{E}_\nu\,.
+\end{equation}
+Podnosząc pierwsze równanie skalarnie do kwadratu i korzystając z zależności
+\begin{equation}
+    \beta=\sqrt{1-\frac{m^2}{\mathscr{E}^2}}
+\end{equation}
+otrzymujemy
+\begin{equation}
+\mathscr{E}^2_\text{e}-m_\text{e}^2=\mathscr{E}^2_\text{p}-m_\text{p}^2+\mathscr{E}^2_\nu-m_\nu^2+2\mathscr{E}_\text{p}\mathscr{E}_\nu\beta_\text{p}\beta_\nu\cos\Psi\,,
+\end{equation}
+gdzie \(\Psi\) jest kątem między \(\boldsymbol{\beta}_\text{p}\) i
+\(\boldsymbol{\beta}_\nu\). Ponieważ \(\cos\Psi\leq 1\), więc z powyższego
+otrzymujemy nierówność
+\begin{equation}
+    \mathscr{E}^2_\text{e}-m_\text{e}^2\leq \mathscr{E}^2_\text{p}-m_\text{p}^2+\mathscr{E}^2_\nu-m_\nu^2+2\mathscr{E}_\text{p}\mathscr{E}_\nu\beta_\text{p}\beta_\nu\,.
+\end{equation}
+Jednocześnie podnosząc równanie (\ref{eq:energy}) do kwadratu mamy
+\begin{equation}
+    (m_\text{n}-\mathscr{E}_\text{e})^2=\mathscr{E}^2_\text{p}+\mathscr{E}^2_\nu+2\mathscr{E}_\text{p}\mathscr{E}_\nu\,.
+\end{equation}
+Z powyższego zatem
+\begin{equation}
+    m_\text{n}(2\mathscr{E}_\text{e}-m_\text{n})\leq (m_\text{e}^2-m_\text{p}^2-m_\nu^2)-2\mathscr{E}_\text{p}\mathscr{E}_\nu(1-\beta_\text{p}\beta_\nu)\,,
+\end{equation}
+czyli
+\begin{equation}
+    \mathscr{E}_\text{e}\leq \frac{m_\text{n}^2-m_\text{p}^2+m_\text{e}^2-m_\nu^2}{2m_\text{n}}-\frac{m_\text{p}m_\nu}{m_\text{n}}\frac{1-\beta_\text{p}\beta_\nu}{\sqrt{(1-\beta_\text{p}^2)(1-\beta_\nu^2)}}\,.
+\end{equation}
+Zauważmy, że
+\begin{equation}
+    1-\beta_\text{p}\beta_\nu = \frac{(1-\beta_\text{p})(1+\beta_\nu)+(1+\beta_\text{p})(1-\beta_\nu)}{2}\,,
+\end{equation}
+skąd
+\begin{equation}
+\begin{split}
+    &\frac{1-\beta_\text{p}\beta_\nu}{\sqrt{(1-\beta_\text{p}^2)(1-\beta_\nu^2)}}=\\
+    &=\frac{1-\beta_\text{p}\beta_\nu}{\sqrt{(1-\beta_\text{p})(1+\beta_\nu)}\sqrt{(1+\beta_\text{p})(1-\beta_\nu)}}=\\
+    &=\frac{1}{2}\frac{\sqrt{(1-\beta_\text{p})(1+\beta_\nu)}}{\sqrt{(1+\beta_\text{p})(1-\beta_\nu)}}+\frac{1}{2}\frac{\sqrt{(1+\beta_\text{p})(1-\beta_\nu)}}{\sqrt{(1-\beta_\text{p})(1+\beta_\nu)}}\geq 1\,,
+\end{split}
+\end{equation}
+gdzie ostatnia nierówność wynika z elementarnej nierówności dla dodatnich liczb
+rzeczywistych
+\begin{equation}
+    x+\frac{1}{x}\geq 2\,.
+\end{equation}
+W takim razie
+\begin{equation}
+\begin{split}
+    \mathscr{E}_\text{e}&\leq\frac{m_\text{n}^2-m_\text{p}^2+m_\text{e}^2-m_\nu^2}{2m_\text{n}}-\frac{m_\text{p}m_\nu}{m_\text{n}}=\\
+    &=\frac{m_\text{n}^2+m_\text{e}^2-(m_\text{p}+m_\nu)^2}{2m_\text{n}}\\
+    &\approx\frac{m_\text{n}^2-m_\text{p}^2}{2m_\text{n}}\approx 1.29\,\text{MeV}\quad\quad\blacksquare
+\end{split}
+\end{equation}
+
+\end{document}
