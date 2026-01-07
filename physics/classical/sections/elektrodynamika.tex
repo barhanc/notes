@@ -1518,7 +1518,7 @@ width=0.4pt] (-23.013046296539994,-0.0814901454339137)-- (2.9499971484536527,7.2
         V_0\approx \frac{Q}{8\epsilon_0a}\,.
     \end{equation*}
 \end{enumerate}
-\subsubsection{Inwersja w dwóch wymiarach i funkcja prądu}
+\subsubsection{Inwersja w dwóch wymiarach}
 Rozważmy dwuwymiarowy układ elektryczny tj. układ, dla którego potencjał \(\varphi=\varphi(x,y)\)
 spełnia dwuwymiarowe równanie Laplace'a
 \begin{equation*}
@@ -1558,7 +1558,10 @@ okręgu \((O,\mathscr{R})\) jest krzywą stałego potencjału pod wpływem ładu
 w punktach \(A_1'\), \(A_2'\), ... oraz ładunku \(-\sum q_i\) w punkcie \(O\).
 \medskip
 
-\textbf{Funkcja prądu.} W przypadku dwuwymiarowym możemy zdefiniować funkcję \(\psi(x,y)\), którą
+
+\subsubsection{Funkcja prądu}
+
+W przypadku dwuwymiarowym możemy zdefiniować funkcję \(\psi(x,y)\), którą
 nazywamy \underline{funkcją prądu}, taką że
 \begin{equation*}
     \mathbf{E}(x,y)=\nabla\times[0,0,\psi(x,y)]=\pdv{\psi}{y}\mathbf{\hat{x}}-\pdv{\psi}{x}\mathbf{\hat{y}}\,,
@@ -1581,62 +1584,9 @@ umieszczonego w punkcie \((x_0,y_0)\) mamy
    \psi(x,y)=\frac{q\phi}{2\pi\epsilon_0}+\psi_0\,,
 \end{equation*}
 gdzie \(\phi\) jest kątem między półprostą równoległą do osi \(x\) o początku w punkcie
-\((x_0,y_0)\) i wektorem \([x-x_0,y-y_0]\), a \(\psi_0\) jest dowolną stałą. W ujęciu syntetycznym
-\begin{equation*}
-    \psi(P)=\frac{q}{2\pi\epsilon_0}|\arcangle OAP|\,,
-\end{equation*}
-gdzie \(O\) jest dowolnym punktem \(O\neq A\) na pewnej półprostej \(p\) o początku w punkcie \(A\).
-Dowolną funkcję prądu możemy zatem zapisać jako
-\begin{equation*}
-    \psi(P)=\sum\frac{q_i}{2\pi\epsilon_0}|\arcangle OA_iP|\,.
-\end{equation*}
-W inwersji względem okręgu \((O,\mathscr{R})\), w której każdy ładunek punktowy w punkcie \(A\)
-przechodzi na ładunek o tej samej wartości umieszczony w punkcie \(A'\) takim, że \(OA\cdot
-OA'=\mathscr{R}^2\) mamy zatem
-\begin{equation*}
-    \psi'(P')=\sum\frac{q_i}{2\pi\epsilon_0}|\arcangle OA_i'P'|=\sum\frac{q_i}{2\pi\epsilon_0}(\pi-|\arcangle OA_iP|-|\arcangle A_i'OP'|)\,.
-\end{equation*}
-Zauważmy, że to wyrażenie możemy zapisać jako
-\begin{equation*}
-    \psi'(P')=-\psi(P)+\frac{\sum q_i}{2\pi\epsilon_0}|\arcangle XOP|+\text{const.}\quad\,,
-\end{equation*}
-gdzie \(X\) jest dowolnym punktem \(X\neq O\) na pewnej półprostej \(p\) o początku w punkcie \(O\).
-W takim razie jeżeli krzywa \(\ell\) jest krzywą, dla której \(\psi=\text{const.}\) pod wpływem
-ładunków \(q_1\), \(q_2\), ... w punktach \(A_1\), \(A_2\), ... , to obraz \(\ell'\) tej krzywej w
-inwersji względem okręgu \((O,\mathscr{R})\) jest krzywą stałej funkcji prądu pod wpływem ładunków
-\(q_1\), \(q_2\), ... w punktach \(A_1'\), \(A_2'\), ... oraz ładunku \(-\sum q_i\) w punkcie \(O\).
-\medskip
+\((x_0,y_0)\) i wektorem \([x-x_0,y-y_0]\), a \(\psi_0\) jest dowolną stałą. 
 
-Zauważmy jeszcze, że
-\begin{equation*}
-\int_A^B\mathbf{E}\cdot{\mathbf{n}}\dd{\ell}=\psi(B)-\psi(A)\,,
-\end{equation*}
-gdzie \(\mathbf{n}\) jest wektorem normalnym do krzywej \(\ell\) w danym punkcie, natomiast
-\(A,B\in\ell\) są pewnymi skrajnymi punktami tej krzywej.
-\medskip
 
-Powyższe rozważania będą nam przydatne do wykazania, iż w przypadku dwuwymiarowym opór rezystora, do
-którego przyłożono symetrycznie dwie jednakowe elektrody jest równy oporowi jego obrazu
-inwersyjnego. Istotnie rozważmy dwuwymiarowy (tj. bardzo płaski) rezystor do którego przyłożono
-jednakowe niewielkie elektrody w taki sposób, że układ posiada pewną oś symetrii \(p\). Opór takiego
-układu wynosi oczywiście
-\begin{equation*}
-    R=\frac{1}{\sigma w}\frac{|\varphi(A)-\varphi(B)|}{|\psi(C)-\psi(D)|}\,,
-\end{equation*}
-gdzie \(\sigma\) to konduktywność, \(w\) jest grubością rezystora, \(A\in\ell_1\), \(B\in\ell_2\) są
-pewnymi punktami odpowiednio na pierwszej i drugiej elektrodzie (\(\ell_1\), \(\ell_2\) oznaczają
-krzywe wyznaczające kształt elektrod), natomiast \(C\), \(D\) są punktami przecięcia \(p\) z
-brzegiem \(\ell_3\) przewodnika. Ze względu na symetrię osiową zachodzi
-\begin{equation*}
-    \sum q_i=0\,,
-\end{equation*}
-gdzie \(q_i\) są ładunkami wyindukowanymi na elektrodach. W takim razie opór rezystora będącego
-obrazem inwersyjnym \(\ell_3\) do którego przyłożono elektrody \(\ell_1'\), \(\ell_2'\) wynosi
-\begin{equation*}
-    R'=\frac{1}{\sigma w}\frac{|\varphi'(A')-\varphi'(B')|}{|\psi'(C')-\psi'(D')|}=R\,,
-\end{equation*}
-gdzie ostatnia równość wynika wprost z wyprowadzonych wcześniej wzorów transformacyjnych na
-\(\varphi'\) i \(\psi'\) oraz obserwacji \(\sum q_i=0\).
 \newpage
 \subsection{Magnetostatyka}
 \subsubsection{Siła Lorentza}
