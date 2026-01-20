@@ -1,9 +1,2 @@
-# VS Code
 .vscode
-
-# LaTeX
-/poincare
-misc/misc/om
-/cs-general
-
 .DS_Store
