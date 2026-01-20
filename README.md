@@ -8,10 +8,10 @@
 
 ### Komputery
 
-- [Podstawy Komputerów](https://barhanc.github.io/notes/md/computer-basics.md)
-- [Architektura Komputera](https://barhanc.github.io/notes/md/computer-organization.md)
-- [Python](https://barhanc.github.io/notes/md/python.md)
-- [Teoria Obliczeń](https://barhanc.github.io/notes/md/theory-of-computation.md)
+- [Podstawy Komputerów](https://barhanc.github.io/notes/md/computer-basics)
+- [Architektura Komputera](https://barhanc.github.io/notes/md/computer-organization)
+- [Python](https://barhanc.github.io/notes/md/python)
+- [Teoria Obliczeń](https://barhanc.github.io/notes/md/theory-of-computation)
 
 ### Matematyka
 
