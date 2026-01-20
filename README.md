@@ -16,7 +16,7 @@
 ### Matematyka
 
 - [Analiza matematyczna](https://barhanc.github.io/notes/pdf/analysis.pdf)
-- [Analiza z Geometrią](https://barhanc.github.io/notes/pdf/algebra.pdf)
+- [Algebra z Geometrią](https://barhanc.github.io/notes/pdf/algebra.pdf)
 
 ### Fizyka
 
