@@ -1,11 +1,10 @@
 # notes
 
-## ML & DL
+## Machine Learning
 
 - [Klasyczne Uczenie
   Maszynowe](https://barhanc.github.io/notes/archive/pdf/machine-learning.pdf)
-- [Sieci Neuronowe i Uczenie
-  Głębokie](https://barhanc.github.io/notes/archive/pdf/deep-learning.pdf)
+- [Neural Networks](https://barhanc.github.io/notes/archive/pdf/deep-learning.pdf)
 - [RL Cheatsheet](https://barhanc.github.io/notes/archive/pdf/rl-cheatsheet.pdf)
 
 ## Computer Science
