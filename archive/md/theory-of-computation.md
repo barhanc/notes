@@ -1,3 +1,17 @@
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    displayMath: [['$$', '$$'], ['\\[', '\\]']],
+    processEscapes: true
+  },
+  options: {
+    skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  }
+};
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
 Def. Problem decyzyjny to para $\Pi = (D_\Pi, Y_\Pi)$, gdzie $D_\Pi$ to zbiór "egzemplarzy"
 problemu, a $Y_\Pi \subseteq D_\Pi$ to zbiór "egzemplarzy" z odpowiedzią "TAK".
 
@@ -159,31 +173,30 @@ Uniwersalna Maszyna Turinga $U$ mając na wejściu zakodowaną maszynę $M$ oraz
 M, x\rangle$ symuluje działanie maszyny $M$ dla wejścia $x$. Jest to model komputera z programem
 przechowywanym w pamięci. Ustalmy alfabet $\Sigma = \{0,1,\#\}$. Kodowanie maszyny $M$ możemy
 przedstawić jako
-```math
+$$
 \langle M \rangle = \langle \Gamma \rangle \# \langle Q \rangle \# \langle \delta \rangle \# \#
-```
+$$
 gdzie $\langle \Gamma \rangle = \langle |\Gamma |\rangle$ i $\langle Q \rangle = \langle |Q|\rangle$
 to po prostu kodowania binarne liczby symboli w alfabecie roboczym i liczby stanów, natomiast
-```math
-\langle \delta \rangle = \langle \text{ciąg kolejnych napisów postaci $\langle \delta(a,q)\rangle$ dla $q\in Q$, $a
-\in \Gamma$} \rangle
-```
+$$
+\langle \delta \rangle = \langle \text{ciąg kolejnych napisów postaci }\langle \delta(a,q)\rangle\text{ dla }q\in Q,\ a\in \Gamma \rangle
+$$
 
 ## Problem stopu
 
 Problem stopu definiujemy jako język 
-```math
-H := \{\langle M, x \rangle \mid \text{$M$ akceptuje $x$}\}
-```
+$$
+H := \{\langle M, x \rangle \mid \text{M akceptuje }x\}
+$$
 
 Tw. Problem stopu jest nierozstrzygalny $H \notin \text{R}$.
 
 Tw. Rice'a. Niech $\mathscr{L} \subseteq \text{RE}$ będzie pewnym podzbiorem klasy $\text{RE}$.
 Mówimy, że język $L \in \text{RE}$ ma własność $\mathscr{L}$ iff $L \in \mathscr{L}$. Jeśli tylko
 $\mathscr{L} \neq \emptyset$ i $\mathscr{L} \neq \text{RE}$ to język 
-```math
+$$
 B_\mathscr{L} := \{\langle M \rangle \mid L(M) \in \mathscr{L}\}
-```
+$$
 jest nierozstrzygalny.
 
 Twierdzenie to mówi, iż niemal każdy język dotyczący własności języków akceptowanych przez maszynę
@@ -195,9 +208,9 @@ $\epsilon q_Y f(x)$.
 
 Def. Mówimy, że język $A$ redukuje się do języka $B$, co zapisujemy jako $A \leq_m B$ iff istnieje
 obliczalna funkcja $f$ taka, że
-```math
+$$
 \forall x\in\Sigma^*: x \in A \Longleftrightarrow f(x) \in B\quad.
-```
+$$
 Indeks dolny $m$ określa redukcję many-to-one tzn. wiele (nawet wszystkie) słów z języka $A$ może
 być odwzorowywanych do jednego słowa z języka $B$. Jeśli $A \leq_m B$ to możemy mówić, iż $A$ jest
 nietrudniejszy (inaczej co najwyżej tak trudny) niż $B$. Istotnie jeśli umiemy rozwiązać problem $B$
@@ -222,25 +235,25 @@ Ogólną technikę dowodzenia $\text{RE}$-zupełności możemy zatem zapisać ja
   \text{RE}$, $A \leq_m B \leq_m C$, co wraz z punktem wyżej dowodzi $C \in \text{RE-com}$
 
 Tw. Język $A \in \text{RE}$ iff gdy istnieje język $B \in \text{R}$ taki, że
-```math
+$$
 A = \{x \mid \exists y\in\Sigma^* : \langle x,y \rangle \in B\}\,.
-```
+$$
 
 ## Hierarchia arytmetyczna
 
 Def. Powiemy, iż język $A \subseteq \Sigma^*$ należy do klasy $\Sigma_i$ dla $i\geq 1$ iff istnieje
 język $B\in\text{R}$ taki, że
-```math
+$$
 A = \{x \mid \exists y_1 : \forall y_2 : \ldots : Q_n y_n : \langle x,y_1,\ldots,y_n \rangle \in B\}\,,
-```
+$$
 gdzie $Q_n = \exists$ jeśli $n$ nieparzyste i $Q_n = \forall$ jeśli $n$ parzyste. Dodatkowo powiemy,
 iż język $A$ należy do klasy $\Pi_i$ iff $A' \in \Sigma_i$. Zauważmy, że z definicji tej i
 poprzedniego twierdzenia wynika, iż $\Sigma_1 = \text{RE}$ oraz $\Pi_1 = \text{coRE}$.<br>
 
 Zdefiniowane klasy tworzą nieskończoną hierarchię, w której
-```math
+$$
 \Sigma_{i-1} \subseteq \Sigma_i \cap \Pi_i\,,\quad \Pi_{i-1} \subseteq \Sigma_i \cap \Pi_i\,,
-```
+$$
 gdzie $i \geq 1$ oraz $\Sigma_0 = \Pi_0 = \text{R}$.
 
 ```text
@@ -285,10 +298,10 @@ Def. $\text{EXPSPACE} = \bigcup_{k=0}^\infty \text{SPACE}(2^{n^k})$
 Def. Niedeterministyczna Maszyna Turinga (NMT) to krotka $(\Sigma, \Gamma, Q, \delta, q_S, q_Y, q_N,
 \square)$, gdzie wszystkie elementy są takie jak w Standardowej Maszynie Turinga (SMT) poza
 $\delta$, która teraz jest relacją
-```math
+$$
 \delta \subseteq (\Gamma \times Q \setminus \{q_Y, q_N\}) \times (\Gamma \times Q \times \{\leftarrow,
 \rightarrow\})
-```
+$$
 Widząc dany symbol i będąc w danym stanie NMT może:
 - mieć dokładnie jedną drogę kontynuowania obliczeń
 - mieć więcej niż jedną drogę kontynuowania obliczeń
