@@ -162,10 +162,10 @@ L\subseteq\Sigma^*: L\in\text{R} \implies L\in\text{RE} \land L \in\text{coRE} \
 
 Uniwersalna Maszyna Turinga $U$ mając na wejściu zakodowaną maszynę $M$ oraz słowo $x$ tj. $\langle
 M, x\rangle$ symuluje działanie maszyny $M$ dla wejścia $x$. Jest to model komputera z programem
-przechowywanym w pamięci. Ustalmy alfabet $\Sigma = \{0,1,\#\}$. Kodowanie maszyny $M$ możemy
+przechowywanym w pamięci. Ustalmy alfabet $\Sigma = \{0,1,\\#\}$. Kodowanie maszyny $M$ możemy
 przedstawić jako
 $$
-\langle M \rangle = \langle \Gamma \rangle \# \langle Q \rangle \# \langle \delta \rangle \# \#
+\langle M \rangle = \langle \Gamma \rangle \\# \langle Q \rangle \\# \langle \delta \rangle \\# \\#
 $$
 gdzie $\langle \Gamma \rangle = \langle |\Gamma |\rangle$ i $\langle Q \rangle = \langle |Q|\rangle$
 to po prostu kodowania binarne liczby symboli w alfabecie roboczym i liczby stanów, natomiast
