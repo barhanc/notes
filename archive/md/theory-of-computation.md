@@ -1,16 +1,7 @@
-<script>
-window.MathJax = {
-  tex: {
-    inlineMath: [['$', '$'], ['\\(', '\\)']],
-    displayMath: [['$$', '$$'], ['\\[', '\\]']],
-    processEscapes: true
-  },
-  options: {
-    skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-  }
-};
-</script>
-<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+---
+layout: math-page
+title: Theory of Computation
+---
 
 Def. Problem decyzyjny to para $\Pi = (D_\Pi, Y_\Pi)$, gdzie $D_\Pi$ to zbiór "egzemplarzy"
 problemu, a $Y_\Pi \subseteq D_\Pi$ to zbiór "egzemplarzy" z odpowiedzią "TAK".
