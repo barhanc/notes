@@ -10,8 +10,11 @@
 ## Computer Science
 
 - [Computer Basics](https://barhanc.github.io/notes/archive/md/computer-basics)
-- [Computer Organization](https://barhanc.github.io/notes/archive/md/computer-organization)
+- [Computer Architecture](https://barhanc.github.io/notes/archive/md/computer-organization)
+- [Theory of Computation](https://barhanc.github.io/notes/archive/md/theory-of-computation)
 - [Python](https://barhanc.github.io/notes/archive/md/python)
+- [SQL](https://barhanc.github.io/notes/archive/md/sql)
+- [Git](https://barhanc.github.io/notes/archive/md/git)
 
 ## Math
 
