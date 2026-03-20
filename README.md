@@ -39,3 +39,16 @@
   stored-program computer and the semiconductor revolution)
 
 - [ ] "Computers and Ghosts"
+
+<details>
+  <summary>Old Arc</summary>
+
+### Physics
+
+- [Classical Physics](https://barhanc.github.io/notes/archive/pdf/classical-physics.pdf)
+- [Physics Problems](https://barhanc.github.io/notes/archive/pdf/physics-problems.pdf)
+- [Physics Solved Problems](https://barhanc.github.io/notes/archive/pdf/physics-solv.pdf)
+- [Quantum Physics — Part 1](https://barhanc.github.io/notes/archive/pdf/quantum-physics-part1.pdf)
+- [Quantum Physics — Part 2](https://barhanc.github.io/notes/archive/pdf/quantum-physics-part2.pdf)
+
+</details>
