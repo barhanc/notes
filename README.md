@@ -41,7 +41,9 @@
 - [ ] "Computers and Ghosts"
 
 <details>
-  <summary>Old Arc</summary>
+  <summary><small>Old Arc</small></summary>
+
+<small>
 
 ### Physics
 
@@ -50,5 +52,7 @@
 - [Physics Solved Problems](https://barhanc.github.io/notes/archive/pdf/physics-solv.pdf)
 - [Quantum Physics — Part 1](https://barhanc.github.io/notes/archive/pdf/quantum-physics-part1.pdf)
 - [Quantum Physics — Part 2](https://barhanc.github.io/notes/archive/pdf/quantum-physics-part2.pdf)
+
+</small>
 
 </details>
