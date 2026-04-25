@@ -1,6 +1,24 @@
+#set page(
+  paper: "a5",
+)
 #set text(
   font: "CMU Concrete",
+  size: 10pt,
 )
+#set par(
+  justify: true,
+)
+#set heading(
+  numbering: "1.",
+)
+
+#show title: set text(size: 17pt)
+#show title: set align(center)
+
+#title[
+  A Fluid Dynamic Model
+  for Glacier Flow
+]
 
 = Background
 
