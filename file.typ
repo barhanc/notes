@@ -25,6 +25,6 @@ $ f(x) = sum_(i=1)^n g_i (x) = limits(integral)_0^infinity f(x) dif x $
 
 #lorem(100)
 
-$  sum_(i=1)^n lambda_i (x) $
+$ beta = Lambda times sum_(i=1)^n lambda_i (x) $
 
 #lorem(40)
