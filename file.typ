@@ -1,5 +1,5 @@
 #set par(justify: true)
-#set page(paper: "a5")
+#set page(paper: "a5", numbering: "1")
 #set text(font: "Concrete Math")
 #set heading(numbering: "1.")
 
@@ -21,3 +21,10 @@ temperature, pressure, and the presence of other fluids (such as water).
 
 $ f(x) = sum_(i=1)^n g_i (x) = limits(integral)_0^infinity f(x) dif x $
 
+=== Boundary Conditions
+
+#lorem(100)
+
+$  sum_(i=1)^n lambda_i (x) $
+
+#lorem(40)
