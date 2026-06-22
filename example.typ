@@ -13,7 +13,6 @@
 #outline()
 
 = Introduction
-#line(length: 100%)
 
 In the case of glaciers, fluid dynamics principles can be used to understand how
 the movement and behaviour of the ice is influenced by factors such as
@@ -31,9 +30,18 @@ $ f(x) = sum_(i=1)^n g_i (x) = limits(integral)_0^infinity f(x) dif x $
 
 #lorem(100)
 
-$ 
-beta &= Lambda dot sum_(i=1)^n lambda_i (x) \
-     &= sin(alpha) / tan(beta) dot limits(integral)_0^infinity sigma(x) dif x
+```rust
+fn main() {
+    println!("Hello World!");
+}
+```
+
+#lorem(30)
+
+$
+  beta(x) & = Lambda dot sum_(i=1)^n lambda_i (x) \
+          & = sin(alpha) / tan(beta) dot limits(integral)_(-infinity)^(+infinity) sigma(x) dif x \
+          & e^(i phi) = cos phi + i sin phi \
 $
 
 

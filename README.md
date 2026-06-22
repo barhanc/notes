@@ -13,7 +13,6 @@
 - [Computer Architecture](https://barhanc.github.io/notes/archive/md/computer-organization)
 - [Theory of Computation](https://barhanc.github.io/notes/archive/md/theory-of-computation)
 - [Python](https://barhanc.github.io/notes/archive/md/python)
-- [SQL](https://barhanc.github.io/notes/archive/md/sql)
 - [Git](https://barhanc.github.io/notes/archive/md/git)
 
 ## Math
@@ -37,8 +36,6 @@
 - [ ] Some reflections on why do I think that LLMs are the beginning of the
   incoming revolution (prbly as significant as the invention of the
   stored-program computer and the semiconductor revolution)
-
-- [ ] "Computers and Ghosts"
 
 <details>
   <summary><small>Old Arc</small></summary>
