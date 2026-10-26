@@ -1,7 +1,6 @@
 #let title = "A Fluid Dynamic Model for Glacier Flow"
 #let authors = ("Bartosz Hanc",)
 
-#set par(justify: true)
 #set page(paper: "a5", numbering: "1")
 #set text(font: "Concrete Math")
 #set heading(numbering: "1.")
