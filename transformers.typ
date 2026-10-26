@@ -11,37 +11,32 @@
 //    - Forward Propagation (Topological Order)
 //    - Backward Propagation (Reverse Topological Order & Dual Chain Rule)
 //
-// 3. Optimization
+// 3. Optimization and Initialization
+//    - The Initialization Problem & Variance Preservation (Xavier, He)
 //    - Stochastic Gradient Descent & Mini-batching
-//    - Pathologies of Loss Surfaces (Curvature, Ravines, Saddle Points)
-//    - Momentum and Adaptive Learning Rates
-//    - Adam and Decoupled Weight Decay (AdamW)
+//    - Geometry of Loss Landscapes (Curvature, Ravines, Saddle Points)
+//    - Momentum and Adaptive Learning Rates (Adam)
+//    - Decoupled Weight Decay (AdamW)
 //
 // 4. Autoregressive Sequence Modeling
 //    - Autoregressive Factorization of Joint Densities
 //    - Tokenization and Discrete Vocabulary Embedding Spaces
 //    - Sequential State Bottlenecks in Recurrent Architectures
+//    - Stochastic Generation, Temperature Scaling, and Truncation
 //
 // 5. The Transformer Architecture
 //    - Scaled Dot-Product Attention & Variance-Preserving Scaling
-//    - Multi-Head Attention and Causal Masking
+//    - Multi-Head Projection and Causal Masking
 //    - The KV Cache as the Autoregressive Dynamical State
 //    - Permutation Equivariance & Rotary Position Embeddings (RoPE)
-//    - Residual Highway, Normalization (Pre-LN, RMSNorm), and SwiGLU
+//    - Normalization and the Residual Stream (Pre-LN, RMSNorm)
+//    - Channel Mixing via Gated Units (SwiGLU)
 //
-// 6. Theoretical Foundations of Attention
-//    - Attention as Continuous Associative Memory & Hopfield Networks
-//    - Representational Capacity and In-Context Function Classes
-//    - Circuit Complexity and Expressive Limits
-//
-// 7. In-Context Learning & Prior-Data Fitted Networks (PFNs)
-//    - In-Context Conditioning as Implicit Bayesian Inference
-//    - Prior-Data Fitted Networks: Learning Algorithms in Forward Pass
-//    - Attention as In-Context Gradient Descent & Meta-Optimization
-//
-// 8. Sampling and Autoregressive Generation
-//    - Stochastic Generation from High-Dimensional Conditional Densities
-//    - Temperature, Top-k, and Nucleus (Top-p) Truncation
+// 6. In-Context Learning and Prior-Data Fitted Networks
+//    - In-Context Inference in Activation Space vs. In-Weights Learning
+//    - Mechanistic Foundations: Induction Heads & In-Context Gradient Steps
+//    - The Bayesian View: In-Context Conditioning as Posterior Prediction
+//    - Prior-Data Fitted Networks (PFNs): Amortizing Inference via Priors
 // =============================================================================
 
 #let title = "Present & Future of Transformer LLMs"
