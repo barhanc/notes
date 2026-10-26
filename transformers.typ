@@ -1,3 +1,49 @@
+// =============================================================================
+// Monograph Outline: Theoretical Deep Learning & Transformers
+//
+// 1. Learning as Likelihood Maximization
+//    - Unsupervised Density Estimation vs. Supervised Prediction
+//    - Canonical Loss Functions (MSE, Binary Cross-Entropy, Softmax)
+//
+// 2. Neural Networks
+//    - A Brief History & Direct MLP Composition
+//    - Computational Graph Perspective (Attributed DAG)
+//    - Forward Propagation (Topological Order)
+//    - Backward Propagation (Reverse Topological Order & Dual Chain Rule)
+//
+// 3. Optimization
+//    - Stochastic Gradient Descent & Mini-batching
+//    - Pathologies of Loss Surfaces (Curvature, Ravines, Saddle Points)
+//    - Momentum and Adaptive Learning Rates
+//    - Adam and Decoupled Weight Decay (AdamW)
+//
+// 4. Autoregressive Sequence Modeling
+//    - Autoregressive Factorization of Joint Densities
+//    - Tokenization and Discrete Vocabulary Embedding Spaces
+//    - Sequential State Bottlenecks in Recurrent Architectures
+//
+// 5. The Transformer Architecture
+//    - Scaled Dot-Product Attention & Variance-Preserving Scaling
+//    - Multi-Head Attention and Causal Masking
+//    - The KV Cache as the Autoregressive Dynamical State
+//    - Permutation Equivariance & Rotary Position Embeddings (RoPE)
+//    - Residual Highway, Normalization (Pre-LN, RMSNorm), and SwiGLU
+//
+// 6. Theoretical Foundations of Attention
+//    - Attention as Continuous Associative Memory & Hopfield Networks
+//    - Representational Capacity and In-Context Function Classes
+//    - Circuit Complexity and Expressive Limits
+//
+// 7. In-Context Learning & Prior-Data Fitted Networks (PFNs)
+//    - In-Context Conditioning as Implicit Bayesian Inference
+//    - Prior-Data Fitted Networks: Learning Algorithms in Forward Pass
+//    - Attention as In-Context Gradient Descent & Meta-Optimization
+//
+// 8. Sampling and Autoregressive Generation
+//    - Stochastic Generation from High-Dimensional Conditional Densities
+//    - Temperature, Top-k, and Nucleus (Top-p) Truncation
+// =============================================================================
+
 #let title = "Present & Future of Transformer LLMs"
 #let authors = ("Bartosz Hanc",)
 
@@ -17,9 +63,10 @@
 
 = Learning as Likelihood Maximization
 
-Let's start with a short overview of the general problem of learning from a set
-of examples. We generally distinguish two main types of learning
-problems---unsupervised and supervised.
+Machine learning is fundamentally the task of inferring an unknown probability
+distribution from a finite dataset $cal(D)$. Depending on whether the data
+contain supervisory signals, we distinguish between two primary settings:
+unsupervised and supervised learning.
 
 In the unsupervised case, our dataset consists simply of unlabeled samples
 $cal(D) = {bold(x)_1, ..., bold(x)_N}$, where $bold(x)_i in RR^d$. Our goal is
