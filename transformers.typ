@@ -2,41 +2,42 @@
 // Monograph Outline: Theoretical Deep Learning & Transformers
 //
 // 1. Learning as Likelihood Maximization
-//    - Unsupervised Density Estimation vs. Supervised Prediction
-//    - Canonical Loss Functions (MSE, Binary Cross-Entropy, Softmax)
+//    - Supervised and Unsupervised Learning
+//    - Canonical Loss Functions
+//    - Gradient-Based Optimization in High Dimensions
 //
 // 2. Neural Networks
-//    - A Brief History & Direct MLP Composition
-//    - Computational Graph Perspective (Attributed DAG)
-//    - Forward Propagation (Topological Order)
-//    - Backward Propagation (Reverse Topological Order & Dual Chain Rule)
+//    - Multilayer Perceptrons
+//    - The Computational Graph
+//    - Forward Propagation
+//    - Backward Propagation
 //
 // 3. Optimization and Initialization
-//    - The Initialization Problem & Variance Preservation (Xavier, He)
-//    - Stochastic Gradient Descent & Mini-batching
-//    - Geometry of Loss Landscapes (Curvature, Ravines, Saddle Points)
-//    - Momentum and Adaptive Learning Rates (Adam)
-//    - Decoupled Weight Decay (AdamW)
+//    - Weight Initialization and Variance Preservation
+//    - Stochastic Gradient Descent
+//    - Loss Landscape Geometry and Conditioning
+//    - Momentum and Adaptive Step Sizes
+//    - Decoupled Weight Decay
 //
-// 4. Autoregressive Sequence Modeling
-//    - Autoregressive Factorization of Joint Densities
-//    - Tokenization and Discrete Vocabulary Embedding Spaces
-//    - Sequential State Bottlenecks in Recurrent Architectures
-//    - Stochastic Generation, Temperature Scaling, and Truncation
+// 4. Attention and Transformers
+//    - Permutation Equivariance and Set Operations
+//    - Scaled Dot-Product Attention
+//    - Normalization and Residual Connections
+//    - Gated Feed-Forward Networks
+//    - Representation Rank and Residual Dynamics
 //
-// 5. The Transformer Architecture
-//    - Scaled Dot-Product Attention & Variance-Preserving Scaling
-//    - Multi-Head Projection and Causal Masking
-//    - The KV Cache as the Autoregressive Dynamical State
-//    - Permutation Equivariance & Rotary Position Embeddings (RoPE)
-//    - Normalization and the Residual Stream (Pre-LN, RMSNorm)
-//    - Channel Mixing via Gated Units (SwiGLU)
+// 5. Autoregressive Sequence Models
+//    - Joint Density Factorization
+//    - Discrete Vocabularies and Token Embeddings
+//    - Causal Masking
+//    - Rotary Position Embeddings
+//    - Key-Value Cache and Generation Dynamics
+//    - Stochastic Decoding and Temperature Scaling
 //
 // 6. In-Context Learning and Prior-Data Fitted Networks
-//    - In-Context Inference in Activation Space vs. In-Weights Learning
-//    - Mechanistic Foundations: Induction Heads & In-Context Gradient Steps
-//    - The Bayesian View: In-Context Conditioning as Posterior Prediction
-//    - Prior-Data Fitted Networks (PFNs): Amortizing Inference via Priors
+//    - In-Context Conditioning as Bayesian Inference
+//    - Prior-Data Fitted Networks
+//    - In-Context Gradient Steps and Activation Dynamics
 // =============================================================================
 
 #let title = "Present & Future of Transformer LLMs"
