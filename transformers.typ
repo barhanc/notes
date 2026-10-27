@@ -43,12 +43,40 @@
 #let title = "Modern Deep Learning: A Short Course"
 #let authors = ("Bartosz Hanc",)
 
-#set page(paper: "a5", numbering: "1")
+#set page(
+  paper: "a5",
+  margin: (x: 18mm, top: 22mm, bottom: 20mm),
+  numbering: "1",
+)
 #set text(font: "Concrete Math")
-#set par(justify: true)
-#set heading(numbering: "1.")
+#set par(
+  justify: true,
+  leading: 0.65em,
+)
+
+#set heading(numbering: (..nums) => {
+  let pos = nums.pos()
+  if pos.len() == 1 {
+    "§ " + str(pos.first()) + "."
+  } else {
+    pos.map(str).join(".") + "."
+  }
+})
+#show heading.where(level: 1): set text(size: 13pt)
+#show heading.where(level: 2): set text(size: 11pt)
+#show heading: set block(above: 1.8em, below: 1.2em)
+
+#show heading.where(level: 1): it => {
+  counter(math.equation).update(0)
+  it
+}
 
 #show math.equation: set text(font: "Concrete Math")
+#set math.equation(numbering: num => {
+  let h = counter(heading).get()
+  let sec = if h.len() >= 1 { str(h.first()) } else { "1" }
+  "(" + sec + "." + str(num) + ")"
+})
 
 #align(center, text(size: 17pt, strong(title)))
 #for author in authors { align(center, text(author)) }
@@ -67,7 +95,7 @@ unsupervised and supervised learning.
 In the unsupervised case, our dataset consists simply of unlabeled samples
 $cal(D) = {bold(x)_1, ..., bold(x)_N}$, where $bold(x)_i in RR^d$. Our goal is
 to learn the underlying data distribution---a task that we can broadly
-summarize as estimating the data density and being able to sample new, unseen
+summarize as estimating the data density and/or being able to sample new, unseen
 examples $bold(x)$ from this distribution,
 $
   bold(x) ~ P(dot; bold(theta)) quad.
@@ -85,34 +113,37 @@ samples in our training set are independent and identically distributed
 parameterized by $bold(theta)$ factors as a product over individual examples,
 $
   P(cal(D); bold(theta)) = product_(i=1)^N P(bold(x)_i; bold(theta))
-    quad "(unsupervised)"
+  quad "(unsupervised)"
 $
 or, in the case of pairs,
 $
   P(cal(D); bold(theta)) = product_(i=1)^N P(bold(x)_i, y_i; bold(theta))
-    quad "(supervised)" quad.
+  quad "(supervised)" quad.
 $
 In the supervised setting, we can factorize the joint distribution of each
 pair as
 $
   P(bold(x)_i, y_i; bold(theta)) =
-    P(y_i | bold(x)_i; bold(theta)) P(bold(x)_i) quad.
+  P(y_i | bold(x)_i; bold(theta)) P(bold(x)_i) quad.
 $
 When training discriminative models, we assume that the input marginal
 distribution $P(bold(x))$ does not depend on the model parameters $bold(theta)$.
 Taking the log-likelihood over the dataset $cal(D)$,
 $
-  log P(cal(D); bold(theta)) &= sum_(i=1)^N log P(bold(x)_i, y_i; bold(theta)) \
-  &= sum_(i=1)^N log P(y_i | bold(x)_i; bold(theta)) +
-    underbrace(sum_(i=1)^N log P(bold(x)_i), "const. w.r.t." bold(theta))
-    quad.
+  log P(cal(D); bold(theta))
+    & = sum_(i=1)^N log P(bold(x)_i, y_i; bold(theta)) \
+    & = sum_(i=1)^N log P(y_i | bold(x)_i; bold(theta)) \
+    & quad + underbrace(
+        sum_(i=1)^N log P(bold(x)_i),
+        "const. w.r.t." bold(theta)
+      ) quad.
 $
 Therefore, maximizing the joint log-likelihood over $cal(D)$ with respect to
 $bold(theta)$ is mathematically equivalent to maximizing the *conditional*
 log-likelihood,
 $
   bold(theta)^* = arg max_bold(theta) sum_(i=1)^N
-    log P(y_i | bold(x)_i; bold(theta)) quad.
+  log P(y_i | bold(x)_i; bold(theta)) quad.
 $
 By convention, optimization problems in machine learning are formulated as
 minimizations rather than maximizations, and the objective is normalized by the
@@ -121,7 +152,7 @@ training samples. We therefore define the *loss function* as the
 sample-averaged negative conditional log-likelihood,
 $
   L(cal(D); bold(theta)) = - 1 / N sum_(i=1)^N
-    log P(y_i | bold(x)_i; bold(theta)) quad,
+  log P(y_i | bold(x)_i; bold(theta)) quad,
 $
 (or, in the unsupervised case,
 $L(cal(D); bold(theta)) = - 1 / N sum_(i=1)^N log P(bold(x)_i; bold(theta))$).
@@ -140,7 +171,7 @@ dimensionality, making exact gradient information indispensable for pointing
 in the direction of steepest descent. The basic gradient descent update rule is
 $
   bold(theta)_(t+1) = bold(theta)_t - eta (partial L) / (partial bold(theta))
-    (cal(D); bold(theta)_t) quad,
+  (cal(D); bold(theta)_t) quad,
 $
 where $eta > 0$ is the learning rate. We will discuss modern variants of
 gradient descent used in deep learning later.
@@ -158,19 +189,22 @@ classification.
   where $f(dot; bold(theta)): RR^d -> RR$ is parameterized by $bold(theta)$
   (e.g., a neural network). The loss function is therefore
   $
-    L(cal(D); bold(theta), sigma) &= - 1 / N sum_(i=1)^N log {
-      1 / sqrt(2 pi sigma^2) exp(- [y_i - f(bold(x)_i; bold(theta))]^2 /
-      (2sigma^2))
-    } \
-    &= 1 / (2N sigma^2) sum_(i=1)^N [y_i - f(bold(x)_i; bold(theta))]^2 +
-      1 / 2 log (2pi sigma^2) quad.
+    L(cal(D); bold(theta), sigma) & = - 1 / N sum_(i=1)^N log {
+                                      1 / sqrt(2 pi sigma^2) exp(
+                                        - [y_i - f(bold(x)_i; bold(theta))]^2 /
+                                        (2sigma^2)
+                                      )
+                                    } \
+                                  & = 1 / (2N sigma^2) sum_(i=1)^N
+                                    [y_i - f(bold(x)_i; bold(theta))]^2 \
+                                  & quad + 1 / 2 log (2pi sigma^2) quad.
   $
   Assuming fixed noise variance $sigma^2$, minimizing this loss with respect to
   $bold(theta)$ is strictly equivalent to minimizing the Mean Squared Error
   (MSE),
   $
     L_"MSE" (cal(D); bold(theta)) = 1 / (2N) sum_(i=1)^N
-      [y_i - f(bold(x)_i; bold(theta))]^2 quad,
+    [y_i - f(bold(x)_i; bold(theta))]^2 quad,
   $
   which yields the gradient with respect to $f_i = f(bold(x)_i; bold(theta))$,
   $
@@ -186,14 +220,14 @@ classification.
   where $pi(bold(x); bold(theta)) = P(y = 1 | bold(x); bold(theta)) in [0, 1]$.
   The loss function (binary cross-entropy) is given by
   $
-    L (cal(D); bold(theta)) &= - 1 / N sum_(i=1)^N log {
-      pi(bold(x)_i; bold(theta))^(y_i) dot
-      (1 - pi(bold(x)_i; bold(theta)))^(1 - y_i)
-    } \
-    &= - 1 / N sum_(i=1)^N {
-      y_i log pi(bold(x)_i; bold(theta)) +
-      (1 - y_i) log [1 - pi(bold(x)_i; bold(theta))]
-    } quad.
+    L (cal(D); bold(theta)) & = - 1 / N sum_(i=1)^N log {
+                                pi(bold(x)_i; bold(theta))^(y_i) dot
+                                (1 - pi(bold(x)_i; bold(theta)))^(1 - y_i)
+                              } \
+                            & = - 1 / N sum_(i=1)^N {
+                                y_i log pi(bold(x)_i; bold(theta)) +
+                                (1 - y_i) log [1 - pi(bold(x)_i; bold(theta))]
+                              } quad.
   $
   To ensure that $pi(bold(x); bold(theta)) in [0, 1]$, we express $pi$ as the
   composition of the standard logistic sigmoid function $sigma: RR -> [0, 1]$
@@ -201,7 +235,7 @@ classification.
   (called the logit),
   $
     pi(bold(x); bold(theta)) = sigma(f(bold(x); bold(theta))) =
-      1 / (1 + exp(-f(bold(x); bold(theta)))) quad.
+    1 / (1 + exp(-f(bold(x); bold(theta)))) quad.
   $
   This choice is particularly appealing because
   $
@@ -224,17 +258,18 @@ classification.
   $sum_(k=1)^K pi_k (bold(x); bold(theta)) = 1$. The loss function (categorical
   cross-entropy) is
   $
-    L (cal(D); bold(theta)) &= - 1 / N sum_(i=1)^N log {
-      product_(k=1)^K pi_k (bold(x)_i; bold(theta))^[y_i = k]
-    } \
-    &= - 1 / N sum_(i=1)^N sum_(k=1)^K [y_i = k]
-      log pi_k (bold(x)_i; bold(theta)) quad,
+    L (cal(D); bold(theta))
+      & = - 1 / N sum_(i=1)^N log {
+        product_(k=1)^K pi_k (bold(x)_i; bold(theta))^[y_i = k]
+      } \
+                            & = - 1 / N sum_(i=1)^N sum_(k=1)^K [y_i = k]
+                              log pi_k (bold(x)_i; bold(theta)) quad,
   $
   where $[dot]$ denotes the Iverson bracket. Writing the one-hot target
   component as $y_(i k) = [y_i = k]$, this becomes
   $
     L(cal(D); bold(theta)) = - 1 / N sum_(i=1)^N sum_(k=1)^K y_(i k)
-      log pi_k (bold(x)_i; bold(theta)) quad.
+    log pi_k (bold(x)_i; bold(theta)) quad.
   $
   To parameterize $bold(pi)$, we map $bold(x)$ to a vector of unnormalized
   scores (logits) $bold(f)(bold(x); bold(theta)) in RR^K$ followed by the
@@ -267,7 +302,7 @@ Real-world data (such as text or images) require learning rich, hierarchical
 feature representations, which deep neural networks achieve via function
 composition.
 
-== A Brief History
+== Multilayer Perceptrons
 
 The artificial neuron originated with the threshold logic unit of McCulloch and
 Pitts (1943), extended to learnable weights and biases by Rosenblatt (1958) in
@@ -282,11 +317,11 @@ Perceptrons* (MLPs) with smooth, non-linear activations $sigma$ (e.g., sigmoid,
 $tanh$, or ReLU). An MLP is a direct function composition,
 $
   f(bold(x)) = (f_L compose dots.c compose f_1)(bold(x)) =
-    sigma_L (bold(W)_L dots.c sigma_1 (bold(W)_1 bold(x) + bold(b)_1) dots.c +
+  sigma_L (bold(W)_L dots.c sigma_1 (bold(W)_1 bold(x) + bold(b)_1) dots.c +
     bold(b)_L) quad,
 $
 where each layer computes $f_l (bold(h)_(l-1)) = sigma_l (bold(W)_l
-bold(h)_(l-1) + bold(b)_l)$ with $bold(h)_0 = bold(x)$. Smooth activations
+  bold(h)_(l-1) + bold(b)_l)$ with $bold(h)_0 = bold(x)$. Smooth activations
 render the composition differentiable end-to-end, and such networks act as
 universal function approximators (Cybenko, 1989; Hornik, 1991).
 
@@ -301,11 +336,11 @@ In this graph, directed edges represent data flow: a directed edge $(j, i) in
 cal(E)$ indicates that the value $bold(v)_j$ computed at node $j$ is passed as
 an input to node $i$. Each node $i in cal(V)$ is characterized by:
 - *Predecessors (inputs):* The set of parent nodes $cal(P)_i = {j in cal(V) |
-  (j, i) in cal(E)}$ whose outputs feed into node $i$. Nodes with no incoming
+    (j, i) in cal(E)}$ whose outputs feed into node $i$. Nodes with no incoming
   edges ($cal(P)_i = emptyset$) are the *input nodes*, which receive external
   features $bold(x)$.
 - *Successors (consumers):* The set of child nodes $cal(N)_i = {k in cal(V) |
-  (i, k) in cal(E)}$ that consume the value $bold(v)_i$. Nodes with no outgoing
+    (i, k) in cal(E)}$ that consume $bold(v)_i$. Nodes with no outgoing
   edges ($cal(N)_i = emptyset$) are the *output nodes*, yielding the model's
   predictions $bold(f)(bold(x); bold(theta))$.
 - *Local computation:* A differentiable function $bold(f)_i$ parameterized by
@@ -326,7 +361,7 @@ $
 
 Because the computational graph $cal(G)$ is directed and acyclic, its vertices
 admit a *topological ordering*---a permutation of nodes $(v_1, v_2, ...,
-v_(|cal(V)|))$ such that for every directed edge $(j, i) in cal(E)$, node $j$
+  v_(|cal(V)|))$ such that for every directed edge $(j, i) in cal(E)$, node $j$
 appears before node $i$.
 
 Forward propagation evaluates the nodes sequentially in topological order,
@@ -354,22 +389,22 @@ rule equations (where $p, q$ denote suitable multi-indices over tensor
 elements):
 
 1. *Gradient with respect to intermediate activations:* Because the
-   activation $v_(i, p)$ can affect the loss $L$ through multiple downstream
-   paths via successor nodes $j in cal(N)_i$, the total derivative sums over
-   all child nodes and their components,
+  activation $v_(i, p)$ can affect the loss $L$ through multiple downstream
+  paths via successor nodes $j in cal(N)_i$, the total derivative sums over
+  all child nodes and their components,
 $
   (partial L) / (partial v_(i, p)) = sum_(j in cal(N)_i) sum_q
-    (partial L) / (partial v_(j, q)) (partial v_(j, q)) / (partial v_(i, p))
-    quad.
+  (partial L) / (partial v_(j, q)) (partial v_(j, q)) / (partial v_(i, p))
+  quad.
 $
 
 2. *Gradient with respect to node parameters:* The parameters $theta_(i, p)$
-   influence the loss $L$ exclusively through the node's own output values
-   $v_(i, q)$,
+  influence the loss $L$ exclusively through the node's own output values
+  $v_(i, q)$,
 $
   (partial L) / (partial theta_(i, p)) = sum_q
-    (partial L) / (partial v_(i, q)) (partial v_(i, q)) / (partial theta_(i, p))
-    quad.
+  (partial L) / (partial v_(i, q)) (partial v_(i, q)) / (partial theta_(i, p))
+  quad.
 $
 
 In reverse topological order, when visiting node $i$, the incoming gradients
