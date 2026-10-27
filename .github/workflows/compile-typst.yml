@@ -1,0 +1,39 @@
+name: Compile Typst Documents
+
+on:
+  push:
+    branches: [ master ]
+    paths:
+      - 'transformers.typ'
+      - 'fonts/**'
+      - '.github/workflows/compile-typst.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Typst
+        uses: typst-community/setup-typst@v4
+
+      - name: Compile PDF
+        run: |
+          typst compile --font-path fonts transformers.typ transformers.pdf
+
+      - name: Commit and push generated PDF
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add transformers.pdf
+          if git diff --staged --quiet; then
+            echo "No changes in transformers.pdf"
+          else
+            git commit -m "Auto-compile transformers.pdf [skip ci]"
+            git push
+          fi
