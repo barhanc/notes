@@ -42,6 +42,7 @@
 
 #set page(paper: "a5", margin: (x: 18mm, top: 22mm, bottom: 20mm), numbering: "1")
 #set text(font: "Concrete Math")
+#show math.equation: set text(font: "Concrete Math")
 #set par(justify: true, leading: 0.65em)
 
 #set heading(numbering: (..n) => (
