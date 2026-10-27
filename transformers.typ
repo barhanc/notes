@@ -53,7 +53,7 @@
 
 #set heading(
   numbering: (..n) => (
-    (if n.pos().len() == 1 { "§ " } else { "" }) + n.pos().map(str).join(".") + "."
+    (if n.pos().len() == 1 { "§ " } else { "" }) + n.pos().map(str).join(".")
   ),
   supplement: none,
 )
@@ -331,9 +331,8 @@ an input to node $i$. Each node $i in cal(V)$ is characterized by:
   predictions $bold(f)(bold(x); bold(theta))$.
 - *Local computation:* A differentiable function $bold(f)_i$ parameterized by
   local parameters $bold(theta)_i$ (with $bold(theta)_i = emptyset$ for
-  parameter-free operations), computing the intermediate tensor (understood
-  here simply as a multidimensional array, without coordinate transformation
-  baggage),
+  parameter-free operations), computing the intermediate tensor
+  (multidimensional array),
 $
   bold(v)_i = bold(f)_i ({bold(v)_j}_(j in cal(P)_i); bold(theta)_i) quad.
 $
