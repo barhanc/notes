@@ -1,5 +1,7 @@
 # notes
 
+Personal collection of notes and theoretical monographs. Rough ideas and reading queue are tracked in the [Inbox](inbox.md).
+
 ## Machine Learning
 
 - [Modern Deep Learning: A Short Course](https://barhanc.github.io/notes/archive/pdf/transformers.pdf)
@@ -23,6 +25,8 @@
 - [Algebra z Geometrią](https://barhanc.github.io/notes/archive/pdf/algebra.pdf)
 
 ## TODO
+
+See [Inbox](inbox.md) for the complete backlog of ideas and reading materials.
 
 - [ ] Deep dive into semiconductor fabrication: [this awesome
   paper](https://dl.acm.org/doi/10.1145/356819.356824) and
