@@ -43,24 +43,20 @@
 #set page(paper: "a5", margin: (x: 18mm, top: 22mm, bottom: 20mm), numbering: "1")
 #set text(font: "Concrete Math")
 #set par(justify: true, leading: 0.65em)
-#set math.equation(
-  numbering: n => (
-    "(" + str(counter(heading).get().first()) + "." + str(n) + ")"
-  ),
-  supplement: none,
-)
-#show math.equation: set text(font: "Concrete Math")
-
-#set heading(
-  numbering: (..n) => (
-    (if n.pos().len() == 1 { "§ " } else { "" }) + n.pos().map(str).join(".")
-  ),
-  supplement: none,
-)
 #show heading.where(level: 1): it => counter(math.equation).update(0) + it
 #show heading.where(level: 1): set text(13pt)
 #show heading.where(level: 2): set text(11pt)
 #show heading: set block(above: 1.8em, below: 1.2em)
+#show math.equation: set text(font: "Concrete Math")
+
+#set math.equation(
+  numbering: n => ("(" + str(counter(heading).get().first()) + "." + str(n) + ")"),
+  supplement: none,
+)
+#set heading(
+  numbering: (..n) => ((if n.pos().len() == 1 { "§ " } else { "" }) + n.pos().map(str).join(".")),
+  supplement: none,
+)
 
 
 #align(center)[
@@ -367,8 +363,7 @@ To optimize the network parameters via gradient descent, we must compute the
 gradient of the scalar loss $L$ with respect to the parameters of every node.
 Crucially, backward propagation is initialized directly at the network's
 output nodes $bold(f)$ using the analytical loss gradients derived in
-@sec:learning: @eq:grad-mse for regression, @eq:grad-bce for binary
-classification, and @eq:grad-ce for multiclass classification.
+@sec:learning.
 
 Starting from these known boundary gradients at the output nodes, we traverse
 the computational graph in *reverse topological order* back toward the input
