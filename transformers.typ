@@ -40,15 +40,12 @@
 //    - In-Context Gradient Steps and Activation Dynamics
 // =============================================================================
 
-#set page(
-  paper: "a5", margin: (x: 18mm, top: 22mm, bottom: 20mm), numbering: "1"
-)
+#set page(paper: "a5", margin: (x: 18mm, top: 22mm, bottom: 20mm), numbering: "1")
 #set text(font: "Concrete Math")
 #set par(justify: true, leading: 0.65em)
 
 #set heading(numbering: (..n) => (
-  (if n.pos().len() == 1 { "§ " } else { "" }) +
-  n.pos().map(str).join(".") + "."
+  (if n.pos().len() == 1 { "§ " } else { "" }) + n.pos().map(str).join(".") + "."
 ))
 #show heading.where(level: 1): it => counter(math.equation).update(0) + it
 #show heading.where(level: 1): set text(13pt)
