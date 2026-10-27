@@ -331,7 +331,9 @@ an input to node $i$. Each node $i in cal(V)$ is characterized by:
   predictions $bold(f)(bold(x); bold(theta))$.
 - *Local computation:* A differentiable function $bold(f)_i$ parameterized by
   local parameters $bold(theta)_i$ (with $bold(theta)_i = emptyset$ for
-  parameter-free operations), computing the intermediate tensor
+  parameter-free operations), computing the intermediate tensor (understood
+  here simply as a multidimensional array, without coordinate transformation
+  baggage),
 $
   bold(v)_i = bold(f)_i ({bold(v)_j}_(j in cal(P)_i); bold(theta)_i) quad.
 $
