@@ -1,5 +1,5 @@
 // =============================================================================
-// Monograph Outline: Theoretical Deep Learning & Transformers
+// Monograph Outline: Modern Deep Learning: A Short Course
 //
 // 1. Learning as Likelihood Maximization
 //    - Supervised and Unsupervised Learning
@@ -40,7 +40,7 @@
 //    - In-Context Gradient Steps and Activation Dynamics
 // =============================================================================
 
-#let title = "Present & Future of Transformer LLMs"
+#let title = "Modern Deep Learning: A Short Course"
 #let authors = ("Bartosz Hanc",)
 
 #set page(paper: "a5", numbering: "1")
@@ -50,8 +50,8 @@
 
 #show math.equation: set text(font: "Concrete Math")
 
-// #align(center, text(size: 17pt, strong(title)))
-// #for author in authors { align(center, text(author)) }
+#align(center, text(size: 17pt, strong(title)))
+#for author in authors { align(center, text(author)) }
 
 #outline()
 
