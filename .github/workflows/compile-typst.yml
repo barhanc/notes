@@ -24,15 +24,16 @@ jobs:
 
       - name: Compile PDF
         run: |
-          typst compile --font-path fonts transformers.typ transformers.pdf
+          mkdir -p archive/pdf
+          typst compile --font-path fonts transformers.typ archive/pdf/transformers.pdf
 
       - name: Commit and push generated PDF
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add transformers.pdf
+          git add archive/pdf/transformers.pdf
           if git diff --staged --quiet; then
-            echo "No changes in transformers.pdf"
+            echo "No changes in archive/pdf/transformers.pdf"
           else
             git commit -m "Auto-compile transformers.pdf [skip ci]"
             git push

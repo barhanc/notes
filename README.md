@@ -2,7 +2,7 @@
 
 ## Machine Learning
 
-- [Modern Deep Learning: A Short Course](https://barhanc.github.io/notes/transformers.pdf) ([local](transformers.pdf) / [source](transformers.typ))
+- [Modern Deep Learning: A Short Course](https://barhanc.github.io/notes/archive/pdf/transformers.pdf)
 - [Klasyczne Uczenie
   Maszynowe](https://barhanc.github.io/notes/archive/pdf/machine-learning.pdf)
 - [Neural Networks](https://barhanc.github.io/notes/archive/pdf/deep-learning.pdf)
