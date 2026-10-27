@@ -40,46 +40,30 @@
 //    - In-Context Gradient Steps and Activation Dynamics
 // =============================================================================
 
-#let title = "Modern Deep Learning: A Short Course"
-#let authors = ("Bartosz Hanc",)
-
 #set page(
-  paper: "a5",
-  margin: (x: 18mm, top: 22mm, bottom: 20mm),
-  numbering: "1",
+  paper: "a5", margin: (x: 18mm, top: 22mm, bottom: 20mm), numbering: "1"
 )
 #set text(font: "Concrete Math")
-#set par(
-  justify: true,
-  leading: 0.65em,
-)
+#set par(justify: true, leading: 0.65em)
 
-#set heading(numbering: (..nums) => {
-  let pos = nums.pos()
-  if pos.len() == 1 {
-    "§ " + str(pos.first()) + "."
-  } else {
-    pos.map(str).join(".") + "."
-  }
-})
-#show heading.where(level: 1): set text(size: 13pt)
-#show heading.where(level: 2): set text(size: 11pt)
+#set heading(numbering: (..n) => (
+  (if n.pos().len() == 1 { "§ " } else { "" }) +
+  n.pos().map(str).join(".") + "."
+))
+#show heading.where(level: 1): it => counter(math.equation).update(0) + it
+#show heading.where(level: 1): set text(13pt)
+#show heading.where(level: 2): set text(11pt)
 #show heading: set block(above: 1.8em, below: 1.2em)
 
-#show heading.where(level: 1): it => {
-  counter(math.equation).update(0)
-  it
-}
+#set math.equation(numbering: n => (
+  "(" + str(counter(heading).get().first()) + "." + str(n) + ")"
+))
 
-#show math.equation: set text(font: "Concrete Math")
-#set math.equation(numbering: num => {
-  let h = counter(heading).get()
-  let sec = if h.len() >= 1 { str(h.first()) } else { "1" }
-  "(" + sec + "." + str(num) + ")"
-})
-
-#align(center, text(size: 17pt, strong(title)))
-#for author in authors { align(center, text(author)) }
+#align(center)[
+  #text(16pt, strong("Modern Deep Learning: A Short Course")) \
+  #v(0.5em)
+  Bartosz Hanc
+]
 
 #outline()
 
