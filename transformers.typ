@@ -42,20 +42,26 @@
 
 #set page(paper: "a5", margin: (x: 18mm, top: 22mm, bottom: 20mm), numbering: "1")
 #set text(font: "Concrete Math")
-#show math.equation: set text(font: "Concrete Math")
 #set par(justify: true, leading: 0.65em)
+#set math.equation(
+  numbering: n => (
+    "(" + str(counter(heading).get().first()) + "." + str(n) + ")"
+  ),
+  supplement: none,
+)
+#show math.equation: set text(font: "Concrete Math")
 
-#set heading(numbering: (..n) => (
-  (if n.pos().len() == 1 { "§ " } else { "" }) + n.pos().map(str).join(".") + "."
-))
+#set heading(
+  numbering: (..n) => (
+    (if n.pos().len() == 1 { "§ " } else { "" }) + n.pos().map(str).join(".") + "."
+  ),
+  supplement: none,
+)
 #show heading.where(level: 1): it => counter(math.equation).update(0) + it
 #show heading.where(level: 1): set text(13pt)
 #show heading.where(level: 2): set text(11pt)
 #show heading: set block(above: 1.8em, below: 1.2em)
 
-#set math.equation(numbering: n => (
-  "(" + str(counter(heading).get().first()) + "." + str(n) + ")"
-))
 
 #align(center)[
   #text(16pt, strong("Modern Deep Learning: A Short Course")) \
@@ -67,7 +73,7 @@
 
 // = Introduction
 
-= Learning as Likelihood Maximization
+= Learning as Likelihood Maximization <sec:learning>
 
 Machine learning is fundamentally the task of inferring an unknown probability
 distribution from a finite dataset $cal(D)$. Depending on whether the data
@@ -112,13 +118,12 @@ When training discriminative models, we assume that the input marginal
 distribution $P(bold(x))$ does not depend on the model parameters $bold(theta)$.
 Taking the log-likelihood over the dataset $cal(D)$,
 $
-  log P(cal(D); bold(theta))
-    & = sum_(i=1)^N log P(bold(x)_i, y_i; bold(theta)) \
-    & = sum_(i=1)^N log P(y_i | bold(x)_i; bold(theta)) \
-    & quad + underbrace(
-        sum_(i=1)^N log P(bold(x)_i),
-        "const. w.r.t." bold(theta)
-      ) quad.
+  log P(cal(D); bold(theta)) & = sum_(i=1)^N log P(bold(x)_i, y_i; bold(theta)) \
+                             & = sum_(i=1)^N log P(y_i | bold(x)_i; bold(theta)) \
+                             & quad + underbrace(
+                                 sum_(i=1)^N log P(bold(x)_i),
+                                 "const. w.r.t." bold(theta)
+                               ) quad.
 $
 Therefore, maximizing the joint log-likelihood over $cal(D)$ with respect to
 $bold(theta)$ is mathematically equivalent to maximizing the *conditional*
@@ -191,7 +196,7 @@ classification.
   which yields the gradient with respect to $f_i = f(bold(x)_i; bold(theta))$,
   $
     (partial L_"MSE") / (partial f_i) = 1 / N (f_i - y_i) quad.
-  $
+  $ <eq:grad-mse>
 
 - *Binary Classification (Binary Cross-Entropy):* For a binary classification
   problem where $bold(x) in RR^d$ and target label $y in {0, 1}$, we assume a
@@ -226,8 +231,8 @@ classification.
   which yields a clean gradient with respect to the logit
   $f_i = f(bold(x)_i; bold(theta))$,
   $
-    (partial L) / (partial f_i) = 1 / N (pi_i - y_i) quad.
-  $
+    (partial L_"BCE") / (partial f_i) = 1 / N (pi_i - y_i) quad.
+  $ <eq:grad-bce>
 
 - *Multiclass Classification (Categorical Cross-Entropy):* For a multiclass
   classification problem where $bold(x) in RR^d$ and target label
@@ -240,10 +245,9 @@ classification.
   $sum_(k=1)^K pi_k (bold(x); bold(theta)) = 1$. The loss function (categorical
   cross-entropy) is
   $
-    L (cal(D); bold(theta))
-      & = - 1 / N sum_(i=1)^N log {
-        product_(k=1)^K pi_k (bold(x)_i; bold(theta))^[y_i = k]
-      } \
+    L (cal(D); bold(theta)) & = - 1 / N sum_(i=1)^N log {
+                                product_(k=1)^K pi_k (bold(x)_i; bold(theta))^[y_i = k]
+                              } \
                             & = - 1 / N sum_(i=1)^N sum_(k=1)^K [y_i = k]
                               log pi_k (bold(x)_i; bold(theta)) quad,
   $
@@ -263,14 +267,14 @@ classification.
   $
     ["softmax"(bold(z))]_k = exp(z_k - m) / (sum_(j=1)^K exp(z_j - m)) quad,
   $
-  where $m = max_j z_j$ (ensuring that all exponential arguments are $<= 0$,
+  where $m = max_j z_j$ (ensuring that all exponent arguments are $<= 0$,
   avoiding numerical overflow).
 
   This formulation leads to a particularly clean gradient with respect to the
   logit $f_(i k) = [bold(f)(bold(x)_i; bold(theta))]_k$,
   $
-    (partial L) / (partial f_(i k)) = 1 / N (pi_(i k) - y_(i k)) quad,
-  $
+    (partial L_"CE") / (partial f_(i k)) = 1 / N (pi_(i k) - y_(i k)) quad,
+  $ <eq:grad-ce>
   where $pi_(i k) = pi_k (bold(x)_i; bold(theta))$.
 
 = Neural Networks
@@ -298,9 +302,9 @@ XOR). Modern networks overcome this by stacking neurons into *Multi-Layer
 Perceptrons* (MLPs) with smooth, non-linear activations $sigma$ (e.g., sigmoid,
 $tanh$, or ReLU). An MLP is a direct function composition,
 $
-  f(bold(x)) = (f_L compose dots.c compose f_1)(bold(x)) =
-  sigma_L (bold(W)_L dots.c sigma_1 (bold(W)_1 bold(x) + bold(b)_1) dots.c +
-    bold(b)_L) quad,
+  f(bold(x)) &= (f_L compose dots.c compose f_1)(bold(x)) \
+             &= sigma_L (bold(W)_L dots.c sigma_1 (bold(W)_1 bold(x) 
+               + bold(b)_1) dots.c + bold(b)_L) quad,
 $
 where each layer computes $f_l (bold(h)_(l-1)) = sigma_l (bold(W)_l
   bold(h)_(l-1) + bold(b)_l)$ with $bold(h)_0 = bold(x)$. Smooth activations
@@ -361,8 +365,9 @@ are required during the backward pass to evaluate the local derivatives.
 To optimize the network parameters via gradient descent, we must compute the
 gradient of the scalar loss $L$ with respect to the parameters of every node.
 Crucially, backward propagation is initialized directly at the network's
-output nodes $bold(f)$ using the analytical loss gradients derived in Section
-1.1.
+output nodes $bold(f)$ using the analytical loss gradients derived in
+@sec:learning: @eq:grad-mse for regression, @eq:grad-bce for binary
+classification, and @eq:grad-ce for multiclass classification.
 
 Starting from these known boundary gradients at the output nodes, we traverse
 the computational graph in *reverse topological order* back toward the input
@@ -394,3 +399,5 @@ $(partial L) / (partial v_(j, q))$ from all successors $j in cal(N)_i$ have
 already been computed. We first evaluate $(partial L) / (partial v_(i, p))$,
 and then use it to compute $(partial L) / (partial theta_(i, p))$ and propagate
 gradients backward to all predecessors of node $i$.
+
+= Optimization and Initialization
