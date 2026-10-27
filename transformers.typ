@@ -54,9 +54,21 @@
   supplement: none,
 )
 #set heading(
-  numbering: (..n) => ((if n.pos().len() == 1 { "§ " } else { "" }) + n.pos().map(str).join(".")),
+  numbering: (..n) => (
+    (if n.pos().len() == 1 { "§ " } else { "" }) + n.pos().map(str).join(".") + "."
+  ),
   supplement: none,
 )
+#show ref: it => {
+  let el = it.element
+  if el != none and el.func() == heading {
+    let num = counter(heading).at(el.location())
+    let s = (if num.len() == 1 { "§ " } else { "" }) + num.map(str).join(".")
+    link(el.location(), s)
+  } else {
+    it
+  }
+}
 
 
 #align(center)[
