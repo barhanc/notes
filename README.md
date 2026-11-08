@@ -1,6 +1,6 @@
 # notes
 
-Personal collection of notes and theoretical monographs. Rough ideas and reading queue are tracked in the [Inbox](inbox.md).
+Personal collection of notes and theoretical monographs. Rough ideas and reading queue are tracked in the [Inbox](INBOX.md).
 
 ## Machine Learning
 
@@ -26,7 +26,7 @@ Personal collection of notes and theoretical monographs. Rough ideas and reading
 
 ## TODO
 
-See [Inbox](inbox.md) for the complete backlog of ideas and reading materials.
+See [Inbox](INBOX.md) for the complete backlog of ideas and reading materials.
 
 - [ ] Deep dive into semiconductor fabrication: [this awesome
   paper](https://dl.acm.org/doi/10.1145/356819.356824) and
