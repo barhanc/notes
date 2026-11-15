@@ -48,7 +48,7 @@
 ]
 
 #align(center)[
-  #text(16pt, strong("Uczenie Maszynowe"))
+  #text(16pt, strong("Klasyczne Uczenie Maszynowe"))
 ]
 
 #outline()
