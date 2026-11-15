@@ -1,11 +1,6 @@
 // =============================================================================
 // Monograph Outline: Modern Deep Learning: A Short Course
 //
-// 3. Optimization and Initialization
-//    - Weight Initialization
-//    - Mini-Batch Stochastic Gradient Descent
-//    - Adaptive Optimization: Adam and AdamW
-//
 // 4. Attention and Transformers
 //    - Permutation Equivariance and Set Operations
 //    - Scaled Dot-Product Attention
@@ -461,8 +456,9 @@ $
   eta hat(bold(m))_t / (sqrt(hat(bold(v))_t) + epsilon) quad,
 $
 where $lambda >= 0$ is the weight decay coefficient, $epsilon approx 10^(-8)$,
-and typical defaults are $beta_1 = 0.9$, $beta_2 = 0.999$ (or $0.95$ for LLMs).
-Decoupling $-eta lambda bold(theta)_t$ from the gradient avoids rescaling $L_2$
-regularization by $1 / sqrt(hat(bold(v))_t)$.
+and typical defaults are $eta approx 10^(-4)$ to $10^(-3)$ (e.g., $3 dot
+10^(-4)$, often with warmup and decay), $beta_1 = 0.9$, and $beta_2 = 0.999$
+(or $0.95$ for LLMs). Decoupling $-eta lambda bold(theta)_t$ from the gradient
+avoids rescaling $L_2$ regularization by $1 / sqrt(hat(bold(v))_t)$.
 
 = Attention and Transformers
