@@ -51,7 +51,21 @@
   #text(16pt, strong("Uczenie przez Wzmacnianie"))
 ]
 
+#v(0.8em)
+#pad(x: 1.2em)[
+  #set text(9pt)
+  *Streszczenie.* Skondensowany przegląd podstawowych metod uczenia przez
+  wzmacnianie: problem wielorękiego bandyty i strategie eksploracji, skończone
+  procesy decyzyjne Markowa, programowanie dynamiczne, algorytmy Monte Carlo i
+  TD (SARSA, Q-Learning, Double Q-Learning, metody $n$-krokowe), planowanie w
+  architekturze Dyna-Q, aproksymacja funkcyjna i _deadly triad_ oraz metody
+  gradientu polityki (REINFORCE, Actor--Critic).
+]
+#v(0.6em)
+
 #outline()
+
+#pagebreak()
 
 = Bandyci
 
