@@ -48,7 +48,9 @@
 ]
 
 #align(center)[
-  #text(16pt, strong("Klasyczne Uczenie Maszynowe"))
+  #text(16pt, strong("Klasyczne Uczenie Maszynowe")) \
+  #v(0.5em)
+  Bartosz Hanc
 ]
 
 #v(0.8em)

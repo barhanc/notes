@@ -48,7 +48,9 @@
 ]
 
 #align(center)[
-  #text(16pt, strong("Uczenie przez Wzmacnianie"))
+  #text(16pt, strong("Uczenie przez Wzmacnianie")) \
+  #v(0.5em)
+  Bartosz Hanc
 ]
 
 #v(0.8em)
