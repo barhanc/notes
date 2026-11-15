@@ -9,9 +9,15 @@ Personal collection of notes and theoretical monographs. Rough ideas and reading
 ## Machine Learning
 
 - [Modern Deep Learning: A Short Course](https://barhanc.github.io/notes/archive/pdf/transformers.pdf)
-- [Klasyczne Uczenie Maszynowe](https://barhanc.github.io/notes/archive/pdf/machine-learning.pdf)
+- [Uczenie Maszynowe](https://barhanc.github.io/notes/archive/pdf/machine-learning.pdf)
+- [Uczenie przez Wzmacnianie](https://barhanc.github.io/notes/archive/pdf/rl-cheatsheet.pdf)
+
+<details markdown="1">
+  <summary>Archive</summary>
+
 - [Neural Networks](https://barhanc.github.io/notes/archive/pdf/deep-learning.pdf)
-- [RL Cheatsheet](https://barhanc.github.io/notes/archive/pdf/rl-cheatsheet.pdf)
+
+</details>
 
 ## Computer Science
 
