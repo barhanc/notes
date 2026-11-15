@@ -1,23 +1,10 @@
 // =============================================================================
 // Monograph Outline: Modern Deep Learning: A Short Course
 //
-// 1. Learning as Likelihood Maximization
-//    - Supervised and Unsupervised Learning
-//    - Canonical Loss Functions
-//    - Gradient-Based Optimization in High Dimensions
-//
-// 2. Neural Networks
-//    - Multilayer Perceptrons
-//    - The Computational Graph
-//    - Forward Propagation
-//    - Backward Propagation
-//
 // 3. Optimization and Initialization
-//    - Weight Initialization and Variance Preservation
-//    - Stochastic Gradient Descent
-//    - Loss Landscape Geometry and Conditioning
-//    - Momentum and Adaptive Step Sizes
-//    - Decoupled Weight Decay
+//    - Weight Initialization
+//    - Mini-Batch Stochastic Gradient Descent
+//    - Adaptive Optimization: Adam and AdamW
 //
 // 4. Attention and Transformers
 //    - Permutation Equivariance and Set Operations
@@ -310,9 +297,9 @@ XOR). Modern networks overcome this by stacking neurons into *Multi-Layer
 Perceptrons* (MLPs) with smooth, non-linear activations $sigma$ (e.g., sigmoid,
 $tanh$, or ReLU). An MLP is a direct function composition,
 $
-  f(bold(x)) &= (f_L compose dots.c compose f_1)(bold(x)) \
-             &= sigma_L (bold(W)_L dots.c sigma_1 (bold(W)_1 bold(x) 
-               + bold(b)_1) dots.c + bold(b)_L) quad,
+  f(bold(x)) & = (f_L compose dots.c compose f_1)(bold(x)) \
+             & = sigma_L (bold(W)_L dots.c sigma_1 (bold(W)_1 bold(x)
+                   + bold(b)_1) dots.c + bold(b)_L) quad,
 $
 where each layer computes $f_l (bold(h)_(l-1)) = sigma_l (bold(W)_l
   bold(h)_(l-1) + bold(b)_l)$ with $bold(h)_0 = bold(x)$. Smooth activations
@@ -408,4 +395,74 @@ already been computed. We first evaluate $(partial L) / (partial v_(i, p))$,
 and then use it to compute $(partial L) / (partial theta_(i, p))$ and propagate
 gradients backward to all predecessors of node $i$.
 
-= Optimization and Initialization
+= Optimization and Initialization <sec:optimization>
+
+While maximum likelihood and backpropagation rest on exact mathematical
+principles, initialization and optimization in deep learning rely heavily on
+empirical heuristics---designs that have proven effective at scale rather than
+deriving from tight theoretical guarantees.
+
+== Weight Initialization
+
+Zero initialization fails due to symmetry, so weights are sampled from
+$W_p ~ cal(N)(0, sigma^2)$ (for multi-index $p$) with zero biases. Two main
+heuristics are used to set $sigma$:
+- *Dimension-scaled (Xavier / He):* Scaling $sigma$ inversely with input width
+  $d_"in"$---such as $sigma = 1 / sqrt(d_"in")$ (Xavier) or
+  $sigma = sqrt(2 / d_"in")$ (He, for ReLU)---to keep activation magnitudes
+  stable across layers.
+- *Fixed-scale normal:* Modern normalized architectures (such as Transformers)
+  typically bypass width-dependent scaling and use a small fixed constant such
+  as $sigma = 0.02$ (occasionally scaled down with depth $L$, e.g.,
+  $sigma / sqrt(2 L)$, on output projections).
+
+== Mini-Batch Stochastic Gradient Descent
+
+Computing the exact gradient over all $N$ examples is prohibitive at scale.
+*Stochastic Gradient Descent* (SGD) replaces it with a mini-batch estimate
+over a random subset $cal(B)_t subset cal(D)$ of size $B = |cal(B)_t| << N$,
+$
+  bold(g)_t = (partial L) / (partial bold(theta)) (cal(B)_t; bold(theta)_t)
+  quad, quad
+  bold(theta)_(t+1) = bold(theta)_t - eta bold(g)_t quad.
+$
+Mini-batching gives an unbiased gradient estimate ($EE[bold(g)_t] =
+(partial L) / (partial bold(theta)) (cal(D); bold(theta)_t)$) whose variance
+shrinks as $O(1 / B)$, saturates parallel GPU matrix multiplications, and
+introduces noise that empirically acts as an implicit regularizer against sharp
+minima.
+
+== Adaptive Optimization: Adam and AdamW
+
+Because gradient scales and curvature vary wildly across parameters, a single
+learning rate $eta$ in SGD is often inefficient. Modern Transformer training
+relies almost universally on *AdamW*, which combines two heuristics: an
+exponential moving average (EMA) of gradients (*momentum*, $bold(m)_t$) to
+smooth noisy steps, and an EMA of squared gradients ($bold(v)_t$) to normalize
+each coordinate by its recent gradient magnitude,
+$
+  bold(m)_t & = beta_1 bold(m)_(t-1) + (1 - beta_1) bold(g)_t quad, \
+  bold(v)_t & = beta_2 bold(v)_(t-1) + (1 - beta_2) bold(g)_t^2 quad,
+$
+with bias corrections to offset zero-initialization ($bold(m)_0 = bold(v)_0 =
+bold(0)$). Unrolling $bold(m)_t$ gives $bold(m)_t = (1 - beta_1) sum_(i=1)^t
+beta_1^(t-i) bold(g)_i$; assuming stationary moments $EE[bold(g)_i] approx
+EE[bold(g)]$, the finite geometric series yields
+$
+  EE[bold(m)_t] = EE[bold(g)] (1 - beta_1) sum_(k=0)^(t-1) beta_1^k
+  = EE[bold(g)] (1 - beta_1^t) quad,
+$
+and analogously $EE[bold(v)_t] = EE[bold(g)^2] (1 - beta_2^t)$. Dividing out
+these factors gives the bias-corrected estimates $hat(bold(m))_t = bold(m)_t /
+(1 - beta_1^t)$ and $hat(bold(v))_t = bold(v)_t / (1 - beta_2^t)$, followed by
+the decoupled weight-decay update,
+$
+  bold(theta)_(t+1) = (1 - eta lambda) bold(theta)_t -
+  eta hat(bold(m))_t / (sqrt(hat(bold(v))_t) + epsilon) quad,
+$
+where $lambda >= 0$ is the weight decay coefficient, $epsilon approx 10^(-8)$,
+and typical defaults are $beta_1 = 0.9$, $beta_2 = 0.999$ (or $0.95$ for LLMs).
+Decoupling $-eta lambda bold(theta)_t$ from the gradient avoids rescaling $L_2$
+regularization by $1 / sqrt(hat(bold(v))_t)$.
+
+= Attention and Transformers
