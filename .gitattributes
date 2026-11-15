@@ -1,1 +1,3 @@
 *.tex linguist-vendored
+*.cls linguist-vendored
+archive/** linguist-vendored
