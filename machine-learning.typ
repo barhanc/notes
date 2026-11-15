@@ -56,7 +56,7 @@
 #v(0.8em)
 #pad(x: 1.2em)[
   #set text(9pt)
-  *Streszczenie.* Zwięzłe wprowadzenie do klasycznych metod uczenia
+  Zwięzłe wprowadzenie do klasycznych metod uczenia
   maszynowego i statystycznego: od wnioskowania Bayesowskiego, regresji
   liniowej i uogólnionych modeli liniowych, przez procesy Gaussowskie i metody
   próbkowania Monte Carlo (IS, MCMC), po drzewa decyzyjne, metody zespołowe
