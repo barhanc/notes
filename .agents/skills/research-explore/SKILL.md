@@ -30,5 +30,4 @@ Act as a rigorous research sparring partner before any heavy implementation begi
 
 5. **Capture only when ready**
    - Once the thread has enough substance to keep (or when the user asks), create `research/<slug>/README.md` with the topic's question, key papers, current thinking, and open questions.
-   - Register the topic in the `## Research` table of root `README.md` with the `exploring` badge:
-     `![exploring](https://img.shields.io/badge/exploring-0969DA?style=flat)`
+   - Register the topic in the `## Research` table of `README.md` with the `exploring` badge (see `AGENTS.md`).

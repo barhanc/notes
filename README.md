@@ -8,9 +8,9 @@ Personal collection of notes, theoretical monographs, and research experiments. 
 
 ## Research
 
-[![Research](https://img.shields.io/badge/Research-Active-1A7F37?style=flat)](research/README.md)
+[![Research](https://img.shields.io/badge/Research-Active-1A7F37?style=flat)](research)
 
-Exploratory research threads, literature notes, experiments, and reports live in [`research/`](research/README.md).
+Exploratory research threads, literature notes, experiments, and reports live in [`research/`](research).
 
 | Topic | Status | Report |
 | --- | --- | --- |

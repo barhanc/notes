@@ -29,9 +29,5 @@ Turn a messy research conversation or experiment session into crisp, durable mem
    - If the topic is being marked `shelved`, write a short **Why shelved** note capturing the negative result or blocker.
 
 4. **Sync index and status badges**
-   - Update the topic's row (and badge) in the `## Research` table of root `README.md`:
-     - `![exploring](https://img.shields.io/badge/exploring-0969DA?style=flat)`
-     - `![experimenting](https://img.shields.io/badge/experimenting-D97706?style=flat)`
-     - `![done](https://img.shields.io/badge/done-1A7F37?style=flat)`
-     - `![shelved](https://img.shields.io/badge/shelved-6E7781?style=flat)`
+   - Update the topic's row and status badge (defined in `AGENTS.md`) in the `## Research` table of `README.md`.
    - If a compiled PDF exists at `research/<slug>/report.pdf`, link it in the `Report` column.

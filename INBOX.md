@@ -2,6 +2,19 @@
 
 Some rough ideas for notes that I think would be useful / interesting.
 
+## Research
+
+- [ ] **Policy-first PFNs for In-Context RL:** Extend Prior-Data Fitted Networks
+  to few-shot RL without test-time training. Consider control families where (1)
+  sampling a policy $\pi^*$ is easy and (2) sampling a problem for which $\pi^*$
+  is optimal is easy; train a Transformer supervised on context trajectories
+  $(s, a, r, \dots)$ to infer actions in-context.
+- [ ] **Physical Transformers as a computational substrate:** Synthesize current
+  research/views on making neural/Transformer computation itself the physical
+  substrate (hardwired ASICs like Etched Sohu, analog/photonic/thermodynamic
+  chips like Extropic) rather than simulating it on general-purpose silicon, and
+  what computing abstractions sit on top.
+
 ## History
 
 - Just shill these incredible
