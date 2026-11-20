@@ -28,8 +28,8 @@ Turn a messy research conversation or experiment session into crisp, durable mem
 3. **Handle shelving cleanly**
    - If the topic is being marked `shelved`, write a short **Why shelved** note capturing the negative result or blocker.
 
-4. **Sync indexes and status badges**
-   - Update the topic's row (and badge) in both `research/README.md` and the `## Research` table in root `README.md`:
+4. **Sync index and status badges**
+   - Update the topic's row (and badge) in the `## Research` table of root `README.md`:
      - `![exploring](https://img.shields.io/badge/exploring-0969DA?style=flat)`
      - `![experimenting](https://img.shields.io/badge/experimenting-D97706?style=flat)`
      - `![done](https://img.shields.io/badge/done-1A7F37?style=flat)`

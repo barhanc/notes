@@ -13,7 +13,7 @@ Act as a rigorous research sparring partner before any heavy implementation begi
 ## Procedure
 
 1. **Check existing context first**
-   - Scan `research/README.md` and `INBOX.md` to see if the idea overlaps with an existing thread or backlog item.
+   - Scan the `## Research` table in root `README.md` and `INBOX.md` to see if the idea overlaps with an existing thread or backlog item.
    - If continuing an existing topic, read `research/<slug>/README.md` before responding.
 
 2. **Sharpen the question**
@@ -30,5 +30,5 @@ Act as a rigorous research sparring partner before any heavy implementation begi
 
 5. **Capture only when ready**
    - Once the thread has enough substance to keep (or when the user asks), create `research/<slug>/README.md` with the topic's question, key papers, current thinking, and open questions.
-   - Register the topic in `research/README.md` and root `README.md` with the `exploring` badge:
+   - Register the topic in the `## Research` table of root `README.md` with the `exploring` badge:
      `![exploring](https://img.shields.io/badge/exploring-0969DA?style=flat)`

@@ -31,5 +31,5 @@ Distill mature notes and experimental findings from `research/<slug>/` into a cl
      ```
    - On push to `master`, `.github/workflows/compile-typst.yml` automatically compiles `research/<slug>/report.typ` to `research/<slug>/report.pdf`.
 
-4. **Update indexes**
-   - Link `report.pdf` (and update the status badge to `done` if complete) in `research/<slug>/README.md`, `research/README.md`, and root `README.md`.
+4. **Update index**
+   - Link `report.pdf` (and update the status badge to `done` if complete) in `research/<slug>/README.md` and the `## Research` table in root `README.md`.

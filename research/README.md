@@ -1,12 +1,6 @@
 # Research
 
-Lightweight, agent-assisted research workspace. Ideas start as conversations and literature checks, and only grow code or formal reports when they prove worth pursuing.
-
-## Index
-
-| Topic | Status | Report |
-| --- | --- | --- |
-| *(No topics yet)* | — | — |
+Lightweight, agent-assisted research workspace. Ideas start as conversations and literature checks, and only grow code or formal reports when they prove worth pursuing. See the [Research table](../README.md#research) in the root README for the topic index.
 
 ## Workflow
 
