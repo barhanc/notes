@@ -14,7 +14,7 @@ Distill mature notes and experimental findings from `research/<slug>/` into a cl
 
 1. **Gather source material**
    - Read `research/<slug>/README.md` and inspect any figures in `research/<slug>/figs/` and scripts/results in `research/<slug>/code/`.
-   - Check the preamble of `transformers.typ` (or `machine-learning.typ` for Polish) to stay visually consistent with the repository's monographs.
+   - Check the preamble of `monographs/transformers.typ` (or `monographs/machine-learning.typ` for Polish) to stay visually consistent with the repository's monographs.
 
 2. **Match repository Typst style**
    - Create `research/<slug>/report.typ` using:

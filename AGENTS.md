@@ -4,7 +4,7 @@ Personal repository of theoretical monographs, notes, and agent-assisted researc
 
 ## Repository Layout
 
-- Root `*.typ` (`transformers.typ`, `machine-learning.typ`, `rl-short.typ`) — Active Typst monographs. Keep untouched unless explicitly asked.
+- `monographs/` (`transformers.typ`, `machine-learning.typ`, `rl-short.typ`) — Active Typst monographs (auto-compiled to `archive/pdf/*.pdf` on push). Keep untouched unless explicitly asked.
 - `archive/` — Compiled monograph PDFs (`archive/pdf/`) and legacy Markdown/LaTeX notes. Do not break existing `archive/pdf/*.pdf` paths (linked from GitHub Pages).
 - `fonts/` — Bundled `Concrete Math` fonts required for Typst compilation.
 - `INBOX.md` — Rough backlog of ideas and reading material.

@@ -1,7 +1,7 @@
 # notes
 
 [![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Live-222222?style=flat&logo=github&logoColor=white)](https://barhanc.github.io/notes/)
-[![Typst](https://img.shields.io/badge/Typst-Compiled-239DAD?style=flat&logo=typst&logoColor=white)](transformers.typ)
+[![Typst](https://img.shields.io/badge/Typst-Compiled-239DAD?style=flat&logo=typst&logoColor=white)](monographs)
 [![LaTeX](https://img.shields.io/badge/LaTeX-Monographs-008080?style=flat&logo=latex&logoColor=white)](archive/src)
 
 Personal collection of notes, theoretical monographs, and research experiments. Rough ideas and reading queue are tracked in the [Inbox](INBOX.md).
