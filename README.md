@@ -4,7 +4,17 @@
 [![Typst](https://img.shields.io/badge/Typst-Compiled-239DAD?style=flat&logo=typst&logoColor=white)](transformers.typ)
 [![LaTeX](https://img.shields.io/badge/LaTeX-Monographs-008080?style=flat&logo=latex&logoColor=white)](archive/src)
 
-Personal collection of notes and theoretical monographs. Rough ideas and reading queue are tracked in the [Inbox](INBOX.md).
+Personal collection of notes, theoretical monographs, and research experiments. Rough ideas and reading queue are tracked in the [Inbox](INBOX.md).
+
+## Research
+
+[![Research](https://img.shields.io/badge/Research-Active-1A7F37?style=flat)](research/README.md)
+
+Exploratory research threads, literature notes, experiments, and reports live in [`research/`](research/README.md).
+
+| Topic | Status | Report |
+| --- | --- | --- |
+| *(No topics yet — see [research/](research/README.md))* | — | — |
 
 ## Machine Learning
 

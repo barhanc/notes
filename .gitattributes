@@ -1,3 +1,12 @@
+# Legacy & archived sources
 *.tex linguist-vendored
 *.cls linguist-vendored
 archive/** linguist-vendored
+
+# Research generated artifacts
+research/**/*.pdf linguist-generated binary
+*.ipynb linguist-vendored
+*.svg linguist-vendored
+*.png binary
+*.jpg binary
+*.jpeg binary

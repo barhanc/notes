@@ -1,1 +1,49 @@
+# OS & Editor
 .DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Python & Environments
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Experiment & ML artifacts (keep weights, raw datasets, and logs out of git)
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.bin
+*.onnx
+*.h5
+*.hdf5
+*.parquet
+*.npy
+*.npz
+wandb/
+mlruns/
+lightning_logs/
+runs/
+**/data/raw/
+**/checkpoints/
+**/outputs/
+
+# Temporary build files
+*.log
+*.tmp
+*.aux
+*.fls
+*.fdb_latexmk
+*.synctex.gz
