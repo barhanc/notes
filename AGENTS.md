@@ -6,7 +6,7 @@ Personal repository of expository notes and agent-assisted research explorations
 
 - `typst/` (`transformers.typ`, `machine-learning.typ`, `rl-short.typ`) — Active Typst expository notes (auto-compiled to `archive/pdf/*.pdf` on push). Keep untouched unless explicitly asked.
 - `archive/` — Compiled PDFs (`archive/pdf/`) and legacy Markdown/LaTeX notes. Do not break existing `archive/pdf/*.pdf` paths (linked from GitHub Pages).
-- `fonts/` — Bundled `Concrete Math` fonts required for Typst compilation.
+- `assets/fonts/` — Bundled `Concrete Math` fonts required for Typst compilation.
 - `INBOX.md` — Rough backlog of ideas and reading material.
 - `research/` — Self-contained research topic folders (`research/<slug>/`). The single topic index lives in the `## Research` table of `README.md`.
 

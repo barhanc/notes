@@ -27,7 +27,7 @@ Distill mature notes and experimental findings from `research/<slug>/` into a cl
 3. **Verify compilation**
    - Compile from the repository root if `typst` is available:
      ```bash
-     typst compile --root . --font-path fonts research/<slug>/report.typ
+     typst compile --root . --font-path assets/fonts research/<slug>/report.typ
      ```
    - On push to `master`, `.github/workflows/compile-typst.yml` automatically compiles `research/<slug>/report.typ` to `research/<slug>/report.pdf`.
 

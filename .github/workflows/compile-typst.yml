@@ -7,7 +7,7 @@ on:
       - 'typst/**/*.typ'
       - 'research/**/*.typ'
       - 'research/**/figs/**'
-      - 'fonts/**'
+      - 'assets/fonts/**'
       - '.github/workflows/compile-typst.yml'
   workflow_dispatch:
 
@@ -36,7 +36,7 @@ jobs:
               name="$(basename "$file" .typ)"
               out="archive/pdf/${name}.pdf"
               echo "Compiling $file -> $out"
-              typst compile --root . --font-path fonts "$file" "$out"
+              typst compile --root . --font-path assets/fonts "$file" "$out"
             done < <(find typst -type f -name '*.typ' ! -name '_*' ! -path '*/_*/*' -print0 | sort -z)
           fi
 
@@ -45,7 +45,7 @@ jobs:
             while IFS= read -r -d '' file; do
               out="${file%.typ}.pdf"
               echo "Compiling $file -> $out"
-              typst compile --root . --font-path fonts "$file" "$out"
+              typst compile --root . --font-path assets/fonts "$file" "$out"
             done < <(find research -type f -name '*.typ' ! -name '_*' ! -path '*/_*/*' -print0 | sort -z)
           fi
 
