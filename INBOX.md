@@ -4,11 +4,7 @@ Some rough ideas for notes that I think would be useful / interesting.
 
 ## Research
 
-- [ ] **Policy-first PFNs for In-Context RL:** Extend Prior-Data Fitted Networks
-  to few-shot RL without test-time training. Consider control families where (1)
-  sampling a policy $\pi^*$ is easy and (2) sampling a problem for which $\pi^*$
-  is optimal is easy; train a Transformer supervised on context trajectories
-  $(s, a, r, \dots)$ to infer actions in-context.
+- [x] **Policy-first PFNs for In-Context RL** — moved to [`research/pfn-rl/`](research/pfn-rl/README.md).
 - [x] **Physical Transformers as a computational substrate** — promoted to [`research/physical-transformers/`](research/physical-transformers/README.md).
 
 ## History
