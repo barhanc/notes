@@ -1,11 +1,11 @@
 # Repository Guide for Coding Agents
 
-Personal repository of theoretical monographs, notes, and agent-assisted research explorations.
+Personal repository of expository notes and agent-assisted research explorations.
 
 ## Repository Layout
 
-- `monographs/` (`transformers.typ`, `machine-learning.typ`, `rl-short.typ`) — Active Typst monographs (auto-compiled to `archive/pdf/*.pdf` on push). Keep untouched unless explicitly asked.
-- `archive/` — Compiled monograph PDFs (`archive/pdf/`) and legacy Markdown/LaTeX notes. Do not break existing `archive/pdf/*.pdf` paths (linked from GitHub Pages).
+- `typst/` (`transformers.typ`, `machine-learning.typ`, `rl-short.typ`) — Active Typst expository notes (auto-compiled to `archive/pdf/*.pdf` on push). Keep untouched unless explicitly asked.
+- `archive/` — Compiled PDFs (`archive/pdf/`) and legacy Markdown/LaTeX notes. Do not break existing `archive/pdf/*.pdf` paths (linked from GitHub Pages).
 - `fonts/` — Bundled `Concrete Math` fonts required for Typst compilation.
 - `INBOX.md` — Rough backlog of ideas and reading material.
 - `research/` — Self-contained research topic folders (`research/<slug>/`). The single topic index lives in the `## Research` table of `README.md`.
@@ -27,4 +27,4 @@ Personal repository of theoretical monographs, notes, and agent-assisted researc
 Use the project skills under `.agents/skills/` for step-by-step workflows:
 - `research-explore` — Bouncing ideas, literature search, and feasibility checks on a new or vague topic.
 - `research-distill` — Checkpointing a research conversation into `research/<slug>/README.md` and syncing status.
-- `research-report` — Writing and compiling a polished Typst report (`report.typ`) matching this repository's monograph style.
+- `research-report` — Writing and compiling a polished Typst report (`report.typ`) matching this repository's expository note style.

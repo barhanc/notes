@@ -4,7 +4,7 @@ on:
   push:
     branches: [ master ]
     paths:
-      - 'monographs/**/*.typ'
+      - 'typst/**/*.typ'
       - 'research/**/*.typ'
       - 'research/**/figs/**'
       - 'fonts/**'
@@ -30,14 +30,14 @@ jobs:
           set -euo pipefail
           mkdir -p archive/pdf
 
-          # 1. Monographs -> archive/pdf/<name>.pdf
-          if [ -d monographs ]; then
+          # 1. Expository notes -> archive/pdf/<name>.pdf
+          if [ -d typst ]; then
             while IFS= read -r -d '' file; do
               name="$(basename "$file" .typ)"
               out="archive/pdf/${name}.pdf"
               echo "Compiling $file -> $out"
               typst compile --root . --font-path fonts "$file" "$out"
-            done < <(find monographs -type f -name '*.typ' ! -name '_*' ! -path '*/_*/*' -print0 | sort -z)
+            done < <(find typst -type f -name '*.typ' ! -name '_*' ! -path '*/_*/*' -print0 | sort -z)
           fi
 
           # 2. Research reports -> alongside source .typ (skip _*.typ helpers)
