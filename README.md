@@ -15,6 +15,7 @@ Exploratory research threads, literature notes, experiments, and reports live in
 | Topic | Status | Report |
 | --- | --- | --- |
 | [Context Compaction in Transformers](research/context-compaction/README.md) | ![exploring](https://img.shields.io/badge/exploring-0969DA?style=flat) | — |
+| [Physical Transformers](research/physical-transformers/README.md) | ![exploring](https://img.shields.io/badge/exploring-0969DA?style=flat) | — |
 
 ## Machine Learning
 

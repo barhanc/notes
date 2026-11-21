@@ -9,11 +9,7 @@ Some rough ideas for notes that I think would be useful / interesting.
   sampling a policy $\pi^*$ is easy and (2) sampling a problem for which $\pi^*$
   is optimal is easy; train a Transformer supervised on context trajectories
   $(s, a, r, \dots)$ to infer actions in-context.
-- [ ] **Physical Transformers as a computational substrate:** Synthesize current
-  research/views on making neural/Transformer computation itself the physical
-  substrate (hardwired ASICs like Etched Sohu, analog/photonic/thermodynamic
-  chips like Extropic) rather than simulating it on general-purpose silicon, and
-  what computing abstractions sit on top.
+- [x] **Physical Transformers as a computational substrate** — promoted to [`research/physical-transformers/`](research/physical-transformers/README.md).
 
 ## History
 
