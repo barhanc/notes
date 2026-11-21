@@ -19,39 +19,39 @@ Exploratory research threads, literature notes, experiments, and reports live in
 
 ## Machine Learning
 
-- [Modern Deep Learning: A Short Course](https://barhanc.github.io/notes/archive/pdf/transformers.pdf)
-- [Klasyczne Uczenie Maszynowe](https://barhanc.github.io/notes/archive/pdf/machine-learning.pdf)
-- [Uczenie przez Wzmacnianie](https://barhanc.github.io/notes/archive/pdf/rl-short.pdf)
+- [Modern Deep Learning: A Short Course](https://barhanc.github.io/notes/archive/pdf/transformers.pdf) `EN`
+- [Classical Machine Learning](https://barhanc.github.io/notes/archive/pdf/machine-learning.pdf) `PL`
+- [Reinforcement Learning](https://barhanc.github.io/notes/archive/pdf/rl-short.pdf) `PL`
 
 <details markdown="1">
   <summary>Archive</summary>
 
-- [Neural Networks](https://barhanc.github.io/notes/archive/pdf/deep-learning.pdf)
+- [Neural Networks](https://barhanc.github.io/notes/archive/pdf/deep-learning.pdf) `EN`
 
 </details>
 
 ## Computer Science
 
-- [Computer Basics](https://barhanc.github.io/notes/archive/md/computer-basics)
-- [Computer Architecture](https://barhanc.github.io/notes/archive/md/computer-organization)
-- [Theory of Computation](https://barhanc.github.io/notes/archive/md/theory-of-computation)
-- [Python](https://barhanc.github.io/notes/archive/md/python)
-- [Git](https://barhanc.github.io/notes/archive/md/git)
+- [Computer Basics](https://barhanc.github.io/notes/archive/md/computer-basics) `EN/PL`
+- [Computer Architecture](https://barhanc.github.io/notes/archive/md/computer-organization) `PL`
+- [Theory of Computation](https://barhanc.github.io/notes/archive/md/theory-of-computation) `PL`
+- [Python](https://barhanc.github.io/notes/archive/md/python) `EN`
+- [Git](https://barhanc.github.io/notes/archive/md/git) `PL`
 
 ## Math
 
-- [Analiza matematyczna](https://barhanc.github.io/notes/archive/pdf/analysis.pdf)
-- [Algebra z Geometrią](https://barhanc.github.io/notes/archive/pdf/algebra.pdf)
+- [Mathematical Analysis](https://barhanc.github.io/notes/archive/pdf/analysis.pdf) `PL`
+- [Algebra and Geometry](https://barhanc.github.io/notes/archive/pdf/algebra.pdf) `PL`
 
 <details markdown="1">
   <summary>Old Arc</summary>
 
 ### Physics
 
-- [Classical Physics](https://barhanc.github.io/notes/archive/pdf/classical-physics.pdf)
-- [Physics Problems](https://barhanc.github.io/notes/archive/pdf/physics-problems.pdf)
-- [Physics Solved Problems](https://barhanc.github.io/notes/archive/pdf/physics-solv.pdf)
-- [Quantum Physics &mdash; Part 1](https://barhanc.github.io/notes/archive/pdf/quantum-physics-part1.pdf)
-- [Quantum Physics &mdash; Part 2](https://barhanc.github.io/notes/archive/pdf/quantum-physics-part2.pdf)
+- [Classical Physics](https://barhanc.github.io/notes/archive/pdf/classical-physics.pdf) `PL`
+- [Physics Problems](https://barhanc.github.io/notes/archive/pdf/physics-problems.pdf) `PL`
+- [Physics Solved Problems](https://barhanc.github.io/notes/archive/pdf/physics-solv.pdf) `PL`
+- [Quantum Physics &mdash; Part 1](https://barhanc.github.io/notes/archive/pdf/quantum-physics-part1.pdf) `PL`
+- [Quantum Physics &mdash; Part 2](https://barhanc.github.io/notes/archive/pdf/quantum-physics-part2.pdf) `PL`
 
 </details>
