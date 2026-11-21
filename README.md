@@ -4,7 +4,7 @@
 [![Typst](https://img.shields.io/badge/Typst-Compiled-239DAD?style=flat&logo=typst&logoColor=white)](monographs)
 [![LaTeX](https://img.shields.io/badge/LaTeX-Monographs-008080?style=flat&logo=latex&logoColor=white)](archive/src)
 
-Personal collection of notes, theoretical monographs, and research experiments. Rough ideas and reading queue are tracked in the [Inbox](INBOX.md).
+Personal collection of notes, theoretical monographs, and research experiments. TODOs, rough ideas, and reading queue are tracked in the [Inbox](INBOX.md).
 
 ## Research
 
@@ -42,13 +42,6 @@ Exploratory research threads, literature notes, experiments, and reports live in
 
 - [Analiza matematyczna](https://barhanc.github.io/notes/archive/pdf/analysis.pdf)
 - [Algebra z Geometrią](https://barhanc.github.io/notes/archive/pdf/algebra.pdf)
-
-## TODO
-
-See [Inbox](INBOX.md) for the complete backlog of ideas and reading materials.
-
-- [ ] Deep dive into semiconductor fabrication: [this paper](https://dl.acm.org/doi/10.1145/356819.356824), [Introduction to Micro-Nanofabrication](https://inup.cense.iisc.ac.in/static/downloads/Introduction-to-Micro-Nanofabrication.pdf), and video lectures: [VLSI Design](https://www.youtube.com/watch?v=z47Gv2cdFtA&list=WL&index=16), AT&T archives ([Making Silicon](https://www.youtube.com/watch?v=V9xUQWo4vN0), [Transistor History](https://www.youtube.com/watch?v=LRJZtuqCoMw)), and [Semiconductor Physics playlist](https://www.youtube.com/watch?v=yhq2IR9Xl_Y&list=PLM2eE_hI4gSDjK4SiDbhpmpjw31Xyqfo_).
-- [ ] Reflections on LLMs as the dawn of a computing paradigm shift (on par with the stored-program computer and semiconductor revolutions).
 
 <details markdown="1">
   <summary>Old Arc</summary>

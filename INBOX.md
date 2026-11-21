@@ -79,13 +79,13 @@ Some rough ideas for notes that I think would be useful / interesting.
 
 - I really want to deep dive into the details of semiconductor fabrication:
   [this awesome paper](https://dl.acm.org/doi/10.1145/356819.356824) and
-  [this](https://inup.cense.iisc.ac.in/static/downloads/Introduction-to-Micro-Nanofabrication.pdf)
+  [Introduction to Micro-Nanofabrication](https://inup.cense.iisc.ac.in/static/downloads/Introduction-to-Micro-Nanofabrication.pdf)
   and some yt videos:
-  [this](https://www.youtube.com/watch?v=z47Gv2cdFtA&list=WL&index=16), and
+  [VLSI Design](https://www.youtube.com/watch?v=z47Gv2cdFtA&list=WL&index=16), and
   absoulte gems on AT&T channel like
-  [this](https://www.youtube.com/watch?v=V9xUQWo4vN0) or
-  [this](https://www.youtube.com/watch?v=LRJZtuqCoMw) or [this
-  playlist](https://www.youtube.com/watch?v=yhq2IR9Xl_Y&list=PLM2eE_hI4gSDjK4SiDbhpmpjw31Xyqfo_)
+  [Making Silicon](https://www.youtube.com/watch?v=V9xUQWo4vN0) or
+  [Transistor History](https://www.youtube.com/watch?v=LRJZtuqCoMw) or [Semiconductor
+  Physics playlist](https://www.youtube.com/watch?v=yhq2IR9Xl_Y&list=PLM2eE_hI4gSDjK4SiDbhpmpjw31Xyqfo_)
 
 - The 5 types of tensor operations required to implement (most) of the DL stack:
   application $f(X_\alpha)$, reshape $X_{f(\alpha)}$, reduce $\sum_\beta
