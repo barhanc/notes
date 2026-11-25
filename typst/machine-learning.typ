@@ -54,8 +54,6 @@
 
 #outline()
 
-#pagebreak()
-
 = Wnioskowanie Bayesowskie
 
 Typowym sposobem połączenia wyników matematycznej teorii prawdopodobieństwa z

@@ -54,8 +54,6 @@
 
 #outline()
 
-#pagebreak()
-
 = Bandyci
 
 Problem wielorękiego bandyty to najprostszy model uczenia przez wzmacnianie, w

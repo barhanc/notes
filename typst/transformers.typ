@@ -60,8 +60,6 @@
 
 #outline()
 
-#pagebreak()
-
 // = Introduction
 
 = Learning as Likelihood Maximization <sec:learning>
