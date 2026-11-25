@@ -8,8 +8,6 @@ Personal collection of expository notes and research explorations. TODOs, rough 
 
 ## Research
 
-[![Research](https://img.shields.io/badge/Research-Active-1A7F37?style=flat)](research)
-
 Exploratory research threads, literature notes, experiments, and reports live in [`research/`](research).
 
 | Topic | Status | Report |
