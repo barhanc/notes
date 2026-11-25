@@ -36,7 +36,7 @@ Expository study and course notes.
 | [Neural Networks](https://barhanc.github.io/notes/archive/pdf/deep-learning.pdf) | Machine Learning | ![archive](https://img.shields.io/badge/archive-9A3412?style=flat) | `EN` |
 | [Computer Basics](https://barhanc.github.io/notes/archive/md/computer-basics) | Computer Science | ![done](https://img.shields.io/badge/done-1A7F37?style=flat) | `EN` / `PL` |
 | [Computer Architecture](https://barhanc.github.io/notes/archive/md/computer-organization) | Computer Science | ![done](https://img.shields.io/badge/done-1A7F37?style=flat) | `PL` |
-| [Theory of Computation](https://barhanc.github.io/notes/archive/pdf/theory-of-computation.pdf) | Computer Science | ![done](https://img.shields.io/badge/done-1A7F37?style=flat) | `PL` |
+| [Theory of Computation](https://barhanc.github.io/notes/archive/pdf/theory-of-computation.pdf) | Computer Science | ![done](https://img.shields.io/badge/done-1A7F37?style=flat) | `EN` |
 | [Python](https://barhanc.github.io/notes/archive/md/python) | Software Engineering | ![done](https://img.shields.io/badge/done-1A7F37?style=flat) | `EN` |
 | [Git](https://barhanc.github.io/notes/archive/md/git) | Software Engineering | ![done](https://img.shields.io/badge/done-1A7F37?style=flat) | `PL` |
 | [Mathematical Analysis](https://barhanc.github.io/notes/archive/pdf/analysis.pdf) | Math | ![done](https://img.shields.io/badge/done-1A7F37?style=flat) | `PL` |

@@ -1,9 +1,9 @@
 // =============================================================================
-// Teoria obliczeń
+// Theory of Computation
 // =============================================================================
 
 #set page(paper: "a5", margin: (x: 18mm, top: 22mm, bottom: 20mm), numbering: "1")
-#set text(font: "Concrete Math", lang: "pl")
+#set text(font: "Concrete Math", lang: "en")
 #set par(justify: true, leading: 0.65em)
 #show heading.where(level: 1): it => counter(math.equation).update(0) + it
 #show heading.where(level: 1): set text(13pt)
@@ -50,7 +50,7 @@
   stroke: (top: 0.8pt, bottom: 0.8pt),
 )[
   #set par(justify: false, leading: 0.6em)
-  *Maszyna:* #title
+  *Machine:* #title
   #v(-0.4em)
   #line(length: 100%, stroke: 0.4pt)
   #v(-0.1em)
@@ -64,7 +64,7 @@
   inset: (left: 8pt, y: 1.5pt),
   stroke: (left: 1.3pt + luma(165)),
 )[
-  *Definicja.* #body
+  *Definition.* #body
 ]
 
 #let thm(title: none, body) = block(
@@ -76,7 +76,7 @@
   fill: luma(248),
   stroke: (left: 1.8pt + black),
 )[
-  #if title != none [*Twierdzenie (#title).*] else [*Twierdzenie.*] #body
+  #if title != none [*Theorem (#title).*] else [*Theorem.*] #body
 ]
 
 #let proof(body) = block(
@@ -84,7 +84,7 @@
   above: 0.6em,
   below: 1.0em,
 )[
-  _Dowód._ #body #h(1fr) $square.stroked$
+  _Proof._ #body #h(1fr) $square.stroked$
 ]
 
 // --- Vector diagram helpers --------------------------------------------------
@@ -314,7 +314,7 @@
     )[#align(center + horizon)[#text(9pt)[$"P" = "NP"$]]])
 
     #place(top + left, dx: 31mm, dy: 6mm, box(width: 14mm, height: 22mm)[
-      #align(center + horizon)[#text(9pt)[lub]]
+      #align(center + horizon)[#text(9pt)[or]]
     ])
 
     #place(top + left, dx: 46mm, dy: 1mm, rect(
@@ -365,110 +365,109 @@
 ]
 
 #align(center)[
-  #text(16pt, strong("Teoria Obliczeń"))
+  #text(16pt, strong("Theory of Computation"))
 ]
 #v(0.8em)
 
 #outline()
 
-= Podstawowe pojęcia
+= Preliminaries
 
-#def[Problem decyzyjny to para $Pi = (D_Pi, Y_Pi)$, gdzie $D_Pi$ to zbiór
-"egzemplarzy" problemu, a $Y_Pi subset.eq D_Pi$ to zbiór "egzemplarzy" z
-odpowiedzią "TAK".]
+#def[A decision problem is a pair $Pi = (D_Pi, Y_Pi)$, where $D_Pi$ is the set
+of problem instances and $Y_Pi subset.eq D_Pi$ is the set of "YES" instances.]
 
-#def[Alfabet $Sigma$ to dowolny skończony i niepusty zbiór symboli. W
-szczególności jeśli $|Sigma| = 1$, to alfabet nazwiemy *unarnym*.]
+#def[An alphabet $Sigma$ is any finite, non-empty set of symbols. In particular,
+if $|Sigma| = 1$, we call the alphabet *unary*.]
 
-#def[Słowo nad alfabetem $Sigma$ to dowolny skończony ciąg symboli. W
-szczególności przez $epsilon$ będziemy oznaczać słowo puste.]
+#def[A word (or string) over an alphabet $Sigma$ is any finite sequence of
+symbols from $Sigma$. In particular, we denote the empty word by $epsilon$.]
 
-#def[Język $L$ nad alfabetem $Sigma$ to dowolny zbiór słów nad $Sigma$.]
+#def[A language $L$ over an alphabet $Sigma$ is any set of words over $Sigma$.]
 
-Jeśli $A$, $B$ są językami, to:
-- $A union B = {x | x in A or x in B}$ nazywamy sumą języków,
-- $A inter B = {x | x in A and x in B}$ nazywamy przecięciem języków,
-- $A B = {x y | x in A and y in B}$ nazywamy konkatenacją języków,
-- $A^* = {epsilon} union A union A^2 union dots.c$ nazywamy domknięciem języka
-  (inaczej domknięciem Kleenego).
+If $A$ and $B$ are languages, then:
+- $A union B = {x | x in A or x in B}$ is the union of languages,
+- $A inter B = {x | x in A and x in B}$ is the intersection of languages,
+- $A B = {x y | x in A and y in B}$ is the concatenation of languages,
+- $A^* = {epsilon} union A union A^2 union dots.c$ is the Kleene closure (star)
+  of $A$.
 
-W szczególności $Sigma^*$ oznacza zbiór wszystkich słów nad $Sigma$. Dodatkowo
-wprowadzamy oznaczenie $Sigma^+ := Sigma Sigma^*$.
+In particular, $Sigma^*$ denotes the set of all words over $Sigma$. We also
+define $Sigma^+ := Sigma Sigma^*$ and write $L' := Sigma^* backslash L$ for the
+complement of a language $L$.
 
-Każdy język $L$ definiuje problem decyzyjny postaci: _czy $x in Sigma^*$ należy
-do $L$?_ Jednocześnie każdy "sensowny" problem decyzyjny definiuje pewien język,
-przy założeniu, iż istnieje "efektywna" funkcja $chevron.l dot.c chevron.r$
-kodująca problem w danym alfabecie $Sigma$.
+Every language $L$ defines a decision problem of the form: _does $x in Sigma^*$
+belong to $L$?_ Conversely, every "reasonable" decision problem defines a
+language, assuming there is an "effective" encoding function
+$chevron.l dot.c chevron.r$ mapping problem instances to strings over $Sigma$.
 
-= Teoria obliczeń
+= Computability Theory
 
-== Maszyna Turinga
+== Turing Machines
 
-#def[Maszyna Turinga $M$ to krotka $(Sigma, Gamma, Q, delta, q_S, q_Y, q_N, square.stroked)$, gdzie:
-- $Sigma$ --- alfabet wejściowy,
-- $Gamma$ --- alfabet roboczy, taki że $Sigma subset.eq Gamma$,
-- $square.stroked$ --- specjalny symbol pusty (zwany _blankiem_), o którym
-  zakładamy, iż $square.stroked in Gamma$ i $square.stroked in.not Sigma$,
-- $Q$ --- skończony i niepusty zbiór stanów,
-- $q_S$ --- stan początkowy, $q_S in Q$,
-- $q_Y$ --- stan akceptujący, $q_Y in Q$,
-- $q_N$ --- stan odrzucający, $q_N in Q$,
-- $delta: Gamma times Q -> Gamma times Q times {<-, ->}$ --- funkcja przejścia.]
+#def[A Turing Machine $M$ is a tuple
+$(Sigma, Gamma, Q, delta, q_S, q_Y, q_N, square.stroked)$, where:
+- $Sigma$ --- input alphabet,
+- $Gamma$ --- tape alphabet, with $Sigma subset.eq Gamma$,
+- $square.stroked$ --- special blank symbol, assuming $square.stroked in Gamma$
+  and $square.stroked in.not Sigma$,
+- $Q$ --- finite, non-empty set of states,
+- $q_S in Q$ --- start state,
+- $q_Y in Q$ --- accepting state,
+- $q_N in Q$ --- rejecting state ($q_Y != q_N$),
+- $delta: Gamma times (Q backslash {q_Y, q_N}) -> Gamma times Q times {<-, ->}$
+  --- transition function.]
 
-Maszynę Turinga możemy wyobrażać sobie jako składającą się z nieskończonej w
-prawo taśmy podzielonej na komórki oraz głowicy przechowującej stan $q$, która
-może czytać oraz pisać symbole z alfabetu roboczego do komórki, na którą w danym
-momencie wskazuje. Początkowo na taśmie zapisane jest słowo wejściowe
-$w in Sigma^*$ i zakładamy, iż pozostałe komórki zawierają symbol blank
-$square.stroked$. Głowica będąc w stanie $q$ i czytając z komórki taśmy symbol
-$a in Gamma$ wpisuje do tej komórki symbol $b$, zmienia stan na $q'$ i przechodzi
-w prawo lub lewo zgodnie z wartością funkcji przejścia
-$delta(a, q) = (b, q', <- "lub" ->)$.
+We can picture a Turing Machine as consisting of a tape infinite to the right,
+divided into cells, together with a read/write head holding a state $q$ that
+reads and writes symbols from $Gamma$ at the cell it currently points to.
+Initially, the input word $w in Sigma^*$ is written at the beginning of the
+tape, and all remaining cells contain the blank symbol $square.stroked$. When
+the head is in state $q$ and reads $a in Gamma$, it writes $b$, transitions to
+state $q'$, and moves left or right according to
+$delta(a, q) = (b, q', <- "or" ->)$.
 
 #v(0.4em)
 #turing-tape-diagram()
 #v(0.4em)
 
-#def[Konfiguracją maszyny $M$ nazywamy dowolny napis postaci $alpha q beta$,
-gdzie $alpha in Gamma^*$, $q in Q$ i $beta in Gamma^+$, przy czym w zapisie
-słowa $beta$ pomijamy nieskończenie wiele symboli blank. Zapis taki oznacza, iż
-głowica maszyny wskazuje na pierwszy symbol słowa $beta = b_1 dots.c b_k$, po
-lewej stronie którego zapisane na taśmie jest słowo $alpha = a_1 dots.c a_n$, a
-maszyna znajduje się w stanie $q$.]
+#def[A configuration of a machine $M$ is any string of the form $alpha q beta$,
+where $alpha in Gamma^*$, $q in Q$, and $beta in Gamma^+$, omitting the
+infinitely many trailing blank symbols in $beta$. This notation means that the
+head points to the first symbol of $beta = b_1 dots.c b_k$, to the left of
+which the tape holds $alpha = a_1 dots.c a_n$, and the machine is in state $q$.]
 
 #v(0.4em)
 #turing-config-diagram()
 #v(0.4em)
 
-#def[Mówimy, że maszyna $M$ akceptuje słowo $x = x_1 dots.c x_n in Sigma^*$
-wtedy i tylko wtedy, gdy istnieje skończony ciąg konfiguracji, takich że
-pierwszym elementem ciągu jest $epsilon q_S x_1 dots.c x_n$, ostatnim ---
-$alpha q_Y beta$ dla pewnych $alpha in Gamma^*$, $beta in Gamma^+$ oraz dla
-dowolnej konfiguracji $k_t$ będącej elementem ciągu maszyna może w jednym kroku
-przejść z konfiguracji $k_t$ do konfiguracji $k_(t+1)$. Jeśli $M$ nie akceptuje i
-nie odrzuca wprost słowa $x$, to mówimy, że $M$ odrzuca $x$ przez działanie w
-nieskończoność.]
+#def[We say that a machine $M$ accepts a word $x = x_1 dots.c x_n in Sigma^*$
+if and only if there exists a finite sequence of configurations starting with
+$epsilon q_S x$ (or $epsilon q_S square.stroked$ when $x = epsilon$), ending
+with $alpha q_Y beta$ for some $alpha in Gamma^*$ and $beta in Gamma^+$, such
+that for every step $t$ the machine can transition from configuration $k_t$ to
+$k_(t+1)$ in a single step. If $M$ neither accepts nor enters $q_N$ on $x$, we
+say that $M$ rejects $x$ by looping forever.]
 
-#def[Mówimy, że maszyna $M$ akceptuje język $L$ wtedy i tylko wtedy, gdy dla
-każdego $x in Sigma^*$, $M$ akceptuje $x$ wtedy i tylko wtedy, gdy $x in L$.]
+#def[We say that a machine $M$ accepts (recognizes) a language $L$ if and only
+if for every $x in Sigma^*$, $M$ accepts $x$ if and only if $x in L$.]
 
-#def[Mówimy, że maszyna $M$ rozstrzyga o języku $L$ wtedy i tylko wtedy, gdy
-akceptuje język $L$ oraz kończy działanie na każdym słowie.]
+#def[We say that a machine $M$ decides a language $L$ if and only if $M$
+accepts $L$ and halts on every input word.]
 
-== Klasy języków
+== Language Classes
 
-Dla danej maszyny $M$ przez $L(M)$ oznaczymy język akceptowany przez $M$.
-Definiujemy następujące klasy języków:
-- $"R" := {L subset.eq Sigma^* | exists M : M "rozstrzyga o" L}$,
-- $"RE" := {L subset.eq Sigma^* | exists M : M "akceptuje" L}$,
+For a given machine $M$, let $L(M)$ denote the language accepted by $M$. We
+define the following classes of languages:
+- $"R" := {L subset.eq Sigma^* | exists M : M "decides" L}$,
+- $"RE" := {L subset.eq Sigma^* | exists M : M "accepts" L}$,
 - $"coRE" := {L' | L in "RE"}$.
 
-Języki należące do klasy $"RE"$ nazywamy rekurencyjnie przeliczalnymi, a języki
-należące do klasy $"R"$ --- rozstrzygalnymi. Zauważmy, że każdy język skończony
-$L = {x_1, dots.c, x_n}$ jest rozstrzygalny, gdyż możemy skonstruować maszynę
-Turinga, która o nim rozstrzyga:
+Languages in $"RE"$ are called _recursively enumerable_ (or _recognizable_),
+and languages in $"R"$ are called _decidable_ (or _recursive_). Notice that
+every finite language $L = {x_1, dots.c, x_n}$ is decidable, since we can build a
+Turing Machine that decides it:
 
-#machine[$M(x)$ dla skończonego języka $L = {x_1, dots.c, x_n}$][
+#machine[$M(x)$ for a finite language $L = {x_1, dots.c, x_n}$][
   *if* $x = x_1$: *accept* \
   *elif* $x = x_2$: *accept* \
   $dots.v$ \
@@ -476,56 +475,52 @@ Turinga, która o nim rozstrzyga:
   *else*: *reject*
 ]
 
-Zauważmy, iż taka konstrukcja nie działa, gdy język jest nieskończony, gdyż
-wówczas "kod" maszyny Turinga byłby nieskończony.
+Note that this construction fails when $L$ is infinite, because the finite
+description of the Turing Machine could not list infinitely many words.
 
 #thm[$"RE" inter "coRE" = "R"$.]
 
-#proof[Niech $L subset.eq Sigma^*$ będzie dowolnym językiem nad alfabetem
-$Sigma$. Załóżmy wpierw, iż $L in "RE" inter "coRE"$; wówczas z definicji klas
-$"RE"$ i $"coRE"$ istnieją maszyny $M_L$ i $M_(L')$ takie, że $M_L$ akceptuje
-$L$ i $M_(L')$ akceptuje $L'$. Skonstruujemy maszynę $M$ rozstrzygającą o $L$:
+#proof[Let $L subset.eq Sigma^*$ be any language over $Sigma$. First suppose
+that $L in "RE" inter "coRE"$. By definition, there exist machines $M_L$ and
+$M_(L')$ accepting $L$ and $L'$, respectively. We construct a machine $M$ that
+decides $L$:
 
-#machine[$M(x)$ rozstrzygająca o $L in "RE" inter "coRE"$][
+#machine[$M(x)$ deciding $L in "RE" inter "coRE"$][
   *for* $k = 1, 2, dots.c$:
   #pad(left: 1.2em)[
-    *if* $M_L (x)$ akceptuje w co najwyżej $k$ krokach: *accept* \
-    *if* $M_(L') (x)$ akceptuje w co najwyżej $k$ krokach: *reject*
+    *if* $M_L (x)$ accepts in at most $k$ steps: *accept* \
+    *if* $M_(L') (x)$ accepts in at most $k$ steps: *reject*
   ]
 ]
 
-Zauważmy, że każde słowo $x in Sigma^*$ jest akceptowane przez dokładnie jedną z
-maszyn $M_L$, $M_(L')$, zatem dla wystarczająco dużej liczby kroków $k$
-dokładnie jeden z warunków będzie prawdziwy i maszyna $M$ rozstrzygnie o słowie
-$x$, przy czym zaakceptuje je wtedy i tylko wtedy, gdy $x in L$. W takim razie
-pokazaliśmy, iż $forall L subset.eq Sigma^* : L in "RE" inter "coRE" ==> L in "R"$.
+Every word $x in Sigma^*$ is accepted by exactly one of $M_L$ and $M_(L')$.
+Hence, for sufficiently large $k$, exactly one condition holds and $M$ halts
+with the correct answer, accepting $x$ if and only if $x in L$. Thus
+$forall L subset.eq Sigma^* : L in "RE" inter "coRE" ==> L in "R"$.
 
-Załóżmy teraz natomiast, iż $L in "R"$; wówczas z definicji istnieje maszyna
-$M$, która rozstrzyga o $L$. Skonstruujemy maszyny $M_L$ i $M_(L')$ akceptujące
-odpowiednio języki $L$ i $L'$:
+Conversely, suppose that $L in "R"$, so there exists a machine $M$ that decides
+$L$. We construct machines $M_L$ and $M_(L')$ accepting $L$ and $L'$:
 
-#machine[$M_L (x)$ oraz $M_(L') (x)$ dla $L in "R"$][
+#machine[$M_L (x)$ and $M_(L') (x)$ for $L in "R"$][
   $M_L (x)$:
   #pad(left: 1.2em)[
-    *if* $M(x)$ akceptuje: *accept* \
+    *if* $M(x)$ accepts: *accept* \
     *else*: *reject*
   ]
   #v(0.2em)
   $M_(L') (x)$:
   #pad(left: 1.2em)[
-    *if* $M(x)$ akceptuje: *reject* \
+    *if* $M(x)$ accepts: *reject* \
     *else*: *accept*
   ]
 ]
 
-Oczywiście maszyna $M$ kończy działanie dla każdego wejścia $x$ i akceptuje
-tylko słowa z języka $L$. Maszyna $M_L$ akceptuje zatem język $L$, a maszyna
-$M_(L')$ nie akceptuje żadnego słowa z języka $L$ i akceptuje każde inne słowo,
-czyli akceptuje język $L'$. W takim razie
-$forall L subset.eq Sigma^* : L in "R" ==> L in "RE" and L in "coRE" <==> L in "RE" inter "coRE"$.
-Z powyższego otrzymujemy tezę.]
+Since $M$ halts on every input $x$ and accepts exactly the words in $L$, $M_L$
+accepts $L$ and $M_(L')$ accepts $L'$. Therefore
+$forall L subset.eq Sigma^* : L in "R" ==> L in "RE" and L in "coRE" <==> L in "RE" inter "coRE"$,
+completing the proof.]
 
-== Teza Churcha--Turinga
+== Church--Turing Thesis
 
 #block(
   width: 100%,
@@ -535,131 +530,132 @@ Z powyższego otrzymujemy tezę.]
   fill: luma(248),
   stroke: (left: 1.8pt + black),
 )[
-  *Pojęcie maszyny Turinga jest równoważne intuicyjnemu pojęciu algorytmu.*
+  *The formal notion of a Turing Machine is equivalent to the intuitive notion
+  of an algorithm.*
 ]
 
-== Uniwersalna Maszyna Turinga
+== Universal Turing Machine
 
-Uniwersalna Maszyna Turinga $U$, mając na wejściu zakodowaną maszynę $M$ oraz
-słowo $x$, tj. $chevron.l M, x chevron.r$, symuluje działanie maszyny $M$ dla
-wejścia $x$. Jest to model komputera z programem przechowywanym w pamięci.
-Ustalmy alfabet $Sigma = {0, 1, "#"} $. Kodowanie maszyny $M$ możemy
-przedstawić jako
+A Universal Turing Machine $U$ takes as input an encoded machine $M$ together
+with an input word $x$, written $chevron.l M, x chevron.r$, and simulates the
+execution of $M$ on $x$. It is the theoretical model of a stored-program
+computer. Fixing the alphabet $Sigma = {0, 1, "#"} $, we can encode $M$ as
 $
   chevron.l M chevron.r = chevron.l Gamma chevron.r "#" chevron.l Q chevron.r "#" chevron.l delta chevron.r "##" quad,
 $
-gdzie $chevron.l Gamma chevron.r = chevron.l |Gamma| chevron.r$ i
-$chevron.l Q chevron.r = chevron.l |Q| chevron.r$ to kodowania binarne liczby
-symboli w alfabecie roboczym i liczby stanów, natomiast
+where $chevron.l Gamma chevron.r = chevron.l |Gamma| chevron.r$ and
+$chevron.l Q chevron.r = chevron.l |Q| chevron.r$ are binary encodings of the
+tape-alphabet size and the number of states, and
 $
-  chevron.l delta chevron.r = chevron.l & "ciąg kolejnych napisów postaci" chevron.l delta(a, q) chevron.r \
-                                        & "dla" q in Q, a in Gamma chevron.r quad.
-$
-
-== Problem stopu i redukcje
-
-Problem stopu definiujemy jako język
-$
-  H := {chevron.l M, x chevron.r | M "akceptuje" x} quad.
+  chevron.l delta chevron.r = chevron.l & "sequence of encoded transitions" chevron.l delta(a, q) chevron.r \
+                                        & "for" q in Q backslash {q_Y, q_N}, a in Gamma chevron.r quad.
 $
 
-#thm[Problem stopu jest nierozstrzygalny, $H in.not "R"$.]
+== The Halting Problem and Reductions
 
-#thm(title: "Rice'a")[Niech $cal(L) subset.eq "RE"$ będzie pewnym podzbiorem
-klasy $"RE"$. Mówimy, że język $L in "RE"$ ma własność $cal(L)$ wtedy i tylko
-wtedy, gdy $L in cal(L)$. Jeśli $cal(L) != emptyset$ i $cal(L) != "RE"$, to język
+We define the halting problem as the language
+$
+  H := {chevron.l M, x chevron.r | M "halts on" x}
+$
+(similarly, the acceptance problem $A_"TM" := {chevron.l M, x chevron.r | M "accepts" x}$
+shares the same decidability and completeness properties below).
+
+#thm[The halting problem is undecidable, $H in.not "R"$.]
+
+#thm(title: "Rice's Theorem")[Let $cal(L) subset.eq "RE"$ be a subset of
+$"RE"$. We say that a language $L in "RE"$ has property $cal(L)$ if and only if
+$L in cal(L)$. Whenever $cal(L) != emptyset$ and $cal(L) != "RE"$, the language
 $
   B_cal(L) := {chevron.l M chevron.r | L(M) in cal(L)}
 $
-jest nierozstrzygalny.]
+is undecidable.]
 
-Twierdzenie to mówi, iż niemal każdy język dotyczący własności języków
-akceptowanych przez maszynę Turinga jest nierozstrzygalny.
+This theorem states that every non-trivial semantic property of the language
+recognized by a Turing Machine is undecidable.
 
-#def[Niech $f: Sigma^* -> Sigma^*$. Mówimy, że funkcja $f$ jest obliczalna wtedy
-i tylko wtedy, gdy istnieje maszyna Turinga $M$ taka, że dla każdego słowa
-$x in Sigma^*$, $M$ kończy działanie w konfiguracji $epsilon q_Y f(x)$.]
+#def[Let $f: Sigma^* -> Sigma^*$. We say that $f$ is computable if and only if
+there exists a Turing Machine $M$ that, on every input $x in Sigma^*$, halts
+with $f(x)$ written on the tape starting at the head (configuration
+$epsilon q_Y f(x)$, or $epsilon q_Y square.stroked$ when $f(x) = epsilon$).]
 
-#def[Mówimy, że język $A$ redukuje się do języka $B$, co zapisujemy jako
-$A redm B$, wtedy i tylko wtedy, gdy istnieje obliczalna funkcja $f$ taka, że
+#def[We say that a language $A$ reduces to a language $B$, written $A redm B$,
+if and only if there exists a computable function $f$ such that
 $
   forall x in Sigma^* : x in A <==> f(x) in B quad.
 $]
 
-Indeks dolny $m$ określa redukcję _many-to-one_, tzn. wiele (nawet wszystkie)
-słów z języka $A$ może być odwzorowywanych do jednego słowa z języka $B$. Jeśli
-$A redm B$, to możemy mówić, iż $A$ jest nietrudniejszy (inaczej co najwyżej tak
-trudny) niż $B$. Istotnie, jeśli umiemy rozwiązać problem $B$, to umiemy
-rozwiązać problem $A$ przez odwzorowanie słowa z tego języka do słowa z języka
-$B$. Własności redukcji:
-- jeśli $A redm B$ oraz $B in "R"$, to $A in "R"$,
-- jeśli $A redm B$ oraz $B in "RE"$, to $A in "RE"$,
-- jeśli $A redm B$ oraz $A in.not "R"$, to $B in.not "R"$.
+The subscript $m$ denotes a _many-to-one_ reduction, meaning multiple (even all)
+words from $A$ may map to the same word in $B$. If $A redm B$, then $A$ is no
+harder than $B$: any solver for $B$ immediately yields a solver for $A$ by first
+applying $f$. Key properties of reductions:
+- if $A redm B$ and $B in "R"$, then $A in "R"$,
+- if $A redm B$ and $B in "RE"$, then $A in "RE"$,
+- if $A redm B$ and $A in.not "R"$, then $B in.not "R"$.
 
-#def[Mówimy, że język $B$ jest $"RE"$-trudny wtedy i tylko wtedy, gdy dla
-każdego języka $A in "RE"$ zachodzi $A redm B$.]
+#def[A language $B$ is $"RE"$-hard if and only if $A redm B$ for every language
+$A in "RE"$.]
 
-#def[Mówimy, że język $B$ jest $"RE"$-zupełny wtedy i tylko wtedy, gdy jest
-$"RE"$-trudny i $B in "RE"$.]
+#def[A language $B$ is $"RE"$-complete if and only if it is $"RE"$-hard and
+$B in "RE"$.]
 
-#thm[Język $H$ jest $"RE"$-zupełny, $H in "RE-com"$.]
+#thm[The halting language $H$ is $"RE"$-complete, $H in "RE-com"$.]
 
-Ogólną technikę dowodzenia $"RE"$-zupełności możemy zatem zapisać następująco:
-- mamy dany język $C$, o którym chcemy udowodnić, iż jest $"RE-com"$,
-- wiemy, że język $B$ jest $"RE-com"$,
-- pokazujemy, że $C in "RE"$,
-- pokazujemy, że $B redm C$; wówczas z przechodniości relacji $redm$ mamy, iż
-  dla każdego $A in "RE"$, $A redm B redm C$, co wraz z punktem wyżej dowodzi
+The standard template for proving that a language $C$ is $"RE"$-complete is
+therefore:
+- take a known $"RE"$-complete language $B in "RE-com"$,
+- show that $C in "RE"$,
+- show that $B redm C$; by transitivity of $redm$, for every $A in "RE"$ we
+  have $A redm B redm C$, which together with $C in "RE"$ establishes
   $C in "RE-com"$.
 
-#thm[Język $A in "RE"$ wtedy i tylko wtedy, gdy istnieje język $B in "R"$ taki, że
+#thm[A language $A$ belongs to $"RE"$ if and only if there exists a decidable
+language $B in "R"$ such that
 $
   A = {x | exists y in Sigma^* : chevron.l x, y chevron.r in B} quad.
 $]
 
-== Hierarchia arytmetyczna
+== The Arithmetical Hierarchy
 
-#def[Powiemy, iż język $A subset.eq Sigma^*$ należy do klasy $Sigma_i$ dla
-$i >= 1$ wtedy i tylko wtedy, gdy istnieje język $B in "R"$ taki, że
+#def[A language $A subset.eq Sigma^*$ belongs to the class $Sigma_i$ for
+$i >= 1$ if and only if there exists $B in "R"$ such that
 $
   A = {x | exists y_1 : forall y_2 : dots.c : Q_i y_i : chevron.l x, y_1, dots.c, y_i chevron.r in B} quad,
 $
-gdzie $Q_i = exists$ jeśli $i$ nieparzyste i $Q_i = forall$ jeśli $i$ parzyste.
-Dodatkowo powiemy, iż język $A$ należy do klasy $Pi_i$ wtedy i tylko wtedy, gdy
-$A' in Sigma_i$.]
+where $Q_i = exists$ if $i$ is odd and $Q_i = forall$ if $i$ is even.
+Furthermore, $A$ belongs to $Pi_i$ if and only if $A' in Sigma_i$.]
 
-Zauważmy, że z definicji tej i poprzedniego twierdzenia wynika, iż
-$Sigma_1 = "RE"$ oraz $Pi_1 = "coRE"$. Zdefiniowane klasy tworzą nieskończoną
-hierarchię, w której
+From this definition and the preceding theorem it follows that $Sigma_1 = "RE"$
+and $Pi_1 = "coRE"$. These classes form an infinite hierarchy satisfying
 $
   Sigma_(i-1) subset.eq Sigma_i inter Pi_i quad, quad
   Pi_(i-1) subset.eq Sigma_i inter Pi_i quad,
 $
-gdzie $i >= 1$ oraz $Sigma_0 = Pi_0 = "R"$.
+where $i >= 1$ and $Sigma_0 = Pi_0 = "R"$.
 
 #v(0.4em)
 #arithmetical-hierarchy-diagram()
 #v(0.4em)
 
-= Teoria złożoności obliczeniowej
+= Computational Complexity Theory
 
-== Klasy deterministyczne
+== Deterministic Classes
 
-#def[Niech $M$ będzie maszyną Turinga. Złożoność czasowa $M$ to funkcja
-$f: NN -> NN$ taka, że maksymalna liczba kroków $M$ na wejściu $x$ wynosi
-$f(|x|)$.]
+#def[Let $M$ be a Turing Machine. The time complexity of $M$ is the function
+$f: NN -> NN$ giving the maximum number of steps taken by $M$ over all inputs
+$x$ of length $|x| = n$.]
 
-#def[Niech $M$ będzie maszyną Turinga. Złożoność pamięciowa $M$ to funkcja
-$f: NN -> NN$ taka, że maksymalna liczba wykorzystanych komórek pamięci $M$ na
-wejściu $x$ wynosi $f(|x|)$.]
+#def[Let $M$ be a Turing Machine. The space complexity of $M$ is the function
+$f: NN -> NN$ giving the maximum number of tape cells visited by $M$ over all
+inputs $x$ of length $|x| = n$.]
 
-#def[$"TIME"[t(n)]$ to zbiór języków $L$, dla których istnieje maszyna $M$
-rozstrzygająca o $L$ w czasie $O(t(n))$.]
+#def[$"TIME"(t(n))$ is the set of languages $L$ for which there exists a Turing
+Machine $M$ deciding $L$ in time $O(t(n))$.]
 
-#def[$"SPACE"[s(n)]$ to zbiór języków $L$, dla których istnieje maszyna $M$
-rozstrzygająca o $L$ w pamięci $O(s(n))$.]
+#def[$"SPACE"(s(n))$ is the set of languages $L$ for which there exists a
+Turing Machine $M$ deciding $L$ in space $O(s(n))$.]
 
-Na podstawie powyższych pojęć definiujemy klasy złożoności:
+From these definitions we construct the standard deterministic complexity
+classes:
 $
   "P" & = union.big_(k=0)^oo "TIME"(n^k) quad, \
   "EXP" & = union.big_(k=0)^oo "TIME"(2^(n^k)) quad, \
@@ -667,88 +663,86 @@ $
   "EXPSPACE" & = union.big_(k=0)^oo "SPACE"(2^(n^k)) quad.
 $
 
-== Niedeterministyczna Maszyna Turinga
+== Nondeterministic Turing Machines
 
-#def[Niedeterministyczna Maszyna Turinga (NMT) to krotka
-$(Sigma, Gamma, Q, delta, q_S, q_Y, q_N, square.stroked)$, gdzie wszystkie
-elementy są takie jak w Standardowej Maszynie Turinga (SMT) poza $delta$, która
-teraz jest relacją
+#def[A Nondeterministic Turing Machine (NTM) is a tuple
+$(Sigma, Gamma, Q, delta, q_S, q_Y, q_N, square.stroked)$, defined identically
+to a deterministic Turing Machine except that $delta$ is now a transition
+relation
 $
-  delta subset.eq (Gamma times Q backslash {q_Y, q_N}) times (Gamma times Q times {<-, ->}) quad.
+  delta subset.eq (Gamma times (Q backslash {q_Y, q_N})) times (Gamma times Q times {<-, ->}) quad.
 $]
 
-Widząc dany symbol i będąc w danym stanie, NMT może:
-- mieć dokładnie jedną drogę kontynuowania obliczeń,
-- mieć więcej niż jedną drogę kontynuowania obliczeń,
-- nie mieć żadnego możliwego ruchu (przyjmujemy, że jest to konfiguracja
-  odrzucająca).
+Reading a symbol in a given state, an NTM may:
+- have exactly one valid transition,
+- have more than one valid transition,
+- have no valid transition (treated as a rejecting configuration).
 
-#def[Mówimy, iż NMT $M$ akceptuje słowo $x$ w $k$ krokach wtedy i tylko wtedy, gdy:
-- każda ścieżka obliczeń na $x$ wymaga najwyżej $k$ kroków,
-- co najmniej jedna ścieżka akceptuje w $k$ krokach.]
+#def[An NTM $M$ accepts a word $x$ in at most $k$ steps if and only if:
+- every computation branch on $x$ takes at most $k$ steps,
+- at least one branch accepts in at most $k$ steps.]
 
-#def[Mówimy, iż NMT $M$ odrzuca słowo $x$ w $k$ krokach wtedy i tylko wtedy, gdy:
-- każda ścieżka obliczeń na $x$ wymaga najwyżej $k$ kroków,
-- wszystkie ścieżki odrzucają w $k$ krokach.]
+#def[An NTM $M$ rejects a word $x$ in at most $k$ steps if and only if:
+- every computation branch on $x$ takes at most $k$ steps,
+- every branch rejects in at most $k$ steps.]
 
-#def[Niech $f: NN -> NN$. Mówimy, że NMT $M$ rozstrzyga o $L$ w czasie $f(n)$
-wtedy i tylko wtedy, gdy $M$ akceptuje $x in Sigma^*$ wtedy i tylko wtedy, gdy
-$x in L$ oraz dla wszystkich $x in Sigma^*$ wszystkie ścieżki obliczeniowe $M$
-na $x$ mają najwyżej $f(|x|)$ kroków.]
+#def[Let $f: NN -> NN$. An NTM $M$ decides $L$ in time $f(n)$ if and only if
+$M$ accepts $x in Sigma^*$ if and only if $x in L$, and for every
+$x in Sigma^*$ all computation branches of $M$ on $x$ have length at most
+$f(|x|)$.]
 
-#def[$"NTIME"[t(n)]$ to zbiór języków $L$, dla których istnieje NMT $M$
-rozstrzygająca o $L$ w czasie $O(t(n))$.]
+#def[$"NTIME"(t(n))$ is the set of languages $L$ for which there exists an NTM
+$M$ deciding $L$ in time $O(t(n))$.]
 
-Analogicznie do klas deterministycznych definiujemy:
+Analogously to the deterministic classes, we define:
 $
   "NP" & = union.big_(k=0)^oo "NTIME"(n^k) quad, \
   "NEXP" & = union.big_(k=0)^oo "NTIME"(2^(n^k)) quad.
 $
 
-== Języki rzadkie i struktura klasy NP
+== Sparse Languages and the Structure of NP
 
-#def[Mówimy, że język $L$ jest rzadki wtedy i tylko wtedy, gdy istnieje
-wielomian $p$ taki, że $forall n in NN : |L^(<= n)| <= p(n)$.]
+#def[A language $L$ is _sparse_ if and only if there exists a polynomial $p$
+such that $forall n in NN : |L^(<= n)| <= p(n)$, where
+$L^(<= n) = {x in L | |x| <= n}$.]
 
-#def[Mówimy, że język $L$ jest unarny wtedy i tylko wtedy, gdy
-$L subset.eq {0}^*$.]
+#def[A language $L$ is _unary_ if and only if $L subset.eq {0}^*$.]
 
-#thm[Każdy język unarny jest rzadki.]
+#thm[Every unary language is sparse.]
 
-#thm(title: "Mahaney, 1982")[Jeśli istnieje $"NP"$-trudny język rzadki, to
+#thm(title: "Mahaney, 1982")[If there exists a sparse language that is
+$"NP"$-hard under polynomial-time many-to-one reductions ($redmp$), then
 $"P" = "NP"$.]
 
-Zależności między podstawowymi klasami złożoności obliczeniowej ilustruje
-poniższy diagram:
+The inclusions among the main complexity classes are summarized below:
 
 #v(0.4em)
 #complexity-hierarchy-diagram()
 #v(0.4em)
 
-W szczególności wnętrze klasy $"NP"$ może wyglądać tylko w jeden z dwóch
-sposobów:
+In particular, the internal structure of $"NP"$ can only look like one of the
+following two pictures:
 
 #v(0.4em)
 #np-possible-diagram()
 #v(0.4em)
 
-a nie może wyglądać tak:
+and cannot look like this:
 
 #v(0.4em)
 #np-impossible-diagram()
 #v(0.4em)
 
-#thm[Jeśli $"P" != "NP"$, to istnieje język $A$ taki, że $A in "NP"$,
-$A in.not "P"$, $A in.not "NP-com"$.]
+#thm[If $"P" != "NP"$, then there exists a language $A$ such that $A in "NP"$,
+$A in.not "P"$, and $A in.not "NP-com"$.]
 
-#thm[Jeśli $"P" = "NP"$, to $"EXP" = "NEXP"$.]
+#thm[If $"P" = "NP"$, then $"EXP" = "NEXP"$.]
 
-#thm(title: "Ladner")[Dla każdego języka $B in.not "P"$ istnieje język
-$A in "P"$ taki, że:
+#thm(title: "Ladner, 1975")[For every decidable language $B in "R" backslash "P"$,
+there exists a language $A in "P"$ such that:
 - $A inter B in.not "P"$,
 - $A inter B redmp B$,
 - $B nredmp A inter B$.]
 
-Symbol $redmp$ oznacza redukcję wiele-do-jeden w czasie wielomianowym, tzn. do
-własności obliczalności funkcji redukującej dorzucamy jeszcze wymóg, aby była
-obliczalna w czasie wielomianowym.
+Here $redmp$ denotes a polynomial-time many-to-one reduction, i.e., a
+many-to-one reduction whose reducing function is computable in polynomial time.
