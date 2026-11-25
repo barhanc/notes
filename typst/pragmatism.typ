@@ -5,9 +5,6 @@
 #set page(paper: "a5", margin: (x: 18mm, top: 22mm, bottom: 20mm), numbering: "1")
 #set text(font: "Concrete Math")
 #set par(justify: true, leading: 0.65em)
-#show heading.where(level: 1): set text(13pt)
-#show heading.where(level: 2): set text(11pt)
-#show heading: set block(above: 1.8em, below: 1.2em)
 #show math.equation: set text(font: "Concrete Math")
 #show math.equation.where(block: false): box
 #show emph: it => {
@@ -15,31 +12,12 @@
   it.body
 }
 
-#set heading(
-  numbering: (..n) => (
-    (if n.pos().len() == 1 { "§ " } else { "" }) + n.pos().map(str).join(".") + "."
-  ),
-  supplement: none,
-)
-#show ref: it => {
-  let el = it.element
-  if el != none and el.func() == heading {
-    let num = counter(heading).at(el.location())
-    let s = (if num.len() == 1 { "§ " } else { "" }) + num.map(str).join(".")
-    link(el.location(), s)
-  } else {
-    it
-  }
-}
-
 #align(center)[
   #text(16pt, strong("On Pragmatism")) \
   #v(0.4em)
   #text(9pt, emph("Written with the help of AI."))
 ]
-#v(0.5em)
-
-= Equality and Capability
+#v(0.8em)
 
 In Book I of the Elements#footnote[Euclid, Elements, Book I, Common Notion 4 (c. 300 BCE).],
 Euclid states a simple rule for equality, noting that magnitudes which
@@ -53,17 +31,14 @@ In practice, we often compare two positions, $X$ and $Y$ (such as claims,
 models, rules, or norms). Following the substitution principle above, we can
 build a framework for analyzing them with respect to a given _agent_ $A$---any
 entity acting in the physical world---by comparing $A$ operating under $X$
-against $A$ operating under $Y$. Instead of asking what $A$ feels, believes, or
-merely happens to choose, we ask what $A$ _can reliably achieve in the physical
-world_.
+against $A$ operating under $Y$. Instead of asking whether $X$ is true or $Y$
+is true, we ask what $A$ _can reliably achieve in the physical world_.
 
 Suppose that, with respect to $A$, replacing $X$ with $Y$ leaves everything $A$
 can reliably achieve in the physical world unchanged. In that case, we treat
 $X$ and $Y$ as equivalent for $A$ (written $X tilde^A Y$). They belong to the
 same equivalence class and are interchangeable with respect to $A$'s
 capabilities.
-
-= Comparison Across Scales
 
 The main advantage of this approach is that it provides a concrete, operational
 way of comparing positions. Instead of leaving a disagreement at the level of
@@ -82,6 +57,11 @@ Asking this question is productive regardless of the answer:
   there is no difference between $X$ and $Y$ with respect to $A$. This avoids
   treating purely verbal variations as competing positions, and keeps analysis
   focused on distinctions that change $A$'s capabilities.
+
+In fact, this framing already does useful work before any comparison begins.
+Broad statements rarely specify a single way of operating under them, so asking
+what it means for $A$ to operate under $X$ forces a vague position into
+concrete actions in the world, or reveals that it is still underspecified.
 
 A second strength of the framework is that it applies uniformly across scales
 of agency, from an individual to an organization or a society. Because
