@@ -18,6 +18,12 @@ Exploratory research threads, literature notes, experiments, and reports live in
 | [Physical Transformers](research/physical-transformers/README.md) | ![exploring](https://img.shields.io/badge/exploring-0969DA?style=flat) | — |
 | [Policy-First PFNs for In-Context RL](research/pfn-rl/README.md) | ![exploring](https://img.shields.io/badge/exploring-0969DA?style=flat) | — |
 
+## Essays
+
+| Essay | Topic | Language |
+| --- | --- | --- |
+| [On Pragmatism](https://barhanc.github.io/notes/archive/pdf/pragmatism.pdf) | Philosophy | `EN` |
+
 ## Machine Learning
 
 - [Modern Deep Learning: A Short Course](https://barhanc.github.io/notes/archive/pdf/transformers.pdf) `EN`
