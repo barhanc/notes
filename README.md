@@ -28,7 +28,7 @@ Short standalone essays on various topics.
 
 ## Notes
 
-Expository study and course notes across machine learning, computer science, software engineering, mathematics, and physics.
+Expository study and course notes.
 
 | Note | Topic | Status | Language |
 | --- | --- | --- | --- |
