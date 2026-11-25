@@ -20,7 +20,7 @@ Exploratory research threads, literature notes, experiments, and reports live in
 
 ## Essays
 
-Short standalone essays written in Typst and compiled to PDF.
+Short standalone essays on various topics.
 
 | Essay | Topic | Language |
 | --- | --- | --- |
@@ -28,7 +28,7 @@ Short standalone essays written in Typst and compiled to PDF.
 
 ## Notes
 
-Expository study and course notes across machine learning, computer science, and mathematics.
+Expository study and course notes across machine learning, computer science, software engineering, and mathematics.
 
 | Note | Topic | Status | Language |
 | --- | --- | --- | --- |
@@ -38,8 +38,8 @@ Expository study and course notes across machine learning, computer science, and
 | [Computer Basics](https://barhanc.github.io/notes/archive/md/computer-basics) | Computer Science | ![done](https://img.shields.io/badge/done-1A7F37?style=flat) | `EN` / `PL` |
 | [Computer Architecture](https://barhanc.github.io/notes/archive/md/computer-organization) | Computer Science | ![done](https://img.shields.io/badge/done-1A7F37?style=flat) | `PL` |
 | [Theory of Computation](https://barhanc.github.io/notes/archive/md/theory-of-computation) | Computer Science | ![done](https://img.shields.io/badge/done-1A7F37?style=flat) | `PL` |
-| [Python](https://barhanc.github.io/notes/archive/md/python) | Computer Science | ![done](https://img.shields.io/badge/done-1A7F37?style=flat) | `EN` |
-| [Git](https://barhanc.github.io/notes/archive/md/git) | Computer Science | ![done](https://img.shields.io/badge/done-1A7F37?style=flat) | `PL` |
+| [Python](https://barhanc.github.io/notes/archive/md/python) | Software Engineering | ![done](https://img.shields.io/badge/done-1A7F37?style=flat) | `EN` |
+| [Git](https://barhanc.github.io/notes/archive/md/git) | Software Engineering | ![done](https://img.shields.io/badge/done-1A7F37?style=flat) | `PL` |
 | [Mathematical Analysis](https://barhanc.github.io/notes/archive/pdf/analysis.pdf) | Math | ![done](https://img.shields.io/badge/done-1A7F37?style=flat) | `PL` |
 | [Algebra and Geometry](https://barhanc.github.io/notes/archive/pdf/algebra.pdf) | Math | ![done](https://img.shields.io/badge/done-1A7F37?style=flat) | `PL` |
 
