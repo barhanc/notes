@@ -54,21 +54,9 @@
 
 
 #align(center)[
-  #text(16pt, strong("Modern Deep Learning: A Short Course")) \
-  #v(0.5em)
-  Bartosz Hanc
+  #text(16pt, strong("Modern Deep Learning: A Short Course"))
 ]
-
 #v(0.8em)
-#pad(x: 1.2em)[
-  #set text(9pt)
-  A self-contained introduction to modern deep learning,
-  framing supervised and unsupervised learning as maximum likelihood
-  estimation, developing neural networks as computational graphs trained via
-  backpropagation, and covering optimization, Transformer architectures,
-  autoregressive sequence modeling, and in-context learning.
-]
-#v(0.6em)
 
 #outline()
 

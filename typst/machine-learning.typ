@@ -48,22 +48,9 @@
 ]
 
 #align(center)[
-  #text(16pt, strong("Klasyczne Uczenie Maszynowe")) \
-  #v(0.5em)
-  Bartosz Hanc
+  #text(16pt, strong("Klasyczne Uczenie Maszynowe"))
 ]
-
 #v(0.8em)
-#pad(x: 1.2em)[
-  #set text(9pt)
-  Zwięzłe wprowadzenie do klasycznych metod uczenia
-  maszynowego i statystycznego: od wnioskowania Bayesowskiego, regresji
-  liniowej i uogólnionych modeli liniowych, przez procesy Gaussowskie i metody
-  próbkowania Monte Carlo (IS, MCMC), po drzewa decyzyjne, metody zespołowe
-  (bagging, lasy losowe, boosting), metody nieparametryczne oraz ewaluację
-  modeli.
-]
-#v(0.6em)
 
 #outline()
 
