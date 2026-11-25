@@ -20,24 +20,28 @@ Exploratory research threads, literature notes, experiments, and reports live in
 
 ## Essays
 
+Short standalone essays written in Typst and compiled to PDF.
+
 | Essay | Topic | Language |
 | --- | --- | --- |
 | [On Pragmatism](https://barhanc.github.io/notes/archive/pdf/pragmatism.pdf) | Philosophy | `EN` |
 
 ## Notes
 
-| Note | Topic | Language |
-| --- | --- | --- |
-| [Modern Deep Learning: A Short Course](https://barhanc.github.io/notes/archive/pdf/transformers.pdf) ![WIP](https://img.shields.io/badge/WIP-D97706?style=flat) | Machine Learning | `EN` |
-| [Classical Machine Learning](https://barhanc.github.io/notes/archive/pdf/machine-learning.pdf) | Machine Learning | `PL` |
-| [Reinforcement Learning](https://barhanc.github.io/notes/archive/pdf/rl-short.pdf) | Machine Learning | `PL` |
-| [Computer Basics](https://barhanc.github.io/notes/archive/md/computer-basics) | Computer Science | `EN/PL` |
-| [Computer Architecture](https://barhanc.github.io/notes/archive/md/computer-organization) | Computer Science | `PL` |
-| [Theory of Computation](https://barhanc.github.io/notes/archive/md/theory-of-computation) | Computer Science | `PL` |
-| [Python](https://barhanc.github.io/notes/archive/md/python) | Computer Science | `EN` |
-| [Git](https://barhanc.github.io/notes/archive/md/git) | Computer Science | `PL` |
-| [Mathematical Analysis](https://barhanc.github.io/notes/archive/pdf/analysis.pdf) | Math | `PL` |
-| [Algebra and Geometry](https://barhanc.github.io/notes/archive/pdf/algebra.pdf) | Math | `PL` |
+Expository study and course notes across machine learning, computer science, and mathematics.
+
+| Note | Topic | Status | Language |
+| --- | --- | --- | --- |
+| [Modern Deep Learning: A Short Course](https://barhanc.github.io/notes/archive/pdf/transformers.pdf) | Machine Learning | ![WIP](https://img.shields.io/badge/WIP-D97706?style=flat) | `EN` |
+| [Classical Machine Learning](https://barhanc.github.io/notes/archive/pdf/machine-learning.pdf) | Machine Learning | ![done](https://img.shields.io/badge/done-1A7F37?style=flat) | `PL` |
+| [Reinforcement Learning](https://barhanc.github.io/notes/archive/pdf/rl-short.pdf) | Machine Learning | ![done](https://img.shields.io/badge/done-1A7F37?style=flat) | `PL` |
+| [Computer Basics](https://barhanc.github.io/notes/archive/md/computer-basics) | Computer Science | ![done](https://img.shields.io/badge/done-1A7F37?style=flat) | `EN` / `PL` |
+| [Computer Architecture](https://barhanc.github.io/notes/archive/md/computer-organization) | Computer Science | ![done](https://img.shields.io/badge/done-1A7F37?style=flat) | `PL` |
+| [Theory of Computation](https://barhanc.github.io/notes/archive/md/theory-of-computation) | Computer Science | ![done](https://img.shields.io/badge/done-1A7F37?style=flat) | `PL` |
+| [Python](https://barhanc.github.io/notes/archive/md/python) | Computer Science | ![done](https://img.shields.io/badge/done-1A7F37?style=flat) | `EN` |
+| [Git](https://barhanc.github.io/notes/archive/md/git) | Computer Science | ![done](https://img.shields.io/badge/done-1A7F37?style=flat) | `PL` |
+| [Mathematical Analysis](https://barhanc.github.io/notes/archive/pdf/analysis.pdf) | Math | ![done](https://img.shields.io/badge/done-1A7F37?style=flat) | `PL` |
+| [Algebra and Geometry](https://barhanc.github.io/notes/archive/pdf/algebra.pdf) | Math | ![done](https://img.shields.io/badge/done-1A7F37?style=flat) | `PL` |
 
 <details markdown="1">
   <summary>Archive</summary>
