@@ -1,0 +1,8 @@
+{
+  "tinymist.fontPaths": [
+    "assets/fonts"
+  ],
+  "typst-lsp.fontPaths": [
+    "assets/fonts"
+  ]
+}
