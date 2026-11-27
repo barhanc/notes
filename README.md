@@ -31,6 +31,9 @@ Expository study and course notes.
 | Note | Topic | Status | Language |
 | --- | --- | --- | --- |
 | [Modern Deep Learning: A Short Course](https://barhanc.github.io/notes/archive/pdf/transformers.pdf) | Machine Learning | ![WIP](https://img.shields.io/badge/WIP-D97706?style=flat) | `EN` |
+
+| Note | Topic | Status | Language |
+| --- | --- | --- | --- |
 | [Classical Machine Learning](https://barhanc.github.io/notes/archive/pdf/machine-learning.pdf) | Machine Learning | ![done](https://img.shields.io/badge/done-1A7F37?style=flat) | `PL` |
 | [Reinforcement Learning](https://barhanc.github.io/notes/archive/pdf/rl-short.pdf) | Machine Learning | ![done](https://img.shields.io/badge/done-1A7F37?style=flat) | `PL` |
 | [Neural Networks](https://barhanc.github.io/notes/archive/pdf/deep-learning.pdf) | Machine Learning | ![archive](https://img.shields.io/badge/archive-9A3412?style=flat) | `EN` |
